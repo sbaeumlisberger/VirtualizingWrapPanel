@@ -1,9 +1,12 @@
 VirtualizingWrapPanel for WPF
 
-Supports Caching and Recycling
-
 .NET Framework 4.5+
 
+Features:
+- horizontal & vertical orientation
+- caching per item, page or pixels
+- recycling containers mode
+- scrolling by unit or pixels
 
 Example of use:
 <ListView xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel">
@@ -13,7 +16,3 @@ Example of use:
         </ItemsPanelTemplate>
     </ListView.ItemsPanel>
 </ListView>
-
-
-Remarks:
-- all children in the panel must be the same size (this will be solved in a later version)
