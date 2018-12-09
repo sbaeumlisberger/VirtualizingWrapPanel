@@ -4,6 +4,6 @@ pages:
   - echo '...'
   artifacts:
     paths:
-    - doc
+    - public
   only:
   - master
