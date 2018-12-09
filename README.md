@@ -18,8 +18,8 @@
 Get the [Nuget Package](https://www.nuget.org/packages/VirtualizingWrapPanel/).
 
 ### Samples & Documentation 
-* A sample application can be found [here](https://gitlab.com/s.baeumlisberger/virtualizing-wrap-panel/tree/master/VirtualizingWrapPanelSamples).
-* The API-Documentation can be found [here](http://s.baeumlisberger.gitlab.io/virtualizing-wrap-panel/api/WpfToolkit.Controls.html).
+* A sample application can be found [here](https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel/tree/master/VirtualizingWrapPanelSamples).
+* The API-Documentation can be found [here](http://sbaeumlisberger.gitlab.io/virtualizing-wrap-panel/api/WpfToolkit.Controls.html).
 
 ### Quick Start
 ```xml
