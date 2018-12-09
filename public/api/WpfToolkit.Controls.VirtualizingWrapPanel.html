@@ -73,7 +73,8 @@
   
   <h1 id="WpfToolkit_Controls_VirtualizingWrapPanel" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel" class="text-break">Class VirtualizingWrapPanel
   </h1>
-  <div class="markdown level0 summary"><p>A implementation of a VirtualizingWrapPanel supporting horizontal and vertical orientation. </p>
+  <div class="markdown level0 summary"><p>A implementation of a wrap panel that supports virtualization and can be used in horizontal and vertical orientation.
+<p class="note">In order to work properly all items must have the same size.</p></p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -86,7 +87,7 @@
     <div class="level5"><span class="xref">System.Windows.FrameworkElement</span></div>
     <div class="level6"><span class="xref">System.Windows.Controls.Panel</span></div>
     <div class="level7"><span class="xref">System.Windows.Controls.VirtualizingPanel</span></div>
-    <div class="level8"><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html">VirtualizingPanelBase</a></div>
+    <div class="level8"><span class="xref">WpfToolkit.Controls.VirtualizingPanelBase</span></div>
     <div class="level9"><span class="xref">VirtualizingWrapPanel</span></div>
   </div>
   <div classs="implements">
@@ -101,105 +102,6 @@
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ScrollLineDelta">VirtualizingPanelBase.ScrollLineDelta</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelDelta">VirtualizingPanelBase.MouseWheelDelta</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ScrollOwner">VirtualizingPanelBase.ScrollOwner</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_CanVerticallyScroll">VirtualizingPanelBase.CanVerticallyScroll</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_CanHorizontallyScroll">VirtualizingPanelBase.CanHorizontallyScroll</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ExtentWidth">VirtualizingPanelBase.ExtentWidth</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ExtentHeight">VirtualizingPanelBase.ExtentHeight</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ViewportWidth">VirtualizingPanelBase.ViewportWidth</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ViewportHeight">VirtualizingPanelBase.ViewportHeight</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_HorizontalOffset">VirtualizingPanelBase.HorizontalOffset</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_VerticalOffset">VirtualizingPanelBase.VerticalOffset</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_IsVirtualizing">VirtualizingPanelBase.IsVirtualizing</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_VirtualizationMode">VirtualizingPanelBase.VirtualizationMode</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_CacheLength">VirtualizingPanelBase.CacheLength</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_CacheLengthUnit">VirtualizingPanelBase.CacheLengthUnit</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ScrollUnit">VirtualizingPanelBase.ScrollUnit</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ItemsControl">VirtualizingPanelBase.ItemsControl</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ItemContainerGenerator">VirtualizingPanelBase.ItemContainerGenerator</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_extent">VirtualizingPanelBase.extent</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_viewport">VirtualizingPanelBase.viewport</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_offset">VirtualizingPanelBase.offset</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_LineUp">VirtualizingPanelBase.LineUp()</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_LineDown">VirtualizingPanelBase.LineDown()</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_LineLeft">VirtualizingPanelBase.LineLeft()</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_LineRight">VirtualizingPanelBase.LineRight()</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_PageUp">VirtualizingPanelBase.PageUp()</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_PageDown">VirtualizingPanelBase.PageDown()</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_PageLeft">VirtualizingPanelBase.PageLeft()</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_PageRight">VirtualizingPanelBase.PageRight()</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelUp">VirtualizingPanelBase.MouseWheelUp()</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelDown">VirtualizingPanelBase.MouseWheelDown()</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelLeft">VirtualizingPanelBase.MouseWheelLeft()</a>
-    </div>
-    <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelRight">VirtualizingPanelBase.MouseWheelRight()</a>
-    </div>
     <div>
       <span class="xref">System.Windows.Controls.VirtualizingPanel.IsVirtualizingProperty</span>
     </div>
@@ -298,6 +200,9 @@
     </div>
     <div>
       <span class="xref">System.Windows.Controls.VirtualizingPanel.CanHierarchicallyScrollAndVirtualizeCore</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.ItemContainerGenerator</span>
     </div>
     <div>
       <span class="xref">System.Windows.Controls.Panel.BackgroundProperty</span>
@@ -2112,7 +2017,7 @@
   <a id="WpfToolkit_Controls_VirtualizingWrapPanel_IsSpacingEnabled_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.IsSpacingEnabled*"></a>
   <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_IsSpacingEnabled" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.IsSpacingEnabled">IsSpacingEnabled</h4>
   <div class="markdown level1 summary"><p>Gets or sets a value that specifies whether the items are distributed evenly across the width (horizontal orientation) or height (vertical orientation).
-The default value ist <code>true</code>.</p>
+The default value ist <pre><code>true</code></pre>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -2138,7 +2043,8 @@ The default value ist <code>true</code>.</p>
   
   <a id="WpfToolkit_Controls_VirtualizingWrapPanel_ItemSize_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.ItemSize*"></a>
   <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_ItemSize" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.ItemSize">ItemSize</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value that specifies the size of the items. The default value is <span class="xref">System.Windows.Size.Empty</span>. If the value is <span class="xref">System.Windows.Size.Empty</span> the size of the items gots measured by the first realized item.</p>
+  <div class="markdown level1 summary"><p>Gets or sets a value that specifies the size of the items. The default value is <span class="xref">System.Windows.Size.Empty</span>. 
+If the value is <span class="xref">System.Windows.Size.Empty</span> the size of the items gots measured by the first realized item.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -2164,7 +2070,7 @@ The default value ist <code>true</code>.</p>
   
   <a id="WpfToolkit_Controls_VirtualizingWrapPanel_Orientation_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.Orientation*"></a>
   <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_Orientation" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.Orientation">Orientation</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value that specifies the dimension in which child content is arranged. The default value is <span class="xref">System.Windows.Controls.Orientation.Horizontal</span>.</p>
+  <div class="markdown level1 summary"><p>Gets or sets a value that specifies the orientation in which itmes are arranged. The default value is <span class="xref">System.Windows.Controls.Orientation.Horizontal</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -2212,7 +2118,7 @@ The default value ist <code>true</code>.</p>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ScrollItemSize">VirtualizingPanelBase.ScrollItemSize</a></div>
+  <div><span class="xref">WpfToolkit.Controls.VirtualizingPanelBase.ScrollItemSize</span></div>
   <h3 id="methods">Methods
   </h3>
   
@@ -2349,7 +2255,7 @@ The default value ist <code>true</code>.</p>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_MakeVisible_System_Windows_Media_Visual_System_Windows_Rect_">VirtualizingPanelBase.MakeVisible(Visual, Rect)</a></div>
+  <div><span class="xref">WpfToolkit.Controls.VirtualizingPanelBase.MakeVisible(System.Windows.Media.Visual, System.Windows.Rect)</span></div>
   
   
   <a id="WpfToolkit_Controls_VirtualizingWrapPanel_MeasureOverride_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.MeasureOverride*"></a>
@@ -2456,7 +2362,7 @@ The default value ist <code>true</code>.</p>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_SetHorizontalOffset_System_Double_">VirtualizingPanelBase.SetHorizontalOffset(Double)</a></div>
+  <div><span class="xref">WpfToolkit.Controls.VirtualizingPanelBase.SetHorizontalOffset(System.Double)</span></div>
   
   
   <a id="WpfToolkit_Controls_VirtualizingWrapPanel_SetVerticalOffset_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.SetVerticalOffset*"></a>
@@ -2485,7 +2391,7 @@ The default value ist <code>true</code>.</p>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_SetVerticalOffset_System_Double_">VirtualizingPanelBase.SetVerticalOffset(Double)</a></div>
+  <div><span class="xref">WpfToolkit.Controls.VirtualizingPanelBase.SetVerticalOffset(System.Double)</span></div>
   
   
   <a id="WpfToolkit_Controls_VirtualizingWrapPanel_UpdateScrollInfo_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.UpdateScrollInfo*"></a>
@@ -2519,7 +2425,7 @@ The default value ist <code>true</code>.</p>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_UpdateScrollInfo_System_Windows_Size_System_Windows_Size_">VirtualizingPanelBase.UpdateScrollInfo(Size, Size)</a></div>
+  <div><span class="xref">WpfToolkit.Controls.VirtualizingPanelBase.UpdateScrollInfo(System.Windows.Size, System.Windows.Size)</span></div>
   <h3 id="implements">Implements</h3>
   <div>
       <span class="xref">System.Windows.Media.Animation.IAnimatable</span>

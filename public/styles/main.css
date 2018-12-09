@@ -39,3 +39,17 @@
 .inheritedMembers {
 	display: none;	
 }
+
+.note {
+	background: aliceblue;
+    padding: 8px;
+}
+
+p.note:before {
+    content: "Note: ";
+    font-weight: bold;
+}
+
+section .note {
+	display: none;	
+}
