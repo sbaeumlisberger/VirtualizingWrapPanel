@@ -1,0 +1,9 @@
+pages:
+  stage: deploy
+  script:
+  - echo '...'
+  artifacts:
+    paths:
+    - doc
+  only:
+  - master
