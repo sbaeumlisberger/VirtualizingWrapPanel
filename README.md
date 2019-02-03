@@ -1,33 +1,12 @@
-## VirtualizingWrapPanel for WPF
+## VirtualizingWrapPanel
 
-### Dependencies
-
-.NET Framework 4.5+
-
-### Whats's included?
-* VirtualizingWrapPanel (implementation of a wrap panel that supports virtualization)
-* GridView (control that display a grid of items by using the VirtualizingWrapPanel)
-
-### Features
-* horizontal & vertical orientation
-* caching per item, page or pixels
-* container recycling
-* scrolling by item or pixels
-
-### Installation
-Get the [Nuget Package](https://www.nuget.org/packages/VirtualizingWrapPanel/).
+This is an implementation of a VirtualizingWrapPanel for .NET Framework 4.5 and higher. 
+The panel supports horizontal and vertical orientation, caching and container recycling. 
+The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel.
 
 ### Resources
-* [Sample Application](https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel/tree/master/VirtualizingWrapPanelSamples).
-* [API-Documentation](http://sbaeumlisberger.gitlab.io/virtualizing-wrap-panel/api/WpfToolkit.Controls.html).
+* [Sample Application](https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel/tree/master/VirtualizingWrapPanelSamples)
+* [API-Documentation](http://sbaeumlisberger.gitlab.io/virtualizing-wrap-panel/api/WpfToolkit.Controls.html)
 
-### Quick Start
-```xml
-<ListView xmlns:controls="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel">
-    <ListView.ItemsPanel>
-         <ItemsPanelTemplate>
-              <controls:VirtualizingWrapPanel/>
-        </ItemsPanelTemplate>
-    </ListView.ItemsPanel>
-</ListView>
-```
+### Download
+* [Nuget Package](https://www.nuget.org/packages/VirtualizingWrapPanel/)
