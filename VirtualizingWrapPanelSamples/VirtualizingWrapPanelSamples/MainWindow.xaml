@@ -3,27 +3,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
         xmlns:local="clr-namespace:VirtualizingWrapPanelSamples"
         xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
         mc:Ignorable="d"
         Title="VirtualizingWrapPanel Samples" 
-        Width="800" 
-        Height="480">
+        Width="1000" 
+        Height="600">
 
     <Window.Resources>
         <local:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
         <DataTemplate x:Key="ItemTemplate">
-            <Grid Background="{Binding Background, Mode=OneTime, Converter={StaticResource ColorToBrushConverter}}" 
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch"
-                  Loaded="Grid_Loaded"
-                  Unloaded="Grid_Unloaded" >
-                <TextBlock 
-                    Width="64" 
+            <StackPanel 
+                Background="{Binding Background, Mode=OneTime, Converter={StaticResource ColorToBrushConverter}}" 
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Loaded="Grid_Loaded"
+                Unloaded="Grid_Unloaded">
+                <TextBlock   
+                    Width="100"
+                    FontSize="32"
                     TextAlignment="Center"
                     Text="{Binding Number, Mode=OneTime}"                 
                     Padding="8"/>
-            </Grid>
+                <TextBlock 
+                    TextAlignment="Center"
+                    Text="{Binding CurrentDateTime, Mode=OneWay, StringFormat='{}{0:hh:mm:ss}'}"              
+                    Padding="8"/>
+            </StackPanel>
         </DataTemplate>
     </Window.Resources>
 
@@ -65,13 +72,18 @@
                     ItemsSource="{Binding AvailableCacheUnits, Mode=OneTime}"
                     SelectedItem="{Binding CacheUnit, Mode=TwoWay}"/>
 
-                <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Text="Cache Length "/>
+                <TextBlock Margin="16,0,0,0" VerticalAlignment="Center" Text="Cache Length "/>
                 <TextBox Width="48" Text="{Binding CacheLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <TextBlock Margin="16,0,0,0" VerticalAlignment="Center" Text="Scroll Unit "/>
                 <ComboBox
                     ItemsSource="{Binding AvailableScrollUnits, Mode=OneTime}"
                     SelectedItem="{Binding ScrollUnit, Mode=TwoWay}"/>
+
+                <TextBlock Margin="16,0,0,0" VerticalAlignment="Center" Text="Virtualization Mode "/>
+                <ComboBox
+                    ItemsSource="{Binding AvailableVirtualizationModi, Mode=OneTime}"
+                    SelectedItem="{Binding VirtualizationMode, Mode=TwoWay}"/>
             </StackPanel>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -92,7 +104,8 @@
                     ItemTemplate="{StaticResource ItemTemplate}"
                     VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
                     VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
-                    VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}">
+                    VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
+                    VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <wpftk:VirtualizingWrapPanel/>
@@ -105,7 +118,8 @@
                     ItemTemplate="{StaticResource ItemTemplate}"
                     VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
                     VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
-                    VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}">
+                    VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
+                    VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <wpftk:VirtualizingWrapPanel IsSpacingEnabled="False"/>
@@ -118,7 +132,8 @@
                     ItemTemplate="{StaticResource ItemTemplate}"
                     VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
                     VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
-                    VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}">
+                    VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
+                    VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <wpftk:VirtualizingWrapPanel Orientation="Horizontal"/>
@@ -131,7 +146,8 @@
                     ItemTemplate="{StaticResource ItemTemplate}" 
                     VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
                     VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
-                    VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}">
+                    VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
+                    VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment"  Value="Stretch"/>
@@ -140,7 +156,7 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <wpftk:VirtualizingWrapPanel ItemSize="128,128"/>
+                            <wpftk:VirtualizingWrapPanel ItemSize="200,200"/>
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
                 </ListView>
@@ -150,14 +166,81 @@
                     ItemTemplate="{StaticResource ItemTemplate}"
                     VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
                     VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
-                    VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"/>
+                    VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
+                    VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"/>
             </TabItem>
-            <TabItem Header="Standard WPF WrapPanel (no virtualization)">
+            <TabItem Header="GridDetailsView">
+                <wpftk:GridDetailsView 
+                    ItemTemplate="{StaticResource ItemTemplate}"
+                    VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
+                    VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
+                    VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
+                    VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}">
+                    <wpftk:GridDetailsView.ExpandedItemTemplate>
+                        <DataTemplate>
+                            <TextBlock 
+                                HorizontalAlignment="Stretch" 
+                                Background="Gray" 
+                                FontSize="64"                                
+                                Text="{Binding Number}"
+                                Padding="16"
+                                Margin="8"/>
+                        </DataTemplate>
+                    </wpftk:GridDetailsView.ExpandedItemTemplate>
+                </wpftk:GridDetailsView>
+            </TabItem>
+            <TabItem Header="GridDetailsView Horizontal">
+                <wpftk:GridDetailsView 
+                    Orientation="Horizontal"
+                    ItemTemplate="{StaticResource ItemTemplate}"
+                    VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
+                    VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
+                    VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
+                    VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}">
+                    <wpftk:GridDetailsView.ExpandedItemTemplate>
+                        <DataTemplate>
+                            <TextBlock 
+                                HorizontalAlignment="Stretch" 
+                                Background="Gray" 
+                                FontSize="64"                                
+                                Text="{Binding Number}"
+                                Padding="16"
+                                Margin="8"/>
+                        </DataTemplate>
+                    </wpftk:GridDetailsView.ExpandedItemTemplate>
+                </wpftk:GridDetailsView>
+            </TabItem>
+            <!--<TabItem Header="Grouping">
+                <ListView    
+                    ItemTemplate="{StaticResource ItemTemplate}"
+                    VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
+                    VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
+                    VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
+                    VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
+                    VirtualizingPanel.IsVirtualizingWhenGrouping="True">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <wpftk:VirtualizingWrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}"/>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+                </ListView>
+            </TabItem>-->
+            <TabItem Header="WPF WrapPanel (no virtualization)">
                 <ListView 
                     ItemTemplate="{StaticResource ItemTemplate}" 
                     VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
                     VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                     VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
+                    VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>

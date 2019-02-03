@@ -28,6 +28,10 @@ namespace VirtualizingWrapPanelSamples {
 
         public MainWindow() {
             DataContext = model;
+
+            var view = CollectionViewSource.GetDefaultView(model.Items);
+            view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TestItem.Group)));
+
             InitializeComponent();
         }
 
@@ -48,12 +52,14 @@ namespace VirtualizingWrapPanelSamples {
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs args) {
-            if (previousItemsControl != null) {
-                previousItemsControl.ItemsSource = null;
+            if (tabControl.SelectedContent != previousItemsControl) {
+                if (previousItemsControl != null) {
+                    previousItemsControl.ItemsSource = null;
+                }
+                var itemsControl = (ItemsControl)tabControl.SelectedContent;
+                itemsControl.ItemsSource = model.Items;
+                previousItemsControl = itemsControl;
             }
-            var itemsControl = (ItemsControl)tabControl.SelectedContent;
-            itemsControl.ItemsSource = model.Items;
-            previousItemsControl = itemsControl;                          
         }
 
         private void Grid_Loaded(object sender, RoutedEventArgs args) {

@@ -25,19 +25,22 @@ namespace VirtualizingWrapPanelSamples {
 
         public VirtualizationCacheLengthUnit[] AvailableCacheUnits { get; } = (VirtualizationCacheLengthUnit[])Enum.GetValues(typeof(VirtualizationCacheLengthUnit));
         public ScrollUnit[] AvailableScrollUnits { get; } = (ScrollUnit[])Enum.GetValues(typeof(ScrollUnit));
+        public VirtualizationMode[] AvailableVirtualizationModi { get; } = (VirtualizationMode[]) Enum.GetValues(typeof(VirtualizationMode));
 
         public VirtualizationCacheLengthUnit CacheUnit { get => cacheUnit; set => SetField(ref cacheUnit, value); }
         public VirtualizationCacheLength CacheLength { get => cacheLength; set => SetField(ref cacheLength, value); }
         public ScrollUnit ScrollUnit { get => scrollUnit; set => SetField(ref scrollUnit, value); }
+        public VirtualizationMode VirtualizationMode { get => virtualizationMode; set => SetField(ref virtualizationMode, value); }
 
         private int renderedItemsCount = 0;
 
         private long memoryUsageInMB = 0;
         private bool isAutoRefreshMemoryUsageEnabled = false;
 
-        private VirtualizationCacheLengthUnit cacheUnit = VirtualizationCacheLengthUnit.Item;
-        private VirtualizationCacheLength cacheLength = new VirtualizationCacheLength(10);
+        private VirtualizationCacheLengthUnit cacheUnit = VirtualizationCacheLengthUnit.Page;
+        private VirtualizationCacheLength cacheLength = new VirtualizationCacheLength(1);
         private ScrollUnit scrollUnit = ScrollUnit.Item;
+        private VirtualizationMode virtualizationMode = VirtualizationMode.Standard;
 
         private readonly Random random = new Random();
 
@@ -54,13 +57,13 @@ namespace VirtualizingWrapPanelSamples {
 
         public void InsertItemAtRandomPosition() {
             int index = random.Next(Items.Count);
-            Items.Insert(index, new TestItem(Items.Count));
+            Items.Insert(index, new TestItem("Group " + new Random().Next(5), Items.Count));
         }
 
         public void AddItems() {
             int newCount = Items.Count + 5000;
             for (int i = Items.Count; i < newCount; i++) {
-                Items.Add(new TestItem(i + 1));
+                Items.Add(new TestItem("Group " + i/1000, i + 1));
             }
         }
 
