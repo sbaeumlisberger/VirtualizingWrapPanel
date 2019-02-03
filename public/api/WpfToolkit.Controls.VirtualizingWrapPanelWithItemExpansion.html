@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class GridView
+    <title>Class VirtualizingWrapPanelWithItemExpansion
    </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class GridView
+    <meta name="title" content="Class VirtualizingWrapPanelWithItemExpansion
    ">
     <meta name="generator" content="docfx 2.40.4.0">
     
@@ -68,13 +68,13 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="WpfToolkit.Controls.GridView">
+            <article class="content wrap" id="_content" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion">
   
   
-  <h1 id="WpfToolkit_Controls_GridView" data-uid="WpfToolkit.Controls.GridView" class="text-break">Class GridView
+  <h1 id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion" class="text-break">Class VirtualizingWrapPanelWithItemExpansion
   </h1>
-  <div class="markdown level0 summary"><p>Simple control that displays a gird of items. Depending on the orientation, the items are either stacked horizontally or vertically 
-until the items are wrapped to the next row or column. The control is using virtualization to support large amount of items.
+  <div class="markdown level0 summary"><p>A implementation of a wrap panel that supports virtualization and can be used in horizontal and vertical orientation.
+In addition the panel allows to expand one specific item.
 <p class="note">In order to work properly all items must have the same size.</p></p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -86,13 +86,11 @@ until the items are wrapped to the next row or column. The control is using virt
     <div class="level3"><span class="xref">System.Windows.Media.Visual</span></div>
     <div class="level4"><span class="xref">System.Windows.UIElement</span></div>
     <div class="level5"><span class="xref">System.Windows.FrameworkElement</span></div>
-    <div class="level6"><span class="xref">System.Windows.Controls.Control</span></div>
-    <div class="level7"><span class="xref">System.Windows.Controls.ItemsControl</span></div>
-    <div class="level8"><span class="xref">System.Windows.Controls.Primitives.Selector</span></div>
-    <div class="level9"><span class="xref">System.Windows.Controls.ListBox</span></div>
-    <div class="level10"><span class="xref">System.Windows.Controls.ListView</span></div>
-    <div class="level11"><span class="xref">GridView</span></div>
-      <div class="level12"><a class="xref" href="WpfToolkit.Controls.GridDetailsView.html">GridDetailsView</a></div>
+    <div class="level6"><span class="xref">System.Windows.Controls.Panel</span></div>
+    <div class="level7"><span class="xref">System.Windows.Controls.VirtualizingPanel</span></div>
+    <div class="level8"><span class="xref">WpfToolkit.Controls.VirtualizingPanelBase</span></div>
+    <div class="level9"><a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html">VirtualizingWrapPanel</a></div>
+    <div class="level10"><span class="xref">VirtualizingWrapPanelWithItemExpansion</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -102,465 +100,264 @@ until the items are wrapped to the next row or column. The control is using virt
     <div><span class="xref">System.ComponentModel.ISupportInitialize</span></div>
     <div><span class="xref">System.Windows.Markup.IQueryAmbient</span></div>
     <div><span class="xref">System.Windows.Markup.IAddChild</span></div>
-    <div><span class="xref">System.Windows.Controls.Primitives.IContainItemStorage</span></div>
+    <div><span class="xref">System.Windows.Controls.Primitives.IScrollInfo</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Windows.Controls.ListView.ViewProperty</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_IsSpacingEnabledProperty">VirtualizingWrapPanel.IsSpacingEnabledProperty</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListView.PrepareContainerForItemOverride(System.Windows.DependencyObject, System.Object)</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_OrientationProperty">VirtualizingWrapPanel.OrientationProperty</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListView.ClearContainerForItemOverride(System.Windows.DependencyObject, System.Object)</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_ItemSizeProperty">VirtualizingWrapPanel.ItemSizeProperty</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListView.IsItemItsOwnContainerOverride(System.Object)</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_IsSpacingEnabled">VirtualizingWrapPanel.IsSpacingEnabled</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListView.GetContainerForItemOverride()</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_Orientation">VirtualizingWrapPanel.Orientation</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListView.OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_ItemSize">VirtualizingWrapPanel.ItemSize</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListView.OnCreateAutomationPeer()</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_childSize">VirtualizingWrapPanel.childSize</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListView.View</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_rowCount">VirtualizingWrapPanel.rowCount</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListBox.SelectionModeProperty</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_itemsPerRow">VirtualizingWrapPanel.itemsPerRow</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListBox.SelectedItemsProperty</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_MeasureOverride_System_Windows_Size_">VirtualizingWrapPanel.MeasureOverride(Size)</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListBox.SelectAll()</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_UpdateItemRange">VirtualizingWrapPanel.UpdateItemRange()</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListBox.UnselectAll()</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_GetLineUpScrollAmount">VirtualizingWrapPanel.GetLineUpScrollAmount()</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListBox.ScrollIntoView(System.Object)</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_GetLineDownScrollAmount">VirtualizingWrapPanel.GetLineDownScrollAmount()</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListBox.SetSelectedItems(System.Collections.IEnumerable)</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_GetLineLeftScrollAmount">VirtualizingWrapPanel.GetLineLeftScrollAmount()</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListBox.OnSelectionChanged(System.Windows.Controls.SelectionChangedEventArgs)</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_GetLineRightScrollAmount">VirtualizingWrapPanel.GetLineRightScrollAmount()</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListBox.OnKeyDown(System.Windows.Input.KeyEventArgs)</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_GetMouseWheelUpScrollAmount">VirtualizingWrapPanel.GetMouseWheelUpScrollAmount()</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListBox.OnMouseMove(System.Windows.Input.MouseEventArgs)</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_GetMouseWheelDownScrollAmount">VirtualizingWrapPanel.GetMouseWheelDownScrollAmount()</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListBox.OnIsMouseCapturedChanged(System.Windows.DependencyPropertyChangedEventArgs)</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_GetMouseWheelLeftScrollAmount">VirtualizingWrapPanel.GetMouseWheelLeftScrollAmount()</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListBox.SelectionMode</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_GetMouseWheelRightScrollAmount">VirtualizingWrapPanel.GetMouseWheelRightScrollAmount()</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListBox.SelectedItems</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_GetPageUpScrollAmount">VirtualizingWrapPanel.GetPageUpScrollAmount()</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListBox.HandlesScrolling</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_GetPageDownScrollAmount">VirtualizingWrapPanel.GetPageDownScrollAmount()</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ListBox.AnchorItem</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_GetPageLeftScrollAmount">VirtualizingWrapPanel.GetPageLeftScrollAmount()</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.SelectionChangedEvent</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_GetPageRightScrollAmount">VirtualizingWrapPanel.GetPageRightScrollAmount()</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.SelectedEvent</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_GetX_System_Windows_Point_">VirtualizingWrapPanel.GetX(Point)</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.UnselectedEvent</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_GetY_System_Windows_Point_">VirtualizingWrapPanel.GetY(Point)</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.IsSelectionActiveProperty</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_GetWidth_System_Windows_Size_">VirtualizingWrapPanel.GetWidth(Size)</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.IsSelectedProperty</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_GetHeight_System_Windows_Size_">VirtualizingWrapPanel.GetHeight(Size)</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.IsSynchronizedWithCurrentItemProperty</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_CreateSize_System_Double_System_Double_">VirtualizingWrapPanel.CreateSize(Double, Double)</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.SelectedIndexProperty</span>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_CreateRect_System_Double_System_Double_System_Double_System_Double_">VirtualizingWrapPanel.CreateRect(Double, Double, Double, Double)</a>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.SelectedItemProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.IsVirtualizingProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.SelectedValueProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.VirtualizationModeProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.SelectedValuePathProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.IsVirtualizingWhenGroupingProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.AddSelectedHandler(System.Windows.DependencyObject, System.Windows.RoutedEventHandler)</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.ScrollUnitProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.RemoveSelectedHandler(System.Windows.DependencyObject, System.Windows.RoutedEventHandler)</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.CacheLengthProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.AddUnselectedHandler(System.Windows.DependencyObject, System.Windows.RoutedEventHandler)</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.CacheLengthUnitProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.RemoveUnselectedHandler(System.Windows.DependencyObject, System.Windows.RoutedEventHandler)</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.IsContainerVirtualizableProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.GetIsSelectionActive(System.Windows.DependencyObject)</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetItemOffset(System.Windows.UIElement)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.GetIsSelected(System.Windows.DependencyObject)</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetItemOffsetCore(System.Windows.UIElement)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.SetIsSelected(System.Windows.DependencyObject, System.Boolean)</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetIsVirtualizing(System.Windows.DependencyObject)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.OnIsKeyboardFocusWithinChanged(System.Windows.DependencyPropertyChangedEventArgs)</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.SetIsVirtualizing(System.Windows.DependencyObject, System.Boolean)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.OnItemsSourceChanged(System.Collections.IEnumerable, System.Collections.IEnumerable)</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetVirtualizationMode(System.Windows.DependencyObject)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.OnInitialized(System.EventArgs)</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.SetVirtualizationMode(System.Windows.DependencyObject, System.Windows.Controls.VirtualizationMode)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.IsSynchronizedWithCurrentItem</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetIsVirtualizingWhenGrouping(System.Windows.DependencyObject)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.SelectedIndex</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.SetIsVirtualizingWhenGrouping(System.Windows.DependencyObject, System.Boolean)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.SelectedItem</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetScrollUnit(System.Windows.DependencyObject)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.SelectedValue</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.SetScrollUnit(System.Windows.DependencyObject, System.Windows.Controls.ScrollUnit)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.SelectedValuePath</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetCacheLength(System.Windows.DependencyObject)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Primitives.Selector.SelectionChanged</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.SetCacheLength(System.Windows.DependencyObject, System.Windows.Controls.VirtualizationCacheLength)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemsSourceProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetCacheLengthUnit(System.Windows.DependencyObject)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.HasItemsProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.SetCacheLengthUnit(System.Windows.DependencyObject, System.Windows.Controls.VirtualizationCacheLengthUnit)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.DisplayMemberPathProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetIsContainerVirtualizable(System.Windows.DependencyObject)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemTemplateProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.SetIsContainerVirtualizable(System.Windows.DependencyObject, System.Boolean)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemTemplateSelectorProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.AddInternalChild(System.Windows.UIElement)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemStringFormatProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.InsertInternalChild(System.Int32, System.Windows.UIElement)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemBindingGroupProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.RemoveInternalChildRange(System.Int32, System.Int32)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemContainerStyleProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.OnItemsChanged(System.Object, System.Windows.Controls.Primitives.ItemsChangedEventArgs)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemContainerStyleSelectorProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.ShouldItemsChangeAffectLayout(System.Boolean, System.Windows.Controls.Primitives.ItemsChangedEventArgs)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemsPanelProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.ShouldItemsChangeAffectLayoutCore(System.Boolean, System.Windows.Controls.Primitives.ItemsChangedEventArgs)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.IsGroupingProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.BringIndexIntoViewPublic(System.Int32)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.GroupStyleSelectorProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.BringIndexIntoView(System.Int32)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.AlternationCountProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.CanHierarchicallyScrollAndVirtualize</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.AlternationIndexProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.CanHierarchicallyScrollAndVirtualizeCore</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.IsTextSearchEnabledProperty</span>
+      <span class="xref">System.Windows.Controls.VirtualizingPanel.ItemContainerGenerator</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.IsTextSearchCaseSensitiveProperty</span>
+      <span class="xref">System.Windows.Controls.Panel.BackgroundProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.OnDisplayMemberPathChanged(System.String, System.String)</span>
+      <span class="xref">System.Windows.Controls.Panel.IsItemsHostProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.OnItemTemplateChanged(System.Windows.DataTemplate, System.Windows.DataTemplate)</span>
+      <span class="xref">System.Windows.Controls.Panel.ZIndexProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.OnItemTemplateSelectorChanged(System.Windows.Controls.DataTemplateSelector, System.Windows.Controls.DataTemplateSelector)</span>
+      <span class="xref">System.Windows.Controls.Panel.OnRender(System.Windows.Media.DrawingContext)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.OnItemStringFormatChanged(System.String, System.String)</span>
+      <span class="xref">System.Windows.Controls.Panel.System.Windows.Markup.IAddChild.AddChild(System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.OnItemBindingGroupChanged(System.Windows.Data.BindingGroup, System.Windows.Data.BindingGroup)</span>
+      <span class="xref">System.Windows.Controls.Panel.System.Windows.Markup.IAddChild.AddText(System.String)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.OnItemContainerStyleChanged(System.Windows.Style, System.Windows.Style)</span>
+      <span class="xref">System.Windows.Controls.Panel.OnIsItemsHostChanged(System.Boolean, System.Boolean)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.OnItemContainerStyleSelectorChanged(System.Windows.Controls.StyleSelector, System.Windows.Controls.StyleSelector)</span>
+      <span class="xref">System.Windows.Controls.Panel.GetVisualChild(System.Int32)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.GetItemsOwner(System.Windows.DependencyObject)</span>
+      <span class="xref">System.Windows.Controls.Panel.CreateUIElementCollection(System.Windows.FrameworkElement)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.OnItemsPanelChanged(System.Windows.Controls.ItemsPanelTemplate, System.Windows.Controls.ItemsPanelTemplate)</span>
+      <span class="xref">System.Windows.Controls.Panel.OnVisualChildrenChanged(System.Windows.DependencyObject, System.Windows.DependencyObject)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.OnGroupStyleSelectorChanged(System.Windows.Controls.GroupStyleSelector, System.Windows.Controls.GroupStyleSelector)</span>
+      <span class="xref">System.Windows.Controls.Panel.SetZIndex(System.Windows.UIElement, System.Int32)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.OnAlternationCountChanged(System.Int32, System.Int32)</span>
+      <span class="xref">System.Windows.Controls.Panel.GetZIndex(System.Windows.UIElement)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.GetAlternationIndex(System.Windows.DependencyObject)</span>
+      <span class="xref">System.Windows.Controls.Panel.Background</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemsControlFromItemContainer(System.Windows.DependencyObject)</span>
+      <span class="xref">System.Windows.Controls.Panel.LogicalChildren</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ContainerFromElement(System.Windows.Controls.ItemsControl, System.Windows.DependencyObject)</span>
+      <span class="xref">System.Windows.Controls.Panel.Children</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ContainerFromElement(System.Windows.DependencyObject)</span>
+      <span class="xref">System.Windows.Controls.Panel.IsItemsHost</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.System.Windows.Markup.IAddChild.AddChild(System.Object)</span>
+      <span class="xref">System.Windows.Controls.Panel.LogicalOrientationPublic</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.AddChild(System.Object)</span>
+      <span class="xref">System.Windows.Controls.Panel.LogicalOrientation</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.System.Windows.Markup.IAddChild.AddText(System.String)</span>
+      <span class="xref">System.Windows.Controls.Panel.HasLogicalOrientationPublic</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.AddText(System.String)</span>
+      <span class="xref">System.Windows.Controls.Panel.HasLogicalOrientation</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.BeginInit()</span>
+      <span class="xref">System.Windows.Controls.Panel.InternalChildren</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.EndInit()</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.IsItemItsOwnContainer(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.OnTextInput(System.Windows.Input.TextCompositionEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ShouldApplyItemContainerStyle(System.Windows.DependencyObject, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.System.Windows.Controls.Primitives.IContainItemStorage.ReadItemValue(System.Object, System.Windows.DependencyProperty)</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.System.Windows.Controls.Primitives.IContainItemStorage.StoreItemValue(System.Object, System.Windows.DependencyProperty, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.System.Windows.Controls.Primitives.IContainItemStorage.ClearItemValue(System.Object, System.Windows.DependencyProperty)</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.System.Windows.Controls.Primitives.IContainItemStorage.ClearValue(System.Windows.DependencyProperty)</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.System.Windows.Controls.Primitives.IContainItemStorage.Clear()</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ToString()</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.Items</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemsSource</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemContainerGenerator</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.LogicalChildren</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.HasItems</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.DisplayMemberPath</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemTemplate</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemTemplateSelector</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemStringFormat</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemBindingGroup</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemContainerStyle</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemContainerStyleSelector</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.ItemsPanel</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.IsGrouping</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.GroupStyle</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.GroupStyleSelector</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.AlternationCount</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.IsTextSearchEnabled</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ItemsControl.IsTextSearchCaseSensitive</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.BorderBrushProperty</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.BorderThicknessProperty</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.BackgroundProperty</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.ForegroundProperty</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.FontFamilyProperty</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.FontSizeProperty</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.FontStretchProperty</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.FontStyleProperty</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.FontWeightProperty</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.HorizontalContentAlignmentProperty</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.VerticalContentAlignmentProperty</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.TabIndexProperty</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.IsTabStopProperty</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.PaddingProperty</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.TemplateProperty</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.PreviewMouseDoubleClickEvent</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.MouseDoubleClickEvent</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.OnTemplateChanged(System.Windows.Controls.ControlTemplate, System.Windows.Controls.ControlTemplate)</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.OnPreviewMouseDoubleClick(System.Windows.Input.MouseButtonEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.OnMouseDoubleClick(System.Windows.Input.MouseButtonEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.MeasureOverride(System.Windows.Size)</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.ArrangeOverride(System.Windows.Size)</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.BorderBrush</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.BorderThickness</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.Background</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.Foreground</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.FontFamily</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.FontSize</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.FontStretch</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.FontStyle</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.FontWeight</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.HorizontalContentAlignment</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.VerticalContentAlignment</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.TabIndex</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.IsTabStop</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.Padding</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.Template</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.PreviewMouseDoubleClick</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.Control.MouseDoubleClick</span>
+      <span class="xref">System.Windows.Controls.Panel.VisualChildrenCount</span>
     </div>
     <div>
       <span class="xref">System.Windows.FrameworkElement.StyleProperty</span>
@@ -692,9 +489,6 @@ until the items are wrapped to the next row or column. The control is using virt
       <span class="xref">System.Windows.FrameworkElement.BeginStoryboard(System.Windows.Media.Animation.Storyboard, System.Windows.Media.Animation.HandoffBehavior, System.Boolean)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.FrameworkElement.GetVisualChild(System.Int32)</span>
-    </div>
-    <div>
       <span class="xref">System.Windows.FrameworkElement.System.Windows.Markup.IQueryAmbient.IsAmbientPropertyAvailable(System.String)</span>
     </div>
     <div>
@@ -761,6 +555,15 @@ until the items are wrapped to the next row or column. The control is using virt
       <span class="xref">System.Windows.FrameworkElement.OnGotFocus(System.Windows.RoutedEventArgs)</span>
     </div>
     <div>
+      <span class="xref">System.Windows.FrameworkElement.BeginInit()</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.FrameworkElement.EndInit()</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.FrameworkElement.OnInitialized(System.EventArgs)</span>
+    </div>
+    <div>
       <span class="xref">System.Windows.FrameworkElement.OnToolTipOpening(System.Windows.Controls.ToolTipEventArgs)</span>
     </div>
     <div>
@@ -807,9 +610,6 @@ until the items are wrapped to the next row or column. The control is using virt
     </div>
     <div>
       <span class="xref">System.Windows.FrameworkElement.TemplatedParent</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.FrameworkElement.VisualChildrenCount</span>
     </div>
     <div>
       <span class="xref">System.Windows.FrameworkElement.Resources</span>
@@ -1355,6 +1155,9 @@ until the items are wrapped to the next row or column. The control is using virt
       <span class="xref">System.Windows.UIElement.OnPreviewMouseMove(System.Windows.Input.MouseEventArgs)</span>
     </div>
     <div>
+      <span class="xref">System.Windows.UIElement.OnMouseMove(System.Windows.Input.MouseEventArgs)</span>
+    </div>
+    <div>
       <span class="xref">System.Windows.UIElement.OnPreviewMouseWheel(System.Windows.Input.MouseWheelEventArgs)</span>
     </div>
     <div>
@@ -1445,6 +1248,9 @@ until the items are wrapped to the next row or column. The control is using virt
       <span class="xref">System.Windows.UIElement.OnPreviewKeyDown(System.Windows.Input.KeyEventArgs)</span>
     </div>
     <div>
+      <span class="xref">System.Windows.UIElement.OnKeyDown(System.Windows.Input.KeyEventArgs)</span>
+    </div>
+    <div>
       <span class="xref">System.Windows.UIElement.OnPreviewKeyUp(System.Windows.Input.KeyEventArgs)</span>
     </div>
     <div>
@@ -1464,6 +1270,9 @@ until the items are wrapped to the next row or column. The control is using virt
     </div>
     <div>
       <span class="xref">System.Windows.UIElement.OnPreviewTextInput(System.Windows.Input.TextCompositionEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.UIElement.OnTextInput(System.Windows.Input.TextCompositionEventArgs)</span>
     </div>
     <div>
       <span class="xref">System.Windows.UIElement.OnPreviewQueryContinueDrag(System.Windows.QueryContinueDragEventArgs)</span>
@@ -1535,6 +1344,12 @@ until the items are wrapped to the next row or column. The control is using virt
       <span class="xref">System.Windows.UIElement.OnIsMouseDirectlyOverChanged(System.Windows.DependencyPropertyChangedEventArgs)</span>
     </div>
     <div>
+      <span class="xref">System.Windows.UIElement.OnIsKeyboardFocusWithinChanged(System.Windows.DependencyPropertyChangedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.UIElement.OnIsMouseCapturedChanged(System.Windows.DependencyPropertyChangedEventArgs)</span>
+    </div>
+    <div>
       <span class="xref">System.Windows.UIElement.OnIsMouseCaptureWithinChanged(System.Windows.DependencyPropertyChangedEventArgs)</span>
     </div>
     <div>
@@ -1566,9 +1381,6 @@ until the items are wrapped to the next row or column. The control is using virt
     </div>
     <div>
       <span class="xref">System.Windows.UIElement.Arrange(System.Windows.Rect)</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.UIElement.OnRender(System.Windows.Media.DrawingContext)</span>
     </div>
     <div>
       <span class="xref">System.Windows.UIElement.UpdateLayout()</span>
@@ -1605,6 +1417,9 @@ until the items are wrapped to the next row or column. The control is using virt
     </div>
     <div>
       <span class="xref">System.Windows.UIElement.OnLostFocus(System.Windows.RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.UIElement.OnCreateAutomationPeer()</span>
     </div>
     <div>
       <span class="xref">System.Windows.UIElement.OnManipulationStarting(System.Windows.Input.ManipulationStartingEventArgs)</span>
@@ -2069,9 +1884,6 @@ until the items are wrapped to the next row or column. The control is using virt
       <span class="xref">System.Windows.Media.Visual.RemoveVisualChild(System.Windows.Media.Visual)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Media.Visual.OnVisualChildrenChanged(System.Windows.DependencyObject, System.Windows.DependencyObject)</span>
-    </div>
-    <div>
       <span class="xref">System.Windows.Media.Visual.IsAncestorOf(System.Windows.DependencyObject)</span>
     </div>
     <div>
@@ -2195,6 +2007,9 @@ until the items are wrapped to the next row or column. The control is using virt
       <span class="xref">System.Windows.Threading.DispatcherObject.Dispatcher</span>
     </div>
     <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
     </div>
     <div>
@@ -2209,32 +2024,44 @@ until the items are wrapped to the next row or column. The control is using virt
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="WpfToolkit.Controls.html">WpfToolkit.Controls</a></h6>
   <h6><strong>Assembly</strong>: VirtualizingWrapPanel.dll</h6>
-  <h5 id="WpfToolkit_Controls_GridView_syntax">Syntax</h5>
+  <h5 id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class GridView : ListView, DUCE.IResource, IAnimatable, IFrameworkInputElement, IInputElement, ISupportInitialize, IHaveResources, IQueryAmbient, IAddChild, IGeneratorHost, IContainItemStorage</code></pre>
-  </div>
-  <h3 id="constructors">Constructors
-  </h3>
-  
-  
-  <a id="WpfToolkit_Controls_GridView__ctor_" data-uid="WpfToolkit.Controls.GridView.#ctor*"></a>
-  <h4 id="WpfToolkit_Controls_GridView__ctor" data-uid="WpfToolkit.Controls.GridView.#ctor">GridView()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GridView()</code></pre>
+    <pre><code class="lang-csharp hljs">public class VirtualizingWrapPanelWithItemExpansion : VirtualizingWrapPanel, DUCE.IResource, IAnimatable, IFrameworkInputElement, IInputElement, ISupportInitialize, IHaveResources, IQueryAmbient, IAddChild, IScrollInfo</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
   
   
-  <h4 id="WpfToolkit_Controls_GridView_OrientationProperty" data-uid="WpfToolkit.Controls.GridView.OrientationProperty">OrientationProperty</h4>
+  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_ExpandedItemProperty" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.ExpandedItemProperty">ExpandedItemProperty</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty OrientationProperty</code></pre>
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty ExpandedItemProperty</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.DependencyProperty</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_ExpandedItemTemplateProperty" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.ExpandedItemTemplateProperty">ExpandedItemTemplateProperty</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty ExpandedItemTemplateProperty</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2255,13 +2082,14 @@ until the items are wrapped to the next row or column. The control is using virt
   </h3>
   
   
-  <a id="WpfToolkit_Controls_GridView_Orientation_" data-uid="WpfToolkit.Controls.GridView.Orientation*"></a>
-  <h4 id="WpfToolkit_Controls_GridView_Orientation" data-uid="WpfToolkit.Controls.GridView.Orientation">Orientation</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_ExpandedItem_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.ExpandedItem*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_ExpandedItem" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.ExpandedItem">ExpandedItem</h4>
+  <div class="markdown level1 summary"><p>Gets or set the expanded item. The default value is null.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Orientation Orientation { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public object ExpandedItem { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2273,11 +2101,190 @@ until the items are wrapped to the next row or column. The control is using virt
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Windows.Controls.Orientation</span></td>
+        <td><span class="xref">System.Object</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_ExpandedItemTemplate_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.ExpandedItemTemplate*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_ExpandedItemTemplate" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.ExpandedItemTemplate">ExpandedItemTemplate</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the data template used for the item expansion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DataTemplate ExpandedItemTemplate { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.DataTemplate</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_ArrangeOverride_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.ArrangeOverride*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_ArrangeOverride_System_Windows_Size_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.ArrangeOverride(System.Windows.Size)">ArrangeOverride(Size)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Size ArrangeOverride(Size finalSize)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Size</span></td>
+        <td><span class="parametername">finalSize</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Size</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_ArrangeOverride_System_Windows_Size_">VirtualizingWrapPanel.ArrangeOverride(Size)</a></div>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_CalculateExtent_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.CalculateExtent*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_CalculateExtent" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.CalculateExtent">CalculateExtent()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Size CalculateExtent()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Size</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_CalculateExtent">VirtualizingWrapPanel.CalculateExtent()</a></div>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_CleanupItems_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.CleanupItems*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_CleanupItems" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.CleanupItems">CleanupItems()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void CleanupItems()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">WpfToolkit.Controls.VirtualizingPanelBase.CleanupItems()</span></div>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_GetGeneratorPositionFromChildIndex_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.GetGeneratorPositionFromChildIndex*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_GetGeneratorPositionFromChildIndex_System_Int32_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.GetGeneratorPositionFromChildIndex(System.Int32)">GetGeneratorPositionFromChildIndex(Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override GeneratorPosition GetGeneratorPositionFromChildIndex(int childIndex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">childIndex</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Controls.Primitives.GeneratorPosition</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">WpfToolkit.Controls.VirtualizingPanelBase.GetGeneratorPositionFromChildIndex(System.Int32)</span></div>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_OnClearChildren_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.OnClearChildren*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_OnClearChildren" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.OnClearChildren">OnClearChildren()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnClearChildren()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Windows.Controls.VirtualizingPanel.OnClearChildren()</span></div>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_VirtualizeItems_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.VirtualizeItems*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanelWithItemExpansion_VirtualizeItems" data-uid="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.VirtualizeItems">VirtualizeItems()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void VirtualizeItems()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">WpfToolkit.Controls.VirtualizingPanelBase.VirtualizeItems()</span></div>
   <h3 id="implements">Implements</h3>
   <div>
       <span class="xref">System.Windows.Media.Animation.IAnimatable</span>
@@ -2298,7 +2305,7 @@ until the items are wrapped to the next row or column. The control is using virt
       <span class="xref">System.Windows.Markup.IAddChild</span>
   </div>
   <div>
-      <span class="xref">System.Windows.Controls.Primitives.IContainItemStorage</span>
+      <span class="xref">System.Windows.Controls.Primitives.IScrollInfo</span>
   </div>
 </article>
           </div>

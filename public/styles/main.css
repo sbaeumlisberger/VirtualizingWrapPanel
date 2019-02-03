@@ -1,9 +1,13 @@
-.inheritance .level6:before,
-.inheritance .level7:before,
-.inheritance .level8:before,
-.inheritance .level9:before,
-.inheritance .level10:before,
-.inheritance .level11:before {
+.inheritance .level6::before,
+.inheritance .level7::before,
+.inheritance .level8::before,
+.inheritance .level9::before,
+.inheritance .level10::before,
+.inheritance .level11::before,
+.inheritance .level12::before,
+.inheritance .level13::before,
+.inheritance .level14::before,
+.inheritance .level15::before {
     content: '↳';
     margin-right: 5px;
 }
@@ -30,6 +34,22 @@
 
 .inheritance .level11 {
     margin-left: 11em;
+}
+
+.inheritance .level12 {
+    margin-left: 12em;
+}
+
+.inheritance .level13 {
+    margin-left: 13em;
+}
+
+.inheritance .level14 {
+    margin-left: 14em;
+}
+
+.inheritance .level15 {
+    margin-left: 15em;
 }
 
 .implements, [classs="implements"] {

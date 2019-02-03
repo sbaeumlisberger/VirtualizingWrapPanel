@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class GridView
+    <title>Class GridDetailsView
    </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class GridView
+    <meta name="title" content="Class GridDetailsView
    ">
     <meta name="generator" content="docfx 2.40.4.0">
     
@@ -68,13 +68,14 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="WpfToolkit.Controls.GridView">
+            <article class="content wrap" id="_content" data-uid="WpfToolkit.Controls.GridDetailsView">
   
   
-  <h1 id="WpfToolkit_Controls_GridView" data-uid="WpfToolkit.Controls.GridView" class="text-break">Class GridView
+  <h1 id="WpfToolkit_Controls_GridDetailsView" data-uid="WpfToolkit.Controls.GridDetailsView" class="text-break">Class GridDetailsView
   </h1>
   <div class="markdown level0 summary"><p>Simple control that displays a gird of items. Depending on the orientation, the items are either stacked horizontally or vertically 
 until the items are wrapped to the next row or column. The control is using virtualization to support large amount of items.
+If an item is clicked the item gots expanded until it is clicked again or an other item is clicked and gots expanded.
 <p class="note">In order to work properly all items must have the same size.</p></p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -91,8 +92,8 @@ until the items are wrapped to the next row or column. The control is using virt
     <div class="level8"><span class="xref">System.Windows.Controls.Primitives.Selector</span></div>
     <div class="level9"><span class="xref">System.Windows.Controls.ListBox</span></div>
     <div class="level10"><span class="xref">System.Windows.Controls.ListView</span></div>
-    <div class="level11"><span class="xref">GridView</span></div>
-      <div class="level12"><a class="xref" href="WpfToolkit.Controls.GridDetailsView.html">GridDetailsView</a></div>
+    <div class="level11"><a class="xref" href="WpfToolkit.Controls.GridView.html">GridView</a></div>
+    <div class="level12"><span class="xref">GridDetailsView</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -103,9 +104,17 @@ until the items are wrapped to the next row or column. The control is using virt
     <div><span class="xref">System.Windows.Markup.IQueryAmbient</span></div>
     <div><span class="xref">System.Windows.Markup.IAddChild</span></div>
     <div><span class="xref">System.Windows.Controls.Primitives.IContainItemStorage</span></div>
+    <div><span class="xref">System.Windows.Markup.IComponentConnector</span></div>
+    <div><span class="xref">System.Windows.Markup.IStyleConnector</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="WpfToolkit.Controls.GridView.html#WpfToolkit_Controls_GridView_OrientationProperty">GridView.OrientationProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="WpfToolkit.Controls.GridView.html#WpfToolkit_Controls_GridView_Orientation">GridView.Orientation</a>
+    </div>
     <div>
       <span class="xref">System.Windows.Controls.ListView.ViewProperty</span>
     </div>
@@ -117,9 +126,6 @@ until the items are wrapped to the next row or column. The control is using virt
     </div>
     <div>
       <span class="xref">System.Windows.Controls.ListView.IsItemItsOwnContainerOverride(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.ListView.GetContainerForItemOverride()</span>
     </div>
     <div>
       <span class="xref">System.Windows.Controls.ListView.OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)</span>
@@ -2209,32 +2215,56 @@ until the items are wrapped to the next row or column. The control is using virt
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="WpfToolkit.Controls.html">WpfToolkit.Controls</a></h6>
   <h6><strong>Assembly</strong>: VirtualizingWrapPanel.dll</h6>
-  <h5 id="WpfToolkit_Controls_GridView_syntax">Syntax</h5>
+  <h5 id="WpfToolkit_Controls_GridDetailsView_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class GridView : ListView, DUCE.IResource, IAnimatable, IFrameworkInputElement, IInputElement, ISupportInitialize, IHaveResources, IQueryAmbient, IAddChild, IGeneratorHost, IContainItemStorage</code></pre>
+    <pre><code class="lang-csharp hljs">public class GridDetailsView : GridView, DUCE.IResource, IAnimatable, IFrameworkInputElement, IInputElement, ISupportInitialize, IHaveResources, IQueryAmbient, IAddChild, IGeneratorHost, IContainItemStorage, IComponentConnector, IStyleConnector</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="WpfToolkit_Controls_GridView__ctor_" data-uid="WpfToolkit.Controls.GridView.#ctor*"></a>
-  <h4 id="WpfToolkit_Controls_GridView__ctor" data-uid="WpfToolkit.Controls.GridView.#ctor">GridView()</h4>
+  <a id="WpfToolkit_Controls_GridDetailsView__ctor_" data-uid="WpfToolkit.Controls.GridDetailsView.#ctor*"></a>
+  <h4 id="WpfToolkit_Controls_GridDetailsView__ctor" data-uid="WpfToolkit.Controls.GridDetailsView.#ctor">GridDetailsView()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GridView()</code></pre>
+    <pre><code class="lang-csharp hljs">public GridDetailsView()</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
   
   
-  <h4 id="WpfToolkit_Controls_GridView_OrientationProperty" data-uid="WpfToolkit.Controls.GridView.OrientationProperty">OrientationProperty</h4>
+  <h4 id="WpfToolkit_Controls_GridDetailsView_ExpandedItemProperty" data-uid="WpfToolkit.Controls.GridDetailsView.ExpandedItemProperty">ExpandedItemProperty</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty OrientationProperty</code></pre>
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty ExpandedItemProperty</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.DependencyProperty</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="WpfToolkit_Controls_GridDetailsView_ExpandedItemTemplateProperty" data-uid="WpfToolkit.Controls.GridDetailsView.ExpandedItemTemplateProperty">ExpandedItemTemplateProperty</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty ExpandedItemTemplateProperty</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2255,13 +2285,14 @@ until the items are wrapped to the next row or column. The control is using virt
   </h3>
   
   
-  <a id="WpfToolkit_Controls_GridView_Orientation_" data-uid="WpfToolkit.Controls.GridView.Orientation*"></a>
-  <h4 id="WpfToolkit_Controls_GridView_Orientation" data-uid="WpfToolkit.Controls.GridView.Orientation">Orientation</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="WpfToolkit_Controls_GridDetailsView_ExpandedItem_" data-uid="WpfToolkit.Controls.GridDetailsView.ExpandedItem*"></a>
+  <h4 id="WpfToolkit_Controls_GridDetailsView_ExpandedItem" data-uid="WpfToolkit.Controls.GridDetailsView.ExpandedItem">ExpandedItem</h4>
+  <div class="markdown level1 summary"><p>Gets the currently expanded item. If no item is expanded null is returned.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Orientation Orientation { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public object ExpandedItem { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2273,11 +2304,77 @@ until the items are wrapped to the next row or column. The control is using virt
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Windows.Controls.Orientation</span></td>
+        <td><span class="xref">System.Object</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="WpfToolkit_Controls_GridDetailsView_ExpandedItemTemplate_" data-uid="WpfToolkit.Controls.GridDetailsView.ExpandedItemTemplate*"></a>
+  <h4 id="WpfToolkit_Controls_GridDetailsView_ExpandedItemTemplate" data-uid="WpfToolkit.Controls.GridDetailsView.ExpandedItemTemplate">ExpandedItemTemplate</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the data template used for the item expansion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DataTemplate ExpandedItemTemplate { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.DataTemplate</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="WpfToolkit_Controls_GridDetailsView_GetContainerForItemOverride_" data-uid="WpfToolkit.Controls.GridDetailsView.GetContainerForItemOverride*"></a>
+  <h4 id="WpfToolkit_Controls_GridDetailsView_GetContainerForItemOverride" data-uid="WpfToolkit.Controls.GridDetailsView.GetContainerForItemOverride">GetContainerForItemOverride()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override DependencyObject GetContainerForItemOverride()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.DependencyObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Windows.Controls.ListView.GetContainerForItemOverride()</span></div>
+  
+  
+  <a id="WpfToolkit_Controls_GridDetailsView_InitializeComponent_" data-uid="WpfToolkit.Controls.GridDetailsView.InitializeComponent*"></a>
+  <h4 id="WpfToolkit_Controls_GridDetailsView_InitializeComponent" data-uid="WpfToolkit.Controls.GridDetailsView.InitializeComponent">InitializeComponent()</h4>
+  <div class="markdown level1 summary"><p>InitializeComponent</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InitializeComponent()</code></pre>
+  </div>
   <h3 id="implements">Implements</h3>
   <div>
       <span class="xref">System.Windows.Media.Animation.IAnimatable</span>
@@ -2299,6 +2396,12 @@ until the items are wrapped to the next row or column. The control is using virt
   </div>
   <div>
       <span class="xref">System.Windows.Controls.Primitives.IContainItemStorage</span>
+  </div>
+  <div>
+      <span class="xref">System.Windows.Markup.IComponentConnector</span>
+  </div>
+  <div>
+      <span class="xref">System.Windows.Markup.IStyleConnector</span>
   </div>
 </article>
           </div>
