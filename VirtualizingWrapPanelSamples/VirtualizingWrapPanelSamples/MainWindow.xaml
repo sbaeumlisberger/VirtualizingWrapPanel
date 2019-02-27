@@ -18,8 +18,8 @@
                 Background="{Binding Background, Mode=OneTime, Converter={StaticResource ColorToBrushConverter}}" 
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
-                Loaded="Grid_Loaded"
-                Unloaded="Grid_Unloaded">
+                Loaded="Item_Loaded"
+                Unloaded="Item_Unloaded">
                 <TextBlock   
                     Width="100"
                     FontSize="32"

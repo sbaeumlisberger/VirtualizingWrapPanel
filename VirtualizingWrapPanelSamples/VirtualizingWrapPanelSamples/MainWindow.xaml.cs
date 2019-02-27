@@ -62,11 +62,11 @@ namespace VirtualizingWrapPanelSamples {
             }
         }
 
-        private void Grid_Loaded(object sender, RoutedEventArgs args) {
+        private void Item_Loaded(object sender, RoutedEventArgs args) {
             model.RenderedItemsCount++;
         }
 
-        private void Grid_Unloaded(object sender, RoutedEventArgs args) {
+        private void Item_Unloaded(object sender, RoutedEventArgs args) {
             model.RenderedItemsCount--;
         }
 
