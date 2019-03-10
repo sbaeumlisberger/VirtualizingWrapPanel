@@ -57,13 +57,13 @@ namespace VirtualizingWrapPanelSamples {
 
         public void InsertItemAtRandomPosition() {
             int index = random.Next(Items.Count);
-            Items.Insert(index, new TestItem("Group " + new Random().Next(5), Items.Count));
+            Items.Insert(index, new TestItem("Group " + new Random().Next(500), Items.Count));
         }
 
         public void AddItems() {
             int newCount = Items.Count + 5000;
             for (int i = Items.Count; i < newCount; i++) {
-                Items.Add(new TestItem("Group " + i/1000, i + 1));
+                Items.Add(new TestItem("Group " + i/10, i + 1));
             }
         }
 

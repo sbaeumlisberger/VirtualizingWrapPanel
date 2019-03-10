@@ -67,6 +67,7 @@ namespace VirtualizingWrapPanelSamples {
         }
 
         private void Item_Unloaded(object sender, RoutedEventArgs args) {
+            //Debug.WriteLine("UNLOADED DATACONTEXT: " + ((FrameworkElement)sender).DataContext);
             model.RenderedItemsCount--;
         }
 
