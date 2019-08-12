@@ -23,9 +23,19 @@ namespace VirtualizingWrapPanelSamples {
         public long MemoryUsageInMB { get => memoryUsageInMB; private set => SetField(ref memoryUsageInMB, value); }
         public bool IsAutoRefreshMemoryUsageEnabled { get => isAutoRefreshMemoryUsageEnabled; set => SetField(ref isAutoRefreshMemoryUsageEnabled, value); }
 
+        public Orientation[] AvailableOrientations { get; } = (Orientation[])Enum.GetValues(typeof(Orientation));
         public VirtualizationCacheLengthUnit[] AvailableCacheUnits { get; } = (VirtualizationCacheLengthUnit[])Enum.GetValues(typeof(VirtualizationCacheLengthUnit));
         public ScrollUnit[] AvailableScrollUnits { get; } = (ScrollUnit[])Enum.GetValues(typeof(ScrollUnit));
         public VirtualizationMode[] AvailableVirtualizationModi { get; } = (VirtualizationMode[]) Enum.GetValues(typeof(VirtualizationMode));
+
+        public Orientation Orientation {
+            get => orientation;
+            set {
+                SetField(ref orientation, value);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OrientationInverted)));
+            }
+        }
+        public Orientation OrientationInverted => Orientation == Orientation.Vertical ? Orientation.Horizontal : Orientation.Vertical;
 
         public VirtualizationCacheLengthUnit CacheUnit { get => cacheUnit; set => SetField(ref cacheUnit, value); }
         public VirtualizationCacheLength CacheLength { get => cacheLength; set => SetField(ref cacheLength, value); }
@@ -37,6 +47,7 @@ namespace VirtualizingWrapPanelSamples {
         private long memoryUsageInMB = 0;
         private bool isAutoRefreshMemoryUsageEnabled = false;
 
+        private Orientation orientation = Orientation.Vertical;
         private VirtualizationCacheLengthUnit cacheUnit = VirtualizationCacheLengthUnit.Page;
         private VirtualizationCacheLength cacheLength = new VirtualizationCacheLength(1);
         private ScrollUnit scrollUnit = ScrollUnit.Item;
@@ -57,13 +68,13 @@ namespace VirtualizingWrapPanelSamples {
 
         public void InsertItemAtRandomPosition() {
             int index = random.Next(Items.Count);
-            Items.Insert(index, new TestItem("Group " + new Random().Next(500), Items.Count));
+            Items.Insert(index, new TestItem("Group " + new Random().Next(250), Items.Count));
         }
 
         public void AddItems() {
             int newCount = Items.Count + 5000;
             for (int i = Items.Count; i < newCount; i++) {
-                Items.Add(new TestItem("Group " + i/10, i + 1));
+                Items.Add(new TestItem("Group " + i/20, i + 1));
             }
         }
 

@@ -18,61 +18,88 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace VirtualizingWrapPanelSamples {
+namespace VirtualizingWrapPanelSamples
+{
 
-    public partial class MainWindow : Window {
+    public partial class MainWindow : Window
+    {
 
         private readonly MainWindowModel model = new MainWindowModel();
 
         private ItemsControl previousItemsControl;
 
-        public MainWindow() {
+        private readonly ICollectionView view;
+
+        public MainWindow()
+        {
             DataContext = model;
 
-            var view = CollectionViewSource.GetDefaultView(model.Items);
+            view = CollectionViewSource.GetDefaultView(model.Items);
             view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TestItem.Group)));
 
             InitializeComponent();
         }
 
-        private void InsertButton_Click(object sender, RoutedEventArgs args) {
+        private void InsertButton_Click(object sender, RoutedEventArgs args)
+        {
             model.InsertItemAtRandomPosition();
         }
 
-        private void FillButton_Click(object sender, RoutedEventArgs args) {
+        private void FillButton_Click(object sender, RoutedEventArgs args)
+        {
             model.AddItems();
         }
 
-        private void RemoveButton_Click(object sender, RoutedEventArgs args) {
+        private void RemoveButton_Click(object sender, RoutedEventArgs args)
+        {
             model.RemoveRandomItem();
         }
 
-        private void ClearButton_Click(object sender, RoutedEventArgs args) {
+        private void ClearButton_Click(object sender, RoutedEventArgs args)
+        {
             model.RemoveAllItems();
         }
 
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs args) {
-            if (tabControl.SelectedContent != previousItemsControl) {
-                if (previousItemsControl != null) {
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs args)
+        {
+            if (tabControl.SelectedContent != previousItemsControl)
+            {
+                if (previousItemsControl != null)
+                {
                     previousItemsControl.ItemsSource = null;
                 }
-                var itemsControl = (ItemsControl)tabControl.SelectedContent;
+
+                var content = (DependencyObject)tabControl.SelectedContent;
+                var itemsControl = content as ItemsControl ?? GetChildOfType<ItemsControl>(content);
                 itemsControl.ItemsSource = model.Items;
                 previousItemsControl = itemsControl;
             }
         }
 
-        private void Item_Loaded(object sender, RoutedEventArgs args) {
+        private void Item_Loaded(object sender, RoutedEventArgs args)
+        {
             model.RenderedItemsCount++;
         }
 
-        private void Item_Unloaded(object sender, RoutedEventArgs args) {
-            //Debug.WriteLine("UNLOADED DATACONTEXT: " + ((FrameworkElement)sender).DataContext);
+        private void Item_Unloaded(object sender, RoutedEventArgs args)
+        {
             model.RenderedItemsCount--;
         }
 
-        private void RefreshMemoryUsageButton_Click(object sender, RoutedEventArgs args) {
+        private void RefreshMemoryUsageButton_Click(object sender, RoutedEventArgs args)
+        {
             model.RefreshMemoryUsage();
+        }
+
+        private static T GetChildOfType<T>(DependencyObject element) where T : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
+            {
+                var child = VisualTreeHelper.GetChild(element, i);
+                var result = (child as T) ?? GetChildOfType<T>(child);
+                if (result != null) return result;
+            }
+            return null;
         }
 
     }
