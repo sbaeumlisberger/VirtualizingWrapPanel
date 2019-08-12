@@ -15,7 +15,7 @@
 -->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <!--*-->
-    <description>This is an implementation of a VirtualizingWrapPanel for .NET Framework 4.5 and higher. The panel supports horizontal and vertical orientation, caching and container recycling. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. Samples and API-Documentation are available on the project site.</description>
+    <description>This is an implementation of a VirtualizingWrapPanel for WPF .NET Core 3.0 and higher. The panel supports horizontal and vertical orientation, caching and container recycling. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. Samples and API-Documentation are available on the project site.</description>
     <!--*-->
     <releaseNotes>- added new GridDetailsView control
 
