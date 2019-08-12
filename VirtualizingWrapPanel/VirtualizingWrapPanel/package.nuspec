@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <!--*-->
+    <id>VirtualizingWrapPanel</id>
+    <!--*-->
+    <version>1.3.0</version>
+    <title>VirtualizingWrapPanel</title>
+    <!--*-->
+    <authors>S. Bäumlisberger</authors>
+    <owners>S. Bäumlisberger</owners>
+    <licenseUrl>https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel</projectUrl>
+    <!--<iconUrl></iconUrl>
+-->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <!--*-->
+    <description>Implementation of a VirtualizingWrapPanel for .NET Framework 4.5 and higher. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. Samples, API-Documentation and Source Code are available on the project site.</description>
+    <!--*-->
+    <releaseNotes>- added experimental grouping support</releaseNotes>
+    <copyright>© S. Bäumlisberger</copyright>
+    <tags>VirtualizingWrapPanel, VirtualizingPanel, WrapPanel, GridView, Virtualization, WPF, XAML, .NET</tags>
+    <dependencies>
+      <!--
+      <dependency id="SampleDependency" version="1.0" />
+-->
+    </dependencies>
+  </metadata>
+</package>
