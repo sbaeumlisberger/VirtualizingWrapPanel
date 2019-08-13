@@ -1,8 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
-   <PropertyGroup>
+  <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-	  <UseWPF>true</UseWPF>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
-  
+
+  <PropertyGroup>   
+    <title></title>
+    <Version>1.3.1</Version>
+    <Authors>S. Bäumlisbergerr</Authors>
+    <Copyright>© S. Bäumlisberger</Copyright>
+    <Description>Implementation of a VirtualizingWrapPanel for WPF running .NET Core 3.0 and higher. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. Samples, API-Documentation and Source Code are available on the project site.</Description> 
+  </PropertyGroup>
+
+  <!-- pack options -->
+  <PropertyGroup>
+    <PackageId>VirtualizingWrapPanel.NETCore</PackageId>
+    
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel</RepositoryUrl>
+    
+    <PackageProjectUrl>https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel</PackageProjectUrl>
+    
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    
+    <PackageTags>VirtualizingWrapPanel, VirtualizingPanel, WrapPanel, GridView, Virtualization, WPF, XAML, .NET </PackageTags>
+    
+    <PackageReleaseNotes>- fixed groups collapsing when resizing</PackageReleaseNotes>   
+  </PropertyGroup>
+
 </Project>
