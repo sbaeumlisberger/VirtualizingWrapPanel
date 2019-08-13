@@ -245,18 +245,15 @@ namespace WpfToolkit.Controls
             {
                 /* If the ItemsOwner is a group item the availableSize is ifinity. 
                  * Therfore the vieport size provided by the group item is used. */
-
                 var viewportSize = groupItem.Constraints.Viewport.Size;
                 var headerSize = groupItem.HeaderDesiredSizes.PixelSize;
                 double availableWidth = Math.Max(viewportSize.Width - 5, 0); // left margin of 5 dp
                 double availableHeight = Math.Max(viewportSize.Height - headerSize.Height, 0);
                 availableSize = new Size(availableWidth, availableHeight);
 
-                extent = CalculateExtent(availableSize);              
+                extent = CalculateExtent(availableSize);
 
-                double desiredWidth = Math.Min(viewportSize.Width, extent.Width);
-                double desiredHeight = Math.Min(viewportSize.Height, extent.Height);
-                desiredSize = new Size(desiredWidth, desiredHeight);
+                desiredSize = new Size(extent.Width, extent.Height);
             }
             else {
                 extent = CalculateExtent(availableSize);
