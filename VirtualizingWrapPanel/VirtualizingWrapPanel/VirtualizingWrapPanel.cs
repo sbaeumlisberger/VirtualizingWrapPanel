@@ -85,7 +85,8 @@ namespace WpfToolkit.Controls
 
         private void UpdateChildSize(Size availableSize)
         {
-            if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem)
+            if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem 
+                && VirtualizingPanel.GetIsVirtualizingWhenGrouping(ItemsControl))
             {
                 if (Orientation == Orientation.Vertical)
                 {
@@ -116,7 +117,8 @@ namespace WpfToolkit.Controls
             }
             else
             {
-                itemsPerRowCount = Math.Max(1, (int)Math.Floor(GetWidth(availableSize) / GetWidth(childSize)));
+                int maxItemsPerRow = (int)Math.Floor(GetWidth(availableSize) / GetWidth(childSize));
+                itemsPerRowCount = Math.Min(Math.Max(maxItemsPerRow, 1), Items.Count);
             }
 
             rowCount = (int)Math.Ceiling((double)Items.Count / itemsPerRowCount);
@@ -207,6 +209,11 @@ namespace WpfToolkit.Controls
 
             if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem)
             {
+                if (!VirtualizingPanel.GetIsVirtualizingWhenGrouping(ItemsControl))
+                {
+                    return new ItemRange(0, Items.Count - 1);
+                }
+
                 var Offset = new Point(this.Offset.X, groupItem.Constraints.Viewport.Location.Y);
 
                 int offsetRowIndex;
@@ -227,16 +234,7 @@ namespace WpfToolkit.Controls
                     offsetRowIndex = GetRowIndex(offsetInPixel);
                 }
 
-                double vh;
-                if (GetY(Offset) < 1)
-                {
-                    vh = Math.Max(GetHeight(Viewport), 0);
-                }
-                else
-                {
-                    vh = GetHeight(Viewport);
-                }
-                double viewportHeight = Math.Min(vh, Math.Max(GetHeight(Extent)/*?*/ - offsetInPixel, 0));
+                double viewportHeight = Math.Min(GetHeight(Viewport), Math.Max(GetHeight(Extent) - offsetInPixel, 0));
                
                 rowCountInViewport = (int)Math.Ceiling((offsetInPixel + viewportHeight) / GetHeight(childSize)) - (int)Math.Floor(offsetInPixel / GetHeight(childSize));
                 
