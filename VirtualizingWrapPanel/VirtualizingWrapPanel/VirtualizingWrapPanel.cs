@@ -91,10 +91,12 @@ namespace WpfToolkit.Controls
                 if (Orientation == Orientation.Vertical)
                 {
                     availableSize.Width = groupItem.Constraints.Viewport.Size.Width;
+                    availableSize.Width = Math.Max(availableSize.Width - (Margin.Left + Margin.Right), 0);
                 }
                 else
                 {
                     availableSize.Height = groupItem.Constraints.Viewport.Size.Height;
+                    availableSize.Height -= Math.Max(availableSize.Height - (Margin.Top + Margin.Bottom), 0);
                 }
             }
 
