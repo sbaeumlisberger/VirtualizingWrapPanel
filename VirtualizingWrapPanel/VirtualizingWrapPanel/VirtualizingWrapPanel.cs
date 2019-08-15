@@ -138,7 +138,7 @@ namespace WpfToolkit.Controls
                 var child = (UIElement)ItemContainerGenerator.GenerateNext();
                 AddInternalChild(child);
                 ItemContainerGenerator.PrepareItemContainer(child);
-                child.Measure(CreateSize(GetWidth(availableSize), double.PositiveInfinity));
+                child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 return child.DesiredSize;
             }
         }
