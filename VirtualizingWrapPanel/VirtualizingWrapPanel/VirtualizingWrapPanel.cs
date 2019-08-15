@@ -146,6 +146,19 @@ namespace WpfToolkit.Controls
         protected override Size CalculateExtent(Size availableSize)
         {
             double extentWidth = IsSpacingEnabled ? GetWidth(availableSize) : GetWidth(childSize) * itemsPerRowCount;
+
+            if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem)
+            {
+                if (Orientation == Orientation.Vertical)
+                {
+                    extentWidth = Math.Max(extentWidth - (Margin.Left + Margin.Right), 0);
+                }
+                else
+                {
+                    extentWidth -= Math.Max(extentWidth - (Margin.Top + Margin.Bottom), 0);
+                }
+            }
+
             double extentHeight = GetHeight(childSize) * rowCount;
             return CreateSize(extentWidth, extentHeight);
         }
