@@ -3,9 +3,6 @@ apiRules:
     hasAttribute:
         uid: System.ObsoleteAttribute
 - exclude:
-      uidRegex: ^WpfToolkit\.Controls\.VirtualizingPanelBase
-      type: Class
-- exclude:
       uidRegex: ^WpfToolkit\.Controls\.ItemRange
       type: Struct
 - exclude:

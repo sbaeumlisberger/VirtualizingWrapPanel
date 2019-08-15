@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class VirtualizingPanelBase
    ">
-    <meta name="generator" content="docfx 2.40.4.0">
+    <meta name="generator" content="docfx 2.40.11.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -73,7 +73,7 @@
   
   <h1 id="WpfToolkit_Controls_VirtualizingPanelBase" data-uid="WpfToolkit.Controls.VirtualizingPanelBase" class="text-break">Class VirtualizingPanelBase
   </h1>
-  <div class="markdown level0 summary"><p>Base class for virtualizing panels.</p>
+  <div class="markdown level0 summary"><p>Base class for panels which are supporting virtualization.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -180,9 +180,6 @@
       <span class="xref">System.Windows.Controls.VirtualizingPanel.RemoveInternalChildRange(System.Int32, System.Int32)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.OnItemsChanged(System.Object, System.Windows.Controls.Primitives.ItemsChangedEventArgs)</span>
-    </div>
-    <div>
       <span class="xref">System.Windows.Controls.VirtualizingPanel.ShouldItemsChangeAffectLayout(System.Boolean, System.Windows.Controls.Primitives.ItemsChangedEventArgs)</span>
     </div>
     <div>
@@ -199,9 +196,6 @@
     </div>
     <div>
       <span class="xref">System.Windows.Controls.VirtualizingPanel.CanHierarchicallyScrollAndVirtualize</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.CanHierarchicallyScrollAndVirtualizeCore</span>
     </div>
     <div>
       <span class="xref">System.Windows.Controls.Panel.BackgroundProperty</span>
@@ -399,6 +393,9 @@
       <span class="xref">System.Windows.FrameworkElement.BeginStoryboard(System.Windows.Media.Animation.Storyboard, System.Windows.Media.Animation.HandoffBehavior, System.Boolean)</span>
     </div>
     <div>
+      <span class="xref">System.Windows.FrameworkElement.System.Windows.Markup.IQueryAmbient.IsAmbientPropertyAvailable(System.String)</span>
+    </div>
+    <div>
       <span class="xref">System.Windows.FrameworkElement.GetTemplateChild(System.String)</span>
     </div>
     <div>
@@ -451,9 +448,6 @@
     </div>
     <div>
       <span class="xref">System.Windows.FrameworkElement.GetLayoutClip(System.Windows.Size)</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.FrameworkElement.MeasureOverride(System.Windows.Size)</span>
     </div>
     <div>
       <span class="xref">System.Windows.FrameworkElement.ArrangeOverride(System.Windows.Size)</span>
@@ -1941,139 +1935,18 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public abstract class VirtualizingPanelBase : VirtualizingPanel, DUCE.IResource, IAnimatable, IFrameworkInputElement, IInputElement, ISupportInitialize, IHaveResources, IQueryAmbient, IAddChild, IScrollInfo</code></pre>
   </div>
-  <h3 id="fields">Fields
-  </h3>
-  
-  
-  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_extent" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.extent">extent</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Size extent</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Size</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelDelta" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.MouseWheelDelta">MouseWheelDelta</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const double MouseWheelDelta = 48</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_offset" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.offset">offset</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Point offset</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Point</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_ScrollLineDelta" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.ScrollLineDelta">ScrollLineDelta</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const double ScrollLineDelta = 16</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_viewport" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.viewport">viewport</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Size viewport</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Size</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="properties">Properties
   </h3>
   
   
   <a id="WpfToolkit_Controls_VirtualizingPanelBase_CacheLength_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.CacheLength*"></a>
   <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_CacheLength" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.CacheLength">CacheLength</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The cache length before and after the viewport. </p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public VirtualizationCacheLength CacheLength { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">protected VirtualizationCacheLength CacheLength { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2094,11 +1967,13 @@
   
   <a id="WpfToolkit_Controls_VirtualizingPanelBase_CacheLengthUnit_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.CacheLengthUnit*"></a>
   <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_CacheLengthUnit" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.CacheLengthUnit">CacheLengthUnit</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The Unit of the cache length. Can be Pixel, Item or Page. 
+When the ItemsOwner is a group item it can only be pixel or item.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public VirtualizationCacheLengthUnit CacheLengthUnit { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">protected VirtualizationCacheLengthUnit CacheLengthUnit { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2115,6 +1990,33 @@
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_CanHierarchicallyScrollAndVirtualizeCore_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.CanHierarchicallyScrollAndVirtualizeCore*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_CanHierarchicallyScrollAndVirtualizeCore" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.CanHierarchicallyScrollAndVirtualizeCore">CanHierarchicallyScrollAndVirtualizeCore</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool CanHierarchicallyScrollAndVirtualizeCore { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Windows.Controls.VirtualizingPanel.CanHierarchicallyScrollAndVirtualizeCore</span></div>
   
   
   <a id="WpfToolkit_Controls_VirtualizingPanelBase_CanHorizontallyScroll_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.CanHorizontallyScroll*"></a>
@@ -2161,6 +2063,31 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_Extent_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.Extent*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_Extent" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.Extent">Extent</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Size Extent { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Size</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -2242,13 +2169,39 @@
   </table>
   
   
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_IsRecycling_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.IsRecycling*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_IsRecycling" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.IsRecycling">IsRecycling</h4>
+  <div class="markdown level1 summary"><p>Returns true if the panel is in VirtualizationMode.Recycling, otherwise false.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool IsRecycling { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="WpfToolkit_Controls_VirtualizingPanelBase_IsVirtualizing_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.IsVirtualizing*"></a>
   <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_IsVirtualizing" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.IsVirtualizing">IsVirtualizing</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsVirtualizing { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">protected bool IsVirtualizing { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2292,9 +2245,61 @@
   </table>
   
   
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_ItemRange_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.ItemRange*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_ItemRange" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.ItemRange">ItemRange</h4>
+  <div class="markdown level1 summary"><p>The range of items that a realized in viewport or cache.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ItemRange ItemRange { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">WpfToolkit.Controls.ItemRange</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_Items_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.Items*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_Items" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.Items">Items</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ReadOnlyCollection&lt;object&gt; Items { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.ObjectModel.ReadOnlyCollection</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="WpfToolkit_Controls_VirtualizingPanelBase_ItemsControl_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.ItemsControl*"></a>
   <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_ItemsControl" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.ItemsControl">ItemsControl</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The ItemsControl (e.g. ListView).</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -2317,14 +2322,14 @@
   </table>
   
   
-  <a id="WpfToolkit_Controls_VirtualizingPanelBase_ScrollItemSize_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.ScrollItemSize*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_ScrollItemSize" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.ScrollItemSize">ScrollItemSize</h4>
-  <div class="markdown level1 summary"><p>The size that is used when scrolling by item.</p>
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_ItemsOwner_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.ItemsOwner*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_ItemsOwner" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.ItemsOwner">ItemsOwner</h4>
+  <div class="markdown level1 summary"><p>The ItemsControl (e.g. ListView) or if the ItemsControl is grouping a GroupItem.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected abstract Size ScrollItemSize { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">protected DependencyObject ItemsOwner { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2336,7 +2341,110 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Windows.Size</span></td>
+        <td><span class="xref">System.Windows.DependencyObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelDelta_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.MouseWheelDelta*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelDelta" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.MouseWheelDelta">MouseWheelDelta</h4>
+  <div class="markdown level1 summary"><p>Mouse wheel delta for pixel based scrolling. The default value is 48 dp.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MouseWheelDelta { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelScrollDirection_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.MouseWheelScrollDirection*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelScrollDirection" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.MouseWheelScrollDirection">MouseWheelScrollDirection</h4>
+  <div class="markdown level1 summary"><p>The direction in which the panel scrolls when user turns the mouse wheel.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ScrollDirection MouseWheelScrollDirection { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">WpfToolkit.Controls.ScrollDirection</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_Offset_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.Offset*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_Offset" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.Offset">Offset</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Point Offset { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Point</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_ScrollLineDelta_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.ScrollLineDelta*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_ScrollLineDelta" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.ScrollLineDelta">ScrollLineDelta</h4>
+  <div class="markdown level1 summary"><p>Scroll line delta for pixel based scrolling. The default value is 16 dp.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ScrollLineDelta { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -2374,7 +2482,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ScrollUnit ScrollUnit { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">protected ScrollUnit ScrollUnit { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2412,6 +2520,31 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_Viewport_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.Viewport*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_Viewport" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.Viewport">Viewport</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Size Viewport { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Size</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -2474,7 +2607,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public VirtualizationMode VirtualizationMode { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">protected VirtualizationMode VirtualizationMode { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2493,6 +2626,433 @@
   </table>
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_CalculateExtent_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.CalculateExtent*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_CalculateExtent_System_Windows_Size_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.CalculateExtent(System.Windows.Size)">CalculateExtent(Size)</h4>
+  <div class="markdown level1 summary"><p>Calculates the extent that would be needed to show all items.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract Size CalculateExtent(Size availableSize)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Size</span></td>
+        <td><span class="parametername">availableSize</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Size</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_GetGeneratorPositionFromChildIndex_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetGeneratorPositionFromChildIndex*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_GetGeneratorPositionFromChildIndex_System_Int32_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetGeneratorPositionFromChildIndex(System.Int32)">GetGeneratorPositionFromChildIndex(Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual GeneratorPosition GetGeneratorPositionFromChildIndex(int childIndex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">childIndex</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Controls.Primitives.GeneratorPosition</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_GetItemIndexFromChildIndex_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetItemIndexFromChildIndex*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_GetItemIndexFromChildIndex_System_Int32_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetItemIndexFromChildIndex(System.Int32)">GetItemIndexFromChildIndex(Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int GetItemIndexFromChildIndex(int childIndex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">childIndex</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_GetLineDownScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetLineDownScrollAmount*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_GetLineDownScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetLineDownScrollAmount">GetLineDownScrollAmount()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract double GetLineDownScrollAmount()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_GetLineLeftScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetLineLeftScrollAmount*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_GetLineLeftScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetLineLeftScrollAmount">GetLineLeftScrollAmount()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract double GetLineLeftScrollAmount()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_GetLineRightScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetLineRightScrollAmount*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_GetLineRightScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetLineRightScrollAmount">GetLineRightScrollAmount()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract double GetLineRightScrollAmount()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_GetLineUpScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetLineUpScrollAmount*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_GetLineUpScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetLineUpScrollAmount">GetLineUpScrollAmount()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract double GetLineUpScrollAmount()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_GetMouseWheelDownScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetMouseWheelDownScrollAmount*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_GetMouseWheelDownScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetMouseWheelDownScrollAmount">GetMouseWheelDownScrollAmount()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract double GetMouseWheelDownScrollAmount()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_GetMouseWheelLeftScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetMouseWheelLeftScrollAmount*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_GetMouseWheelLeftScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetMouseWheelLeftScrollAmount">GetMouseWheelLeftScrollAmount()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract double GetMouseWheelLeftScrollAmount()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_GetMouseWheelRightScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetMouseWheelRightScrollAmount*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_GetMouseWheelRightScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetMouseWheelRightScrollAmount">GetMouseWheelRightScrollAmount()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract double GetMouseWheelRightScrollAmount()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_GetMouseWheelUpScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetMouseWheelUpScrollAmount*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_GetMouseWheelUpScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetMouseWheelUpScrollAmount">GetMouseWheelUpScrollAmount()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract double GetMouseWheelUpScrollAmount()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_GetPageDownScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetPageDownScrollAmount*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_GetPageDownScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetPageDownScrollAmount">GetPageDownScrollAmount()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract double GetPageDownScrollAmount()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_GetPageLeftScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetPageLeftScrollAmount*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_GetPageLeftScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetPageLeftScrollAmount">GetPageLeftScrollAmount()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract double GetPageLeftScrollAmount()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_GetPageRightScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetPageRightScrollAmount*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_GetPageRightScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetPageRightScrollAmount">GetPageRightScrollAmount()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract double GetPageRightScrollAmount()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_GetPageUpScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetPageUpScrollAmount*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_GetPageUpScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.GetPageUpScrollAmount">GetPageUpScrollAmount()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract double GetPageUpScrollAmount()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="WpfToolkit_Controls_VirtualizingPanelBase_LineDown_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.LineDown*"></a>
@@ -2537,9 +3097,7 @@
   
   <a id="WpfToolkit_Controls_VirtualizingPanelBase_MakeVisible_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.MakeVisible*"></a>
   <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_MakeVisible_System_Windows_Media_Visual_System_Windows_Rect_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.MakeVisible(System.Windows.Media.Visual,System.Windows.Rect)">MakeVisible(Visual, Rect)</h4>
-  <div class="markdown level1 summary"><p>Not implemented (returns the same rectangle as passed). 
-This method can be overwritten by a derived class.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -2584,6 +3142,50 @@ This method can be overwritten by a derived class.</p>
   </table>
   
   
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_MeasureOverride_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.MeasureOverride*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_MeasureOverride_System_Windows_Size_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.MeasureOverride(System.Windows.Size)">MeasureOverride(Size)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Size MeasureOverride(Size availableSize)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Size</span></td>
+        <td><span class="parametername">availableSize</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Size</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Windows.FrameworkElement.MeasureOverride(System.Windows.Size)</span></div>
+  
+  
   <a id="WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelDown_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.MouseWheelDown*"></a>
   <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelDown" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.MouseWheelDown">MouseWheelDown()</h4>
   <div class="markdown level1 summary"></div>
@@ -2622,6 +3224,40 @@ This method can be overwritten by a derived class.</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void MouseWheelUp()</code></pre>
   </div>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_OnItemsChanged_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.OnItemsChanged*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_OnItemsChanged_System_Object_System_Windows_Controls_Primitives_ItemsChangedEventArgs_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.OnItemsChanged(System.Object,System.Windows.Controls.Primitives.ItemsChangedEventArgs)">OnItemsChanged(Object, ItemsChangedEventArgs)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnItemsChanged(object sender, ItemsChangedEventArgs args)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">sender</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Windows.Controls.Primitives.ItemsChangedEventArgs</span></td>
+        <td><span class="parametername">args</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Windows.Controls.VirtualizingPanel.OnItemsChanged(System.Object, System.Windows.Controls.Primitives.ItemsChangedEventArgs)</span></div>
   
   
   <a id="WpfToolkit_Controls_VirtualizingPanelBase_PageDown_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.PageDown*"></a>
@@ -2664,13 +3300,78 @@ This method can be overwritten by a derived class.</p>
   </div>
   
   
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_RealizeItems_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.RealizeItems*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_RealizeItems" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.RealizeItems">RealizeItems()</h4>
+  <div class="markdown level1 summary"><p>Realizes visible and cached items.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void RealizeItems()</code></pre>
+  </div>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_ScrollHorizontal_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.ScrollHorizontal*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_ScrollHorizontal_System_Double_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.ScrollHorizontal(System.Double)">ScrollHorizontal(Double)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void ScrollHorizontal(double amount)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">amount</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_ScrollVertical_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.ScrollVertical*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_ScrollVertical_System_Double_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.ScrollVertical(System.Double)">ScrollVertical(Double)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void ScrollVertical(double amount)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">amount</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="WpfToolkit_Controls_VirtualizingPanelBase_SetHorizontalOffset_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.SetHorizontalOffset*"></a>
   <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_SetHorizontalOffset_System_Double_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.SetHorizontalOffset(System.Double)">SetHorizontalOffset(Double)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void SetHorizontalOffset(double offset)</code></pre>
+    <pre><code class="lang-csharp hljs">public void SetHorizontalOffset(double offset)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2697,7 +3398,7 @@ This method can be overwritten by a derived class.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void SetVerticalOffset(double offset)</code></pre>
+    <pre><code class="lang-csharp hljs">public void SetVerticalOffset(double offset)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2712,6 +3413,32 @@ This method can be overwritten by a derived class.</p>
       <tr>
         <td><span class="xref">System.Double</span></td>
         <td><span class="parametername">offset</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_UpdateItemRange_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.UpdateItemRange*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_UpdateItemRange" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.UpdateItemRange">UpdateItemRange()</h4>
+  <div class="markdown level1 summary"><p>Calculates the item range that is visible in the viewport or cached.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract ItemRange UpdateItemRange()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">WpfToolkit.Controls.ItemRange</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -2748,6 +3475,17 @@ This method can be overwritten by a derived class.</p>
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="WpfToolkit_Controls_VirtualizingPanelBase_VirtualizeItems_" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.VirtualizeItems*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingPanelBase_VirtualizeItems" data-uid="WpfToolkit.Controls.VirtualizingPanelBase.VirtualizeItems">VirtualizeItems()</h4>
+  <div class="markdown level1 summary"><p>Virtualizes (cleanups) no longer visible or cached items.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void VirtualizeItems()</code></pre>
+  </div>
   <h3 id="implements">Implements</h3>
   <div>
       <span class="xref">System.Windows.Media.Animation.IAnimatable</span>
