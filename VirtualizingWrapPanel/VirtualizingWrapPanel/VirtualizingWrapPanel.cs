@@ -96,7 +96,7 @@ namespace WpfToolkit.Controls
                 else
                 {
                     availableSize.Height = groupItem.Constraints.Viewport.Size.Height;
-                    availableSize.Height -= Math.Max(availableSize.Height - (Margin.Top + Margin.Bottom), 0);
+                    availableSize.Height = Math.Max(availableSize.Height - (Margin.Top + Margin.Bottom), 0);
                 }
             }
 
@@ -155,7 +155,7 @@ namespace WpfToolkit.Controls
                 }
                 else
                 {
-                    extentWidth -= Math.Max(extentWidth - (Margin.Top + Margin.Bottom), 0);
+                    extentWidth = Math.Max(extentWidth - (Margin.Top + Margin.Bottom), 0);
                 }
             }
 
