@@ -62,15 +62,15 @@ namespace VirtualizingWrapPanelSamples
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (tabControl.SelectedContent != previousItemsControl)
+            var content = (DependencyObject)tabControl.SelectedContent;
+            var itemsControl = content as ItemsControl ?? GetChildOfType<ItemsControl>(content);
+
+            if (itemsControl != previousItemsControl)
             {
                 if (previousItemsControl != null)
                 {
                     previousItemsControl.ItemsSource = null;
-                }
-
-                var content = (DependencyObject)tabControl.SelectedContent;
-                var itemsControl = content as ItemsControl ?? GetChildOfType<ItemsControl>(content);
+                }           
                 itemsControl.ItemsSource = model.Items;
                 previousItemsControl = itemsControl;
             }

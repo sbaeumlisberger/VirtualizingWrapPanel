@@ -314,6 +314,15 @@ namespace WpfToolkit.Controls
 
                         child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                     }
+
+                    if (child is IHierarchicalVirtualizationAndScrollInfo groupItem)
+                    {
+                        groupItem.Constraints = new HierarchicalVirtualizationConstraints(
+                            new VirtualizationCacheLength(0),
+                            VirtualizationCacheLengthUnit.Item,
+                            new Rect(0, 0, ViewportWidth, ViewportHeight));
+                        child.Measure(new Size(ViewportWidth, ViewportHeight));
+                    }
                 }
             }
         }
@@ -325,7 +334,6 @@ namespace WpfToolkit.Controls
         {
             for (int childIndex = InternalChildren.Count - 1; childIndex >= 0; childIndex--)
             {
-
                 var generatorPosition = GetGeneratorPositionFromChildIndex(childIndex);
 
                 int itemIndex = ItemContainerGenerator.IndexFromGeneratorPosition(generatorPosition);

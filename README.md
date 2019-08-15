@@ -16,5 +16,5 @@ Implementation of a VirtualizingWrapPanel and some additional controls based on 
 * [Source Code](https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel/tree/master/VirtualizingWrapPanel/VirtualizingWrapPanel)
 
 ### Download
-* [Nuget Package for .NET Framework 4.5+](https://www.nuget.org/packages/VirtualizingWrapPanel/)
-* Nuget Package for .NET Core 3.0+ (coming soon)
+* [NuGet Package for .NET Framework 4.5+](https://www.nuget.org/packages/VirtualizingWrapPanel/)
+* [NuGet Package for .NET Core 3.0+](https://www.nuget.org/packages/VirtualizingWrapPanel.NETCore/)
