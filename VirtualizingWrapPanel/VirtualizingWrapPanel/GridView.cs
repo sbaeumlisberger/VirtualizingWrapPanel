@@ -39,6 +39,8 @@ namespace WpfToolkit.Controls
             VirtualizingPanel.SetCacheLengthUnit(this, VirtualizationCacheLengthUnit.Page);
             VirtualizingPanel.SetCacheLength(this, new VirtualizationCacheLength(1));
 
+            VirtualizingPanel.SetIsVirtualizingWhenGrouping(this, true);
+
             ItemContainerStyle = new Style()
             {
                 Setters = {
