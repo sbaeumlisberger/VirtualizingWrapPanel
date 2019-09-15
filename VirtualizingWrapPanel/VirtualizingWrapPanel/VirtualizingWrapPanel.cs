@@ -119,8 +119,7 @@ namespace WpfToolkit.Controls
             }
             else
             {
-                int maxItemsPerRow = (int)Math.Floor(GetWidth(availableSize) / GetWidth(childSize));
-                itemsPerRowCount = Math.Min(Math.Max(maxItemsPerRow, 1), Items.Count);
+                itemsPerRowCount = Math.Max(1, (int)Math.Floor(GetWidth(availableSize) / GetWidth(childSize)));
             }
 
             rowCount = (int)Math.Ceiling((double)Items.Count / itemsPerRowCount);
@@ -145,7 +144,7 @@ namespace WpfToolkit.Controls
 
         protected override Size CalculateExtent(Size availableSize)
         {
-            double extentWidth = IsSpacingEnabled ? GetWidth(availableSize) : GetWidth(childSize) * itemsPerRowCount;
+            double extentWidth = IsSpacingEnabled && !double.IsInfinity(GetWidth(availableSize)) ? GetWidth(availableSize) : GetWidth(childSize) * itemsPerRowCount;
 
             if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem)
             {
@@ -173,7 +172,7 @@ namespace WpfToolkit.Controls
             {
                 offsetY = 0;                
             }
-
+         
             double unusedWidth = GetWidth(finalSize) - (GetWidth(childSize) * itemsPerRowCount);
             double spacing = unusedWidth > 0 ? unusedWidth / (itemsPerRowCount + 1) : 0;
 
