@@ -11,7 +11,7 @@ Implementation of a VirtualizingWrapPanel and some additional controls based on 
 * GridDetailsView control (grid view with item expansion)
 
 ### Resources
-* [Sample Application](https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel/tree/master/VirtualizingWrapPanel/VirtualizingWrapPanelSamples)
+* [Sample Application](https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel/tree/master/downloads)
 * [API-Documentation](http://sbaeumlisberger.gitlab.io/virtualizing-wrap-panel/api/WpfToolkit.Controls.html)
 * [Source Code](https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel/tree/master/VirtualizingWrapPanel/VirtualizingWrapPanel)
 
