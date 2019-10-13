@@ -85,7 +85,7 @@ namespace WpfToolkit.Controls
 
         private void UpdateChildSize(Size availableSize)
         {
-            if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem 
+            if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem
                 && VirtualizingPanel.GetIsVirtualizingWhenGrouping(ItemsControl))
             {
                 if (Orientation == Orientation.Vertical)
@@ -170,9 +170,9 @@ namespace WpfToolkit.Controls
             /* When the items owner is a group item offset is handled by the parent panel. */
             if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem)
             {
-                offsetY = 0;                
+                offsetY = 0;
             }
-         
+
             double unusedWidth = GetWidth(finalSize) - (GetWidth(childSize) * itemsPerRowCount);
             double spacing = unusedWidth > 0 ? unusedWidth / (itemsPerRowCount + 1) : 0;
 
@@ -204,7 +204,7 @@ namespace WpfToolkit.Controls
                 }
                 else
                 {
-                    child.Arrange(CreateRect(x - offsetX, y - offsetY, childSize.Width, childSize.Height));                  
+                    child.Arrange(CreateRect(x - offsetX, y - offsetY, childSize.Width, childSize.Height));
                 }
             }
 
@@ -249,9 +249,9 @@ namespace WpfToolkit.Controls
                 }
 
                 double viewportHeight = Math.Min(GetHeight(Viewport), Math.Max(GetHeight(Extent) - offsetInPixel, 0));
-               
+
                 rowCountInViewport = (int)Math.Ceiling((offsetInPixel + viewportHeight) / GetHeight(childSize)) - (int)Math.Floor(offsetInPixel / GetHeight(childSize));
-                
+
                 startIndex = offsetRowIndex * itemsPerRowCount;
                 endIndex = Math.Min(((offsetRowIndex + rowCountInViewport) * itemsPerRowCount) - 1, Items.Count - 1);
 
@@ -327,42 +327,42 @@ namespace WpfToolkit.Controls
 
         protected override double GetLineUpScrollAmount()
         {
-            return -GetHeight(childSize);
+            return -childSize.Height;
         }
 
         protected override double GetLineDownScrollAmount()
         {
-            return GetHeight(childSize);
+            return childSize.Height;
         }
 
         protected override double GetLineLeftScrollAmount()
         {
-            return -GetWidth(childSize);
+            return -childSize.Width;
         }
 
         protected override double GetLineRightScrollAmount()
         {
-            return GetWidth(childSize);
+            return childSize.Width;
         }
 
         protected override double GetMouseWheelUpScrollAmount()
         {
-            return GetLineUpScrollAmount() * 3;
+            return -Math.Min(childSize.Height * 3, Viewport.Height);
         }
 
         protected override double GetMouseWheelDownScrollAmount()
         {
-            return GetLineDownScrollAmount() * 3;
+            return Math.Min(childSize.Height * 3, Viewport.Height);
         }
 
         protected override double GetMouseWheelLeftScrollAmount()
         {
-            return GetLineLeftScrollAmount() * 3;
+            return -Math.Min(childSize.Width * 3, Viewport.Width);
         }
 
         protected override double GetMouseWheelRightScrollAmount()
         {
-            return GetLineRightScrollAmount() * 3;
+            return Math.Min(childSize.Width * 3, Viewport.Width);
         }
 
         protected override double GetPageUpScrollAmount()
