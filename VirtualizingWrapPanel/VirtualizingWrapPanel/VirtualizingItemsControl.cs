@@ -19,6 +19,7 @@ namespace WpfToolkit.Controls
         public VirtualizingItemsControl()
         {
             ItemsPanel = new ItemsPanelTemplate(new FrameworkElementFactory(typeof(VirtualizingStackPanel)));
+            
             string template = @"
             <ControlTemplate xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>
                 <Border
@@ -36,9 +37,16 @@ namespace WpfToolkit.Controls
                 </Border>
             </ControlTemplate>";
             Template = (ControlTemplate)XamlReader.Parse(template);
+
             ScrollViewer.SetCanContentScroll(this, true);
+
             ScrollViewer.SetVerticalScrollBarVisibility(this, ScrollBarVisibility.Auto);
             ScrollViewer.SetHorizontalScrollBarVisibility(this, ScrollBarVisibility.Auto);
+
+            VirtualizingPanel.SetCacheLengthUnit(this, VirtualizationCacheLengthUnit.Page);
+            VirtualizingPanel.SetCacheLength(this, new VirtualizationCacheLength(1));
+
+            VirtualizingPanel.SetIsVirtualizingWhenGrouping(this, true);
         }
 
     }
