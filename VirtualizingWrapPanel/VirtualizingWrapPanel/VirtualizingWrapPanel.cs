@@ -70,8 +70,6 @@ namespace WpfToolkit.Controls
 
         protected int itemsPerRowCount;
 
-        private static readonly DependencyProperty ItemsHostInsetProperty = (DependencyProperty)typeof(VirtualizingStackPanel).GetField("ItemsHostInsetProperty", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
-
         private void Orientation_Changed()
         {
             MouseWheelScrollDirection = Orientation == Orientation.Vertical ? ScrollDirection.Vertical : ScrollDirection.Horizontal;

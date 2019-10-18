@@ -59,6 +59,7 @@
     <Compile Include="ItemRange.cs" />
     <Compile Include="ScrollDirection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VirtualizingItemsControl.cs" />
     <Compile Include="VirtualizingPanelBase.cs" />
     <Compile Include="VirtualizingWrapPanel.cs" />
     <Compile Include="VirtualizingWrapPanelWithItemExpansion.cs" />
