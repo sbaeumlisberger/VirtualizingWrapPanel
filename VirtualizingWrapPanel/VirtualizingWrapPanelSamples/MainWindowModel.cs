@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Threading;
 
 namespace VirtualizingWrapPanelSamples {
@@ -22,7 +23,7 @@ namespace VirtualizingWrapPanelSamples {
 
         public long MemoryUsageInMB { get => memoryUsageInMB; private set => SetField(ref memoryUsageInMB, value); }
         public bool IsAutoRefreshMemoryUsageEnabled { get => isAutoRefreshMemoryUsageEnabled; set => SetField(ref isAutoRefreshMemoryUsageEnabled, value); }
-
+        
         public Orientation[] AvailableOrientations { get; } = (Orientation[])Enum.GetValues(typeof(Orientation));
         public VirtualizationCacheLengthUnit[] AvailableCacheUnits { get; } = (VirtualizationCacheLengthUnit[])Enum.GetValues(typeof(VirtualizationCacheLengthUnit));
         public ScrollUnit[] AvailableScrollUnits { get; } = (ScrollUnit[])Enum.GetValues(typeof(ScrollUnit));
@@ -57,6 +58,8 @@ namespace VirtualizingWrapPanelSamples {
 
         private readonly DispatcherTimer memoryUsageRefreshTimer;
 
+        public ICollectionView CollectionView { get; }
+
         public MainWindowModel() {
             AddItems();
             memoryUsageRefreshTimer = new DispatcherTimer() {
@@ -64,6 +67,8 @@ namespace VirtualizingWrapPanelSamples {
             };
             memoryUsageRefreshTimer.Tick += (s, a) => RefreshMemoryUsage();
             PropertyChanged += MainWindowModel_PropertyChanged;
+
+            CollectionView = CollectionViewSource.GetDefaultView(Items);
         }
 
         public void InsertItemAtRandomPosition() {

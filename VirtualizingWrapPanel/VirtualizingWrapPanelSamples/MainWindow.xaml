@@ -20,9 +20,9 @@
                 VerticalAlignment="Stretch"
                 Loaded="Item_Loaded"
                 Unloaded="Item_Unloaded">
-                <TextBlock   
-                    Width="100"
-                    FontSize="32"
+                <TextBlock  
+                    Width="80"
+                    FontSize="20"
                     TextAlignment="Center"
                     Text="{Binding Number, Mode=OneTime}"                 
                     Padding="8"/>
@@ -89,6 +89,9 @@
                 <ComboBox
                     ItemsSource="{Binding AvailableVirtualizationModi, Mode=OneTime}"
                     SelectedItem="{Binding VirtualizationMode, Mode=TwoWay}"/>
+
+                <TextBlock Margin="16,0,0,0" VerticalAlignment="Center" Text="Filter (>) "/>
+                <TextBox x:Name="filterTextBox" MinWidth="64" TextChanged="FilterTextBox_TextChanged"/>
             </StackPanel>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -193,7 +196,7 @@
             </TabItem>
             <TabItem Header="VirtualizingItemsControl">
                 <DockPanel Margin="8,0,8,2">
-                    <TextBlock DockPanel.Dock="Top" Text="A VirtualizingWrapPanel used by a ListView as ItemsPanel."/>
+                    <TextBlock DockPanel.Dock="Top" Text="A VirtualizingWrapPanel used by a VirtualizingItemsControl."/>              
                     <wpftk:VirtualizingItemsControl
                         Margin="0,2,0,0"
                         ItemTemplate="{StaticResource ItemTemplate}"
