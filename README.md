@@ -9,6 +9,7 @@ Implementation of a VirtualizingWrapPanel and some additional controls based on 
 * Grouping (experimental)
 * GridView control (easy to use out of the box experience)
 * GridDetailsView control (grid view with item expansion)
+* VirtualizingItemsControl
 
 ### Resources
 * [Sample Application](https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel/tree/master/downloads)
