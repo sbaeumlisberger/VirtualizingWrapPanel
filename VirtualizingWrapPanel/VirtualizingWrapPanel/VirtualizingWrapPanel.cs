@@ -345,22 +345,22 @@ namespace WpfToolkit.Controls
 
         protected override double GetMouseWheelUpScrollAmount()
         {
-            return -Math.Min(childSize.Height * 3, Viewport.Height);
+            return -Math.Min(childSize.Height * MouseWheelDeltaItem, Viewport.Height);
         }
 
         protected override double GetMouseWheelDownScrollAmount()
         {
-            return Math.Min(childSize.Height * 3, Viewport.Height);
+            return Math.Min(childSize.Height * MouseWheelDeltaItem, Viewport.Height);
         }
 
         protected override double GetMouseWheelLeftScrollAmount()
         {
-            return -Math.Min(childSize.Width * 3, Viewport.Width);
+            return -Math.Min(childSize.Width * MouseWheelDeltaItem, Viewport.Width);
         }
 
         protected override double GetMouseWheelRightScrollAmount()
         {
-            return Math.Min(childSize.Width * 3, Viewport.Width);
+            return Math.Min(childSize.Width * MouseWheelDeltaItem, Viewport.Width);
         }
 
         protected override double GetPageUpScrollAmount()
