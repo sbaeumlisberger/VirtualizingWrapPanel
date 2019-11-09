@@ -36,8 +36,13 @@ namespace WpfToolkit.Controls
 
         /// <summary>
         /// Mouse wheel delta for pixel based scrolling. The default value is 48 dp.
-        /// </summary> 
+        /// </summary>        
         public double MouseWheelDelta { get; set; } = 48.0; // https://referencesource.microsoft.com/#PresentationFramework/src/Framework/System/Windows/Controls/ScrollViewer.cs,278cafe26a902287,references
+    
+        /// <summary>
+        /// Mouse wheel delta for item based scrolling. The default value is 3 items.
+        /// </summary> 
+        public int MouseWheelDeltaItem { get; set; } = 3; 
 
         protected ScrollUnit ScrollUnit => GetScrollUnit(ItemsControl);
 
@@ -255,13 +260,14 @@ namespace WpfToolkit.Controls
 
                 desiredSize = new Size(extent.Width, extent.Height);
             }
-            else {
+            else
+            {
                 extent = CalculateExtent(availableSize);
 
                 double desiredWidth = Math.Min(availableSize.Width, extent.Width);
                 double desiredHeight = Math.Min(availableSize.Height, extent.Height);
                 desiredSize = new Size(desiredWidth, desiredHeight);
-            }           
+            }
 
             if (groupItem != null)
             {
