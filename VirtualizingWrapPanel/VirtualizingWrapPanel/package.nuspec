@@ -2,17 +2,17 @@
 <package>
   <metadata>
     <id>VirtualizingWrapPanel</id>
-    <version>1.3.2</version>
+    <version>1.4.0</version>
     <title>VirtualizingWrapPanel</title>
     <authors>S. Bäumlisberger</authors>
     <owners>S. Bäumlisberger</owners>
     <copyright>© S. Bäumlisberger</copyright>
     <projectUrl>https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel</projectUrl>
     <licenseUrl>https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/LICENSE</licenseUrl>
-    <description>Implementation of a VirtualizingWrapPanel for .NET Framework 4.5 and higher. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. Samples, API-Documentation and Source Code are available on the project site.</description>
-    <releaseNotes>- Added support for using as GroupStyle.Panel
-- Enabled IsVirtualizingWhenGrouping by default on GridView
-- Fixed several issues when grouping</releaseNotes>
+    <description>Implementation of a VirtualizingWrapPanel for .NET Framework 4.5 and higher. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. In addition a simple VirtualizingItemsControl is included. Samples, API-Documentation and Source Code are available on the project site.</description>
+    <releaseNotes>- Added a simple VirtualizingItemsControl
+- Added the ability to change the scroll wheel delta on item-based scrolling
+- Fixed a issue with .NET Framework 4.5.2</releaseNotes>
     <tags>VirtualizingWrapPanel, VirtualizingPanel, WrapPanel, GridView, Virtualization, WPF, XAML, .NET</tags>
   </metadata>
 </package>
