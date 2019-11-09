@@ -28,14 +28,11 @@ namespace VirtualizingWrapPanelSamples
 
         private ItemsControl previousItemsControl;
 
-        private readonly ICollectionView view;
-
         public MainWindow()
         {
             DataContext = model;
-
-            view = CollectionViewSource.GetDefaultView(model.Items);
-            view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TestItem.Group)));
+            
+            model.CollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TestItem.Group)));
 
             InitializeComponent();
         }
@@ -71,7 +68,7 @@ namespace VirtualizingWrapPanelSamples
                 {
                     previousItemsControl.ItemsSource = null;
                 }           
-                itemsControl.ItemsSource = model.Items;
+                itemsControl.ItemsSource = model.CollectionView;
                 previousItemsControl = itemsControl;
             }
         }
@@ -102,6 +99,15 @@ namespace VirtualizingWrapPanelSamples
             return null;
         }
 
+        private void FilterTextBox_TextChanged(object sender, TextChangedEventArgs args)
+        {
+            model.CollectionView.Filter = new Predicate<object>((item) => {
+                if (int.TryParse(filterTextBox.Text, out int filterValue)) {
+                    return ((TestItem)item).Number > filterValue;
+                }
+                return true;
+            });
+        }
     }
 
 }

@@ -20,9 +20,9 @@
                 VerticalAlignment="Stretch"
                 Loaded="Item_Loaded"
                 Unloaded="Item_Unloaded">
-                <TextBlock   
-                    Width="100"
-                    FontSize="32"
+                <TextBlock  
+                    Width="80"
+                    FontSize="20"
                     TextAlignment="Center"
                     Text="{Binding Number, Mode=OneTime}"                 
                     Padding="8"/>
@@ -89,6 +89,9 @@
                 <ComboBox
                     ItemsSource="{Binding AvailableVirtualizationModi, Mode=OneTime}"
                     SelectedItem="{Binding VirtualizationMode, Mode=TwoWay}"/>
+
+                <TextBlock Margin="16,0,0,0" VerticalAlignment="Center" Text="Filter (>) "/>
+                <TextBox x:Name="filterTextBox" MinWidth="64" TextChanged="FilterTextBox_TextChanged"/>
             </StackPanel>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -191,6 +194,24 @@
                     </ListView>
                 </DockPanel>
             </TabItem>
+            <TabItem Header="VirtualizingItemsControl">
+                <DockPanel Margin="8,0,8,2">
+                    <TextBlock DockPanel.Dock="Top" Text="A VirtualizingWrapPanel used by a VirtualizingItemsControl."/>              
+                    <wpftk:VirtualizingItemsControl
+                        Margin="0,2,0,0"
+                        ItemTemplate="{StaticResource ItemTemplate}"
+                        VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
+                        VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
+                        VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
+                        VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <wpftk:VirtualizingWrapPanel Orientation="{Binding Orientation, Mode=OneWay}"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </wpftk:VirtualizingItemsControl>
+                </DockPanel>
+            </TabItem>
             <TabItem Header="GridView">
                 <DockPanel Margin="8,0,8,2">
                     <TextBlock DockPanel.Dock="Top" Text="This is a easy to use control displaying a grid of items using a VirtualizingWrapPanel."/>
@@ -228,7 +249,7 @@
                         </wpftk:GridDetailsView.ExpandedItemTemplate>
                     </wpftk:GridDetailsView>
                 </DockPanel>
-            </TabItem>
+            </TabItem>           
             <TabItem Header="Standard WrapPanel (no virtualization)">
                 <DockPanel Margin="4,0,4,2">
                     <TextBlock DockPanel.Dock="Top" Text="For comparison this is a ListView using a standard WrapPanel as ItemsPanel."/>

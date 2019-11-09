@@ -7,10 +7,10 @@
 
   <PropertyGroup>   
     <title></title>
-    <Version>1.3.3</Version>
+    <Version>1.4.0</Version>
     <Authors>S. Bäumlisbergerr</Authors>
     <Copyright>© S. Bäumlisberger</Copyright>
-    <Description>Implementation of a VirtualizingWrapPanel for WPF running .NET Core 3.0 and higher. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. Samples, API-Documentation and Source Code are available on the project site.</Description> 
+    <Description>Implementation of a VirtualizingWrapPanel for WPF running .NET Core 3.0 and higher. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. In addition a simple VirtualizingItemsControl is included. Samples, API-Documentation and Source Code are available on the project site.</Description> 
   </PropertyGroup>
 
   <!-- pack options -->
@@ -26,7 +26,8 @@
     
     <PackageTags>VirtualizingWrapPanel, VirtualizingPanel, WrapPanel, GridView, Virtualization, WPF, XAML, .NET </PackageTags>
     
-    <PackageReleaseNotes>- fixed item alignment when item count smaller than items per row</PackageReleaseNotes>   
+    <PackageReleaseNotes>- Added a simple VirtualizingItemsControl
+- Added the ability to change the scroll wheel delta on item-based scrolling</PackageReleaseNotes>   
   </PropertyGroup>
 
 </Project>
