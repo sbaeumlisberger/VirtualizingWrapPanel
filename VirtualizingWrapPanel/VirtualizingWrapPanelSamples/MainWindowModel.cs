@@ -51,7 +51,7 @@ namespace VirtualizingWrapPanelSamples {
         private Orientation orientation = Orientation.Vertical;
         private VirtualizationCacheLengthUnit cacheUnit = VirtualizationCacheLengthUnit.Page;
         private VirtualizationCacheLength cacheLength = new VirtualizationCacheLength(1);
-        private ScrollUnit scrollUnit = ScrollUnit.Item;
+        private ScrollUnit scrollUnit = ScrollUnit.Pixel;
         private VirtualizationMode virtualizationMode = VirtualizationMode.Standard;
 
         private readonly Random random = new Random();
