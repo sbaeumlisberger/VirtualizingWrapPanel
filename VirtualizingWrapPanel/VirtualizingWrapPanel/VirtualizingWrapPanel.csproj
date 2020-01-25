@@ -1,21 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-    <UseWPF>true</UseWPF>
+    <TargetFrameworks>netcoreapp3.0;net45</TargetFrameworks>
+    <UseWPF>true</UseWPF>    
   </PropertyGroup>
 
   <PropertyGroup>   
-    <title></title>
-    <Version>1.4.0</Version>
+    <title>VirtualizingWrapPanel</title>
+    <Version>1.4.1</Version>
     <Authors>S. Bäumlisbergerr</Authors>
     <Copyright>© S. Bäumlisberger</Copyright>
-    <Description>Implementation of a VirtualizingWrapPanel for WPF running .NET Core 3.0 and higher. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. In addition a simple VirtualizingItemsControl is included. Samples, API-Documentation and Source Code are available on the project site.</Description> 
+    <Description>Implementation of a VirtualizingWrapPanel for WPF running .NET Framework or .NET Core. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. In addition a simple VirtualizingItemsControl is included. Samples, API-Documentation and Source Code are available on the project site.</Description> 
   </PropertyGroup>
 
   <!-- pack options -->
   <PropertyGroup>
-    <PackageId>VirtualizingWrapPanel.NETCore</PackageId>
+    <PackageId>VirtualizingWrapPanel</PackageId>
     
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel</RepositoryUrl>
@@ -26,8 +26,7 @@
     
     <PackageTags>VirtualizingWrapPanel, VirtualizingPanel, WrapPanel, GridView, Virtualization, WPF, XAML, .NET </PackageTags>
     
-    <PackageReleaseNotes>- Added a simple VirtualizingItemsControl
-- Added the ability to change the scroll wheel delta on item-based scrolling</PackageReleaseNotes>   
+    <PackageReleaseNotes>- Merged packages for .NET Framework and .NET Core</PackageReleaseNotes>
   </PropertyGroup>
-
+  
 </Project>

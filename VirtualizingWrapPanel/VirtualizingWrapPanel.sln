@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualizingWrapPanelSamples", "VirtualizingWrapPanelSamples\VirtualizingWrapPanelSamples.csproj", "{F3E7F4E3-787B-4CAD-A184-196C8B169268}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualizingWrapPanelSamples", "VirtualizingWrapPanelSamples\VirtualizingWrapPanelSamples.csproj", "{F3E7F4E3-787B-4CAD-A184-196C8B169268}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualizingWrapPanel", "VirtualizingWrapPanel\VirtualizingWrapPanel.csproj", "{E9F2BA01-2E07-4B5A-BA8C-AD26AAEEB8B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualizingWrapPanel", "VirtualizingWrapPanel\VirtualizingWrapPanel.csproj", "{E9F2BA01-2E07-4B5A-BA8C-AD26AAEEB8B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualizingWrapPanelSamplesFW", "VirtualizingWrapPanelSamplesFW\VirtualizingWrapPanelSamplesFW.csproj", "{DD3AA1D2-10F2-48CA-A0E2-E03C03FD2A21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{E9F2BA01-2E07-4B5A-BA8C-AD26AAEEB8B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9F2BA01-2E07-4B5A-BA8C-AD26AAEEB8B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9F2BA01-2E07-4B5A-BA8C-AD26AAEEB8B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD3AA1D2-10F2-48CA-A0E2-E03C03FD2A21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD3AA1D2-10F2-48CA-A0E2-E03C03FD2A21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD3AA1D2-10F2-48CA-A0E2-E03C03FD2A21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD3AA1D2-10F2-48CA-A0E2-E03C03FD2A21}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
