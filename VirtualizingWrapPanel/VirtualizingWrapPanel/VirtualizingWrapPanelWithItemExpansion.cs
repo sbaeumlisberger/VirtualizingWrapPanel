@@ -132,8 +132,9 @@ namespace WpfToolkit.Controls
             itemIndexFollwingExpansion = Math.Min(itemIndexFollwingExpansion, Items.Count - 1);
 
             if (itemIndexFollwingExpansion != this.itemIndexFollwingExpansion && expandedItemChild != null)
-            {
+            {                
                 RemoveInternalChildRange(InternalChildren.IndexOf(expandedItemChild), 1);
+                expandedItemChild = null;
             }
 
             using (ItemContainerGenerator.StartAt(startPosition, GeneratorDirection.Forward, true))
@@ -215,7 +216,6 @@ namespace WpfToolkit.Controls
         {
             for (int childIndex = InternalChildren.Count - 1; childIndex >= 0; childIndex--)
             {
-
                 var child = (FrameworkElement)InternalChildren[childIndex];
 
                 if (child == expandedItemChild)
