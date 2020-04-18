@@ -107,7 +107,7 @@
             </Grid>
         </StackPanel>
         <TabControl x:Name="tabControl" SelectionChanged="TabControl_SelectionChanged">
-            <TabItem Header="Default Configuration">
+            <TabItem Header="Default">
                 <DockPanel Margin="8,0,8,2">
                     <TextBlock DockPanel.Dock="Top" Text="A VirtualizingWrapPanel used by a ListView as ItemsPanel."/>
                     <ListView
