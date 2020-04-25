@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
+using WpfToolkit.Controls;
 
 namespace VirtualizingWrapPanelSamples {
 
@@ -27,7 +28,8 @@ namespace VirtualizingWrapPanelSamples {
         public Orientation[] AvailableOrientations { get; } = (Orientation[])Enum.GetValues(typeof(Orientation));
         public VirtualizationCacheLengthUnit[] AvailableCacheUnits { get; } = (VirtualizationCacheLengthUnit[])Enum.GetValues(typeof(VirtualizationCacheLengthUnit));
         public ScrollUnit[] AvailableScrollUnits { get; } = (ScrollUnit[])Enum.GetValues(typeof(ScrollUnit));
-        public VirtualizationMode[] AvailableVirtualizationModi { get; } = (VirtualizationMode[]) Enum.GetValues(typeof(VirtualizationMode));
+        public VirtualizationMode[] AvailableVirtualizationModes { get; } = (VirtualizationMode[]) Enum.GetValues(typeof(VirtualizationMode));
+        public SpacingMode[] AvailableSpacingModes { get; } = (SpacingMode[])Enum.GetValues(typeof(SpacingMode));
 
         public Orientation Orientation {
             get => orientation;
@@ -42,6 +44,7 @@ namespace VirtualizingWrapPanelSamples {
         public VirtualizationCacheLength CacheLength { get => cacheLength; set => SetField(ref cacheLength, value); }
         public ScrollUnit ScrollUnit { get => scrollUnit; set => SetField(ref scrollUnit, value); }
         public VirtualizationMode VirtualizationMode { get => virtualizationMode; set => SetField(ref virtualizationMode, value); }
+        public SpacingMode SpacingMode { get => spacingMode; set => SetField(ref spacingMode, value); }
 
         private int renderedItemsCount = 0;
 
@@ -53,6 +56,7 @@ namespace VirtualizingWrapPanelSamples {
         private VirtualizationCacheLength cacheLength = new VirtualizationCacheLength(1);
         private ScrollUnit scrollUnit = ScrollUnit.Pixel;
         private VirtualizationMode virtualizationMode = VirtualizationMode.Standard;
+        private SpacingMode spacingMode = SpacingMode.Uniform;
 
         private readonly Random random = new Random();
 

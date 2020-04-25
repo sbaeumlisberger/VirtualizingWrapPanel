@@ -13,7 +13,7 @@
 
     <Window.Resources>
         <local:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
-        <DataTemplate x:Key="ItemTemplate">
+        <DataTemplate x:Key="ItemTemplate" DataType="local:TestItem">
             <StackPanel 
                 Background="{Binding Background, Mode=OneTime, Converter={StaticResource ColorToBrushConverter}}" 
                 HorizontalAlignment="Stretch"
@@ -71,6 +71,11 @@
                 <ComboBox 
                     ItemsSource="{Binding AvailableOrientations, Mode=OneTime}"
                     SelectedItem="{Binding Orientation, Mode=TwoWay}"/>
+                
+                <TextBlock Margin="16,0,0,0" VerticalAlignment="Center" Text="Spacing Mode "/>
+                <ComboBox 
+                    ItemsSource="{Binding AvailableSpacingModes, Mode=OneTime}"
+                    SelectedItem="{Binding SpacingMode, Mode=TwoWay}"/>
 
                 <TextBlock Margin="16,0,0,0" VerticalAlignment="Center" Text="Cache Unit "/>
                 <ComboBox 
@@ -87,7 +92,7 @@
 
                 <TextBlock Margin="16,0,0,0" VerticalAlignment="Center" Text="Virtualization Mode "/>
                 <ComboBox
-                    ItemsSource="{Binding AvailableVirtualizationModi, Mode=OneTime}"
+                    ItemsSource="{Binding AvailableVirtualizationModes, Mode=OneTime}"
                     SelectedItem="{Binding VirtualizationMode, Mode=TwoWay}"/>
 
                 <TextBlock Margin="16,0,0,0" VerticalAlignment="Center" Text="Filter (>) "/>
@@ -119,26 +124,13 @@
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <wpftk:VirtualizingWrapPanel Orientation="{Binding Orientation, Mode=OneWay}"/>
+                                <wpftk:VirtualizingWrapPanel
+                                    Orientation="{Binding Orientation, Mode=OneWay}"
+                                    SpacingMode="{Binding SpacingMode, Mode=OneWay}"/>
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
                     </ListView>
                 </DockPanel>
-            </TabItem>
-            <TabItem Header="Disabled Spacing">
-                <ListView 
-                    Margin="8,2,8,2"
-                    ItemTemplate="{StaticResource ItemTemplate}"
-                    VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
-                    VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
-                    VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
-                    VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <wpftk:VirtualizingWrapPanel Orientation="{Binding Orientation, Mode=OneWay}" IsSpacingEnabled="False"/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                </ListView>
             </TabItem>
             <TabItem Header="Fixed Item Size">
                 <ListView 
@@ -156,7 +148,10 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <wpftk:VirtualizingWrapPanel Orientation="{Binding Orientation, Mode=OneWay}" ItemSize="200,200"/>
+                            <wpftk:VirtualizingWrapPanel
+                                Orientation="{Binding Orientation, Mode=OneWay}"
+                                SpacingMode="{Binding SpacingMode, Mode=OneWay}"
+                                ItemSize="200,200"/>
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
                 </ListView>
@@ -174,7 +169,9 @@
                         VirtualizingPanel.IsVirtualizingWhenGrouping="True">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <wpftk:VirtualizingWrapPanel Orientation="{Binding DataContext.Orientation, Mode=OneWay, ElementName=window}"/>
+                                <wpftk:VirtualizingWrapPanel
+                                    Orientation="{Binding DataContext.Orientation, Mode=OneWay, ElementName=window}"
+                                    SpacingMode="{Binding DataContext.SpacingMode, Mode=OneWay, ElementName=window}"/>
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
                         <ListView.GroupStyle>
@@ -206,7 +203,9 @@
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <wpftk:VirtualizingWrapPanel Orientation="{Binding Orientation, Mode=OneWay}"/>
+                                <wpftk:VirtualizingWrapPanel
+                                    Orientation="{Binding Orientation, Mode=OneWay}"
+                                    SpacingMode="{Binding SpacingMode, Mode=OneWay}"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                     </wpftk:VirtualizingItemsControl>
