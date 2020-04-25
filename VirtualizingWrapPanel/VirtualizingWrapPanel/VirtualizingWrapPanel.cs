@@ -1,19 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows;
-using System.Windows.Media;
-using System.Diagnostics;
-using System.ComponentModel;
-using System.Windows.Input;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Windows.Media.Animation;
-using System.Threading.Tasks;
-using System.Reflection;
 
 namespace WpfToolkit.Controls
 {
@@ -25,7 +13,7 @@ namespace WpfToolkit.Controls
     public class VirtualizingWrapPanel : VirtualizingPanelBase
     {
 
-        #region depracted properties 
+        #region Deprecated properties 
 
         [Obsolete("Use ItemSizeProperty")]
         public static readonly DependencyProperty ChildrenSizeProperty = ItemSizeProperty;
@@ -36,25 +24,34 @@ namespace WpfToolkit.Controls
         [Obsolete("Use IsSpacingEnabled")]
         public bool SpacingEnabled { get => IsSpacingEnabled; set => IsSpacingEnabled = value; }
 
+        [Obsolete("Use SpacingMode")]
+        public static readonly DependencyProperty IsSpacingEnabledProperty = DependencyProperty.Register(nameof(IsSpacingEnabled), typeof(bool), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        ///  Gets or sets a value that specifies whether the items are distributed evenly across the width (horizontal orientation) 
+        ///  or height (vertical orientation). The default value is true.
+        /// </summary>
+        [Obsolete("Use SpacingMode")]
+        public bool IsSpacingEnabled { get => (bool)GetValue(IsSpacingEnabledProperty); set => SetValue(IsSpacingEnabledProperty, value); }
+
         [Obsolete("Use ItemSize")]
         public Size ChildrenSize { get => ItemSize; set => ItemSize = value; }
 
         #endregion
-
-        public static readonly DependencyProperty IsSpacingEnabledProperty = DependencyProperty.Register(nameof(IsSpacingEnabled), typeof(bool), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        
+        public static readonly DependencyProperty SpacingModeProperty = DependencyProperty.Register(nameof(SpacingMode), typeof(SpacingMode), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(SpacingMode.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(nameof(Orientation), typeof(Orientation), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(Orientation.Vertical, FrameworkPropertyMetadataOptions.AffectsMeasure, (obj, args) => ((VirtualizingWrapPanel)obj).Orientation_Changed()));
 
         public static readonly DependencyProperty ItemSizeProperty = DependencyProperty.Register(nameof(ItemSize), typeof(Size), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(Size.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
-        ///  Gets or sets a value that specifies whether the items are distributed evenly across the width (horizontal orientation) 
-        ///  or height (vertical orientation). The default value is true.
+        /// Gets or sets the spacing mode used when arranging the items. The default value is <see cref="SpacingMode.Uniform"/>.
         /// </summary>
-        public bool IsSpacingEnabled { get => (bool)GetValue(IsSpacingEnabledProperty); set => SetValue(IsSpacingEnabledProperty, value); }
+        public SpacingMode SpacingMode { get => (SpacingMode) GetValue(SpacingModeProperty); set => SetValue(SpacingModeProperty, value); }
 
         /// <summary>
-        /// Gets or sets a value that specifies the orientation in which itmes are arranged. The default value is <see cref="Orientation.Vertical"/>.
+        /// Gets or sets a value that specifies the orientation in which items are arranged. The default value is <see cref="Orientation.Vertical"/>.
         /// </summary>
         public Orientation Orientation { get => (Orientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
 
@@ -142,7 +139,9 @@ namespace WpfToolkit.Controls
 
         protected override Size CalculateExtent(Size availableSize)
         {
-            double extentWidth = IsSpacingEnabled && !double.IsInfinity(GetWidth(availableSize)) ? GetWidth(availableSize) : GetWidth(childSize) * itemsPerRowCount;
+            double extentWidth = IsSpacingEnabled && SpacingMode != SpacingMode.None && !double.IsInfinity(GetWidth(availableSize))
+	            ? GetWidth(availableSize)
+	            : GetWidth(childSize) * itemsPerRowCount;
 
             if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem)
             {
@@ -171,8 +170,34 @@ namespace WpfToolkit.Controls
                 offsetY = 0;
             }
 
-            double unusedWidth = GetWidth(finalSize) - (GetWidth(childSize) * itemsPerRowCount);
-            double spacing = unusedWidth > 0 ? unusedWidth / (itemsPerRowCount + 1) : 0;
+            SpacingMode spacingMode = IsSpacingEnabled ? SpacingMode : SpacingMode.None;
+
+            double childWidth = GetWidth(childSize);
+            double childHeight = GetHeight(childSize);
+            double finalWidth = GetWidth(finalSize);
+            double finalHeight = GetHeight(finalSize);
+
+            double totalItemsWidth = Math.Min(childWidth * itemsPerRowCount, finalWidth);
+            double unusedWidth = finalWidth - totalItemsWidth;
+            double innerSpacing, outerSpacing;
+
+            switch(spacingMode)
+            {
+	            case SpacingMode.Uniform:
+		            innerSpacing = outerSpacing = unusedWidth / (itemsPerRowCount + 1);
+		            break;
+
+	            case SpacingMode.Spread:
+		            innerSpacing = unusedWidth / Math.Max(itemsPerRowCount - 1, 1);
+		            outerSpacing = 0;
+		            break;
+
+	            case SpacingMode.None:
+	            default:
+		            innerSpacing = 0;
+		            outerSpacing = 0;
+		            break;
+            }
 
             for (int childIndex = 0; childIndex < InternalChildren.Count; childIndex++)
             {
@@ -183,20 +208,14 @@ namespace WpfToolkit.Controls
                 int columnIndex = itemIndex % itemsPerRowCount;
                 int rowIndex = itemIndex / itemsPerRowCount;
 
-                double x = columnIndex * GetWidth(childSize);
+                double x = outerSpacing + columnIndex * (childWidth + innerSpacing);
+                double y = rowIndex * childHeight;
 
-                if (IsSpacingEnabled)
-                {
-                    x += (columnIndex + 1) * spacing;
-                }
-
-                double y = rowIndex * GetHeight(childSize);
-
-                if (GetHeight(finalSize) == 0)
+                if (finalHeight == 0.0)
                 {
                     /* When the parent panel is grouping and a cached group item is not 
                      * in the viewport it has no valid arrangement. That means that the 
-                     * height/width is 0. Therfore the items should not be visible so 
+                     * height/width is 0. Therefore the items should not be visible so 
                      * that they are not falsely displayed. */
                     child.Arrange(new Rect(0, 0, 0, 0));
                 }
