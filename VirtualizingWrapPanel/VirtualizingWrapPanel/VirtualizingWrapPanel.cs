@@ -157,9 +157,9 @@ namespace WpfToolkit.Controls
             return CreateSize(extentWidth, extentHeight);
         }
 
-        protected void CalculateSpacing(int itemsPerRow, double childWidth, double finalWidth, out double innerSpacing, out double outerSpacing)
+        protected void CalculateSpacing(double finalWidth, out double innerSpacing, out double outerSpacing)
         {
-            double totalItemsWidth = Math.Min(childWidth * itemsPerRowCount, finalWidth);
+            double totalItemsWidth = Math.Min(GetWidth(childSize) * itemsPerRowCount, finalWidth);
             double unusedWidth = finalWidth - totalItemsWidth;
 
             SpacingMode spacingMode = IsSpacingEnabled ? SpacingMode : SpacingMode.None;
@@ -199,7 +199,7 @@ namespace WpfToolkit.Controls
             double finalWidth = GetWidth(finalSize);
             double finalHeight = GetHeight(finalSize);
 
-            CalculateSpacing(itemsPerRowCount, childWidth, finalWidth, out double innerSpacing, out double outerSpacing);
+            CalculateSpacing(finalWidth, out double innerSpacing, out double outerSpacing);
 
             for (int childIndex = 0; childIndex < InternalChildren.Count; childIndex++)
             {

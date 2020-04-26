@@ -72,7 +72,7 @@ namespace WpfToolkit.Controls
             double childHeight = GetHeight(childSize);
             double finalWidth = GetWidth(finalSize);
 
-            CalculateSpacing(itemsPerRowCount, childWidth, finalWidth, out double innerSpacing, out double outerSpacing);
+            CalculateSpacing(finalWidth, out double innerSpacing, out double outerSpacing);
 
             for (int childIndex = 0; childIndex < InternalChildren.Count; childIndex++)
             {
