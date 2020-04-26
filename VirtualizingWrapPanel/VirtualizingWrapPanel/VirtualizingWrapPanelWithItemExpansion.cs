@@ -85,6 +85,12 @@ namespace WpfToolkit.Controls
                     double y = rowIndex * childHeight;
                     double width = finalWidth - outerSpacing - outerSpacing;
                     double height = GetHeight(expandedItemChild.DesiredSize);
+
+                    if (!IsSpacingEnabled || SpacingMode == SpacingMode.None)
+                    {
+                        width = itemsPerRowCount * childWidth;
+                    }
+
                     if (Orientation == Orientation.Vertical)
                     {
                         expandedItemChild.Arrange(CreateRect(x - GetX(Offset), y - GetY(Offset), width, height));
