@@ -5,15 +5,13 @@ using System.Windows;
 
 namespace WpfToolkit.Controls
 {
-
     /// <summary>
     /// A implementation of a wrap panel that supports virtualization and can be used in horizontal and vertical orientation.
     /// <p class="note">In order to work properly all items must have the same size.</p>
     /// </summary>
     public class VirtualizingWrapPanel : VirtualizingPanelBase
     {
-
-        #region Deprecated properties 
+        #region Deprecated properties
 
         [Obsolete("Use ItemSizeProperty")]
         public static readonly DependencyProperty ChildrenSizeProperty = ItemSizeProperty;
@@ -38,7 +36,7 @@ namespace WpfToolkit.Controls
         public Size ChildrenSize { get => ItemSize; set => ItemSize = value; }
 
         #endregion
-        
+
         public static readonly DependencyProperty SpacingModeProperty = DependencyProperty.Register(nameof(SpacingMode), typeof(SpacingMode), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(SpacingMode.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(nameof(Orientation), typeof(Orientation), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(Orientation.Vertical, FrameworkPropertyMetadataOptions.AffectsMeasure, (obj, args) => ((VirtualizingWrapPanel)obj).Orientation_Changed()));
@@ -48,7 +46,7 @@ namespace WpfToolkit.Controls
         /// <summary>
         /// Gets or sets the spacing mode used when arranging the items. The default value is <see cref="SpacingMode.Uniform"/>.
         /// </summary>
-        public SpacingMode SpacingMode { get => (SpacingMode) GetValue(SpacingModeProperty); set => SetValue(SpacingModeProperty, value); }
+        public SpacingMode SpacingMode { get => (SpacingMode)GetValue(SpacingModeProperty); set => SetValue(SpacingModeProperty, value); }
 
         /// <summary>
         /// Gets or sets a value that specifies the orientation in which items are arranged. The default value is <see cref="Orientation.Vertical"/>.
@@ -140,8 +138,8 @@ namespace WpfToolkit.Controls
         protected override Size CalculateExtent(Size availableSize)
         {
             double extentWidth = IsSpacingEnabled && SpacingMode != SpacingMode.None && !double.IsInfinity(GetWidth(availableSize))
-	            ? GetWidth(availableSize)
-	            : GetWidth(childSize) * itemsPerRowCount;
+                ? GetWidth(availableSize)
+                : GetWidth(childSize) * itemsPerRowCount;
 
             if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem)
             {
@@ -161,28 +159,28 @@ namespace WpfToolkit.Controls
 
         protected void CalculateSpacing(int itemsPerRow, double childWidth, double finalWidth, out double innerSpacing, out double outerSpacing)
         {
-	        double totalItemsWidth = Math.Min(childWidth * itemsPerRowCount, finalWidth);
-	        double unusedWidth = finalWidth - totalItemsWidth;
-            
-	        SpacingMode spacingMode = IsSpacingEnabled ? SpacingMode : SpacingMode.None;
+            double totalItemsWidth = Math.Min(childWidth * itemsPerRowCount, finalWidth);
+            double unusedWidth = finalWidth - totalItemsWidth;
 
-	        switch(spacingMode)
-	        {
-		        case SpacingMode.Uniform:
-			        innerSpacing = outerSpacing = unusedWidth / (itemsPerRowCount + 1);
-			        break;
+            SpacingMode spacingMode = IsSpacingEnabled ? SpacingMode : SpacingMode.None;
 
-		        case SpacingMode.Spread:
-			        innerSpacing = unusedWidth / Math.Max(itemsPerRowCount - 1, 1);
-			        outerSpacing = 0;
-			        break;
+            switch (spacingMode)
+            {
+                case SpacingMode.Uniform:
+                    innerSpacing = outerSpacing = unusedWidth / (itemsPerRowCount + 1);
+                    break;
 
-		        case SpacingMode.None:
-		        default:
-			        innerSpacing = 0;
-			        outerSpacing = 0;
-			        break;
-	        }
+                case SpacingMode.Spread:
+                    innerSpacing = unusedWidth / Math.Max(itemsPerRowCount - 1, 1);
+                    outerSpacing = 0;
+                    break;
+
+                case SpacingMode.None:
+                default:
+                    innerSpacing = 0;
+                    outerSpacing = 0;
+                    break;
+            }
         }
 
         protected override Size ArrangeOverride(Size finalSize)
@@ -416,7 +414,5 @@ namespace WpfToolkit.Controls
 
         protected Size CreateSize(double width, double height) => Orientation == Orientation.Vertical ? new Size(width, height) : new Size(height, width);
         protected Rect CreateRect(double x, double y, double width, double height) => Orientation == Orientation.Vertical ? new Rect(x, y, width, height) : new Rect(y, x, width, height);
-
     }
-
 }

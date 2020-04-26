@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Controls;
 
 namespace WpfToolkit.Controls
 {
-
     /// <summary>
     /// A implementation of a wrap panel that supports virtualization and can be used in horizontal and vertical orientation.
     /// In addition the panel allows to expand one specific item.
@@ -18,7 +12,6 @@ namespace WpfToolkit.Controls
     /// </summary>
     public class VirtualizingWrapPanelWithItemExpansion : VirtualizingWrapPanel
     {
-
         public static readonly DependencyProperty ExpandedItemTemplateProperty = DependencyProperty.Register(nameof(ExpandedItemTemplate), typeof(DataTemplate), typeof(VirtualizingWrapPanelWithItemExpansion), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public static readonly DependencyProperty ExpandedItemProperty = DependencyProperty.Register(nameof(ExpandedItem), typeof(object), typeof(VirtualizingWrapPanelWithItemExpansion), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure, (o, a) => ((VirtualizingWrapPanelWithItemExpansion)o).ExpandedItemPropertyChanged(a)));
@@ -74,7 +67,7 @@ namespace WpfToolkit.Controls
         protected override Size ArrangeOverride(Size finalSize)
         {
             double expandedItemChildHeight = 0;
-            
+
             double childWidth = GetWidth(childSize);
             double childHeight = GetHeight(childSize);
             double finalWidth = GetWidth(finalSize);
@@ -87,7 +80,7 @@ namespace WpfToolkit.Controls
 
                 if (child == expandedItemChild)
                 {
-	                int rowIndex = ExpandedItemIndex / itemsPerRowCount + 1;
+                    int rowIndex = ExpandedItemIndex / itemsPerRowCount + 1;
                     double x = outerSpacing;
                     double y = rowIndex * childHeight;
                     double width = finalWidth - outerSpacing - outerSpacing;
@@ -108,7 +101,7 @@ namespace WpfToolkit.Controls
 
                     int columnIndex = itemIndex % itemsPerRowCount;
                     int rowIndex = itemIndex / itemsPerRowCount;
-                    
+
                     double x = outerSpacing + columnIndex * (childWidth + innerSpacing);
                     double y = rowIndex * childHeight + expandedItemChildHeight;
 
@@ -130,7 +123,7 @@ namespace WpfToolkit.Controls
             itemIndexFollwingExpansion = Math.Min(itemIndexFollwingExpansion, Items.Count - 1);
 
             if (itemIndexFollwingExpansion != this.itemIndexFollwingExpansion && expandedItemChild != null)
-            {                
+            {
                 RemoveInternalChildRange(InternalChildren.IndexOf(expandedItemChild), 1);
                 expandedItemChild = null;
             }
@@ -266,7 +259,5 @@ namespace WpfToolkit.Controls
                 SetVerticalOffset(offset);
             }
         }
-
     }
-
 }
