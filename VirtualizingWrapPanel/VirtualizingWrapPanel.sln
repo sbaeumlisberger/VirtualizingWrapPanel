@@ -9,6 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualizingWrapPanel", "Vi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualizingWrapPanelSamplesFW", "VirtualizingWrapPanelSamplesFW\VirtualizingWrapPanelSamplesFW.csproj", "{DD3AA1D2-10F2-48CA-A0E2-E03C03FD2A21}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7D90FE24-28B2-4292-A1D7-EED79638ACA5}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
