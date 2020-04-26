@@ -12,7 +12,8 @@
         <ItemsPanelTemplate>
             <local:VirtualizingWrapPanelWithItemExpansion 
                 ExpandedItem="{Binding ExpandedItem, ElementName=uc, Mode=OneWay}"
-                Orientation="{Binding Orientation, ElementName=uc, Mode=OneWay}">
+                Orientation="{Binding Orientation, ElementName=uc, Mode=OneWay}"
+                SpacingMode="{Binding SpacingMode, ElementName=uc, Mode=OneWay}">
                 <local:VirtualizingWrapPanelWithItemExpansion.ExpandedItemTemplate>
                     <DataTemplate>
                         <StackPanel 

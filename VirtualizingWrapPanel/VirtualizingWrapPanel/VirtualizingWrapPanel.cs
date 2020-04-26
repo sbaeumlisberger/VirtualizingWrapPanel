@@ -159,6 +159,32 @@ namespace WpfToolkit.Controls
             return CreateSize(extentWidth, extentHeight);
         }
 
+        protected void CalculateSpacing(int itemsPerRow, double childWidth, double finalWidth, out double innerSpacing, out double outerSpacing)
+        {
+	        double totalItemsWidth = Math.Min(childWidth * itemsPerRowCount, finalWidth);
+	        double unusedWidth = finalWidth - totalItemsWidth;
+            
+	        SpacingMode spacingMode = IsSpacingEnabled ? SpacingMode : SpacingMode.None;
+
+	        switch(spacingMode)
+	        {
+		        case SpacingMode.Uniform:
+			        innerSpacing = outerSpacing = unusedWidth / (itemsPerRowCount + 1);
+			        break;
+
+		        case SpacingMode.Spread:
+			        innerSpacing = unusedWidth / Math.Max(itemsPerRowCount - 1, 1);
+			        outerSpacing = 0;
+			        break;
+
+		        case SpacingMode.None:
+		        default:
+			        innerSpacing = 0;
+			        outerSpacing = 0;
+			        break;
+	        }
+        }
+
         protected override Size ArrangeOverride(Size finalSize)
         {
             double offsetX = GetX(Offset);
@@ -170,34 +196,12 @@ namespace WpfToolkit.Controls
                 offsetY = 0;
             }
 
-            SpacingMode spacingMode = IsSpacingEnabled ? SpacingMode : SpacingMode.None;
-
             double childWidth = GetWidth(childSize);
             double childHeight = GetHeight(childSize);
             double finalWidth = GetWidth(finalSize);
             double finalHeight = GetHeight(finalSize);
 
-            double totalItemsWidth = Math.Min(childWidth * itemsPerRowCount, finalWidth);
-            double unusedWidth = finalWidth - totalItemsWidth;
-            double innerSpacing, outerSpacing;
-
-            switch(spacingMode)
-            {
-	            case SpacingMode.Uniform:
-		            innerSpacing = outerSpacing = unusedWidth / (itemsPerRowCount + 1);
-		            break;
-
-	            case SpacingMode.Spread:
-		            innerSpacing = unusedWidth / Math.Max(itemsPerRowCount - 1, 1);
-		            outerSpacing = 0;
-		            break;
-
-	            case SpacingMode.None:
-	            default:
-		            innerSpacing = 0;
-		            outerSpacing = 0;
-		            break;
-            }
+            CalculateSpacing(itemsPerRowCount, childWidth, finalWidth, out double innerSpacing, out double outerSpacing);
 
             for (int childIndex = 0; childIndex < InternalChildren.Count; childIndex++)
             {

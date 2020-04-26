@@ -74,9 +74,12 @@ namespace WpfToolkit.Controls
         protected override Size ArrangeOverride(Size finalSize)
         {
             double expandedItemChildHeight = 0;
+            
+            double childWidth = GetWidth(childSize);
+            double childHeight = GetHeight(childSize);
+            double finalWidth = GetWidth(finalSize);
 
-            double unusedWidth = GetWidth(finalSize) - (GetWidth(childSize) * itemsPerRowCount);
-            double spacing = unusedWidth > 0 ? unusedWidth / (itemsPerRowCount + 1) : 0;
+            CalculateSpacing(itemsPerRowCount, childWidth, finalWidth, out double innerSpacing, out double outerSpacing);
 
             for (int childIndex = 0; childIndex < InternalChildren.Count; childIndex++)
             {
@@ -84,9 +87,10 @@ namespace WpfToolkit.Controls
 
                 if (child == expandedItemChild)
                 {
-                    double x = IsSpacingEnabled ? spacing : 0;
-                    double y = (ExpandedItemIndex / itemsPerRowCount) * GetHeight(childSize) + GetHeight(childSize);
-                    double width = IsSpacingEnabled ? GetWidth(finalSize) - 2 * spacing : GetWidth(finalSize);
+	                int rowIndex = ExpandedItemIndex / itemsPerRowCount + 1;
+                    double x = outerSpacing;
+                    double y = rowIndex * childHeight;
+                    double width = finalWidth - outerSpacing - outerSpacing;
                     double height = GetHeight(expandedItemChild.DesiredSize);
                     if (Orientation == Orientation.Vertical)
                     {
@@ -104,15 +108,9 @@ namespace WpfToolkit.Controls
 
                     int columnIndex = itemIndex % itemsPerRowCount;
                     int rowIndex = itemIndex / itemsPerRowCount;
-
-                    double x = columnIndex * GetWidth(childSize);
-
-                    if (IsSpacingEnabled)
-                    {
-                        x += (columnIndex + 1) * spacing;
-                    }
-
-                    double y = rowIndex * GetHeight(childSize) + expandedItemChildHeight;
+                    
+                    double x = outerSpacing + columnIndex * (childWidth + innerSpacing);
+                    double y = rowIndex * childHeight + expandedItemChildHeight;
 
                     child.Arrange(CreateRect(x - GetX(Offset), y - GetY(Offset), childSize.Width, childSize.Height));
                 }
