@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 
 namespace WpfToolkit.Controls
 {
-
     /// <summary>
     /// A ItemsControl supporting virtualization.
     /// </summary>
     public class VirtualizingItemsControl : ItemsControl
     {
-
         public VirtualizingItemsControl()
         {
             ItemsPanel = new ItemsPanelTemplate(new FrameworkElementFactory(typeof(VirtualizingStackPanel)));
-            
+
             string template = @"
             <ControlTemplate xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>
                 <Border
@@ -48,7 +41,5 @@ namespace WpfToolkit.Controls
 
             VirtualizingPanel.SetIsVirtualizingWhenGrouping(this, true);
         }
-
     }
-
 }

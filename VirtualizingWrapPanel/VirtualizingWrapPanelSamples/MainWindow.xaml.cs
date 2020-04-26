@@ -1,29 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 
 namespace VirtualizingWrapPanelSamples
 {
-
     public partial class MainWindow : Window
     {
-
         private readonly MainWindowModel model = new MainWindowModel();
 
         private ItemsControl previousItemsControl;
@@ -31,7 +15,7 @@ namespace VirtualizingWrapPanelSamples
         public MainWindow()
         {
             DataContext = model;
-            
+
             model.CollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TestItem.Group)));
 
             InitializeComponent();
@@ -67,7 +51,7 @@ namespace VirtualizingWrapPanelSamples
                 if (previousItemsControl != null)
                 {
                     previousItemsControl.ItemsSource = null;
-                }           
+                }
                 itemsControl.ItemsSource = model.CollectionView;
                 previousItemsControl = itemsControl;
             }
@@ -101,13 +85,14 @@ namespace VirtualizingWrapPanelSamples
 
         private void FilterTextBox_TextChanged(object sender, TextChangedEventArgs args)
         {
-            model.CollectionView.Filter = new Predicate<object>((item) => {
-                if (int.TryParse(filterTextBox.Text, out int filterValue)) {
+            model.CollectionView.Filter = new Predicate<object>((item) =>
+            {
+                if (int.TryParse(filterTextBox.Text, out int filterValue))
+                {
                     return ((TestItem)item).Number > filterValue;
                 }
                 return true;
             });
         }
     }
-
 }

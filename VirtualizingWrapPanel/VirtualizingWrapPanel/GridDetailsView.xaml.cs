@@ -1,29 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace WpfToolkit.Controls {
-
+namespace WpfToolkit.Controls
+{
     /// <summary>
     /// Simple control that displays a gird of items. Depending on the orientation, the items are either stacked horizontally or vertically 
     /// until the items are wrapped to the next row or column. The control is using virtualization to support large amount of items.
     /// If an item is clicked the item gots expanded until it is clicked again or an other item is clicked and gots expanded.
     /// <p class="note">In order to work properly all items must have the same size.</p>
     /// </summary>
-    public partial class GridDetailsView : GridView {
-
+    public partial class GridDetailsView : GridView
+    {
         public static readonly DependencyProperty ExpandedItemTemplateProperty = DependencyProperty.Register(nameof(ExpandedItemTemplate), typeof(DataTemplate), typeof(GridDetailsView), new FrameworkPropertyMetadata(null));
 
         public static readonly DependencyProperty ExpandedItemProperty = DependencyProperty.Register(nameof(ExpandedItem), typeof(object), typeof(GridDetailsView), new FrameworkPropertyMetadata(null));
@@ -39,38 +28,48 @@ namespace WpfToolkit.Controls {
         private bool animateExpansion = false;
         private bool animateCloseExpansion = false;
 
-        public GridDetailsView() {
+        public GridDetailsView()
+        {
             InitializeComponent();
         }
 
-        protected override DependencyObject GetContainerForItemOverride() {
+        protected override DependencyObject GetContainerForItemOverride()
+        {
             var container = (FrameworkElement)base.GetContainerForItemOverride();
             container.PreviewMouseDown += Container_PreviewMouseDown;
             return container;
         }
 
-        private async void Container_PreviewMouseDown(object sender, MouseButtonEventArgs args) {
-            if (args.LeftButton == MouseButtonState.Pressed) {
+        private async void Container_PreviewMouseDown(object sender, MouseButtonEventArgs args)
+        {
+            if (args.LeftButton == MouseButtonState.Pressed)
+            {
                 var item = ((FrameworkElement)sender).DataContext;
-                if (item != ExpandedItem) {
+                if (item != ExpandedItem)
+                {
                     ExpandedItem = item;
                 }
-                else {
+                else
+                {
                     animateExpansion = false;
                     animateCloseExpansion = true;
 
-                    if (MaxContainerSize == double.PositiveInfinity) {
+                    if (MaxContainerSize == double.PositiveInfinity)
+                    {
                         MaxContainerSize = DesiredContainerSize;
                     }
 
                     double sourceHeight = MaxContainerSize;
 
-                    for (int i = 20; i >= 0; i--) {
-                        if (!animateCloseExpansion) {
+                    for (int i = 20; i >= 0; i--)
+                    {
+                        if (!animateCloseExpansion)
+                        {
                             return;
                         }
                         MaxContainerSize = (sourceHeight / 20) * i;
-                        if (i != 0) {
+                        if (i != 0)
+                        {
                             await Task.Delay(15);
                         }
                     }
@@ -82,10 +81,12 @@ namespace WpfToolkit.Controls {
             }
         }
 
-        private async void ExpandedItemContainerRoot_Loaded(object sender, RoutedEventArgs args) {
+        private async void ExpandedItemContainerRoot_Loaded(object sender, RoutedEventArgs args)
+        {
             animateCloseExpansion = false;
 
-            if (expandedItemContainerRoot == null) {
+            if (expandedItemContainerRoot == null)
+            {
 
                 expandedItemContainerRoot = (FrameworkElement)sender;
                 MaxContainerSize = 0;
@@ -93,53 +94,67 @@ namespace WpfToolkit.Controls {
                 double targetHeight = DesiredContainerSize;
 
                 animateExpansion = true;
-                for (int i = 0; i <= 20; i++) {
-                    if (!animateExpansion) {
+                for (int i = 0; i <= 20; i++)
+                {
+                    if (!animateExpansion)
+                    {
                         return;
                     }
                     MaxContainerSize = (targetHeight / 20) * i;
-                    if (i != 20) {
+                    if (i != 20)
+                    {
                         await Task.Delay(15);
                     }
                 }
                 MaxContainerSize = double.PositiveInfinity;
                 animateExpansion = false;
             }
-            else {
+            else
+            {
                 expandedItemContainerRoot = (FrameworkElement)sender;
                 MaxContainerSize = double.PositiveInfinity;
             }
         }
 
-        private double DesiredContainerSize {
-            get {
-                if (Orientation == Orientation.Vertical) {
+        private double DesiredContainerSize
+        {
+            get
+            {
+                if (Orientation == Orientation.Vertical)
+                {
                     return expandedItemContainerRoot.DesiredSize.Height;
                 }
-                else {
+                else
+                {
                     return expandedItemContainerRoot.DesiredSize.Width;
                 }
             }
         }
 
-        private double MaxContainerSize {
-            get {
-                if (Orientation == Orientation.Vertical) {
+        private double MaxContainerSize
+        {
+            get
+            {
+                if (Orientation == Orientation.Vertical)
+                {
                     return expandedItemContainerRoot.MaxHeight;
                 }
-                else {
+                else
+                {
                     return expandedItemContainerRoot.MaxWidth;
                 }
             }
-            set {
-                if (Orientation == Orientation.Vertical) {
+            set
+            {
+                if (Orientation == Orientation.Vertical)
+                {
                     expandedItemContainerRoot.MaxHeight = value;
                 }
-                else {
+                else
+                {
                     expandedItemContainerRoot.MaxWidth = value;
                 }
             }
         }
-
     }
 }
