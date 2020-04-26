@@ -221,7 +221,8 @@
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
-                        Orientation="{Binding Orientation, Mode=OneWay}"/>
+                        Orientation="{Binding Orientation, Mode=OneWay}"
+                        SpacingMode="{Binding SpacingMode, Mode=OneWay}"/>
                 </DockPanel>
             </TabItem>
             <TabItem Header="GridDetailsView">
@@ -234,9 +235,10 @@
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
-                        Orientation="{Binding Orientation, Mode=OneWay}">
+                        Orientation="{Binding Orientation, Mode=OneWay}"
+                        SpacingMode="{Binding SpacingMode, Mode=OneWay}">
                         <wpftk:GridDetailsView.ExpandedItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate DataType="local:TestItem">
                                 <TextBlock 
                                 HorizontalAlignment="Stretch" 
                                 Background="Gray" 
