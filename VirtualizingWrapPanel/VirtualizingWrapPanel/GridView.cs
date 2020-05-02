@@ -13,10 +13,12 @@ namespace WpfToolkit.Controls
     {
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(nameof(Orientation), typeof(Orientation), typeof(GridView), new FrameworkPropertyMetadata(Orientation.Vertical));
 
-        public static readonly DependencyProperty SpacingModeProperty = DependencyProperty.Register(nameof(SpacingMode), typeof(SpacingMode), typeof(GridView), new FrameworkPropertyMetadata(SpacingMode.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        public static readonly DependencyProperty SpacingModeProperty = DependencyProperty.Register(nameof(SpacingMode), typeof(SpacingMode), typeof(GridView), new FrameworkPropertyMetadata(SpacingMode.Uniform));
+
+        public static readonly DependencyProperty StretchItemsProperty = DependencyProperty.Register(nameof(StretchItems), typeof(bool), typeof(GridView), new FrameworkPropertyMetadata(false));
 
         /// <summary>
-        /// Gets or sets a value that specifies the orientation in which items are arranged. The default value is <see cref="Orientation.Horizontal"/>.
+        /// Gets or sets a value that specifies the orientation in which items are arranged. The default value is <see cref="Orientation.Vertical"/>.
         /// </summary>
         public Orientation Orientation { get => (Orientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
 
@@ -24,6 +26,15 @@ namespace WpfToolkit.Controls
         /// Gets or sets the spacing mode used when arranging the items. The default value is <see cref="SpacingMode.Uniform"/>.
         /// </summary>
         public SpacingMode SpacingMode { get => (SpacingMode)GetValue(SpacingModeProperty); set => SetValue(SpacingModeProperty, value); }
+
+        /// <summary>
+        /// Gets or sets a value that specifies if the items get stretched to fill up unused space. The default value is false.
+        /// </summary>
+        /// <remarks>
+        /// The MaxWidth and MaxHeight properties of the ItemContainerStyle can be used to limit the stretching. 
+        /// In this case the use of the remaining space will be determined by the SpacingMode property. 
+        /// </remarks>
+        public bool StretchItems { get => (bool)GetValue(StretchItemsProperty); set => SetValue(StretchItemsProperty, value); }
 
         public GridView()
         {
@@ -40,6 +51,12 @@ namespace WpfToolkit.Controls
                 Path = new PropertyPath(nameof(SpacingMode)),
                 Mode = BindingMode.OneWay
             });
+            factory.SetBinding(VirtualizingWrapPanel.StretchItemsProperty, new Binding
+            {
+                Source = this,
+                Path = new PropertyPath(nameof(StretchItems)),
+                Mode = BindingMode.OneWay
+            });
             ItemsPanel = new ItemsPanelTemplate(factory);
 
             VirtualizingPanel.SetCacheLengthUnit(this, VirtualizationCacheLengthUnit.Page);
@@ -52,11 +69,19 @@ namespace WpfToolkit.Controls
                 Setters = {
                     new Setter {
                         Property = MarginProperty,
-                        Value = new Thickness(4)
+                        Value = new Thickness(0)
                     },
                     new Setter {
                         Property = PaddingProperty,
                         Value = new Thickness(4)
+                    },
+                    new Setter {
+                        Property = HorizontalContentAlignmentProperty,
+                        Value = HorizontalAlignment.Stretch
+                    },
+                     new Setter {
+                        Property = VerticalContentAlignmentProperty,
+                        Value = VerticalAlignment.Stretch
                     }
                 }
             };
