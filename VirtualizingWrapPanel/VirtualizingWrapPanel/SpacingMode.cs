@@ -1,5 +1,8 @@
 ﻿namespace WpfToolkit.Controls
 {
+    /// <summary>
+    /// Specifies how remaining space is distributed.
+    /// </summary>
 	public enum SpacingMode
 	{
 		/// <summary>
@@ -13,6 +16,10 @@
 		/// <summary>
 		/// The remaining space is evenly distributed between the items on a layout row, excluding the start and end of each row.
 		/// </summary>
-		Spread
-	}
+		BetweenItemsOnly,
+        /// <summary>
+		/// The remaining space is evenly distributed between start and end of each row.
+		/// </summary>
+        StartAndEndOnly
+    }
 }

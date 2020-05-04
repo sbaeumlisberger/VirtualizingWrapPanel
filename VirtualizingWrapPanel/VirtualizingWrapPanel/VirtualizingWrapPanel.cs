@@ -63,7 +63,7 @@ namespace WpfToolkit.Controls
         public Size ItemSize { get => (Size)GetValue(ItemSizeProperty); set => SetValue(ItemSizeProperty, value); }
 
         /// <summary>
-        /// Gets or sets a value that specifies if the items get stretched to fill up unused space. The default value is false.
+        /// Gets or sets a value that specifies if the items get stretched to fill up remaining space. The default value is false.
         /// </summary>
         /// <remarks>
         /// The MaxWidth and MaxHeight properties of the ItemContainerStyle can be used to limit the stretching. 
@@ -186,9 +186,14 @@ namespace WpfToolkit.Controls
                     innerSpacing = outerSpacing = unusedWidth / (itemsPerRowCount + 1);
                     break;
 
-                case SpacingMode.Spread:
+                case SpacingMode.BetweenItemsOnly:
                     innerSpacing = unusedWidth / Math.Max(itemsPerRowCount - 1, 1);
                     outerSpacing = 0;
+                    break;
+
+                case SpacingMode.StartAndEndOnly:
+                    innerSpacing = 0;
+                    outerSpacing = unusedWidth / 2;
                     break;
 
                 case SpacingMode.None:
