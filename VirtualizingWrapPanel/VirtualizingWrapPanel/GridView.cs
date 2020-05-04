@@ -28,7 +28,7 @@ namespace WpfToolkit.Controls
         public SpacingMode SpacingMode { get => (SpacingMode)GetValue(SpacingModeProperty); set => SetValue(SpacingModeProperty, value); }
 
         /// <summary>
-        /// Gets or sets a value that specifies if the items get stretched to fill up unused space. The default value is false.
+        /// Gets or sets a value that specifies if the items get stretched to fill up remaining space. The default value is false.
         /// </summary>
         /// <remarks>
         /// The MaxWidth and MaxHeight properties of the ItemContainerStyle can be used to limit the stretching. 

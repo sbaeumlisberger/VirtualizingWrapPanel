@@ -1,34 +1,48 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
-    <PropertyGroup>
-        <TargetFrameworks>netcoreapp3.0;net45</TargetFrameworks>
-        <UseWPF>true</UseWPF>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.0;net45</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
 
-    <PropertyGroup>
-        <title>VirtualizingWrapPanel</title>
-        <Version>1.4.3</Version>
-        <Authors>S. Bäumlisbergerr</Authors>
-        <Copyright>© S. Bäumlisberger</Copyright>
-        <Description>Implementation of a VirtualizingWrapPanel for WPF running .NET Framework or .NET Core. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. In addition a simple VirtualizingItemsControl is included. Samples, API-Documentation and Source Code are available on the project site.</Description>
-    </PropertyGroup>
+  <PropertyGroup>
+    <title>VirtualizingWrapPanel</title>
+    <Version>1.5</Version>
+    <Authors>S. Bäumlisbergerr</Authors>
+    <Copyright>© S. Bäumlisberger</Copyright>
+    <Description>Implementation of a VirtualizingWrapPanel for WPF running .NET Framework or .NET Core. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. In addition a simple VirtualizingItemsControl is included. Samples, API-Documentation and Source Code are available on the project site.</Description>
+  </PropertyGroup>
 
-    <!-- pack options -->
-    <PropertyGroup>
-        <PackageId>VirtualizingWrapPanel</PackageId>
+  <PropertyGroup>
+    <BuildDocFx>false</BuildDocFx>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="docfx.console" Version="2.52.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 
-        <RepositoryType>git</RepositoryType>
-        <RepositoryUrl>https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel</RepositoryUrl>
+  <!-- pack options -->
+  <PropertyGroup>
+    <PackageId>VirtualizingWrapPanel</PackageId>
 
-        <PackageProjectUrl>https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel</RepositoryUrl>
 
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel</PackageProjectUrl>
 
-        <PackageTags>VirtualizingWrapPanel, VirtualizingPanel, WrapPanel, GridView, Virtualization, WPF, XAML, .NET </PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-        <PackageReleaseNotes>- Fixed a bug when resizing the GridDetailsView control</PackageReleaseNotes>
+    <PackageTags>VirtualizingWrapPanel, VirtualizingPanel, WrapPanel, GridView, Virtualization, WPF, XAML, .NET </PackageTags>
 
-        <RootNamespace>WpfToolkit.Controls</RootNamespace>
-    </PropertyGroup>
+    <PackageReleaseNotes>
+      - Added SpacingMode property to control the spacing behaviour of the items
+      - Added StretchItems property to allowing stretching the items
+    </PackageReleaseNotes>
+
+    <RootNamespace>WpfToolkit.Controls</RootNamespace>
+  </PropertyGroup>
 
 </Project>
