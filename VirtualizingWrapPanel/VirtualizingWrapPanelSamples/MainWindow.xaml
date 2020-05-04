@@ -21,7 +21,7 @@
                 Loaded="Item_Loaded"
                 Unloaded="Item_Unloaded">
                 <TextBlock
-                    Width="80"
+                    Width="100"
                     FontSize="20"
                     TextAlignment="Center"
                     Text="{Binding Number, Mode=OneTime}"
@@ -34,8 +34,8 @@
         </DataTemplate>
     </Window.Resources>
 
-    <DockPanel>
-        <Grid Margin="4" DockPanel.Dock="Top">
+    <DockPanel Margin="8">
+        <Grid Margin="0,0,0,8" DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Realized Items: " />
                 <TextBlock Text="{Binding RenderedItemsCount, Mode=OneWay}" />
@@ -65,54 +65,75 @@
                     VerticalAlignment="Center" />
             </StackPanel>
         </Grid>
-        <StackPanel DockPanel.Dock="Bottom">
-            <StackPanel Margin="4" Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Text="Orientation " />
-                <ComboBox
-                    ItemsSource="{Binding AvailableOrientations, Mode=OneTime}"
-                    SelectedItem="{Binding Orientation, Mode=TwoWay}" />
+        
+        <StackPanel 
+            DockPanel.Dock="Left"
+            Margin="0,0,12,0">
+            <TextBlock VerticalAlignment="Center" Text="Orientation " />
+            <ComboBox
+                Margin="0,2,0,0"
+                ItemsSource="{Binding AvailableOrientations, Mode=OneTime}"
+                SelectedItem="{Binding Orientation, Mode=TwoWay}" />
 
-                <TextBlock Margin="16,0,0,0" VerticalAlignment="Center" Text="Spacing Mode " />
-                <ComboBox
-                    ItemsSource="{Binding AvailableSpacingModes, Mode=OneTime}"
-                    SelectedItem="{Binding SpacingMode, Mode=TwoWay}" />
+            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Spacing Mode " />
+            <ComboBox
+                Margin="0,2,0,0"
+                ItemsSource="{Binding AvailableSpacingModes, Mode=OneTime}"
+                SelectedItem="{Binding SpacingMode, Mode=TwoWay}" />
 
-                <TextBlock Margin="16,0,0,0" VerticalAlignment="Center" Text="Cache Unit " />
-                <ComboBox
-                    ItemsSource="{Binding AvailableCacheUnits, Mode=OneTime}"
-                    SelectedItem="{Binding CacheUnit, Mode=TwoWay}" />
+            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Stretch Items " />
+            <CheckBox 
+                Margin="0,2,0,0"
+                IsChecked="{Binding StretchItems, Mode=TwoWay}" />
 
-                <TextBlock Margin="16,0,0,0" VerticalAlignment="Center" Text="Cache Length " />
-                <TextBox Width="48" Text="{Binding CacheLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Cache Unit " />
+            <ComboBox
+                Margin="0,2,0,0"
+                ItemsSource="{Binding AvailableCacheUnits, Mode=OneTime}"
+                SelectedItem="{Binding CacheUnit, Mode=TwoWay}" />
 
-                <TextBlock Margin="16,0,0,0" VerticalAlignment="Center" Text="Scroll Unit " />
-                <ComboBox
-                    ItemsSource="{Binding AvailableScrollUnits, Mode=OneTime}"
-                    SelectedItem="{Binding ScrollUnit, Mode=TwoWay}" />
+            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Cache Length " />
+            <TextBox 
+                Margin="0,2,0,0"
+                Text="{Binding CacheLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                <TextBlock Margin="16,0,0,0" VerticalAlignment="Center" Text="Virtualization Mode " />
-                <ComboBox
-                    ItemsSource="{Binding AvailableVirtualizationModes, Mode=OneTime}"
-                    SelectedItem="{Binding VirtualizationMode, Mode=TwoWay}" />
+            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Scroll Unit " />
+            <ComboBox
+                Margin="0,2,0,0"
+                ItemsSource="{Binding AvailableScrollUnits, Mode=OneTime}"
+                SelectedItem="{Binding ScrollUnit, Mode=TwoWay}" />
 
-                <TextBlock Margin="16,0,0,0" VerticalAlignment="Center" Text="Filter (>) " />
-                <TextBox x:Name="filterTextBox" MinWidth="64" TextChanged="FilterTextBox_TextChanged" />
-            </StackPanel>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Margin="4" Content="Add item at random position" Click="InsertButton_Click" />
-                <Button Grid.Column="1" Margin="4" Content="Add 5000 items" Click="FillButton_Click" />
-                <Button Grid.Column="2" Margin="4" Content="Remove random item" Click="RemoveButton_Click" />
-                <Button Grid.Column="3" Margin="4" Content="Remove all items" Click="ClearButton_Click" />
-            </Grid>
+            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Virtualization Mode " />
+            <ComboBox
+                Margin="0,2,0,0"
+                ItemsSource="{Binding AvailableVirtualizationModes, Mode=OneTime}"
+                SelectedItem="{Binding VirtualizationMode, Mode=TwoWay}" />
+
+            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Filter (>) " />
+            <TextBox 
+                x:Name="filterTextBox" 
+                Margin="0,2,0,0"
+                TextChanged="FilterTextBox_TextChanged" />
         </StackPanel>
-        <TabControl x:Name="tabControl" SelectionChanged="TabControl_SelectionChanged">
-            <TabItem Header="Default">
+
+        <Grid DockPanel.Dock="Bottom" Margin="0,8,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Margin="0" Content="Add item at random position" Click="InsertButton_Click" />
+            <Button Grid.Column="1" Margin="8,0,0,0" Content="Add 5000 items" Click="FillButton_Click" />
+            <Button Grid.Column="2" Margin="8,0,0,0" Content="Remove random item" Click="RemoveButton_Click" />
+            <Button Grid.Column="3" Margin="8,0,0,0" Content="Remove all items" Click="ClearButton_Click" />
+        </Grid>
+
+        <TabControl 
+            x:Name="tabControl"
+            SelectionChanged="TabControl_SelectionChanged"
+            Padding="4,8">
+            <TabItem Header="VirtualizingWrapPanel">
                 <DockPanel Margin="8,0,8,2">
                     <TextBlock DockPanel.Dock="Top" Text="A VirtualizingWrapPanel used by a ListView as ItemsPanel." />
                     <ListView
@@ -122,44 +143,58 @@
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <wpftk:VirtualizingWrapPanel
                                     Orientation="{Binding Orientation, Mode=OneWay}"
-                                    SpacingMode="{Binding SpacingMode, Mode=OneWay}" />
+                                    SpacingMode="{Binding SpacingMode, Mode=OneWay}"
+                                    StretchItems="{Binding StretchItems, Mode=OneWay}"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>                       
+                    </ListView>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="ItemSize">
+                <DockPanel Margin="8,0,8,2">
+                    <TextBlock 
+                        DockPanel.Dock="Top"    
+                        Text="A VirtualizingWrapPanel with an ItemSize of 200x200 used by a ListView as ItemsPanel." />
+                    <ListView
+                        Margin="0,2,0,0"
+                        ItemTemplate="{StaticResource ItemTemplate}"
+                        VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
+                        VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
+                        VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
+                        VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <wpftk:VirtualizingWrapPanel
+                                Orientation="{Binding Orientation, Mode=OneWay}"
+                                SpacingMode="{Binding SpacingMode, Mode=OneWay}"
+                                StretchItems="{Binding StretchItems, Mode=OneWay}"
+                                ItemSize="200,200" />
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
                     </ListView>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Fixed Item Size">
-                <ListView
-                    Margin="8,2,8,2"
-                    ItemTemplate="{StaticResource ItemTemplate}"
-                    VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
-                    VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
-                    VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
-                    VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <wpftk:VirtualizingWrapPanel
-                                Orientation="{Binding Orientation, Mode=OneWay}"
-                                SpacingMode="{Binding SpacingMode, Mode=OneWay}"
-                                ItemSize="200,200" />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                </ListView>
-            </TabItem>
             <TabItem Header="Grouping">
                 <DockPanel Margin="8,0,8,2">
-                    <TextBlock DockPanel.Dock="Top"
-                               Text="Note: Horizontal orientation and item based scrolling are currently not working correctly." />
+                    <TextBlock 
+                        DockPanel.Dock="Top"                              
+                        Text="Note: Horizontal orientation and item based scrolling are currently not working correctly." />
                     <ListView
                         Margin="0,2,0,0"
                         ItemTemplate="{StaticResource ItemTemplate}"
@@ -168,24 +203,35 @@
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
                         VirtualizingPanel.IsVirtualizingWhenGrouping="True">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <wpftk:VirtualizingWrapPanel
                                     Orientation="{Binding DataContext.Orientation, Mode=OneWay, ElementName=window}"
-                                    SpacingMode="{Binding DataContext.SpacingMode, Mode=OneWay, ElementName=window}" />
+                                    SpacingMode="{Binding DataContext.SpacingMode, Mode=OneWay, ElementName=window}"                                    
+                                    StretchItems="{Binding StretchItems, Mode=OneWay}"/>
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
                         <ListView.GroupStyle>
                             <GroupStyle HidesIfEmpty="True">
                                 <GroupStyle.HeaderTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Left" FontWeight="Bold" FontSize="14"
-                                                   Text="{Binding Name}" />
+                                        <TextBlock
+                                            HorizontalAlignment="Left" 
+                                            FontWeight="Bold" 
+                                            FontSize="14"
+                                            Text="{Binding Name}" />
                                     </DataTemplate>
                                 </GroupStyle.HeaderTemplate>
                                 <GroupStyle.Panel>
                                     <ItemsPanelTemplate>
-                                        <VirtualizingStackPanel Orientation="{Binding Orientation, Mode=OneWay}" />
+                                        <VirtualizingStackPanel 
+                                            Orientation="{Binding Orientation, Mode=OneWay}" />
                                     </ItemsPanelTemplate>
                                 </GroupStyle.Panel>
                             </GroupStyle>
@@ -207,7 +253,8 @@
                             <ItemsPanelTemplate>
                                 <wpftk:VirtualizingWrapPanel
                                     Orientation="{Binding Orientation, Mode=OneWay}"
-                                    SpacingMode="{Binding SpacingMode, Mode=OneWay}" />
+                                    SpacingMode="{Binding SpacingMode, Mode=OneWay}" 
+                                    StretchItems="{Binding StretchItems, Mode=OneWay}"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                     </wpftk:VirtualizingItemsControl>
@@ -216,7 +263,7 @@
             <TabItem Header="GridView">
                 <DockPanel Margin="8,0,8,2">
                     <TextBlock DockPanel.Dock="Top"
-                               Text="This is a easy to use control displaying a grid of items using a VirtualizingWrapPanel." />
+                               Text="The GridView control is a easy to use control displaying a grid of items using a VirtualizingWrapPanel." />
                     <wpftk:GridView
                         Margin="0,2,0,0"
                         ItemTemplate="{StaticResource ItemTemplate}"
@@ -225,13 +272,14 @@
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
                         Orientation="{Binding Orientation, Mode=OneWay}"
-                        SpacingMode="{Binding SpacingMode, Mode=OneWay}" />
+                        SpacingMode="{Binding SpacingMode, Mode=OneWay}"
+                        StretchItems="{Binding StretchItems, Mode=OneWay}"/>
                 </DockPanel>
             </TabItem>
             <TabItem Header="GridDetailsView">
                 <DockPanel Margin="8,0,8,2">
                     <TextBlock DockPanel.Dock="Top"
-                               Text="This is a easy to use control displaying a grid of items with the ability to expand items when clicked." />
+                               Text="The GridDetailsView control is a easy to use control displaying a grid of items with the ability to expand items when clicked." />
                     <wpftk:GridDetailsView
                         Margin="0,2,0,0"
                         ItemTemplate="{StaticResource ItemTemplate}"
@@ -240,7 +288,8 @@
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
                         Orientation="{Binding Orientation, Mode=OneWay}"
-                        SpacingMode="{Binding SpacingMode, Mode=OneWay}">
+                        SpacingMode="{Binding SpacingMode, Mode=OneWay}"
+                        StretchItems="{Binding StretchItems, Mode=OneWay}">
                         <wpftk:GridDetailsView.ExpandedItemTemplate>
                             <DataTemplate DataType="local:TestItem">
                                 <TextBlock
@@ -255,7 +304,7 @@
                     </wpftk:GridDetailsView>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Standard WrapPanel (no virtualization)">
+            <TabItem Header="WrapPanel (no virtualization)">
                 <DockPanel Margin="4,0,4,2">
                     <TextBlock DockPanel.Dock="Top"
                                Text="For comparison this is a ListView using a standard WrapPanel as ItemsPanel." />

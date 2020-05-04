@@ -68,11 +68,9 @@ namespace WpfToolkit.Controls
         {
             double expandedItemChildHeight = 0;
 
-            double childWidth = GetWidth(childSize);
-            double childHeight = GetHeight(childSize);
-            double finalWidth = GetWidth(finalSize);
+            Size childSize = CalculateChildArrangeSize(finalSize);
 
-            CalculateSpacing(finalWidth, out double innerSpacing, out double outerSpacing);
+            CalculateSpacing(finalSize, out double innerSpacing, out double outerSpacing);
 
             for (int childIndex = 0; childIndex < InternalChildren.Count; childIndex++)
             {
@@ -82,13 +80,13 @@ namespace WpfToolkit.Controls
                 {
                     int rowIndex = ExpandedItemIndex / itemsPerRowCount + 1;
                     double x = outerSpacing;
-                    double y = rowIndex * childHeight;
-                    double width = finalWidth - outerSpacing - outerSpacing;
+                    double y = rowIndex * GetHeight(childSize);
+                    double width = GetWidth(finalSize) - (2 * outerSpacing);
                     double height = GetHeight(expandedItemChild.DesiredSize);
 
                     if (!IsSpacingEnabled || SpacingMode == SpacingMode.None)
                     {
-                        width = itemsPerRowCount * childWidth;
+                        width = itemsPerRowCount * GetWidth(childSize);
                     }
 
                     if (Orientation == Orientation.Vertical)
@@ -108,8 +106,8 @@ namespace WpfToolkit.Controls
                     int columnIndex = itemIndex % itemsPerRowCount;
                     int rowIndex = itemIndex / itemsPerRowCount;
 
-                    double x = outerSpacing + columnIndex * (childWidth + innerSpacing);
-                    double y = rowIndex * childHeight + expandedItemChildHeight;
+                    double x = outerSpacing + columnIndex * (GetWidth(childSize) + innerSpacing);
+                    double y = rowIndex * GetHeight(childSize) + expandedItemChildHeight;
 
                     child.Arrange(CreateRect(x - GetX(Offset), y - GetY(Offset), childSize.Width, childSize.Height));
                 }

@@ -43,6 +43,7 @@ namespace VirtualizingWrapPanelSamples
         public VirtualizationCacheLength CacheLength { get => cacheLength; set => SetField(ref cacheLength, value); }
         public VirtualizationMode VirtualizationMode { get => virtualizationMode; set => SetField(ref virtualizationMode, value); }
         public SpacingMode SpacingMode { get => spacingMode; set => SetField(ref spacingMode, value); }
+        public bool StretchItems { get => stretchItems; set => SetField(ref stretchItems, value); }
         public ScrollUnit ScrollUnit { get => scrollUnit; set => SetField(ref scrollUnit, value); }
 
         private int renderedItemsCount = 0;
@@ -55,6 +56,7 @@ namespace VirtualizingWrapPanelSamples
         private VirtualizationMode virtualizationMode = VirtualizationMode.Standard;
         private Orientation orientation = Orientation.Vertical;
         private SpacingMode spacingMode = SpacingMode.Uniform;
+        private bool stretchItems = false;
         private ScrollUnit scrollUnit = ScrollUnit.Pixel;
 
         private readonly Random random = new Random();
