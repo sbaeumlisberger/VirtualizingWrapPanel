@@ -181,10 +181,10 @@
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <wpftk:VirtualizingWrapPanel
-                                Orientation="{Binding Orientation, Mode=OneWay}"
-                                SpacingMode="{Binding SpacingMode, Mode=OneWay}"
-                                StretchItems="{Binding StretchItems, Mode=OneWay}"
-                                ItemSize="200,200" />
+                                    Orientation="{Binding Orientation, Mode=OneWay}"
+                                    SpacingMode="{Binding SpacingMode, Mode=OneWay}"
+                                    StretchItems="{Binding StretchItems, Mode=OneWay}"
+                                    ItemSize="200,200" />
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
                     </ListView>
