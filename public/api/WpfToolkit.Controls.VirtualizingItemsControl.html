@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class VirtualizingWrapPanel
+    <title>Class VirtualizingItemsControl
    </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class VirtualizingWrapPanel
+    <meta name="title" content="Class VirtualizingItemsControl
    ">
     <meta name="generator" content="docfx 2.52.0.0">
     
@@ -68,13 +68,12 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel">
+            <article class="content wrap" id="_content" data-uid="WpfToolkit.Controls.VirtualizingItemsControl">
   
   
-  <h1 id="WpfToolkit_Controls_VirtualizingWrapPanel" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel" class="text-break">Class VirtualizingWrapPanel
+  <h1 id="WpfToolkit_Controls_VirtualizingItemsControl" data-uid="WpfToolkit.Controls.VirtualizingItemsControl" class="text-break">Class VirtualizingItemsControl
   </h1>
-  <div class="markdown level0 summary"><p>A implementation of a wrap panel that supports virtualization and can be used in horizontal and vertical orientation.
-<p class="note">In order to work properly all items must have the same size.</p></p>
+  <div class="markdown level0 summary"><p>A ItemsControl supporting virtualization.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -85,11 +84,9 @@
     <div class="level3"><span class="xref">System.Windows.Media.Visual</span></div>
     <div class="level4"><span class="xref">System.Windows.UIElement</span></div>
     <div class="level5"><span class="xref">System.Windows.FrameworkElement</span></div>
-    <div class="level6"><span class="xref">System.Windows.Controls.Panel</span></div>
-    <div class="level7"><span class="xref">System.Windows.Controls.VirtualizingPanel</span></div>
-    <div class="level8"><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html">VirtualizingPanelBase</a></div>
-    <div class="level9"><span class="xref">VirtualizingWrapPanel</span></div>
-      <div class="level10"><a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.html">VirtualizingWrapPanelWithItemExpansion</a></div>
+    <div class="level6"><span class="xref">System.Windows.Controls.Control</span></div>
+    <div class="level7"><span class="xref">System.Windows.Controls.ItemsControl</span></div>
+    <div class="level8"><span class="xref">VirtualizingItemsControl</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -98,322 +95,346 @@
     <div><span class="xref">System.Windows.IFrameworkInputElement</span></div>
     <div><span class="xref">System.Windows.IInputElement</span></div>
     <div><span class="xref">System.Windows.Markup.IQueryAmbient</span></div>
+    <div><span class="xref">System.Windows.Controls.Primitives.IContainItemStorage</span></div>
     <div><span class="xref">System.Windows.Markup.IAddChild</span></div>
-    <div><span class="xref">System.Windows.Controls.Primitives.IScrollInfo</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ScrollOwner">VirtualizingPanelBase.ScrollOwner</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.AlternationCountProperty</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_CanVerticallyScroll">VirtualizingPanelBase.CanVerticallyScroll</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.AlternationIndexProperty</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_CanHorizontallyScroll">VirtualizingPanelBase.CanHorizontallyScroll</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.DisplayMemberPathProperty</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_CanHierarchicallyScrollAndVirtualizeCore">VirtualizingPanelBase.CanHierarchicallyScrollAndVirtualizeCore</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.GroupStyleSelectorProperty</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ScrollLineDelta">VirtualizingPanelBase.ScrollLineDelta</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.HasItemsProperty</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelDelta">VirtualizingPanelBase.MouseWheelDelta</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.IsGroupingProperty</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelDeltaItem">VirtualizingPanelBase.MouseWheelDeltaItem</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.IsTextSearchCaseSensitiveProperty</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ScrollUnit">VirtualizingPanelBase.ScrollUnit</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.IsTextSearchEnabledProperty</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelScrollDirection">VirtualizingPanelBase.MouseWheelScrollDirection</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemBindingGroupProperty</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_IsVirtualizing">VirtualizingPanelBase.IsVirtualizing</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemContainerStyleProperty</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_VirtualizationMode">VirtualizingPanelBase.VirtualizationMode</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemContainerStyleSelectorProperty</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_IsRecycling">VirtualizingPanelBase.IsRecycling</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemsPanelProperty</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_CacheLength">VirtualizingPanelBase.CacheLength</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemsSourceProperty</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_CacheLengthUnit">VirtualizingPanelBase.CacheLengthUnit</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemStringFormatProperty</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ItemsControl">VirtualizingPanelBase.ItemsControl</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemTemplateProperty</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ItemsOwner">VirtualizingPanelBase.ItemsOwner</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemTemplateSelectorProperty</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_Items">VirtualizingPanelBase.Items</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.AddChild(System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ItemContainerGenerator">VirtualizingPanelBase.ItemContainerGenerator</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.AddText(System.String)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ExtentWidth">VirtualizingPanelBase.ExtentWidth</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.BeginInit()</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ExtentHeight">VirtualizingPanelBase.ExtentHeight</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.ClearContainerForItemOverride(System.Windows.DependencyObject, System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_Extent">VirtualizingPanelBase.Extent</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.ContainerFromElement(System.Windows.Controls.ItemsControl, System.Windows.DependencyObject)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_HorizontalOffset">VirtualizingPanelBase.HorizontalOffset</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.ContainerFromElement(System.Windows.DependencyObject)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_VerticalOffset">VirtualizingPanelBase.VerticalOffset</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.EndInit()</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_Viewport">VirtualizingPanelBase.Viewport</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.GetAlternationIndex(System.Windows.DependencyObject)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ViewportWidth">VirtualizingPanelBase.ViewportWidth</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.GetContainerForItemOverride()</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ViewportHeight">VirtualizingPanelBase.ViewportHeight</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.GetItemsOwner(System.Windows.DependencyObject)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_Offset">VirtualizingPanelBase.Offset</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.IsItemItsOwnContainer(System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ItemRange">VirtualizingPanelBase.ItemRange</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.IsItemItsOwnContainerOverride(System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_UpdateScrollInfo_System_Windows_Size_System_Windows_Size_">VirtualizingPanelBase.UpdateScrollInfo(Size, Size)</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemsControlFromItemContainer(System.Windows.DependencyObject)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_MakeVisible_System_Windows_Media_Visual_System_Windows_Rect_">VirtualizingPanelBase.MakeVisible(Visual, Rect)</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.OnAlternationCountChanged(System.Int32, System.Int32)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_OnItemsChanged_System_Object_System_Windows_Controls_Primitives_ItemsChangedEventArgs_">VirtualizingPanelBase.OnItemsChanged(Object, ItemsChangedEventArgs)</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.OnDisplayMemberPathChanged(System.String, System.String)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_GetItemIndexFromChildIndex_System_Int32_">VirtualizingPanelBase.GetItemIndexFromChildIndex(Int32)</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.OnGroupStyleSelectorChanged(System.Windows.Controls.GroupStyleSelector, System.Windows.Controls.GroupStyleSelector)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_GetGeneratorPositionFromChildIndex_System_Int32_">VirtualizingPanelBase.GetGeneratorPositionFromChildIndex(Int32)</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.OnItemBindingGroupChanged(System.Windows.Data.BindingGroup, System.Windows.Data.BindingGroup)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_RealizeItems">VirtualizingPanelBase.RealizeItems()</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.OnItemContainerStyleChanged(System.Windows.Style, System.Windows.Style)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_VirtualizeItems">VirtualizingPanelBase.VirtualizeItems()</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.OnItemContainerStyleSelectorChanged(System.Windows.Controls.StyleSelector, System.Windows.Controls.StyleSelector)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_SetVerticalOffset_System_Double_">VirtualizingPanelBase.SetVerticalOffset(Double)</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_SetHorizontalOffset_System_Double_">VirtualizingPanelBase.SetHorizontalOffset(Double)</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.OnItemsPanelChanged(System.Windows.Controls.ItemsPanelTemplate, System.Windows.Controls.ItemsPanelTemplate)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ScrollVertical_System_Double_">VirtualizingPanelBase.ScrollVertical(Double)</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.OnItemsSourceChanged(System.Collections.IEnumerable, System.Collections.IEnumerable)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ScrollHorizontal_System_Double_">VirtualizingPanelBase.ScrollHorizontal(Double)</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.OnItemStringFormatChanged(System.String, System.String)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_LineUp">VirtualizingPanelBase.LineUp()</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.OnItemTemplateChanged(System.Windows.DataTemplate, System.Windows.DataTemplate)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_LineDown">VirtualizingPanelBase.LineDown()</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.OnItemTemplateSelectorChanged(System.Windows.Controls.DataTemplateSelector, System.Windows.Controls.DataTemplateSelector)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_LineLeft">VirtualizingPanelBase.LineLeft()</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.OnKeyDown(System.Windows.Input.KeyEventArgs)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_LineRight">VirtualizingPanelBase.LineRight()</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.OnTextInput(System.Windows.Input.TextCompositionEventArgs)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelUp">VirtualizingPanelBase.MouseWheelUp()</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.PrepareContainerForItemOverride(System.Windows.DependencyObject, System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelDown">VirtualizingPanelBase.MouseWheelDown()</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.ShouldApplyItemContainerStyle(System.Windows.DependencyObject, System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelLeft">VirtualizingPanelBase.MouseWheelLeft()</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.System.Windows.Controls.Primitives.IContainItemStorage.Clear()</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_MouseWheelRight">VirtualizingPanelBase.MouseWheelRight()</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.System.Windows.Controls.Primitives.IContainItemStorage.ClearItemValue(System.Object, System.Windows.DependencyProperty)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_PageUp">VirtualizingPanelBase.PageUp()</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.System.Windows.Controls.Primitives.IContainItemStorage.ClearValue(System.Windows.DependencyProperty)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_PageDown">VirtualizingPanelBase.PageDown()</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.System.Windows.Controls.Primitives.IContainItemStorage.ReadItemValue(System.Object, System.Windows.DependencyProperty)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_PageLeft">VirtualizingPanelBase.PageLeft()</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.System.Windows.Controls.Primitives.IContainItemStorage.StoreItemValue(System.Object, System.Windows.DependencyProperty, System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_PageRight">VirtualizingPanelBase.PageRight()</a>
+      <span class="xref">System.Windows.Controls.ItemsControl.System.Windows.Markup.IAddChild.AddChild(System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.CacheLengthProperty</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.System.Windows.Markup.IAddChild.AddText(System.String)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.CacheLengthUnitProperty</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.ToString()</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.IsContainerVirtualizableProperty</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.AlternationCount</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.IsVirtualizingProperty</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.DisplayMemberPath</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.IsVirtualizingWhenGroupingProperty</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.GroupStyle</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.ScrollUnitProperty</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.GroupStyleSelector</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.VirtualizationModeProperty</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.HasItems</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.AddInternalChild(System.Windows.UIElement)</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.IsGrouping</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.BringIndexIntoViewPublic(System.Int32)</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.IsTextSearchCaseSensitive</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetCacheLength(System.Windows.DependencyObject)</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.IsTextSearchEnabled</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetCacheLengthUnit(System.Windows.DependencyObject)</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemBindingGroup</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetIsContainerVirtualizable(System.Windows.DependencyObject)</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemContainerGenerator</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetIsVirtualizing(System.Windows.DependencyObject)</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemContainerStyle</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetIsVirtualizingWhenGrouping(System.Windows.DependencyObject)</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemContainerStyleSelector</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetItemOffset(System.Windows.UIElement)</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.Items</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetItemOffsetCore(System.Windows.UIElement)</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemsPanel</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetScrollUnit(System.Windows.DependencyObject)</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemsSource</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.GetVirtualizationMode(System.Windows.DependencyObject)</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemStringFormat</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.InsertInternalChild(System.Int32, System.Windows.UIElement)</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemTemplate</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.OnClearChildren()</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.ItemTemplateSelector</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.RemoveInternalChildRange(System.Int32, System.Int32)</span>
+      <span class="xref">System.Windows.Controls.ItemsControl.LogicalChildren</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.SetCacheLength(System.Windows.DependencyObject, System.Windows.Controls.VirtualizationCacheLength)</span>
+      <span class="xref">System.Windows.Controls.Control.BackgroundProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.SetCacheLengthUnit(System.Windows.DependencyObject, System.Windows.Controls.VirtualizationCacheLengthUnit)</span>
+      <span class="xref">System.Windows.Controls.Control.BorderBrushProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.SetIsContainerVirtualizable(System.Windows.DependencyObject, System.Boolean)</span>
+      <span class="xref">System.Windows.Controls.Control.BorderThicknessProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.SetIsVirtualizing(System.Windows.DependencyObject, System.Boolean)</span>
+      <span class="xref">System.Windows.Controls.Control.FontFamilyProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.SetIsVirtualizingWhenGrouping(System.Windows.DependencyObject, System.Boolean)</span>
+      <span class="xref">System.Windows.Controls.Control.FontSizeProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.SetScrollUnit(System.Windows.DependencyObject, System.Windows.Controls.ScrollUnit)</span>
+      <span class="xref">System.Windows.Controls.Control.FontStretchProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.SetVirtualizationMode(System.Windows.DependencyObject, System.Windows.Controls.VirtualizationMode)</span>
+      <span class="xref">System.Windows.Controls.Control.FontStyleProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.ShouldItemsChangeAffectLayout(System.Boolean, System.Windows.Controls.Primitives.ItemsChangedEventArgs)</span>
+      <span class="xref">System.Windows.Controls.Control.FontWeightProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.ShouldItemsChangeAffectLayoutCore(System.Boolean, System.Windows.Controls.Primitives.ItemsChangedEventArgs)</span>
+      <span class="xref">System.Windows.Controls.Control.ForegroundProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.VirtualizingPanel.CanHierarchicallyScrollAndVirtualize</span>
+      <span class="xref">System.Windows.Controls.Control.HorizontalContentAlignmentProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.BackgroundProperty</span>
+      <span class="xref">System.Windows.Controls.Control.IsTabStopProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.IsItemsHostProperty</span>
+      <span class="xref">System.Windows.Controls.Control.MouseDoubleClickEvent</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.ZIndexProperty</span>
+      <span class="xref">System.Windows.Controls.Control.PaddingProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.CreateUIElementCollection(System.Windows.FrameworkElement)</span>
+      <span class="xref">System.Windows.Controls.Control.PreviewMouseDoubleClickEvent</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.GetVisualChild(System.Int32)</span>
+      <span class="xref">System.Windows.Controls.Control.TabIndexProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.GetZIndex(System.Windows.UIElement)</span>
+      <span class="xref">System.Windows.Controls.Control.TemplateProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.OnIsItemsHostChanged(System.Boolean, System.Boolean)</span>
+      <span class="xref">System.Windows.Controls.Control.VerticalContentAlignmentProperty</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.OnRender(System.Windows.Media.DrawingContext)</span>
+      <span class="xref">System.Windows.Controls.Control.ArrangeOverride(System.Windows.Size)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.OnVisualChildrenChanged(System.Windows.DependencyObject, System.Windows.DependencyObject)</span>
+      <span class="xref">System.Windows.Controls.Control.MeasureOverride(System.Windows.Size)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.SetZIndex(System.Windows.UIElement, System.Int32)</span>
+      <span class="xref">System.Windows.Controls.Control.OnMouseDoubleClick(System.Windows.Input.MouseButtonEventArgs)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.System.Windows.Markup.IAddChild.AddChild(System.Object)</span>
+      <span class="xref">System.Windows.Controls.Control.OnPreviewMouseDoubleClick(System.Windows.Input.MouseButtonEventArgs)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.System.Windows.Markup.IAddChild.AddText(System.String)</span>
+      <span class="xref">System.Windows.Controls.Control.OnTemplateChanged(System.Windows.Controls.ControlTemplate, System.Windows.Controls.ControlTemplate)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.Background</span>
+      <span class="xref">System.Windows.Controls.Control.Background</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.Children</span>
+      <span class="xref">System.Windows.Controls.Control.BorderBrush</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.HasLogicalOrientation</span>
+      <span class="xref">System.Windows.Controls.Control.BorderThickness</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.HasLogicalOrientationPublic</span>
+      <span class="xref">System.Windows.Controls.Control.FontFamily</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.InternalChildren</span>
+      <span class="xref">System.Windows.Controls.Control.FontSize</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.IsItemsHost</span>
+      <span class="xref">System.Windows.Controls.Control.FontStretch</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.LogicalChildren</span>
+      <span class="xref">System.Windows.Controls.Control.FontStyle</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.LogicalOrientation</span>
+      <span class="xref">System.Windows.Controls.Control.FontWeight</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.LogicalOrientationPublic</span>
+      <span class="xref">System.Windows.Controls.Control.Foreground</span>
     </div>
     <div>
-      <span class="xref">System.Windows.Controls.Panel.VisualChildrenCount</span>
+      <span class="xref">System.Windows.Controls.Control.HandlesScrolling</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Controls.Control.HorizontalContentAlignment</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Controls.Control.IsTabStop</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Controls.Control.Padding</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Controls.Control.TabIndex</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Controls.Control.Template</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Controls.Control.VerticalContentAlignment</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Controls.Control.MouseDoubleClick</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Controls.Control.PreviewMouseDoubleClick</span>
     </div>
     <div>
       <span class="xref">System.Windows.FrameworkElement.ActualHeightProperty</span>
@@ -533,9 +554,6 @@
       <span class="xref">System.Windows.FrameworkElement.ArrangeCore(System.Windows.Rect)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.FrameworkElement.BeginInit()</span>
-    </div>
-    <div>
       <span class="xref">System.Windows.FrameworkElement.BeginStoryboard(System.Windows.Media.Animation.Storyboard)</span>
     </div>
     <div>
@@ -549,9 +567,6 @@
     </div>
     <div>
       <span class="xref">System.Windows.FrameworkElement.BringIntoView(System.Windows.Rect)</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.FrameworkElement.EndInit()</span>
     </div>
     <div>
       <span class="xref">System.Windows.FrameworkElement.FindName(System.String)</span>
@@ -573,6 +588,9 @@
     </div>
     <div>
       <span class="xref">System.Windows.FrameworkElement.GetUIParentCore()</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.FrameworkElement.GetVisualChild(System.Int32)</span>
     </div>
     <div>
       <span class="xref">System.Windows.FrameworkElement.MeasureCore(System.Windows.Size)</span>
@@ -750,6 +768,9 @@
     </div>
     <div>
       <span class="xref">System.Windows.FrameworkElement.VerticalAlignment</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.FrameworkElement.VisualChildrenCount</span>
     </div>
     <div>
       <span class="xref">System.Windows.FrameworkElement.Width</span>
@@ -1262,9 +1283,6 @@
       <span class="xref">System.Windows.UIElement.OnIsStylusDirectlyOverChanged(System.Windows.DependencyPropertyChangedEventArgs)</span>
     </div>
     <div>
-      <span class="xref">System.Windows.UIElement.OnKeyDown(System.Windows.Input.KeyEventArgs)</span>
-    </div>
-    <div>
       <span class="xref">System.Windows.UIElement.OnKeyUp(System.Windows.Input.KeyEventArgs)</span>
     </div>
     <div>
@@ -1430,6 +1448,9 @@
       <span class="xref">System.Windows.UIElement.OnQueryCursor(System.Windows.Input.QueryCursorEventArgs)</span>
     </div>
     <div>
+      <span class="xref">System.Windows.UIElement.OnRender(System.Windows.Media.DrawingContext)</span>
+    </div>
+    <div>
       <span class="xref">System.Windows.UIElement.OnStylusButtonDown(System.Windows.Input.StylusButtonEventArgs)</span>
     </div>
     <div>
@@ -1461,9 +1482,6 @@
     </div>
     <div>
       <span class="xref">System.Windows.UIElement.OnStylusUp(System.Windows.Input.StylusEventArgs)</span>
-    </div>
-    <div>
-      <span class="xref">System.Windows.UIElement.OnTextInput(System.Windows.Input.TextCompositionEventArgs)</span>
     </div>
     <div>
       <span class="xref">System.Windows.UIElement.OnTouchDown(System.Windows.Input.TouchEventArgs)</span>
@@ -1949,6 +1967,9 @@
       <span class="xref">System.Windows.Media.Visual.OnDpiChanged(System.Windows.DpiScale, System.Windows.DpiScale)</span>
     </div>
     <div>
+      <span class="xref">System.Windows.Media.Visual.OnVisualChildrenChanged(System.Windows.DependencyObject, System.Windows.DependencyObject)</span>
+    </div>
+    <div>
       <span class="xref">System.Windows.Media.Visual.PointFromScreen(System.Windows.Point)</span>
     </div>
     <div>
@@ -2077,1162 +2098,25 @@
     <div>
       <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="WpfToolkit.Controls.html">WpfToolkit.Controls</a></h6>
   <h6><strong>Assembly</strong>: VirtualizingWrapPanel.dll</h6>
-  <h5 id="WpfToolkit_Controls_VirtualizingWrapPanel_syntax">Syntax</h5>
+  <h5 id="WpfToolkit_Controls_VirtualizingItemsControl_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class VirtualizingWrapPanel : VirtualizingPanelBase, IAnimatable, ISupportInitialize, IFrameworkInputElement, IInputElement, IQueryAmbient, IAddChild, IScrollInfo</code></pre>
+    <pre><code class="lang-csharp hljs">public class VirtualizingItemsControl : ItemsControl, IAnimatable, ISupportInitialize, IFrameworkInputElement, IInputElement, IQueryAmbient, IContainItemStorage, IAddChild</code></pre>
   </div>
-  <h3 id="fields">Fields
+  <h3 id="constructors">Constructors
   </h3>
   
   
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_childSize" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.childSize">childSize</h4>
+  <a id="WpfToolkit_Controls_VirtualizingItemsControl__ctor_" data-uid="WpfToolkit.Controls.VirtualizingItemsControl.#ctor*"></a>
+  <h4 id="WpfToolkit_Controls_VirtualizingItemsControl__ctor" data-uid="WpfToolkit.Controls.VirtualizingItemsControl.#ctor">VirtualizingItemsControl()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Size childSize</code></pre>
+    <pre><code class="lang-csharp hljs">public VirtualizingItemsControl()</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Size</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_ItemSizeProperty" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.ItemSizeProperty">ItemSizeProperty</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty ItemSizeProperty</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.DependencyProperty</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_itemsPerRowCount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.itemsPerRowCount">itemsPerRowCount</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected int itemsPerRowCount</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_OrientationProperty" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.OrientationProperty">OrientationProperty</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty OrientationProperty</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.DependencyProperty</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_rowCount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.rowCount">rowCount</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected int rowCount</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_SpacingModeProperty" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.SpacingModeProperty">SpacingModeProperty</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty SpacingModeProperty</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.DependencyProperty</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_StretchItemsProperty" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.StretchItemsProperty">StretchItemsProperty</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty StretchItemsProperty</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.DependencyProperty</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="properties">Properties
-  </h3>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_ItemSize_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.ItemSize*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_ItemSize" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.ItemSize">ItemSize</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value that specifies the size of the items. The default value is <span class="xref">System.Windows.Size.Empty</span>. 
-If the value is <span class="xref">System.Windows.Size.Empty</span> the size of the items gots measured by the first realized item.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Size ItemSize { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Size</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_Orientation_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.Orientation*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_Orientation" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.Orientation">Orientation</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value that specifies the orientation in which items are arranged. The default value is <span class="xref">System.Windows.Controls.Orientation.Vertical</span>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Orientation Orientation { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Controls.Orientation</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_SpacingMode_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.SpacingMode*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_SpacingMode" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.SpacingMode">SpacingMode</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the spacing mode used when arranging the items. The default value is <a class="xref" href="WpfToolkit.Controls.SpacingMode.html#WpfToolkit_Controls_SpacingMode_Uniform">Uniform</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SpacingMode SpacingMode { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="WpfToolkit.Controls.SpacingMode.html">SpacingMode</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_StretchItems_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.StretchItems*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_StretchItems" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.StretchItems">StretchItems</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value that specifies if the items get stretched to fill up remaining space. The default value is false.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool StretchItems { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="WpfToolkit_Controls_VirtualizingWrapPanel_StretchItems_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>The MaxWidth and MaxHeight properties of the ItemContainerStyle can be used to limit the stretching. 
-In this case the use of the remaining space will be determined by the SpacingMode property. </p>
-</div>
-  <h3 id="methods">Methods
-  </h3>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_ArrangeOverride_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.ArrangeOverride*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_ArrangeOverride_System_Windows_Size_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.ArrangeOverride(System.Windows.Size)">ArrangeOverride(Size)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override Size ArrangeOverride(Size finalSize)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Size</span></td>
-        <td><span class="parametername">finalSize</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Size</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Windows.FrameworkElement.ArrangeOverride(System.Windows.Size)</span></div>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_BringIndexIntoView_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.BringIndexIntoView*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_BringIndexIntoView_System_Int32_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.BringIndexIntoView(System.Int32)">BringIndexIntoView(Int32)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override void BringIndexIntoView(int index)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">index</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Windows.Controls.VirtualizingPanel.BringIndexIntoView(System.Int32)</span></div>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_CalculateChildArrangeSize_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.CalculateChildArrangeSize*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_CalculateChildArrangeSize_System_Windows_Size_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.CalculateChildArrangeSize(System.Windows.Size)">CalculateChildArrangeSize(Size)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Size CalculateChildArrangeSize(Size finalSize)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Size</span></td>
-        <td><span class="parametername">finalSize</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Size</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_CalculateExtent_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.CalculateExtent*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_CalculateExtent_System_Windows_Size_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.CalculateExtent(System.Windows.Size)">CalculateExtent(Size)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override Size CalculateExtent(Size availableSize)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Size</span></td>
-        <td><span class="parametername">availableSize</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Size</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_CalculateExtent_System_Windows_Size_">VirtualizingPanelBase.CalculateExtent(Size)</a></div>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_CalculateSpacing_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.CalculateSpacing*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_CalculateSpacing_System_Windows_Size_System_Double__System_Double__" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.CalculateSpacing(System.Windows.Size,System.Double@,System.Double@)">CalculateSpacing(Size, out Double, out Double)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void CalculateSpacing(Size finalSize, out double innerSpacing, out double outerSpacing)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Size</span></td>
-        <td><span class="parametername">finalSize</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">innerSpacing</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">outerSpacing</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_CreateRect_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.CreateRect*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_CreateRect_System_Double_System_Double_System_Double_System_Double_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.CreateRect(System.Double,System.Double,System.Double,System.Double)">CreateRect(Double, Double, Double, Double)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Rect CreateRect(double x, double y, double width, double height)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">x</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">y</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">width</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">height</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Rect</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_CreateSize_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.CreateSize*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_CreateSize_System_Double_System_Double_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.CreateSize(System.Double,System.Double)">CreateSize(Double, Double)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Size CreateSize(double width, double height)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">width</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">height</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Size</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_GetHeight_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetHeight*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetHeight_System_Windows_Size_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetHeight(System.Windows.Size)">GetHeight(Size)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected double GetHeight(Size size)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Size</span></td>
-        <td><span class="parametername">size</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_GetLineDownScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetLineDownScrollAmount*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetLineDownScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetLineDownScrollAmount">GetLineDownScrollAmount()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override double GetLineDownScrollAmount()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_GetLineDownScrollAmount">VirtualizingPanelBase.GetLineDownScrollAmount()</a></div>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_GetLineLeftScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetLineLeftScrollAmount*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetLineLeftScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetLineLeftScrollAmount">GetLineLeftScrollAmount()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override double GetLineLeftScrollAmount()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_GetLineLeftScrollAmount">VirtualizingPanelBase.GetLineLeftScrollAmount()</a></div>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_GetLineRightScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetLineRightScrollAmount*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetLineRightScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetLineRightScrollAmount">GetLineRightScrollAmount()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override double GetLineRightScrollAmount()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_GetLineRightScrollAmount">VirtualizingPanelBase.GetLineRightScrollAmount()</a></div>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_GetLineUpScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetLineUpScrollAmount*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetLineUpScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetLineUpScrollAmount">GetLineUpScrollAmount()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override double GetLineUpScrollAmount()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_GetLineUpScrollAmount">VirtualizingPanelBase.GetLineUpScrollAmount()</a></div>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_GetMouseWheelDownScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetMouseWheelDownScrollAmount*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetMouseWheelDownScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetMouseWheelDownScrollAmount">GetMouseWheelDownScrollAmount()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override double GetMouseWheelDownScrollAmount()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_GetMouseWheelDownScrollAmount">VirtualizingPanelBase.GetMouseWheelDownScrollAmount()</a></div>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_GetMouseWheelLeftScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetMouseWheelLeftScrollAmount*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetMouseWheelLeftScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetMouseWheelLeftScrollAmount">GetMouseWheelLeftScrollAmount()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override double GetMouseWheelLeftScrollAmount()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_GetMouseWheelLeftScrollAmount">VirtualizingPanelBase.GetMouseWheelLeftScrollAmount()</a></div>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_GetMouseWheelRightScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetMouseWheelRightScrollAmount*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetMouseWheelRightScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetMouseWheelRightScrollAmount">GetMouseWheelRightScrollAmount()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override double GetMouseWheelRightScrollAmount()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_GetMouseWheelRightScrollAmount">VirtualizingPanelBase.GetMouseWheelRightScrollAmount()</a></div>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_GetMouseWheelUpScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetMouseWheelUpScrollAmount*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetMouseWheelUpScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetMouseWheelUpScrollAmount">GetMouseWheelUpScrollAmount()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override double GetMouseWheelUpScrollAmount()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_GetMouseWheelUpScrollAmount">VirtualizingPanelBase.GetMouseWheelUpScrollAmount()</a></div>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_GetPageDownScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetPageDownScrollAmount*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetPageDownScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetPageDownScrollAmount">GetPageDownScrollAmount()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override double GetPageDownScrollAmount()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_GetPageDownScrollAmount">VirtualizingPanelBase.GetPageDownScrollAmount()</a></div>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_GetPageLeftScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetPageLeftScrollAmount*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetPageLeftScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetPageLeftScrollAmount">GetPageLeftScrollAmount()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override double GetPageLeftScrollAmount()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_GetPageLeftScrollAmount">VirtualizingPanelBase.GetPageLeftScrollAmount()</a></div>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_GetPageRightScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetPageRightScrollAmount*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetPageRightScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetPageRightScrollAmount">GetPageRightScrollAmount()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override double GetPageRightScrollAmount()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_GetPageRightScrollAmount">VirtualizingPanelBase.GetPageRightScrollAmount()</a></div>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_GetPageUpScrollAmount_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetPageUpScrollAmount*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetPageUpScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetPageUpScrollAmount">GetPageUpScrollAmount()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override double GetPageUpScrollAmount()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_GetPageUpScrollAmount">VirtualizingPanelBase.GetPageUpScrollAmount()</a></div>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_GetWidth_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetWidth*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetWidth_System_Windows_Size_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetWidth(System.Windows.Size)">GetWidth(Size)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected double GetWidth(Size size)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Size</span></td>
-        <td><span class="parametername">size</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_GetX_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetX*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetX_System_Windows_Point_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetX(System.Windows.Point)">GetX(Point)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected double GetX(Point point)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Point</span></td>
-        <td><span class="parametername">point</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_GetY_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetY*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetY_System_Windows_Point_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetY(System.Windows.Point)">GetY(Point)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected double GetY(Point point)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Point</span></td>
-        <td><span class="parametername">point</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_MeasureOverride_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.MeasureOverride*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_MeasureOverride_System_Windows_Size_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.MeasureOverride(System.Windows.Size)">MeasureOverride(Size)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override Size MeasureOverride(Size availableSize)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Size</span></td>
-        <td><span class="parametername">availableSize</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Windows.Size</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_MeasureOverride_System_Windows_Size_">VirtualizingPanelBase.MeasureOverride(Size)</a></div>
-  
-  
-  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_UpdateItemRange_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.UpdateItemRange*"></a>
-  <h4 id="WpfToolkit_Controls_VirtualizingWrapPanel_UpdateItemRange" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.UpdateItemRange">UpdateItemRange()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override ItemRange UpdateItemRange()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">WpfToolkit.Controls.ItemRange</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_UpdateItemRange">VirtualizingPanelBase.UpdateItemRange()</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <span class="xref">System.Windows.Media.Animation.IAnimatable</span>
@@ -3250,10 +2134,10 @@ In this case the use of the remaining space will be determined by the SpacingMod
       <span class="xref">System.Windows.Markup.IQueryAmbient</span>
   </div>
   <div>
-      <span class="xref">System.Windows.Markup.IAddChild</span>
+      <span class="xref">System.Windows.Controls.Primitives.IContainItemStorage</span>
   </div>
   <div>
-      <span class="xref">System.Windows.Controls.Primitives.IScrollInfo</span>
+      <span class="xref">System.Windows.Markup.IAddChild</span>
   </div>
 </article>
           </div>
