@@ -297,23 +297,21 @@ namespace WpfToolkit.Controls
                     return new ItemRange(0, Items.Count - 1);
                 }
 
-                var Offset = new Point(this.Offset.X, groupItem.Constraints.Viewport.Location.Y);
+                var offset = new Point(Offset.X, groupItem.Constraints.Viewport.Location.Y);
 
                 int offsetRowIndex;
                 double offsetInPixel;
 
                 int rowCountInViewport;
-                int rowCountInCacheBefore = 0;
-                int rowCountInCacheAfter = 0;
 
                 if (ScrollUnit == ScrollUnit.Item)
                 {
-                    offsetRowIndex = GetY(Offset) >= 1 ? (int)GetY(Offset) - 1 : 0; // ignore header
+                    offsetRowIndex = GetY(offset) >= 1 ? (int)GetY(offset) - 1 : 0; // ignore header
                     offsetInPixel = offsetRowIndex * GetHeight(childSize);
                 }
                 else
                 {
-                    offsetInPixel = Math.Min(Math.Max(GetY(Offset) - GetHeight(groupItem.HeaderDesiredSizes.PixelSize), 0), GetHeight(Extent));
+                    offsetInPixel = Math.Min(Math.Max(GetY(offset) - GetHeight(groupItem.HeaderDesiredSizes.PixelSize), 0), GetHeight(Extent));
                     offsetRowIndex = GetRowIndex(offsetInPixel);
                 }
 
@@ -328,15 +326,13 @@ namespace WpfToolkit.Controls
                 {
                     double cacheBeforeInPixel = Math.Min(CacheLength.CacheBeforeViewport, offsetInPixel);
                     double cacheAfterInPixel = Math.Min(CacheLength.CacheAfterViewport, GetHeight(Extent) - viewportHeight - offsetInPixel);
-                    rowCountInCacheBefore = (int)(cacheBeforeInPixel / GetHeight(childSize));
-                    rowCountInCacheAfter = ((int)Math.Ceiling((offsetInPixel + viewportHeight + cacheAfterInPixel) / GetHeight(childSize))) - (int)Math.Ceiling((offsetInPixel + viewportHeight) / GetHeight(childSize));
+                    int rowCountInCacheBefore = (int)(cacheBeforeInPixel / GetHeight(childSize));
+                    int rowCountInCacheAfter = ((int)Math.Ceiling((offsetInPixel + viewportHeight + cacheAfterInPixel) / GetHeight(childSize))) - (int)Math.Ceiling((offsetInPixel + viewportHeight) / GetHeight(childSize));
                     startIndex = Math.Max(startIndex - rowCountInCacheBefore * itemsPerRowCount, 0);
                     endIndex = Math.Min(endIndex + rowCountInCacheAfter * itemsPerRowCount, Items.Count - 1);
                 }
                 else if (CacheLengthUnit == VirtualizationCacheLengthUnit.Item)
                 {
-                    rowCountInCacheBefore = (int)Math.Ceiling(CacheLength.CacheBeforeViewport / itemsPerRowCount);
-                    rowCountInCacheAfter = (int)Math.Ceiling(CacheLength.CacheAfterViewport / itemsPerRowCount);
                     startIndex = Math.Max(startIndex - (int)CacheLength.CacheBeforeViewport, 0);
                     endIndex = Math.Min(endIndex + (int)CacheLength.CacheAfterViewport, Items.Count - 1);
                 }
