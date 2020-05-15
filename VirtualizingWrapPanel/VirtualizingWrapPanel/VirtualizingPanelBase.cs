@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -15,13 +9,11 @@ using System.Windows.Media;
 
 namespace WpfToolkit.Controls
 {
-
     /// <summary>
     /// Base class for panels which are supporting virtualization.
     /// </summary>
     public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     {
-
         public ScrollViewer ScrollOwner { get; set; }
 
         public bool CanVerticallyScroll { get; set; }
@@ -38,11 +30,11 @@ namespace WpfToolkit.Controls
         /// Mouse wheel delta for pixel based scrolling. The default value is 48 dp.
         /// </summary>        
         public double MouseWheelDelta { get; set; } = 48.0; // https://referencesource.microsoft.com/#PresentationFramework/src/Framework/System/Windows/Controls/ScrollViewer.cs,278cafe26a902287,references
-    
+
         /// <summary>
         /// Mouse wheel delta for item based scrolling. The default value is 3 items.
         /// </summary> 
-        public int MouseWheelDeltaItem { get; set; } = 3; 
+        public int MouseWheelDeltaItem { get; set; } = 3;
 
         protected ScrollUnit ScrollUnit => GetScrollUnit(ItemsControl);
 
@@ -81,8 +73,10 @@ namespace WpfToolkit.Controls
         /// <summary>
         /// The ItemsControl (e.g. ListView) or if the ItemsControl is grouping a GroupItem.
         /// </summary>
-        protected DependencyObject ItemsOwner {
-            get {
+        protected DependencyObject ItemsOwner
+        {
+            get
+            {
                 if (_itemsOwner == null)
                 {
                     /* Use reflection to access internal method because the public 
@@ -103,8 +97,10 @@ namespace WpfToolkit.Controls
 
         protected ReadOnlyCollection<object> Items => ((ItemContainerGenerator)ItemContainerGenerator).Items;
 
-        protected new IRecyclingItemContainerGenerator ItemContainerGenerator {
-            get {
+        protected new IRecyclingItemContainerGenerator ItemContainerGenerator
+        {
+            get
+            {
                 if (_itemContainerGenerator == null)
                 {
                     /* Because of a bug in the framework the ItemContainerGenerator 
@@ -461,7 +457,5 @@ namespace WpfToolkit.Controls
         protected abstract double GetPageDownScrollAmount();
         protected abstract double GetPageLeftScrollAmount();
         protected abstract double GetPageRightScrollAmount();
-
     }
-
 }

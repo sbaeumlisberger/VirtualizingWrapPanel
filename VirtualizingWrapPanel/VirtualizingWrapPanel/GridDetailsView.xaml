@@ -1,26 +1,28 @@
 ﻿<local:GridView x:Class="WpfToolkit.Controls.GridDetailsView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WpfToolkit.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="400" 
-             d:DesignWidth="600"
-             x:Name="uc">
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:local="clr-namespace:WpfToolkit.Controls"
+                mc:Ignorable="d"
+                d:DesignHeight="400"
+                d:DesignWidth="600"
+                x:Name="uc">
     <local:GridView.ItemsPanel>
         <ItemsPanelTemplate>
-            <local:VirtualizingWrapPanelWithItemExpansion 
+            <local:VirtualizingWrapPanelWithItemExpansion
                 ExpandedItem="{Binding ExpandedItem, ElementName=uc, Mode=OneWay}"
-                Orientation="{Binding Orientation, ElementName=uc, Mode=OneWay}">
+                Orientation="{Binding Orientation, ElementName=uc, Mode=OneWay}"
+                SpacingMode="{Binding SpacingMode, ElementName=uc, Mode=OneWay}"
+                StretchItems="{Binding StretchItems, ElementName=uc, Mode=OneWay}">
                 <local:VirtualizingWrapPanelWithItemExpansion.ExpandedItemTemplate>
                     <DataTemplate>
-                        <StackPanel 
+                        <StackPanel
                             Loaded="ExpandedItemContainerRoot_Loaded"
                             Orientation="{Binding Orientation, ElementName=uc, Mode=OneWay}">
-                            <ContentControl                            
+                            <ContentControl
                                 ContentTemplate="{Binding ExpandedItemTemplate, Source={x:Reference uc}, Mode=OneWay}"
-                                Content="{Binding Mode=OneWay}"/>
+                                Content="{Binding Mode=OneWay}" />
                         </StackPanel>
                     </DataTemplate>
                 </local:VirtualizingWrapPanelWithItemExpansion.ExpandedItemTemplate>

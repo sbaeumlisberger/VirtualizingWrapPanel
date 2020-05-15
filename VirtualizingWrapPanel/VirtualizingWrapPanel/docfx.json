@@ -15,7 +15,10 @@
         }
       ],
       "dest": "obj/api",
-	  "filter": "filter.yml"
+	  "filter": "filter.yml",
+	  "properties": { 
+		"TargetFramework": "netcoreapp3.0"
+	  } 
     }
   ],
   "build": {
