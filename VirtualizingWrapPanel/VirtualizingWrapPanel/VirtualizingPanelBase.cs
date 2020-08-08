@@ -132,24 +132,33 @@ namespace WpfToolkit.Controls
 
         protected virtual void UpdateScrollInfo(Size availableSize, Size extent)
         {
+            bool invalidateScrollInfo = false;
+
             if (ViewportHeight != 0 && VerticalOffset != 0 && VerticalOffset + ViewportHeight + 1 >= ExtentHeight)
             {
                 Offset = new Point(Offset.X, extent.Height - availableSize.Height);
-                ScrollOwner?.InvalidateScrollInfo();
+                invalidateScrollInfo = true;
             }
             if (ViewportWidth != 0 && HorizontalOffset != 0 && HorizontalOffset + ViewportWidth + 1 >= ExtentWidth)
             {
                 Offset = new Point(extent.Width - availableSize.Width, Offset.Y);
-                ScrollOwner?.InvalidateScrollInfo();
+                invalidateScrollInfo = true;
+            }
+
+            if (extent != Extent)
+            {
+                Extent = extent;
+                invalidateScrollInfo = true;
+
             }
             if (availableSize != Viewport)
             {
                 Viewport = availableSize;
-                ScrollOwner?.InvalidateScrollInfo();
+                invalidateScrollInfo = true;
             }
-            if (extent != Extent)
+
+            if (invalidateScrollInfo)
             {
-                Extent = extent;
                 ScrollOwner?.InvalidateScrollInfo();
             }
         }
@@ -258,8 +267,18 @@ namespace WpfToolkit.Controls
             }
             else
             {
-                extent = CalculateExtent(availableSize);
+                /* Sometimes the scrollbar gets hidden without any reason, to prevent
+                 * a layout circle, return without any recalculation. */
+                if (ScrollOwner.ComputedVerticalScrollBarVisibility != Visibility.Visible && ViewportHeight < ExtentHeight)
+                {
+                    return availableSize;
+                }
+                if (ScrollOwner.ComputedHorizontalScrollBarVisibility != Visibility.Visible && ViewportWidth < ExtentWidth)
+                {
+                    return availableSize;
+                }
 
+                extent = CalculateExtent(availableSize);
                 double desiredWidth = Math.Min(availableSize.Width, extent.Width);
                 double desiredHeight = Math.Min(availableSize.Height, extent.Height);
                 desiredSize = new Size(desiredWidth, desiredHeight);
@@ -342,7 +361,6 @@ namespace WpfToolkit.Controls
 
                 if (!ItemRange.Contains(itemIndex))
                 {
-
                     if (VirtualizationMode == VirtualizationMode.Recycling)
                     {
                         ItemContainerGenerator.Recycle(generatorPosition, 1);
