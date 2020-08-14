@@ -7,12 +7,12 @@
 
   <PropertyGroup>
     <title>VirtualizingWrapPanel</title>
-    <Version>1.5</Version>
+    <Version>1.5.1</Version>
     <Authors>S. Bäumlisbergerr</Authors>
     <Copyright>© S. Bäumlisberger</Copyright>
     <Description>Implementation of a VirtualizingWrapPanel for WPF running .NET Framework or .NET Core. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. In addition a simple VirtualizingItemsControl is included. Samples, API-Documentation and Source Code are available on the project site.</Description>
   </PropertyGroup>
-
+  
   <PropertyGroup>
     <BuildDocFx>false</BuildDocFx>
   </PropertyGroup>
@@ -29,20 +29,25 @@
     <PackageId>VirtualizingWrapPanel</PackageId>
 
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel</RepositoryUrl>
+    <RepositoryUrl>https://github.com/sbaeumlisberger/VirtualizingWrapPanel</RepositoryUrl>
 
-    <PackageProjectUrl>https://gitlab.com/sbaeumlisberger/virtualizing-wrap-panel</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/sbaeumlisberger/VirtualizingWrapPanel</PackageProjectUrl>
 
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
     <PackageTags>VirtualizingWrapPanel, VirtualizingPanel, WrapPanel, GridView, Virtualization, WPF, XAML, .NET </PackageTags>
 
-    <PackageReleaseNotes>
-      - Added SpacingMode property to control the spacing behaviour of the items
-      - Added StretchItems property to allowing stretching the items
-    </PackageReleaseNotes>
+    <PackageReleaseNotes>- Bugfixes</PackageReleaseNotes>
 
     <RootNamespace>WpfToolkit.Controls</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EmbedAllSources>true</EmbedAllSources>
+    <Deterministic>true</Deterministic>
+    <PathMap>$(MSBuildProjectDirectory)=C:\</PathMap>
   </PropertyGroup>
 
 </Project>

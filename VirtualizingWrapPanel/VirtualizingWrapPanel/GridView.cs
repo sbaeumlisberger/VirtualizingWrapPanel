@@ -36,8 +36,33 @@ namespace WpfToolkit.Controls
         /// </remarks>
         public bool StretchItems { get => (bool)GetValue(StretchItemsProperty); set => SetValue(StretchItemsProperty, value); }
 
+        static GridView()
+        {            
+            ItemContainerStyleProperty.OverrideMetadata(typeof(GridView), new FrameworkPropertyMetadata(new Style
+            {
+                Setters = {
+                    new Setter {
+                        Property = MarginProperty,
+                        Value = new Thickness(0)
+                    },
+                    new Setter {
+                        Property = PaddingProperty,
+                        Value = new Thickness(4)
+                    },
+                    new Setter {
+                        Property = HorizontalContentAlignmentProperty,
+                        Value = HorizontalAlignment.Stretch
+                    },
+                     new Setter {
+                        Property = VerticalContentAlignmentProperty,
+                        Value = VerticalAlignment.Stretch
+                    }
+                }
+            }));
+        }
+
         public GridView()
-        {
+        {           
             var factory = new FrameworkElementFactory(typeof(VirtualizingWrapPanel));
             factory.SetBinding(VirtualizingWrapPanel.OrientationProperty, new Binding
             {
@@ -63,28 +88,6 @@ namespace WpfToolkit.Controls
             VirtualizingPanel.SetCacheLength(this, new VirtualizationCacheLength(1));
 
             VirtualizingPanel.SetIsVirtualizingWhenGrouping(this, true);
-
-            ItemContainerStyle = new Style
-            {
-                Setters = {
-                    new Setter {
-                        Property = MarginProperty,
-                        Value = new Thickness(0)
-                    },
-                    new Setter {
-                        Property = PaddingProperty,
-                        Value = new Thickness(4)
-                    },
-                    new Setter {
-                        Property = HorizontalContentAlignmentProperty,
-                        Value = HorizontalAlignment.Stretch
-                    },
-                     new Setter {
-                        Property = VerticalContentAlignmentProperty,
-                        Value = VerticalAlignment.Stretch
-                    }
-                }
-            };
         }
     }
 }
