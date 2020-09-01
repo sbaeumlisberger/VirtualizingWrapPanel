@@ -12,7 +12,7 @@ Implementation of a VirtualizingWrapPanel and some additional controls based on 
 * VirtualizingItemsControl
 
 ### Resources
-* [Sample Application](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/tree/master/downloads)
+* [Sample Application](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/tree/master/SamplesApplication.md)
 * [API-Documentation](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.html)
 * [Source Code](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/tree/master/VirtualizingWrapPanel/VirtualizingWrapPanel)
 
