@@ -134,17 +134,6 @@ namespace WpfToolkit.Controls
         {
             bool invalidateScrollInfo = false;
 
-            if (ViewportHeight != 0 && VerticalOffset != 0 && VerticalOffset + ViewportHeight + 1 >= ExtentHeight)
-            {
-                Offset = new Point(Offset.X, extent.Height - availableSize.Height);
-                invalidateScrollInfo = true;
-            }
-            if (ViewportWidth != 0 && HorizontalOffset != 0 && HorizontalOffset + ViewportWidth + 1 >= ExtentWidth)
-            {
-                Offset = new Point(extent.Width - availableSize.Width, Offset.Y);
-                invalidateScrollInfo = true;
-            }
-
             if (extent != Extent)
             {
                 Extent = extent;
@@ -154,6 +143,17 @@ namespace WpfToolkit.Controls
             if (availableSize != Viewport)
             {
                 Viewport = availableSize;
+                invalidateScrollInfo = true;
+            }
+
+            if (ViewportHeight != 0 && VerticalOffset != 0 && VerticalOffset + ViewportHeight + 1 >= ExtentHeight)
+            {
+                Offset = new Point(Offset.X, extent.Height - availableSize.Height);
+                invalidateScrollInfo = true;
+            }
+            if (ViewportWidth != 0 && HorizontalOffset != 0 && HorizontalOffset + ViewportWidth + 1 >= ExtentWidth)
+            {
+                Offset = new Point(extent.Width - availableSize.Width, Offset.Y);
                 invalidateScrollInfo = true;
             }
 
