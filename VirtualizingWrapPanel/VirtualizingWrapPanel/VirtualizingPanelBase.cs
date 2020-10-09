@@ -267,15 +267,18 @@ namespace WpfToolkit.Controls
             }
             else
             {
-                /* Sometimes the scrollbar gets hidden without any reason, to prevent
-                 * a layout circle, return without any recalculation. */
-                if (ScrollOwner.ComputedVerticalScrollBarVisibility != Visibility.Visible && ViewportHeight < ExtentHeight)
+                if (ScrollOwner != null)
                 {
-                    return availableSize;
-                }
-                if (ScrollOwner.ComputedHorizontalScrollBarVisibility != Visibility.Visible && ViewportWidth < ExtentWidth)
-                {
-                    return availableSize;
+                    /* Sometimes the scrollbar gets hidden without any reason, to prevent
+                     * a layout circle, return without any recalculation. */
+                    if (ScrollOwner.ComputedVerticalScrollBarVisibility != Visibility.Visible && ViewportHeight < ExtentHeight)
+                    {
+                        return availableSize;
+                    }
+                    if (ScrollOwner.ComputedHorizontalScrollBarVisibility != Visibility.Visible && ViewportWidth < ExtentWidth)
+                    {
+                        return availableSize;
+                    }
                 }
 
                 extent = CalculateExtent(availableSize);
