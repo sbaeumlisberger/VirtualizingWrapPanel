@@ -19,16 +19,16 @@ namespace WpfToolkit.Controls
         /// <summary>
         /// Gets or sets the data template used for the item expansion.
         /// </summary>
-        public DataTemplate ExpandedItemTemplate { get => (DataTemplate)GetValue(ExpandedItemTemplateProperty); set => SetValue(ExpandedItemTemplateProperty, value); }
+        public DataTemplate? ExpandedItemTemplate { get => (DataTemplate?)GetValue(ExpandedItemTemplateProperty); set => SetValue(ExpandedItemTemplateProperty, value); }
 
         /// <summary>
         /// Gets or set the expanded item. The default value is null.
         /// </summary>
-        public object ExpandedItem { get => GetValue(ExpandedItemProperty); set => SetValue(ExpandedItemProperty, value); }
+        public object? ExpandedItem { get => GetValue(ExpandedItemProperty); set => SetValue(ExpandedItemProperty, value); }
 
         private int ExpandedItemIndex => Items.IndexOf(ExpandedItem);
 
-        private FrameworkElement expandedItemChild = null;
+        private FrameworkElement? expandedItemChild = null;
 
         private int itemIndexFollwingExpansion;
 
@@ -161,7 +161,7 @@ namespace WpfToolkit.Controls
                         }
                     }
 
-                    if (itemIndex == itemIndexFollwingExpansion)
+                    if (itemIndex == itemIndexFollwingExpansion && ExpandedItemTemplate != null)
                     {
                         if (expandedItemChild == null)
                         {
@@ -249,7 +249,7 @@ namespace WpfToolkit.Controls
         {
             var offset = (index / itemsPerRowCount) * GetHeight(childSize);
 
-            if (itemIndexFollwingExpansion != -1 && index > itemIndexFollwingExpansion)
+            if (expandedItemChild != null && index > itemIndexFollwingExpansion)
             {
                 offset += GetHeight(expandedItemChild.DesiredSize);
             }

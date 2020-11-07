@@ -14,7 +14,7 @@ namespace WpfToolkit.Controls
     /// </summary>
     public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     {
-        public ScrollViewer ScrollOwner { get; set; }
+        public ScrollViewer? ScrollOwner { get; set; }
 
         public bool CanVerticallyScroll { get; set; }
         public bool CanHorizontallyScroll { get; set; }
@@ -77,31 +77,32 @@ namespace WpfToolkit.Controls
         {
             get
             {
-                if (_itemsOwner == null)
+                if (_itemsOwner is null)
                 {
                     /* Use reflection to access internal method because the public 
                      * GetItemsOwner method does always return the itmes control instead 
                      * of the real items owner for example the group item when grouping */
-                    _itemsOwner = (DependencyObject)typeof(ItemsControl).GetMethod(
-                       "GetItemsOwnerInternal",
-                       BindingFlags.Static | BindingFlags.NonPublic,
-                       null,
-                       new Type[] { typeof(DependencyObject) },
-                       null
-                    ).Invoke(null, new object[] { this });
+                    MethodInfo getItemsOwnerInternalMethod = typeof(ItemsControl).GetMethod(
+                        "GetItemsOwnerInternal",
+                        BindingFlags.Static | BindingFlags.NonPublic,
+                        null,
+                        new Type[] { typeof(DependencyObject) },
+                        null
+                    )!;
+                    _itemsOwner = (DependencyObject)getItemsOwnerInternalMethod.Invoke(null, new object[] { this })!;
                 }
                 return _itemsOwner;
             }
         }
-        private DependencyObject _itemsOwner;
+        private DependencyObject? _itemsOwner;
 
-        protected ReadOnlyCollection<object> Items => ((ItemContainerGenerator)ItemContainerGenerator).Items;
+        protected ReadOnlyCollection<object?> Items => ((ItemContainerGenerator)ItemContainerGenerator).Items;
 
         protected new IRecyclingItemContainerGenerator ItemContainerGenerator
         {
             get
             {
-                if (_itemContainerGenerator == null)
+                if (_itemContainerGenerator is null)
                 {
                     /* Because of a bug in the framework the ItemContainerGenerator 
                      * is null until InternalChildren accessed at least one time. */
@@ -111,7 +112,7 @@ namespace WpfToolkit.Controls
                 return _itemContainerGenerator;
             }
         }
-        private IRecyclingItemContainerGenerator _itemContainerGenerator;
+        private IRecyclingItemContainerGenerator? _itemContainerGenerator;
 
         public double ExtentWidth => Extent.Width;
         public double ExtentHeight => Extent.Height;
@@ -221,27 +222,6 @@ namespace WpfToolkit.Controls
         protected virtual GeneratorPosition GetGeneratorPositionFromChildIndex(int childIndex)
         {
             return new GeneratorPosition(childIndex, 0);
-        }
-
-        private static T GetVisualChild<T>(DependencyObject parent) where T : Visual
-        {
-            T child = default(T);
-
-            int numVisuals = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < numVisuals; i++)
-            {
-                Visual v = (Visual)VisualTreeHelper.GetChild(parent, i);
-                child = v as T;
-                if (child == null)
-                {
-                    child = GetVisualChild<T>(v);
-                }
-                if (child != null)
-                {
-                    break;
-                }
-            }
-            return child;
         }
 
         protected override Size MeasureOverride(Size availableSize)

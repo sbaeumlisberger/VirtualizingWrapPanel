@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,12 +19,12 @@ namespace WpfToolkit.Controls
         public static readonly DependencyProperty ExpandedItemProperty = DependencyProperty.Register(nameof(ExpandedItem), typeof(object), typeof(GridDetailsView), new FrameworkPropertyMetadata(null));
 
         /// <summary>Gets or sets the data template used for the item expansion.</summary>
-        public DataTemplate ExpandedItemTemplate { get => (DataTemplate)GetValue(ExpandedItemTemplateProperty); set => SetValue(ExpandedItemTemplateProperty, value); }
+        public DataTemplate? ExpandedItemTemplate { get => (DataTemplate?)GetValue(ExpandedItemTemplateProperty); set => SetValue(ExpandedItemTemplateProperty, value); }
 
         /// <summary>Gets the currently expanded item. If no item is expanded null is returned.</summary>
-        public object ExpandedItem { get => GetValue(ExpandedItemProperty); private set => SetValue(ExpandedItemProperty, value); }
+        public object? ExpandedItem { get => GetValue(ExpandedItemProperty); private set => SetValue(ExpandedItemProperty, value); }
 
-        private FrameworkElement expandedItemContainerRoot;
+        private FrameworkElement? expandedItemContainerRoot;
 
         private bool animateExpansion = false;
         private bool animateCloseExpansion = false;
@@ -120,6 +121,10 @@ namespace WpfToolkit.Controls
         {
             get
             {
+                if (expandedItemContainerRoot is null)
+                {
+                    throw new NullReferenceException($"{nameof(expandedItemContainerRoot)} is null");
+                }
                 if (Orientation == Orientation.Vertical)
                 {
                     return expandedItemContainerRoot.DesiredSize.Height;
@@ -135,6 +140,10 @@ namespace WpfToolkit.Controls
         {
             get
             {
+                if (expandedItemContainerRoot is null)
+                {
+                    throw new NullReferenceException($"{nameof(expandedItemContainerRoot)} is null");
+                }
                 if (Orientation == Orientation.Vertical)
                 {
                     return expandedItemContainerRoot.MaxHeight;
@@ -146,6 +155,10 @@ namespace WpfToolkit.Controls
             }
             set
             {
+                if (expandedItemContainerRoot is null)
+                {
+                    throw new NullReferenceException($"{nameof(expandedItemContainerRoot)} is null");
+                }
                 if (Orientation == Orientation.Vertical)
                 {
                     expandedItemContainerRoot.MaxHeight = value;
