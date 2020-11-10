@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows;
 using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 
 namespace WpfToolkit.Controls
 {
@@ -273,7 +274,7 @@ namespace WpfToolkit.Controls
             }
         }
 
-        private T ReadItemContainerStyle<T>(DependencyProperty property, T fallbackValue = default)
+        private T ReadItemContainerStyle<T>(DependencyProperty property, T fallbackValue) where T : notnull
         {
             var value = ItemsControl.ItemContainerStyle?.Setters.OfType<Setter>()
                 .FirstOrDefault(setter => setter.Property == property)?.Value;
