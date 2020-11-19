@@ -37,7 +37,7 @@ namespace WpfToolkit.Controls
         public bool StretchItems { get => (bool)GetValue(StretchItemsProperty); set => SetValue(StretchItemsProperty, value); }
 
         static GridView()
-        {            
+        {
             ItemContainerStyleProperty.OverrideMetadata(typeof(GridView), new FrameworkPropertyMetadata(new Style
             {
                 Setters = {
@@ -62,7 +62,7 @@ namespace WpfToolkit.Controls
         }
 
         public GridView()
-        {           
+        {
             var factory = new FrameworkElementFactory(typeof(VirtualizingWrapPanel));
             factory.SetBinding(VirtualizingWrapPanel.OrientationProperty, new Binding
             {
