@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:VirtualizingWrapPanelSamples"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-
-    </Application.Resources>
+        <!-- prevent binding errors (https://stackoverflow.com/a/9286069) -->
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="VerticalContentAlignment" Value="Top" />
+        </Style>
+    </Application.Resources>      
 </Application>
