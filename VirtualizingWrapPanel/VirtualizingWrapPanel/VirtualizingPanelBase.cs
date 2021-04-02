@@ -251,11 +251,15 @@ namespace WpfToolkit.Controls
                 {
                     /* Sometimes the scrollbar gets hidden without any reason, to prevent
                      * a layout circle, return without any recalculation. */
-                    if (ScrollOwner.ComputedVerticalScrollBarVisibility != Visibility.Visible && ViewportHeight < ExtentHeight)
+                    if (ScrollOwner.VerticalScrollBarVisibility == ScrollBarVisibility.Auto 
+                        && ScrollOwner.ComputedVerticalScrollBarVisibility != Visibility.Visible 
+                        && ViewportHeight < ExtentHeight)
                     {
                         return availableSize;
                     }
-                    if (ScrollOwner.ComputedHorizontalScrollBarVisibility != Visibility.Visible && ViewportWidth < ExtentWidth)
+                    if (ScrollOwner.HorizontalScrollBarVisibility == ScrollBarVisibility.Auto 
+                        && ScrollOwner.ComputedHorizontalScrollBarVisibility != Visibility.Visible 
+                        && ViewportWidth < ExtentWidth)
                     {
                         return availableSize;
                     }
