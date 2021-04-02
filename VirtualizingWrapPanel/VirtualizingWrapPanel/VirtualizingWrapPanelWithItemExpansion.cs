@@ -167,7 +167,7 @@ namespace WpfToolkit.Controls
                         {
                             expandedItemChild = (FrameworkElement)ExpandedItemTemplate.LoadContent();
                             expandedItemChild.DataContext = Items[expandedItemIndex];
-                            expandedItemChild.Measure(Viewport);
+                            expandedItemChild.Measure(CreateSize(GetWidth(Viewport), double.MaxValue));
                         }
                         if (!InternalChildren.Contains(expandedItemChild))
                         {
