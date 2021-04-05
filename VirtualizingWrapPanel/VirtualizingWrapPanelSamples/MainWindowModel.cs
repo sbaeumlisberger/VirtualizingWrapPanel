@@ -27,24 +27,23 @@ namespace VirtualizingWrapPanelSamples
         public Orientation[] AvailableOrientations { get; } = (Orientation[])Enum.GetValues(typeof(Orientation));
         public SpacingMode[] AvailableSpacingModes { get; } = (SpacingMode[])Enum.GetValues(typeof(SpacingMode));
         public ScrollUnit[] AvailableScrollUnits { get; } = (ScrollUnit[])Enum.GetValues(typeof(ScrollUnit));
+        public ScrollBarVisibility[] AvailableScrollBarVisibilities { get; } = (ScrollBarVisibility[])Enum.GetValues(typeof(ScrollBarVisibility));
 
-        public Orientation Orientation
-        {
-            get => orientation;
-            set
-            {
-                SetField(ref orientation, value);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OrientationInverted)));
-            }
-        }
-        public Orientation OrientationInverted => Orientation == Orientation.Vertical ? Orientation.Horizontal : Orientation.Vertical;
-
+        public Orientation Orientation { get => orientation; set => SetField(ref orientation, value); }
         public VirtualizationCacheLengthUnit CacheUnit { get => cacheUnit; set => SetField(ref cacheUnit, value); }
         public VirtualizationCacheLength CacheLength { get => cacheLength; set => SetField(ref cacheLength, value); }
         public VirtualizationMode VirtualizationMode { get => virtualizationMode; set => SetField(ref virtualizationMode, value); }
         public SpacingMode SpacingMode { get => spacingMode; set => SetField(ref spacingMode, value); }
         public bool StretchItems { get => stretchItems; set => SetField(ref stretchItems, value); }
         public ScrollUnit ScrollUnit { get => scrollUnit; set => SetField(ref scrollUnit, value); }
+        public bool IsScrollByPixel => ScrollUnit == ScrollUnit.Pixel;
+        public bool IsScrollByItem => ScrollUnit == ScrollUnit.Item;
+        public double ScrollLineDelta { get => scrollLineDelta; set => SetField(ref scrollLineDelta, value); }
+        public double MouseWheelDelta { get => mouseWheelDelta; set => SetField(ref mouseWheelDelta, value); }
+        public int ScrollLineDeltaItem { get => scrollLineDeltaItem; set => SetField(ref scrollLineDeltaItem, value); }
+        public int MouseWheelDeltaItem { get => mouseWheelDeltaItem; set => SetField(ref mouseWheelDeltaItem, value); }
+        public ScrollBarVisibility HorizontalScrollBarVisibility { get => horizontalScrollBarVisibility; set => SetField(ref horizontalScrollBarVisibility, value); }
+        public ScrollBarVisibility VerticalScrollBarVisibility { get => verticalScrollBarVisibility; set => SetField(ref verticalScrollBarVisibility, value); }
 
         private int renderedItemsCount = 0;
 
@@ -58,6 +57,12 @@ namespace VirtualizingWrapPanelSamples
         private SpacingMode spacingMode = SpacingMode.Uniform;
         private bool stretchItems = false;
         private ScrollUnit scrollUnit = ScrollUnit.Pixel;
+        private double scrollLineDelta = 16.0;
+        private double mouseWheelDelta = 48.0;
+        private int scrollLineDeltaItem = 1;
+        private int mouseWheelDeltaItem = 3;
+        private ScrollBarVisibility horizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+        private ScrollBarVisibility verticalScrollBarVisibility = ScrollBarVisibility.Auto;
 
         private readonly Random random = new Random();
 
@@ -125,6 +130,10 @@ namespace VirtualizingWrapPanelSamples
                     break;
                 case nameof(IsAutoRefreshMemoryUsageEnabled):
                     UpdateMemoryUsageRefreshTimer();
+                    break;
+                case nameof(ScrollUnit):
+                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(IsScrollByPixel)));
+                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(IsScrollByItem)));
                     break;
             }
         }

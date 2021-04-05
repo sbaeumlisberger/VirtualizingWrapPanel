@@ -9,10 +9,11 @@
         x:Name="window"
         Title="VirtualizingWrapPanel Samples"
         Width="1000"
-        Height="600">
+        Height="680">
 
     <Window.Resources>
         <local:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <DataTemplate x:Key="ItemTemplate" DataType="local:TestItem">
             <StackPanel
                 Background="{Binding Background, Mode=OneTime, Converter={StaticResource ColorToBrushConverter}}"
@@ -65,52 +66,84 @@
                     VerticalAlignment="Center" />
             </StackPanel>
         </Grid>
-        
+
         <StackPanel 
             DockPanel.Dock="Left"
             Margin="0,0,12,0"
             Width="144">
-            <TextBlock VerticalAlignment="Center" Text="Orientation " />
+            <TextBlock VerticalAlignment="Center" Text="Orientation" />
             <ComboBox
                 Margin="0,2,0,0"
                 ItemsSource="{Binding AvailableOrientations, Mode=OneTime}"
                 SelectedItem="{Binding Orientation, Mode=TwoWay}" />
 
-            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Spacing Mode " />
+            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Spacing Mode" />
             <ComboBox
                 Margin="0,2,0,0"
                 ItemsSource="{Binding AvailableSpacingModes, Mode=OneTime}"
                 SelectedItem="{Binding SpacingMode, Mode=TwoWay}" />
 
-            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Stretch Items " />
+            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Stretch Items" />
             <CheckBox 
                 Margin="0,2,0,0"
-                IsChecked="{Binding StretchItems, Mode=TwoWay}" />
+                IsChecked="{Binding StretchItems, Mode=TwoWay}"/>
 
-            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Cache Unit " />
+            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Cache Unit" />
             <ComboBox
                 Margin="0,2,0,0"
                 ItemsSource="{Binding AvailableCacheUnits, Mode=OneTime}"
                 SelectedItem="{Binding CacheUnit, Mode=TwoWay}" />
 
-            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Cache Length " />
+            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Cache Length" />
             <TextBox 
                 Margin="0,2,0,0"
                 Text="{Binding CacheLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Scroll Unit " />
-            <ComboBox
-                Margin="0,2,0,0"
-                ItemsSource="{Binding AvailableScrollUnits, Mode=OneTime}"
-                SelectedItem="{Binding ScrollUnit, Mode=TwoWay}" />
-
-            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Virtualization Mode " />
+            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Virtualization Mode" />
             <ComboBox
                 Margin="0,2,0,0"
                 ItemsSource="{Binding AvailableVirtualizationModes, Mode=OneTime}"
                 SelectedItem="{Binding VirtualizationMode, Mode=TwoWay}" />
 
-            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Filter (>) " />
+            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Scroll Unit" />
+            <ComboBox
+                Margin="0,2,0,0"
+                ItemsSource="{Binding AvailableScrollUnits, Mode=OneTime}"
+                SelectedItem="{Binding ScrollUnit, Mode=TwoWay}" />
+
+            <StackPanel Visibility="{Binding IsScrollByPixel, Converter={StaticResource BoolToVisibilityConverter}}">
+                <TextBlock Margin="0,4,0,0" VerticalAlignment="Center" Text="Scroll Line Delta" />
+                <TextBox 
+                    Margin="0,2,0,0"
+                    Text="{Binding ScrollLineDelta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Margin="0,4,0,0" VerticalAlignment="Center" Text="Mouse Wheel Delta" />
+                <TextBox 
+                    Margin="0,2,0,0"
+                    Text="{Binding MouseWheelDelta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+            <StackPanel Visibility="{Binding IsScrollByItem, Converter={StaticResource BoolToVisibilityConverter}}">
+                <TextBlock Margin="0,4,0,0" VerticalAlignment="Center" Text="Scroll Line Delta" />
+                <TextBox 
+                    Margin="0,2,0,0"
+                    Text="{Binding ScrollLineDeltaItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Margin="0,4,0,0" VerticalAlignment="Center" Text="Mouse Wheel Delta" />
+                <TextBox 
+                    Margin="0,2,0,0"
+                    Text="{Binding MouseWheelDeltaItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="HorizontalScrollBarVisibility" />
+            <ComboBox
+                Margin="0,2,0,0"
+                ItemsSource="{Binding AvailableScrollBarVisibilities, Mode=OneTime}"
+                SelectedItem="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}" />
+            <TextBlock Margin="0,4,0,0" VerticalAlignment="Center" Text="VerticalScrollBarVisibility" />
+            <ComboBox
+                Margin="0,2,0,0"
+                ItemsSource="{Binding AvailableScrollBarVisibilities, Mode=OneTime}"
+                SelectedItem="{Binding VerticalScrollBarVisibility, Mode=TwoWay}" />
+
+            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Filter (>)" />
             <TextBox 
                 x:Name="filterTextBox" 
                 Margin="0,2,0,0"
@@ -143,9 +176,11 @@
                         VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
-                        VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}">
+                        VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}">
                         <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
+                            <Style TargetType="{x:Type ListViewItem}">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                 <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                             </Style>
@@ -155,9 +190,13 @@
                                 <wpftk:VirtualizingWrapPanel
                                     Orientation="{Binding Orientation, Mode=OneWay}"
                                     SpacingMode="{Binding SpacingMode, Mode=OneWay}"
-                                    StretchItems="{Binding StretchItems, Mode=OneWay}"/>
+                                    StretchItems="{Binding StretchItems, Mode=OneWay}"
+                                    ScrollLineDelta="{Binding ScrollLineDelta, Mode=OneWay}"
+                                    MouseWheelDelta="{Binding MouseWheelDelta, Mode=OneWay}"
+                                    ScrollLineDeltaItem="{Binding ScrollLineDeltaItem, Mode=OneWay}"
+                                    MouseWheelDeltaItem="{Binding MouseWheelDeltaItem, Mode=OneWay}"/>
                             </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>                       
+                        </ListView.ItemsPanel>
                     </ListView>
                 </DockPanel>
             </TabItem>
@@ -172,7 +211,9 @@
                         VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
-                        VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}">
+                        VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -184,7 +225,11 @@
                                 <wpftk:VirtualizingWrapPanel
                                     Orientation="{Binding Orientation, Mode=OneWay}"
                                     SpacingMode="{Binding SpacingMode, Mode=OneWay}"
-                                    StretchItems="{Binding StretchItems, Mode=OneWay}"
+                                    StretchItems="{Binding StretchItems, Mode=OneWay}"                                    
+                                    ScrollLineDelta="{Binding ScrollLineDelta, Mode=OneWay}"
+                                    MouseWheelDelta="{Binding MouseWheelDelta, Mode=OneWay}"
+                                    ScrollLineDeltaItem="{Binding ScrollLineDeltaItem, Mode=OneWay}"
+                                    MouseWheelDeltaItem="{Binding MouseWheelDeltaItem, Mode=OneWay}"
                                     ItemSize="200,200" />
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
@@ -203,7 +248,9 @@
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
-                        VirtualizingPanel.IsVirtualizingWhenGrouping="True">
+                        VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -215,6 +262,10 @@
                                 <wpftk:VirtualizingWrapPanel
                                     Orientation="{Binding DataContext.Orientation, Mode=OneWay, ElementName=window}"
                                     SpacingMode="{Binding DataContext.SpacingMode, Mode=OneWay, ElementName=window}"                                    
+                                    ScrollLineDelta="{Binding ScrollLineDelta, Mode=OneWay}"
+                                    MouseWheelDelta="{Binding MouseWheelDelta, Mode=OneWay}"
+                                    ScrollLineDeltaItem="{Binding ScrollLineDeltaItem, Mode=OneWay}"
+                                    MouseWheelDeltaItem="{Binding MouseWheelDeltaItem, Mode=OneWay}"
                                     StretchItems="{Binding StretchItems, Mode=OneWay}"/>
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
@@ -249,13 +300,19 @@
                         VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
-                        VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}">
+                        VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <wpftk:VirtualizingWrapPanel
                                     Orientation="{Binding Orientation, Mode=OneWay}"
                                     SpacingMode="{Binding SpacingMode, Mode=OneWay}" 
-                                    StretchItems="{Binding StretchItems, Mode=OneWay}"/>
+                                    StretchItems="{Binding StretchItems, Mode=OneWay}"                                    
+                                    ScrollLineDelta="{Binding ScrollLineDelta, Mode=OneWay}"
+                                    MouseWheelDelta="{Binding MouseWheelDelta, Mode=OneWay}"
+                                    ScrollLineDeltaItem="{Binding ScrollLineDeltaItem, Mode=OneWay}"
+                                    MouseWheelDeltaItem="{Binding MouseWheelDeltaItem, Mode=OneWay}"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                     </wpftk:VirtualizingItemsControl>
@@ -272,6 +329,8 @@
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}"
                         Orientation="{Binding Orientation, Mode=OneWay}"
                         SpacingMode="{Binding SpacingMode, Mode=OneWay}"
                         StretchItems="{Binding StretchItems, Mode=OneWay}"/>
@@ -288,6 +347,8 @@
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}"
                         Orientation="{Binding Orientation, Mode=OneWay}"
                         SpacingMode="{Binding SpacingMode, Mode=OneWay}"
                         StretchItems="{Binding StretchItems, Mode=OneWay}">
@@ -319,7 +380,7 @@
                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <WrapPanel Orientation="{Binding OrientationInverted, Mode=OneWay}" />
+                                <WrapPanel/>
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
                     </ListView>
