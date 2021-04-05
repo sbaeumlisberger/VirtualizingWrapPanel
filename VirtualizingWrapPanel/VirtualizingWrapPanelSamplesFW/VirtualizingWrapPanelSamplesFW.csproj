@@ -55,6 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="..\VirtualizingWrapPanelSamples\BoolToVisibilityConverter.cs">
+      <Link>BoolToVisibilityConverter.cs</Link>
+    </Compile>
     <Compile Include="..\VirtualizingWrapPanelSamples\ColorToBrushConverter.cs">
       <Link>ColorToBrushConverter.cs</Link>
     </Compile>

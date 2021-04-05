@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace WpfToolkit.Controls
 {
@@ -167,7 +167,7 @@ namespace WpfToolkit.Controls
                         {
                             expandedItemChild = (FrameworkElement)ExpandedItemTemplate.LoadContent();
                             expandedItemChild.DataContext = Items[expandedItemIndex];
-                            expandedItemChild.Measure(Viewport);
+                            expandedItemChild.Measure(CreateSize(GetWidth(Viewport), double.MaxValue));
                         }
                         if (!InternalChildren.Contains(expandedItemChild))
                         {

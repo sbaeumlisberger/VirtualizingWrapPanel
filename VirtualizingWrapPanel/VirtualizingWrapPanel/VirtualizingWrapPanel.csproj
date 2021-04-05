@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0-windows;netcoreapp3.1;netcoreapp3.0;net45</TargetFrameworks>
+    <TargetFrameworks>net45;netcoreapp3.0;netcoreapp3.1;net5.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <title>VirtualizingWrapPanel</title>
-    <Version>1.5.3</Version>
+    <Version>1.5.4</Version>
     <Authors>S. Bäumlisbergerr</Authors>
     <Copyright>© S. Bäumlisberger</Copyright>
     <Description>Implementation of a VirtualizingWrapPanel for WPF running .NET Framework or .NET Core. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. In addition a simple VirtualizingItemsControl is included. Samples, API-Documentation and Source Code are available on the project site.</Description>
@@ -39,8 +39,9 @@
 
     <PackageTags>VirtualizingWrapPanel, VirtualizingPanel, WrapPanel, GridView, Virtualization, WPF, XAML, .NET </PackageTags>
 
-    <PackageReleaseNotes>- Add .NET Core 3.1 and .NET 5 as target frameworks
-- Fix a possible null reference exception that occurs in rare cases</PackageReleaseNotes>
+    <PackageReleaseNotes>- Add ScrollLineDeltaItem property analogous to the existing MouseWhellDeltaItem property
+- Fix that the scroll offset is not updated when changing the scroll bar visibility
+- Fix a clipping issue with the GridDetailsView control when only a small number of items is shown</PackageReleaseNotes>
 
     <RootNamespace>WpfToolkit.Controls</RootNamespace>
   </PropertyGroup>
