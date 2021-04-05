@@ -14,6 +14,11 @@ namespace WpfToolkit.Controls
     /// </summary>
     public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     {
+        public static readonly DependencyProperty ScrollLineDeltaProperty = DependencyProperty.Register(nameof(ScrollLineDelta), typeof(double), typeof(VirtualizingPanelBase), new FrameworkPropertyMetadata(16.0));
+        public static readonly DependencyProperty MouseWheelDeltaProperty = DependencyProperty.Register(nameof(MouseWheelDelta), typeof(double), typeof(VirtualizingPanelBase), new FrameworkPropertyMetadata(48.0));
+        public static readonly DependencyProperty ScrollLineDeltaItemProperty = DependencyProperty.Register(nameof(ScrollLineDeltaItem), typeof(int), typeof(VirtualizingPanelBase), new FrameworkPropertyMetadata(1));
+        public static readonly DependencyProperty MouseWheelDeltaItemProperty = DependencyProperty.Register(nameof(MouseWheelDeltaItem), typeof(int), typeof(VirtualizingPanelBase), new FrameworkPropertyMetadata(3));
+
         public ScrollViewer? ScrollOwner { get; set; }
 
         public bool CanVerticallyScroll { get; set; }
@@ -24,17 +29,22 @@ namespace WpfToolkit.Controls
         /// <summary>
         /// Scroll line delta for pixel based scrolling. The default value is 16 dp.
         /// </summary>
-        public double ScrollLineDelta { get; set; } = 16.0; // https://referencesource.microsoft.com/#PresentationFramework/src/Framework/System/Windows/Controls/ScrollViewer.cs,278cafe26a902287,references
+        public double ScrollLineDelta { get => (double)GetValue(ScrollLineDeltaProperty); set => SetValue(ScrollLineDeltaProperty, value); }
 
         /// <summary>
         /// Mouse wheel delta for pixel based scrolling. The default value is 48 dp.
         /// </summary>        
-        public double MouseWheelDelta { get; set; } = 48.0; // https://referencesource.microsoft.com/#PresentationFramework/src/Framework/System/Windows/Controls/ScrollViewer.cs,278cafe26a902287,references
+        public double MouseWheelDelta { get => (double)GetValue(MouseWheelDeltaProperty); set => SetValue(MouseWheelDeltaProperty, value); }
+
+        /// <summary>
+        /// Scroll line delta for item based scrolling. The default value is 1 item.
+        /// </summary>
+        public double ScrollLineDeltaItem { get => (int)GetValue(ScrollLineDeltaItemProperty); set => SetValue(ScrollLineDeltaItemProperty, value); }
 
         /// <summary>
         /// Mouse wheel delta for item based scrolling. The default value is 3 items.
         /// </summary> 
-        public int MouseWheelDeltaItem { get; set; } = 3;
+        public int MouseWheelDeltaItem { get => (int)GetValue(MouseWheelDeltaItemProperty); set => SetValue(MouseWheelDeltaItemProperty, value); }      
 
         protected ScrollUnit ScrollUnit => GetScrollUnit(ItemsControl);
 

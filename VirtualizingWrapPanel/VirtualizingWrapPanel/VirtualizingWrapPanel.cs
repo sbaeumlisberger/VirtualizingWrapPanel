@@ -14,17 +14,11 @@ namespace WpfToolkit.Controls
     {
         #region Deprecated properties
 
-        [Obsolete("Use ItemSizeProperty")]
-        public static readonly DependencyProperty ChildrenSizeProperty = ItemSizeProperty;
-
-        [Obsolete("Use IsSpacingEnabledProperty")]
-        public static readonly DependencyProperty SpacingEnabledProperty = IsSpacingEnabledProperty;
+        [Obsolete("Use SpacingMode")]
+        public static readonly DependencyProperty IsSpacingEnabledProperty = DependencyProperty.Register(nameof(IsSpacingEnabled), typeof(bool), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         [Obsolete("Use IsSpacingEnabled")]
         public bool SpacingEnabled { get => IsSpacingEnabled; set => IsSpacingEnabled = value; }
-
-        [Obsolete("Use SpacingMode")]
-        public static readonly DependencyProperty IsSpacingEnabledProperty = DependencyProperty.Register(nameof(IsSpacingEnabled), typeof(bool), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         ///  Gets or sets a value that specifies whether the items are distributed evenly across the width (horizontal orientation) 
@@ -392,22 +386,22 @@ namespace WpfToolkit.Controls
 
         protected override double GetLineUpScrollAmount()
         {
-            return -childSize.Height;
+            return -Math.Min(childSize.Height * ScrollLineDeltaItem, Viewport.Height);
         }
 
         protected override double GetLineDownScrollAmount()
         {
-            return childSize.Height;
+            return Math.Min(childSize.Height * ScrollLineDeltaItem, Viewport.Height);
         }
 
         protected override double GetLineLeftScrollAmount()
         {
-            return -childSize.Width;
+            return -Math.Min(childSize.Width * ScrollLineDeltaItem, Viewport.Width);
         }
 
         protected override double GetLineRightScrollAmount()
         {
-            return childSize.Width;
+            return Math.Min(childSize.Width * ScrollLineDeltaItem, Viewport.Width);
         }
 
         protected override double GetMouseWheelUpScrollAmount()
