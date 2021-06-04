@@ -1,15 +1,13 @@
 ## VirtualizingWrapPanel
 
-Implementation of a VirtualizingWrapPanel and some additional controls based on it for WPF running .NET Framework 4.5+ or .NET Core 3.0+.
+Implementation of a VirtualizingWrapPanel for WPF running .NET Framework 4.5+, .NET Core 3.0+ or .NET 5.0+. The [GridView](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.GridView.html) and [GridDetailsView](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.GridDetailsView.html) controls are providing a easy to use out-of-the-box experience.
 
 ### Features
 * Horizontal and vertical orientation
 * Caching by page, items or pixels
 * Container recycling
 * Grouping (experimental)
-* GridView control (easy to use out of the box experience)
-* GridDetailsView control (grid view with item expansion)
-* VirtualizingItemsControl
+* Configurable spacing behaviour
 
 ### Resources
 * [Sample Application](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/tree/master/SamplesApplication.md)
@@ -18,3 +16,7 @@ Implementation of a VirtualizingWrapPanel and some additional controls based on 
 
 ### Download
 * [NuGet Package](https://www.nuget.org/packages/VirtualizingWrapPanel/)
+
+### Contribution
+Feel free to open an issue. I am also willing to accept pull requests, but please open an issue first to discuss.  
+You can also make a [donation](https://www.paypal.com/paypalme/sbaeumlisberger) to support the future development of the project.
