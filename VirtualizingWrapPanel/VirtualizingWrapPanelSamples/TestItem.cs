@@ -7,6 +7,8 @@ namespace VirtualizingWrapPanelSamples
     {
         public string Group { get; }
         public int Number { get; }
+        public int Width { get; }
+        public int Height { get; }
         public Color Background { get; }
         public DateTime CurrentDateTime => DateTime.Now;
 
@@ -16,9 +18,11 @@ namespace VirtualizingWrapPanelSamples
         {
             Group = group;
             Number = number;
-            byte[] randomBytes = new byte[3];
-            random.NextBytes(randomBytes);
-            Background = Color.FromRgb(randomBytes[0], randomBytes[1], randomBytes[2]);
+            Width = random.Next(20, 200);
+            Height = random.Next(40, 80);
+            Background = Color.FromRgb(RandomByte(), RandomByte(), RandomByte());
         }
+
+        static byte RandomByte() => (byte)random.Next(0, byte.MaxValue);
     }
 }

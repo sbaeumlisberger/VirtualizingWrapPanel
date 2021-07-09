@@ -22,7 +22,8 @@
                 Loaded="Item_Loaded"
                 Unloaded="Item_Unloaded">
                 <TextBlock
-                    Width="100"
+                    Width="{Binding Width, Mode=OneTime}"
+                    Height="{Binding Height, Mode=OneTime}"
                     FontSize="20"
                     TextAlignment="Center"
                     Text="{Binding Number, Mode=OneTime}"
