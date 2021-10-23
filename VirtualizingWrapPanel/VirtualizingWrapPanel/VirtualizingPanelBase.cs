@@ -44,7 +44,7 @@ namespace WpfToolkit.Controls
         /// <summary>
         /// Mouse wheel delta for item based scrolling. The default value is 3 items.
         /// </summary> 
-        public int MouseWheelDeltaItem { get => (int)GetValue(MouseWheelDeltaItemProperty); set => SetValue(MouseWheelDeltaItemProperty, value); }      
+        public int MouseWheelDeltaItem { get => (int)GetValue(MouseWheelDeltaItemProperty); set => SetValue(MouseWheelDeltaItemProperty, value); }
 
         protected ScrollUnit ScrollUnit => GetScrollUnit(ItemsControl);
 
@@ -236,6 +236,14 @@ namespace WpfToolkit.Controls
 
         protected override Size MeasureOverride(Size availableSize)
         {
+            /* Sometimes when scrolling the scrollbar gets hidden without any reason. 
+             * In this case the "IsMeasureValid" property is false. To prevent a 
+             * infinite circle the mesasure call is returned without recalculation. */
+            if (ScrollOwner != null && !ScrollOwner.IsMeasureValid)
+            {
+                return availableSize;
+            }
+
             var groupItem = ItemsOwner as IHierarchicalVirtualizationAndScrollInfo;
 
             Size extent;
@@ -254,35 +262,7 @@ namespace WpfToolkit.Controls
                 extent = CalculateExtent(availableSize);
 
                 desiredSize = new Size(extent.Width, extent.Height);
-            }
-            else
-            {
-                if (ScrollOwner != null)
-                {
-                    /* Sometimes the scrollbar gets hidden without any reason, to prevent
-                     * a layout circle, return without any recalculation. */
-                    if (ScrollOwner.VerticalScrollBarVisibility == ScrollBarVisibility.Auto 
-                        && ScrollOwner.ComputedVerticalScrollBarVisibility != Visibility.Visible 
-                        && ViewportHeight < ExtentHeight)
-                    {
-                        return availableSize;
-                    }
-                    if (ScrollOwner.HorizontalScrollBarVisibility == ScrollBarVisibility.Auto 
-                        && ScrollOwner.ComputedHorizontalScrollBarVisibility != Visibility.Visible 
-                        && ViewportWidth < ExtentWidth)
-                    {
-                        return availableSize;
-                    }
-                }
 
-                extent = CalculateExtent(availableSize);
-                double desiredWidth = Math.Min(availableSize.Width, extent.Width);
-                double desiredHeight = Math.Min(availableSize.Height, extent.Height);
-                desiredSize = new Size(desiredWidth, desiredHeight);
-            }
-
-            if (groupItem != null)
-            {
                 Extent = extent;
                 Offset = groupItem.Constraints.Viewport.Location;
                 Viewport = groupItem.Constraints.Viewport.Size;
@@ -291,6 +271,11 @@ namespace WpfToolkit.Controls
             }
             else
             {
+                extent = CalculateExtent(availableSize);
+                double desiredWidth = Math.Min(availableSize.Width, extent.Width);
+                double desiredHeight = Math.Min(availableSize.Height, extent.Height);
+                desiredSize = new Size(desiredWidth, desiredHeight);
+
                 UpdateScrollInfo(desiredSize, extent);
                 CacheLength = GetCacheLength(ItemsOwner);
                 CacheLengthUnit = GetCacheLengthUnit(ItemsOwner); // can be Page, Item or Pixel
