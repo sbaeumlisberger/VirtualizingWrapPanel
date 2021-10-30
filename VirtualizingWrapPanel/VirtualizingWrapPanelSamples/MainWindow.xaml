@@ -16,7 +16,7 @@
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <DataTemplate x:Key="ItemTemplate" DataType="local:TestItem">
             <StackPanel
-                Background="{Binding Background, Mode=OneTime, Converter={StaticResource ColorToBrushConverter}}"
+                Background="{Binding Background, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 Loaded="Item_Loaded"
@@ -25,11 +25,11 @@
                     Width="100"
                     FontSize="20"
                     TextAlignment="Center"
-                    Text="{Binding Number, Mode=OneTime}"
+                    Text="{Binding Number, Mode=OneWay}"
                     Padding="8" />
                 <TextBlock
                     TextAlignment="Center"
-                    Text="{Binding CurrentDateTime, Mode=OneWay, StringFormat='{}{0:hh:mm:ss}'}"
+                    Text="{Binding CurrentDateTime, Mode=OneTime, StringFormat='{}{0:hh:mm:ss}'}"
                     Padding="8" />
             </StackPanel>
         </DataTemplate>
@@ -282,7 +282,7 @@
                                 </GroupStyle.HeaderTemplate>
                                 <GroupStyle.Panel>
                                     <ItemsPanelTemplate>
-                                        <VirtualizingStackPanel 
+                                        <VirtualizingStackPanel
                                             Orientation="{Binding Orientation, Mode=OneWay}" />
                                     </ItemsPanelTemplate>
                                 </GroupStyle.Panel>

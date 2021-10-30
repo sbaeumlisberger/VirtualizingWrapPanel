@@ -341,7 +341,7 @@ namespace WpfToolkit.Controls
 
                 int itemIndex = ItemContainerGenerator.IndexFromGeneratorPosition(generatorPosition);
 
-                if (!ItemRange.Contains(itemIndex))
+                if (itemIndex != -1 && !ItemRange.Contains(itemIndex))
                 {
                     if (VirtualizationMode == VirtualizationMode.Recycling)
                     {
