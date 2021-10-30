@@ -12,7 +12,7 @@ Implementation of a [VirtualizingWrapPanel](https://sbaeumlisberger.github.io/Vi
 ### Resources
 * [Sample Application](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/tree/master/SamplesApplication.md)
 * [API-Documentation](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.html)
-* [Source Code](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/tree/master/VirtualizingWrapPanel/VirtualizingWrapPanel)
+* [Source Code](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/tree/master/src/VirtualizingWrapPanel)
 
 ### Download
 * [NuGet Package](https://www.nuget.org/packages/VirtualizingWrapPanel/)
