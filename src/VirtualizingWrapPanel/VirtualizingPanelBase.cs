@@ -141,6 +141,9 @@ namespace WpfToolkit.Controls
         /// </summary>
         protected ItemRange ItemRange { get; set; }
 
+        private Visibility previousVerticalScrollBarVisibility = Visibility.Collapsed;
+        private Visibility previousHorizontalScrollBarVisibility = Visibility.Collapsed;
+
         protected virtual void UpdateScrollInfo(Size availableSize, Size extent)
         {
             bool invalidateScrollInfo = false;
@@ -236,12 +239,25 @@ namespace WpfToolkit.Controls
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            /* Sometimes when scrolling the scrollbar gets hidden without any reason. 
-             * In this case the "IsMeasureValid" property is false. To prevent a 
-             * infinite circle the mesasure call is returned without recalculation. */
-            if (ScrollOwner != null && !ScrollOwner.IsMeasureValid)
+            /* Sometimes when scrolling the scrollbar gets hidden without any reason. In this case the "IsMeasureValid" 
+             * property of the ScrollOwner is false. To prevent a infinite circle the mesasure call is ignored. */
+            if (ScrollOwner != null)
             {
-                return availableSize;
+                bool verticalScrollBarGotHidden = ScrollOwner.VerticalScrollBarVisibility == ScrollBarVisibility.Auto
+                    && ScrollOwner.ComputedVerticalScrollBarVisibility != Visibility.Visible
+                    && ScrollOwner.ComputedVerticalScrollBarVisibility != previousVerticalScrollBarVisibility;
+
+                bool horizontalScrollBarGotHidden = ScrollOwner.HorizontalScrollBarVisibility == ScrollBarVisibility.Auto
+                   && ScrollOwner.ComputedHorizontalScrollBarVisibility != Visibility.Visible
+                   && ScrollOwner.ComputedHorizontalScrollBarVisibility != previousHorizontalScrollBarVisibility;
+
+                previousVerticalScrollBarVisibility = ScrollOwner.ComputedVerticalScrollBarVisibility;
+                previousHorizontalScrollBarVisibility = ScrollOwner.ComputedHorizontalScrollBarVisibility;
+
+                if (!ScrollOwner.IsMeasureValid && verticalScrollBarGotHidden || horizontalScrollBarGotHidden)
+                {
+                    return availableSize;
+                }
             }
 
             var groupItem = ItemsOwner as IHierarchicalVirtualizationAndScrollInfo;
