@@ -321,6 +321,12 @@ namespace WpfToolkit.Controls
                     UIElement child = (UIElement)ItemContainerGenerator.GenerateNext(out bool isNewlyRealized);
                     if (isNewlyRealized || /*recycled*/!InternalChildren.Contains(child))
                     {
+                        //Action before Add
+                        if (Items?[childIndex] is IVirtualizingContinueWith continueWith)
+                        {
+                            continueWith.AddContinueWith?.Invoke();
+                        }
+
                         if (childIndex >= InternalChildren.Count)
                         {
                             AddInternalChild(child);
@@ -359,6 +365,12 @@ namespace WpfToolkit.Controls
 
                 if (itemIndex != -1 && !ItemRange.Contains(itemIndex))
                 {
+                      //Action before removal
+                    if (Items?[childIndex] is IVirtualizingContinueWith continueWith)
+                    {
+                        continueWith.RemoveContinueWith?.Invoke();
+                    }
+
                     if (VirtualizationMode == VirtualizationMode.Recycling)
                     {
                         ItemContainerGenerator.Recycle(generatorPosition, 1);
