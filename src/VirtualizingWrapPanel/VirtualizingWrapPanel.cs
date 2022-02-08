@@ -373,7 +373,18 @@ namespace WpfToolkit.Controls
 
         protected override void BringIndexIntoView(int index)
         {
+            if (index < 0 || index >= Items.Count) 
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), $"The argument {nameof(index)} must be >= 0 and < the number of items.");
+            }
+
+            if (itemsPerRowCount == 0)
+            {
+                throw new InvalidOperationException();
+            }
+
             var offset = (index / itemsPerRowCount) * GetHeight(childSize);
+
             if (Orientation == Orientation.Horizontal)
             {
                 SetHorizontalOffset(offset);
