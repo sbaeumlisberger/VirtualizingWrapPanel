@@ -321,9 +321,12 @@
             </TabItem>
             <TabItem Header="GridView">
                 <DockPanel Margin="8,0,8,2">
-                    <TextBlock DockPanel.Dock="Top"
-                               Text="The GridView control is a easy to use control displaying a grid of items using a VirtualizingWrapPanel." />
+                    <Grid DockPanel.Dock="Top">
+                        <TextBlock Text="The GridView control is a easy to use control displaying a grid of items using a VirtualizingWrapPanel." />
+                        <CheckBox HorizontalAlignment="Right" IsChecked="{Binding IsImprovedKeyboardNavigationEnabled}">Enable improved keyboard navigation</CheckBox>
+                    </Grid>
                     <wpftk:GridView
+                        IsImprovedKeyboardNavigationEnabled="{Binding IsImprovedKeyboardNavigationEnabled, Mode=OneWay}"
                         Margin="0,2,0,0"
                         ItemTemplate="{StaticResource ItemTemplate}"
                         VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"

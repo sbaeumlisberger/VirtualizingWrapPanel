@@ -44,6 +44,8 @@ namespace VirtualizingWrapPanelSamples
         public int MouseWheelDeltaItem { get => mouseWheelDeltaItem; set => SetField(ref mouseWheelDeltaItem, value); }
         public ScrollBarVisibility HorizontalScrollBarVisibility { get => horizontalScrollBarVisibility; set => SetField(ref horizontalScrollBarVisibility, value); }
         public ScrollBarVisibility VerticalScrollBarVisibility { get => verticalScrollBarVisibility; set => SetField(ref verticalScrollBarVisibility, value); }
+       
+        public bool IsImprovedKeyboardNavigationEnabled { get => isImprovedKeyboardNavigationEnabled; set => SetField(ref isImprovedKeyboardNavigationEnabled, value); }
 
         private int renderedItemsCount = 0;
 
@@ -63,6 +65,8 @@ namespace VirtualizingWrapPanelSamples
         private int mouseWheelDeltaItem = 3;
         private ScrollBarVisibility horizontalScrollBarVisibility = ScrollBarVisibility.Auto;
         private ScrollBarVisibility verticalScrollBarVisibility = ScrollBarVisibility.Auto;
+
+        private bool isImprovedKeyboardNavigationEnabled = false;
 
         private readonly Random random = new Random();
 
