@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VirtualizingWrapPanelSamples"
         xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         x:Name="window"
         Title="VirtualizingWrapPanel Samples"
@@ -320,9 +321,12 @@
             </TabItem>
             <TabItem Header="GridView">
                 <DockPanel Margin="8,0,8,2">
-                    <TextBlock DockPanel.Dock="Top"
-                               Text="The GridView control is a easy to use control displaying a grid of items using a VirtualizingWrapPanel." />
+                    <Grid DockPanel.Dock="Top">
+                        <TextBlock Text="The GridView control is a easy to use control displaying a grid of items using a VirtualizingWrapPanel." />
+                        <CheckBox HorizontalAlignment="Right" IsChecked="{Binding IsImprovedKeyboardNavigationEnabled}">Enable improved keyboard navigation</CheckBox>
+                    </Grid>
                     <wpftk:GridView
+                        IsImprovedKeyboardNavigationEnabled="{Binding IsImprovedKeyboardNavigationEnabled, Mode=OneWay}"
                         Margin="0,2,0,0"
                         ItemTemplate="{StaticResource ItemTemplate}"
                         VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
@@ -364,6 +368,42 @@
                             </DataTemplate>
                         </wpftk:GridDetailsView.ExpandedItemTemplate>
                     </wpftk:GridDetailsView>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Material Design">
+                <TabItem.Resources>
+                    <ResourceDictionary>
+                        <ResourceDictionary.MergedDictionaries>
+                            <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
+                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                        </ResourceDictionary.MergedDictionaries>
+                    </ResourceDictionary>
+                </TabItem.Resources>
+                <DockPanel Margin="8,0,8,2">
+                    <TextBlock DockPanel.Dock="Top" Text="A VirtualizingWrapPanel used by a MaterialDesignListBox as ItemsPanel." />
+                    <ListBox    
+                        Margin="0,2,0,0"
+                        ItemTemplate="{StaticResource ItemTemplate}"                                 
+                        VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
+                        VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
+                        VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
+                        VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}"
+                        Style="{StaticResource MaterialDesignListBox}">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <wpftk:VirtualizingWrapPanel
+                                    Orientation="{Binding Orientation, Mode=OneWay}"
+                                    SpacingMode="{Binding SpacingMode, Mode=OneWay}"
+                                    StretchItems="{Binding StretchItems, Mode=OneWay}"
+                                    ScrollLineDelta="{Binding ScrollLineDelta, Mode=OneWay}"
+                                    MouseWheelDelta="{Binding MouseWheelDelta, Mode=OneWay}"
+                                    ScrollLineDeltaItem="{Binding ScrollLineDeltaItem, Mode=OneWay}"
+                                    MouseWheelDeltaItem="{Binding MouseWheelDeltaItem, Mode=OneWay}"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
                 </DockPanel>
             </TabItem>
             <TabItem Header="WrapPanel (no virtualization)">

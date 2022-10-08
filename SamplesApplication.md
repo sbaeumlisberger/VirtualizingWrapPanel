@@ -1,7 +1,6 @@
 ## Samples Application
 
-Here you can download the latest executables:
-* [Windows 64 Bit](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/releases/download/v1.5.4/VirtualizingWrapPanelSamples-win-x64.exe)
-* [Windows 32 Bit](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/releases/download/v1.5.4/VirtualizingWrapPanelSamples-win-x86.exe)
+Here you can download the latest executable:
+* [Windows 64 Bit](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/releases/download/v1.5.7/VirtualizingWrapPanelSamples.exe)
 
 Alternatively, you can clone the repository and build the samples yourself.
