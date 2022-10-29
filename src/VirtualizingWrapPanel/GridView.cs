@@ -18,7 +18,7 @@ namespace WpfToolkit.Controls
 
         public static readonly DependencyProperty StretchItemsProperty = DependencyProperty.Register(nameof(StretchItems), typeof(bool), typeof(GridView), new FrameworkPropertyMetadata(false));
 
-        public static readonly DependencyProperty IsImprovedKeyboardNavigationEnabledProperty = DependencyProperty.Register(nameof(IsImprovedKeyboardNavigationEnabled), typeof(bool), typeof(GridView), new FrameworkPropertyMetadata(false));
+        public static readonly DependencyProperty IsWrappingKeyboardNavigationEnabledProperty = DependencyProperty.Register(nameof(IsWrappingKeyboardNavigationEnabled), typeof(bool), typeof(GridView), new FrameworkPropertyMetadata(false));
 
         /// <summary>
         /// Gets or sets a value that specifies the orientation in which items are arranged. The default value is <see cref="Orientation.Vertical"/>.
@@ -40,9 +40,9 @@ namespace WpfToolkit.Controls
         public bool StretchItems { get => (bool)GetValue(StretchItemsProperty); set => SetValue(StretchItemsProperty, value); }
 
         /// <summary>
-        /// Enables a improved custom keyboard navigation. The default value is false.
+        /// Enables a improved wrapping keyboard navigation. The default value is false.
         /// </summary>
-        public bool IsImprovedKeyboardNavigationEnabled { get => (bool)GetValue(IsImprovedKeyboardNavigationEnabledProperty); set => SetValue(IsImprovedKeyboardNavigationEnabledProperty, value); }
+        public bool IsWrappingKeyboardNavigationEnabled { get => (bool)GetValue(IsWrappingKeyboardNavigationEnabledProperty); set => SetValue(IsWrappingKeyboardNavigationEnabledProperty, value); }
 
         static GridView()
         {
@@ -102,7 +102,7 @@ namespace WpfToolkit.Controls
 
         private void GridView_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (!IsImprovedKeyboardNavigationEnabled) return;
+            if (!IsWrappingKeyboardNavigationEnabled) return;
 
             var gridView = (GridView)sender;
 

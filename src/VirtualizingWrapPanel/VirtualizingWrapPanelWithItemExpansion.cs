@@ -153,7 +153,7 @@ namespace WpfToolkit.Controls
 
                         if (ItemSize == Size.Empty)
                         {
-                            child.Measure(CreateSize(GetWidth(Viewport), double.MaxValue));
+                            child.Measure(CreateSize(GetWidth(ViewportSize), double.MaxValue));
                         }
                         else
                         {
@@ -167,7 +167,7 @@ namespace WpfToolkit.Controls
                         {
                             expandedItemChild = (FrameworkElement)ExpandedItemTemplate.LoadContent();
                             expandedItemChild.DataContext = Items[expandedItemIndex];
-                            expandedItemChild.Measure(CreateSize(GetWidth(Viewport), double.MaxValue));
+                            expandedItemChild.Measure(CreateSize(GetWidth(ViewportSize), double.MaxValue));
                         }
                         if (!InternalChildren.Contains(expandedItemChild))
                         {

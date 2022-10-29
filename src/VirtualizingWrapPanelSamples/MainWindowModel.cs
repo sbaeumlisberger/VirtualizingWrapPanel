@@ -45,7 +45,7 @@ namespace VirtualizingWrapPanelSamples
         public ScrollBarVisibility HorizontalScrollBarVisibility { get => horizontalScrollBarVisibility; set => SetField(ref horizontalScrollBarVisibility, value); }
         public ScrollBarVisibility VerticalScrollBarVisibility { get => verticalScrollBarVisibility; set => SetField(ref verticalScrollBarVisibility, value); }
        
-        public bool IsImprovedKeyboardNavigationEnabled { get => isImprovedKeyboardNavigationEnabled; set => SetField(ref isImprovedKeyboardNavigationEnabled, value); }
+        public bool IsWrappingKeyboardNavigationEnabled { get => isWrappingKeyboardNavigationEnabled; set => SetField(ref isWrappingKeyboardNavigationEnabled, value); }
 
         private int renderedItemsCount = 0;
 
@@ -55,7 +55,7 @@ namespace VirtualizingWrapPanelSamples
         private VirtualizationCacheLengthUnit cacheUnit = VirtualizationCacheLengthUnit.Page;
         private VirtualizationCacheLength cacheLength = new VirtualizationCacheLength(1);
         private VirtualizationMode virtualizationMode = VirtualizationMode.Standard;
-        private Orientation orientation = Orientation.Vertical;
+        private Orientation orientation = Orientation.Horizontal;
         private SpacingMode spacingMode = SpacingMode.Uniform;
         private bool stretchItems = false;
         private ScrollUnit scrollUnit = ScrollUnit.Pixel;
@@ -66,7 +66,7 @@ namespace VirtualizingWrapPanelSamples
         private ScrollBarVisibility horizontalScrollBarVisibility = ScrollBarVisibility.Auto;
         private ScrollBarVisibility verticalScrollBarVisibility = ScrollBarVisibility.Auto;
 
-        private bool isImprovedKeyboardNavigationEnabled = false;
+        private bool isWrappingKeyboardNavigationEnabled = false;
 
         private readonly Random random = new Random();
 

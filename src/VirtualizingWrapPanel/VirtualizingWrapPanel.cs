@@ -309,7 +309,7 @@ namespace WpfToolkit.Controls
                     offsetRowIndex = GetRowIndex(offsetInPixel);
                 }
 
-                double viewportHeight = Math.Min(GetHeight(Viewport), Math.Max(GetHeight(Extent) - offsetInPixel, 0));
+                double viewportHeight = Math.Min(GetHeight(ViewportSize), Math.Max(GetHeight(Extent) - offsetInPixel, 0));
 
                 rowCountInViewport = (int)Math.Ceiling((offsetInPixel + viewportHeight) / GetHeight(childSize)) - (int)Math.Floor(offsetInPixel / GetHeight(childSize));
 
@@ -334,7 +334,7 @@ namespace WpfToolkit.Controls
             else
             {
                 double viewportSartPos = GetY(Offset);
-                double viewportEndPos = GetY(Offset) + GetHeight(Viewport);
+                double viewportEndPos = GetY(Offset) + GetHeight(ViewportSize);
 
                 if (CacheLengthUnit == VirtualizationCacheLengthUnit.Pixel)
                 {
@@ -397,62 +397,62 @@ namespace WpfToolkit.Controls
 
         protected override double GetLineUpScrollAmount()
         {
-            return -Math.Min(childSize.Height * ScrollLineDeltaItem, Viewport.Height);
+            return -Math.Min(childSize.Height * ScrollLineDeltaItem, ViewportSize.Height);
         }
 
         protected override double GetLineDownScrollAmount()
         {
-            return Math.Min(childSize.Height * ScrollLineDeltaItem, Viewport.Height);
+            return Math.Min(childSize.Height * ScrollLineDeltaItem, ViewportSize.Height);
         }
 
         protected override double GetLineLeftScrollAmount()
         {
-            return -Math.Min(childSize.Width * ScrollLineDeltaItem, Viewport.Width);
+            return -Math.Min(childSize.Width * ScrollLineDeltaItem, ViewportSize.Width);
         }
 
         protected override double GetLineRightScrollAmount()
         {
-            return Math.Min(childSize.Width * ScrollLineDeltaItem, Viewport.Width);
+            return Math.Min(childSize.Width * ScrollLineDeltaItem, ViewportSize.Width);
         }
 
         protected override double GetMouseWheelUpScrollAmount()
         {
-            return -Math.Min(childSize.Height * MouseWheelDeltaItem, Viewport.Height);
+            return -Math.Min(childSize.Height * MouseWheelDeltaItem, ViewportSize.Height);
         }
 
         protected override double GetMouseWheelDownScrollAmount()
         {
-            return Math.Min(childSize.Height * MouseWheelDeltaItem, Viewport.Height);
+            return Math.Min(childSize.Height * MouseWheelDeltaItem, ViewportSize.Height);
         }
 
         protected override double GetMouseWheelLeftScrollAmount()
         {
-            return -Math.Min(childSize.Width * MouseWheelDeltaItem, Viewport.Width);
+            return -Math.Min(childSize.Width * MouseWheelDeltaItem, ViewportSize.Width);
         }
 
         protected override double GetMouseWheelRightScrollAmount()
         {
-            return Math.Min(childSize.Width * MouseWheelDeltaItem, Viewport.Width);
+            return Math.Min(childSize.Width * MouseWheelDeltaItem, ViewportSize.Width);
         }
 
         protected override double GetPageUpScrollAmount()
         {
-            return -Viewport.Height;
+            return -ViewportSize.Height;
         }
 
         protected override double GetPageDownScrollAmount()
         {
-            return Viewport.Height;
+            return ViewportSize.Height;
         }
 
         protected override double GetPageLeftScrollAmount()
         {
-            return -Viewport.Width;
+            return -ViewportSize.Width;
         }
 
         protected override double GetPageRightScrollAmount()
         {
-            return Viewport.Width;
+            return ViewportSize.Width;
         }
 
         /* orientation aware helper methods */

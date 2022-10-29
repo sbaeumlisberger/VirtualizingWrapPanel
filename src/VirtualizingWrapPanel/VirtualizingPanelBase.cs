@@ -130,10 +130,10 @@ namespace WpfToolkit.Controls
 
         public double HorizontalOffset => Offset.X;
         public double VerticalOffset => Offset.Y;
-        protected Size Viewport { get; private set; } = new Size(0, 0);
+        protected Size ViewportSize { get; private set; } = new Size(0, 0);
 
-        public double ViewportWidth => Viewport.Width;
-        public double ViewportHeight => Viewport.Height;
+        public double ViewportWidth => ViewportSize.Width;
+        public double ViewportHeight => ViewportSize.Height;
         protected Point Offset { get; private set; } = new Point(0, 0);
 
         /// <summary>
@@ -154,9 +154,9 @@ namespace WpfToolkit.Controls
                 invalidateScrollInfo = true;
 
             }
-            if (availableSize != Viewport)
+            if (availableSize != ViewportSize)
             {
-                Viewport = availableSize;
+                ViewportSize = availableSize;
                 invalidateScrollInfo = true;
             }
 
@@ -188,9 +188,9 @@ namespace WpfToolkit.Controls
             {
                 scrollAmountX = -(Offset.X - pos.X);
             }
-            else if ((pos.X + rectangle.Width) > (Offset.X + Viewport.Width))
+            else if ((pos.X + rectangle.Width) > (Offset.X + ViewportSize.Width))
             {
-                double notVisibleX = (pos.X + rectangle.Width) - (Offset.X + Viewport.Width);
+                double notVisibleX = (pos.X + rectangle.Width) - (Offset.X + ViewportSize.Width);
                 double maxScrollX = pos.X - Offset.X; // keep left of the visual visible
                 scrollAmountX = Math.Min(notVisibleX, maxScrollX);
             }
@@ -199,9 +199,9 @@ namespace WpfToolkit.Controls
             {
                 scrollAmountY = -(Offset.Y - pos.Y);
             }
-            else if ((pos.Y + rectangle.Height) > (Offset.Y + Viewport.Height))
+            else if ((pos.Y + rectangle.Height) > (Offset.Y + ViewportSize.Height))
             {
-                double notVisibleY = (pos.Y + rectangle.Height) - (Offset.Y + Viewport.Height);
+                double notVisibleY = (pos.Y + rectangle.Height) - (Offset.Y + ViewportSize.Height);
                 double maxScrollY = pos.Y - Offset.Y; // keep top of the visual visible
                 scrollAmountY = Math.Min(notVisibleY, maxScrollY);
             }
@@ -209,14 +209,16 @@ namespace WpfToolkit.Controls
             SetHorizontalOffset(Offset.X + scrollAmountX);
             SetVerticalOffset(Offset.Y + scrollAmountY);
 
-            double visibleRectWidth = Math.Min(rectangle.Width, Viewport.Width);
-            double visibleRectHeight = Math.Min(rectangle.Height, Viewport.Height);
+            double visibleRectWidth = Math.Min(rectangle.Width, ViewportSize.Width);
+            double visibleRectHeight = Math.Min(rectangle.Height, ViewportSize.Height);
 
             return new Rect(scrollAmountX, scrollAmountY, visibleRectWidth, visibleRectHeight);
         }
 
         protected override void OnItemsChanged(object sender, ItemsChangedEventArgs args)
         {
+            // TODO: remove/recycle?
+
             switch (args.Action)
             {
                 case NotifyCollectionChangedAction.Remove:
@@ -284,7 +286,7 @@ namespace WpfToolkit.Controls
 
                 Extent = extent;
                 Offset = groupItem.Constraints.Viewport.Location;
-                Viewport = groupItem.Constraints.Viewport.Size;
+                ViewportSize = groupItem.Constraints.Viewport.Size;
                 CacheLength = groupItem.Constraints.CacheLength;
                 CacheLengthUnit = groupItem.Constraints.CacheLengthUnit; // can be Item or Pixel
             }
@@ -372,6 +374,11 @@ namespace WpfToolkit.Controls
                     }
                     RemoveInternalChildRange(childIndex, 1);
                 }
+
+                if (itemIndex == -1) 
+                {
+                    RemoveInternalChildRange(childIndex, 1);
+                }
             }
         }
 
@@ -387,13 +394,13 @@ namespace WpfToolkit.Controls
 
         public void SetVerticalOffset(double offset)
         {
-            if (offset < 0 || Viewport.Height >= Extent.Height)
+            if (offset < 0 || ViewportSize.Height >= Extent.Height)
             {
                 offset = 0;
             }
-            else if (offset + Viewport.Height >= Extent.Height)
+            else if (offset + ViewportSize.Height >= Extent.Height)
             {
-                offset = Extent.Height - Viewport.Height;
+                offset = Extent.Height - ViewportSize.Height;
             }
             Offset = new Point(Offset.X, offset);
             ScrollOwner?.InvalidateScrollInfo();
@@ -402,13 +409,13 @@ namespace WpfToolkit.Controls
 
         public void SetHorizontalOffset(double offset)
         {
-            if (offset < 0 || Viewport.Width >= Extent.Width)
+            if (offset < 0 || ViewportSize.Width >= Extent.Width)
             {
                 offset = 0;
             }
-            else if (offset + Viewport.Width >= Extent.Width)
+            else if (offset + ViewportSize.Width >= Extent.Width)
             {
-                offset = Extent.Width - Viewport.Width;
+                offset = Extent.Width - ViewportSize.Width;
             }
             Offset = new Point(offset, Offset.Y);
             ScrollOwner?.InvalidateScrollInfo();
