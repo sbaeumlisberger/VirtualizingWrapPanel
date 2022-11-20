@@ -162,7 +162,7 @@ namespace WpfToolkit.Controls
 
         protected override void OnItemsChanged(object sender, ItemsChangedEventArgs args)
         {
-            model.OnItemsChanged();
+            model.OnItemsChanged(args.Action);
         }
 
         protected override Size ArrangeOverride(Size finalSize)
@@ -172,7 +172,7 @@ namespace WpfToolkit.Controls
             if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem)
             {
                 var finalSize_ = finalSize;       
-                finalSize_.Width -= 2 * HorizontalGroupOffset;               
+                finalSize_.Width -= 2 * HorizontalGroupOffset;
                 model.OnArrange(finalSize_, 
                     Orientation == Orientation.Horizontal ? new Point(Offset.X, 0) : new Point(0, Offset.Y));
             }

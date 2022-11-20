@@ -176,14 +176,14 @@ namespace WpfToolkit.Controls
                 invalidateScrollInfo = true;
             }
 
-            if (ViewportHeight != 0 && VerticalOffset != 0 && VerticalOffset + ViewportHeight + 1 >= ExtentHeight)
+            if (VerticalOffset + ViewportHeight + 0.1 > ExtentHeight)
             {
-                Offset = new Point(Offset.X, extent.Height - viewportSize.Height);
+                Offset = new Point(Offset.X, Math.Max(0, ExtentHeight - ViewportHeight));
                 invalidateScrollInfo = true;
             }
-            if (ViewportWidth != 0 && HorizontalOffset != 0 && HorizontalOffset + ViewportWidth + 1 >= ExtentWidth)
+            if (HorizontalOffset + ViewportWidth + 0.1 > ExtentWidth)
             {
-                Offset = new Point(extent.Width - viewportSize.Width, Offset.Y);
+                Offset = new Point(Math.Max(0, ExtentWidth - ViewportWidth), Offset.Y);
                 invalidateScrollInfo = true;
             }
 

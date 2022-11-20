@@ -17,7 +17,9 @@ internal class ItemContainerManager : IItemContainerManger
 
     private readonly IVirtualizingPanelWrapper virtualizingPanel;
 
-    public IReadOnlyList<IArrangeable> RealizedContainers => virtualizingPanel.InternalChildren.Select(child => Arrangeable.For(child)).ToList();
+    public IReadOnlyList<IArrangeable> RealizedContainers => realizedContainers;
+
+    private readonly List<IArrangeable> realizedContainers = new List<IArrangeable>();
 
     public ItemContainerManager(IVirtualizingPanelWrapper virtualizingPanel)
     {
@@ -36,10 +38,12 @@ internal class ItemContainerManager : IItemContainerManger
                 if (childIndex >= virtualizingPanel.InternalChildrenCount)
                 {
                     virtualizingPanel.AddInternalChild(container);
+                    realizedContainers.Add(Arrangeable.For(container));
                 }
                 else
                 {
                     virtualizingPanel.InsertInternalChild(childIndex, container);
+                    realizedContainers.Insert(childIndex, Arrangeable.For(container));
                 }
             }
             itemContainerGenerator.PrepareItemContainer(container);
@@ -64,6 +68,7 @@ internal class ItemContainerManager : IItemContainerManger
             }
         }
         virtualizingPanel.RemoveInternalChildAt(childIndex);
+        realizedContainers.RemoveAt(childIndex);
     }
 
     public int ItemIndexForChildIndex(int childIndex)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -76,6 +77,7 @@ internal class VirtualizingWrapPanelModel
         double y = startItemOffsetY - GetY(scrollOffset);
         double rowHeight = 0;
         var rowChilds = new List<IArrangeable>();
+        var childSizes = new List<Size>();
 
         var realizedContainers = itemContainerManager.RealizedContainers;
         for (int childIndex = 0; childIndex < realizedContainers.Count; childIndex++)
@@ -89,21 +91,23 @@ internal class VirtualizingWrapPanelModel
 
             if (x + GetWidth(childSize) > GetWidth(finalSize))
             {
-                ArrangeRow(GetWidth(finalSize), rowChilds, y);
+                ArrangeRow(GetWidth(finalSize), rowChilds, childSizes, y);
                 x = 0;
                 y += rowHeight;
                 rowHeight = 0;
                 rowChilds.Clear();
+                childSizes.Clear();
             }
 
             x += GetWidth(childSize);
             rowHeight = Math.Max(rowHeight, GetHeight(childSize));
             rowChilds.Add(child);
+            childSizes.Add(childSize);
         }
 
         if (rowChilds.Any())
         {
-            ArrangeRow(GetWidth(finalSize), rowChilds, y);
+            ArrangeRow(GetWidth(finalSize), rowChilds, childSizes, y);
         }
 
         return finalSize;
@@ -119,13 +123,18 @@ internal class VirtualizingWrapPanelModel
         return new Size(itemSizes.Average(size => size.Width), itemSizes.Average(size => size.Height));
     }
 
-    public void OnItemsChanged()
+    public void OnItemsChanged(NotifyCollectionChangedAction action)
     {
-        var removedCachedItems = itemSizesCache.Keys.Except(Items).ToList();
-
-        foreach (var removedItem in removedCachedItems)
+        if (action == NotifyCollectionChangedAction.Remove
+            || action == NotifyCollectionChangedAction.Replace
+            || action == NotifyCollectionChangedAction.Reset)
         {
-            itemSizesCache.Remove(removedItem);
+            var removedCachedItems = itemSizesCache.Keys.Except(Items).ToList(); // TODO test performance
+
+            foreach (var removedItem in removedCachedItems)
+            {
+                itemSizesCache.Remove(removedItem);
+            }
         }
 
         int itemsInKnownExtend = Items.TakeWhile(item => itemSizesCache.ContainsKey(item)).Count();
@@ -460,7 +469,7 @@ internal class VirtualizingWrapPanelModel
         return itemSize;
     }
 
-    private void ArrangeRow(double rowWidth, List<IArrangeable> children, double y)
+    private void ArrangeRow(double rowWidth, List<IArrangeable> children, List<Size> childSizes, double y)
     {
         double extraWidth = 0;
         double innerSpacing = 0;
@@ -468,39 +477,52 @@ internal class VirtualizingWrapPanelModel
 
         if (StretchItems) // TODO: handle MaxWidth/MaxHeight and apply spacing
         {
-            double summedUpChildWidth = children.Sum(child => GetWidth(child.DesiredSize));
+            double summedUpChildWidth = childSizes.Sum(childSize => GetWidth(childSize));
             double unusedWidth = rowWidth - summedUpChildWidth;
             extraWidth = unusedWidth / children.Count;
         }
         else
         {
-            CalculateRowSpacing(rowWidth, children, out innerSpacing, out outerSpacing);
+            CalculateRowSpacing(rowWidth, children, childSizes, out innerSpacing, out outerSpacing);
         }
 
         double x = outerSpacing;
 
-        foreach (var child in children)
+        for (int i = 0; i < children.Count; i++)
         {
-            Size childSize = FixedItemSize != Size.Empty ? FixedItemSize : child.DesiredSize;
+            var child = children[i];
+            Size childSize = childSizes[i];
             child.Arrange(CreateRect(x, y, GetWidth(childSize) + extraWidth, GetHeight(childSize)));
             x += GetWidth(childSize) + extraWidth + innerSpacing;
         }
     }
 
-    private void CalculateRowSpacing(double rowWidth, List<IArrangeable> children, out double innerSpacing, out double outerSpacing)
+    private void CalculateRowSpacing(double rowWidth, List<IArrangeable> children, List<Size> childSizes, out double innerSpacing, out double outerSpacing)
     {
+        int childCount;
+        double summedUpChildWidth;       
 
-        double summedUpChildWidth = children.Sum(child => GetWidth(FixedItemSize != Size.Empty ? FixedItemSize : child.DesiredSize));
+        if (AllowDifferentSizedItems)
+        {
+            childCount = children.Count; 
+            summedUpChildWidth = childSizes.Sum(childSize => GetWidth(childSize));          
+        }
+        else 
+        {
+            childCount = (int)Math.Floor(rowWidth / GetWidth(firstRealizedItemSize!.Value));
+            summedUpChildWidth = childCount * GetWidth(firstRealizedItemSize.Value);
+        }
+
         double unusedWidth = rowWidth - summedUpChildWidth;
 
         switch (SpacingMode)
         {
             case SpacingMode.Uniform:
-                innerSpacing = outerSpacing = unusedWidth / (children.Count + 1);
+                innerSpacing = outerSpacing = unusedWidth / (childCount + 1);
                 break;
 
             case SpacingMode.BetweenItemsOnly:
-                innerSpacing = unusedWidth / Math.Max(children.Count - 1, 1);
+                innerSpacing = unusedWidth / Math.Max(childCount - 1, 1);
                 outerSpacing = 0;
                 break;
 
