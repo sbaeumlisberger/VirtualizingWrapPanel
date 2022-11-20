@@ -14,10 +14,6 @@ Implementation of a [VirtualizingWrapPanel](https://sbaeumlisberger.github.io/Vi
 * [Getting started](GettingStarted.md)
 * [Sample Application](SamplesApplication.md)
 * [API-Documentation](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.html)
-* [Source Code](src/VirtualizingWrapPanel)
-
-### Download
-* [NuGet Package](https://www.nuget.org/packages/VirtualizingWrapPanel/)
 
 ### Contribution
 Feel free to open an issue. I am also willing to accept pull requests, but please open an issue first to discuss.  

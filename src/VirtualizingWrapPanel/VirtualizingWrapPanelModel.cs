@@ -82,21 +82,10 @@ internal class VirtualizingWrapPanelModel
         {
             IArrangeable child = realizedContainers[childIndex];
 
-            Size childSize;
+            int itemIndex = itemContainerManager.ItemIndexForChildIndex(childIndex);
+            Size? upfrontKnownItemSize = GetUpfrontKnownItemSize(itemIndex);
 
-            if (ItemSizeProvider != null)
-            {
-                object item = Items[itemContainerManager.ItemIndexForChildIndex(childIndex)];
-                childSize = ItemSizeProvider.GetSizeForItem(item);
-            }
-            else if (FixedItemSize != Size.Empty)
-            {
-                childSize = FixedItemSize;
-            }
-            else
-            {
-                childSize = child.DesiredSize;
-            }
+            Size childSize = upfrontKnownItemSize ?? child.DesiredSize;
 
             if (x + GetWidth(childSize) > GetWidth(finalSize))
             {

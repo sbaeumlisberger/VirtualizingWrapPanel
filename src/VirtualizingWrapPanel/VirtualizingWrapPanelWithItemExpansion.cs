@@ -10,7 +10,7 @@ namespace WpfToolkit.Controls
     /// In addition the panel allows to expand one specific item.
     /// <p class="note">In order to work properly all items must have the same size.</p>
     /// </summary>
-    public class VirtualizingWrapPanelWithItemExpansion : VirtualizingWrapPanel
+    public class VirtualizingWrapPanelWithItemExpansion : VirtualizingWrapPanelV1
     {
         public static readonly DependencyProperty ExpandedItemTemplateProperty = DependencyProperty.Register(nameof(ExpandedItemTemplate), typeof(DataTemplate), typeof(VirtualizingWrapPanelWithItemExpansion), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure));
 

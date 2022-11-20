@@ -7,7 +7,7 @@ First, add the package to your project. For example via the .NET CLI:
 
 More installation options can be found [here](https://www.nuget.org/packages/VirtualizingWrapPanel/).
 
-Then add the follwing namespace to the xaml files, where you want to use package:  
+Then add the following namespace to the xaml files, where you want to use package:  
 `xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"`
 
 ### Basic usage
@@ -28,7 +28,7 @@ You can use the VirtualizingWrapPanel with an existing ItemsControl like a ListV
 </Window>
 ```
 
-Alternatively you can use the included GridView control, which is using a VirtualizingWrapPanel by default:
+Alternatively, you can use the included GridView control, which is using a VirtualizingWrapPanel by default:
 
 ```
 <Window ... xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel">
