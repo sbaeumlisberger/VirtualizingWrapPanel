@@ -30,6 +30,7 @@ namespace VirtualizingWrapPanelSamples
         public ScrollBarVisibility[] AvailableScrollBarVisibilities { get; } = (ScrollBarVisibility[])Enum.GetValues(typeof(ScrollBarVisibility));
 
         public Orientation Orientation { get => orientation; set => SetField(ref orientation, value); }
+        public Orientation OrientationGroupPanel { get => orientationGroupPanel; set => SetField(ref orientationGroupPanel, value); }
         public VirtualizationCacheLengthUnit CacheUnit { get => cacheUnit; set => SetField(ref cacheUnit, value); }
         public VirtualizationCacheLength CacheLength { get => cacheLength; set => SetField(ref cacheLength, value); }
         public VirtualizationMode VirtualizationMode { get => virtualizationMode; set => SetField(ref virtualizationMode, value); }
@@ -44,8 +45,10 @@ namespace VirtualizingWrapPanelSamples
         public int MouseWheelDeltaItem { get => mouseWheelDeltaItem; set => SetField(ref mouseWheelDeltaItem, value); }
         public ScrollBarVisibility HorizontalScrollBarVisibility { get => horizontalScrollBarVisibility; set => SetField(ref horizontalScrollBarVisibility, value); }
         public ScrollBarVisibility VerticalScrollBarVisibility { get => verticalScrollBarVisibility; set => SetField(ref verticalScrollBarVisibility, value); }
-       
+
         public bool IsWrappingKeyboardNavigationEnabled { get => isWrappingKeyboardNavigationEnabled; set => SetField(ref isWrappingKeyboardNavigationEnabled, value); }
+
+        public IItemSizeProvider ItemSizeProvider { get; } = new TestItemSizeProvider();
 
         private int renderedItemsCount = 0;
 
@@ -56,6 +59,7 @@ namespace VirtualizingWrapPanelSamples
         private VirtualizationCacheLength cacheLength = new VirtualizationCacheLength(1);
         private VirtualizationMode virtualizationMode = VirtualizationMode.Standard;
         private Orientation orientation = Orientation.Horizontal;
+        private Orientation orientationGroupPanel = Orientation.Vertical;
         private SpacingMode spacingMode = SpacingMode.Uniform;
         private bool stretchItems = false;
         private ScrollUnit scrollUnit = ScrollUnit.Pixel;
@@ -90,7 +94,7 @@ namespace VirtualizingWrapPanelSamples
         public void InsertItemAtRandomPosition()
         {
             int index = random.Next(Items.Count);
-            Items.Insert(index, new TestItem("Group " + new Random().Next(250), Items.Count));
+            Items.Insert(index, new TestItem("Group " + new Random().Next(50), Items.Count));
         }
 
         public void AddItems()
@@ -98,7 +102,7 @@ namespace VirtualizingWrapPanelSamples
             int newCount = Items.Count + 5000;
             for (int i = Items.Count; i < newCount; i++)
             {
-                Items.Add(new TestItem("Group " + i / 20, i + 1));
+                Items.Add(new TestItem("Group " + i / 100, i + 1));
             }
         }
 
@@ -138,6 +142,9 @@ namespace VirtualizingWrapPanelSamples
                 case nameof(ScrollUnit):
                     PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(IsScrollByPixel)));
                     PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(IsScrollByItem)));
+                    break;
+                case nameof(Orientation):
+                    OrientationGroupPanel = Orientation == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal;
                     break;
             }
         }

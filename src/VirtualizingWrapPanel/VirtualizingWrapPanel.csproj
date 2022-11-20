@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFrameworks>net452;netcoreapp3.1;net5.0-windows;net6.0-windows</TargetFrameworks>
+    <TargetFrameworks>net452;netcoreapp3.1;net6.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
@@ -40,10 +40,11 @@
     <PackageTags>VirtualizingWrapPanel, VirtualizingPanel, WrapPanel, GridView, Virtualization, WPF, XAML, .NET </PackageTags>
 
     <PackageReleaseNotes>
-      - Breaking Change: Inverted behaviour of Orientation property
-      - Breaking Change: Removed depreacted properties SpacingEnabled, IsSpacingEnabled and ChildrenSize
-      - #22 Add support for different sized items
-      - Add option for wrapping keyboard navigation to GridView control</PackageReleaseNotes>
+      - Breaking Change: Inverted behaviour and defualt value of Orientation property
+      - Breaking Change: Removed deprecated properties SpacingEnabled, IsSpacingEnabled and ChildrenSize
+      - New Feature: #22 Add support for different sized items
+      - New Feature: Add option for wrapping keyboard navigation to GridView control
+      - New Feature: Finalized grouping support</PackageReleaseNotes>
 
     <RootNamespace>WpfToolkit.Controls</RootNamespace>
   </PropertyGroup>
