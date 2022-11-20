@@ -11,10 +11,10 @@ Implementation of a [VirtualizingWrapPanel](https://sbaeumlisberger.github.io/Vi
 * Displaying different sized items
 
 ### Resources
-* [Getting started](blob/v2/GettingStarted.md)
-* [Sample Application](blob/master/SamplesApplication.md)
+* [Getting started](GettingStarted.md)
+* [Sample Application](SamplesApplication.md)
 * [API-Documentation](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.html)
-* [Source Code](tree/master/src/VirtualizingWrapPanel)
+* [Source Code](src/VirtualizingWrapPanel)
 
 ### Download
 * [NuGet Package](https://www.nuget.org/packages/VirtualizingWrapPanel/)
