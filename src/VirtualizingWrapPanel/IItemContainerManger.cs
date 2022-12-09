@@ -11,7 +11,13 @@ namespace WpfToolkit.Controls
     {
         bool IsRecycling { get; set; }
         
-        IReadOnlyList<IArrangeable> RealizedContainers { get; }
+        IReadOnlyList<IItemContainerInfo> RealizedContainers { get; }
+
+#if NET6_0_OR_GREATER
+        IReadOnlySet<IItemContainerInfo> CachedContainers { get; }
+#else
+        IEnumerable<IItemContainerInfo> CachedContainers { get; }
+#endif
 
         int ItemIndexForChildIndex(int childIndex);
 

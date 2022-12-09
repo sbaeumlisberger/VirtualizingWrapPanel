@@ -51,8 +51,8 @@ namespace WpfToolkit.Controls
 
         /// <summary>
         /// Specifies whether items can have different sizes. The default value is false. If this property is enabled, 
-        /// it is strongly recommended to also set the <see cref="ItemSizeProvider"/> property. Otherwise, the performance 
-        /// can be very poor and the position of the items is not always guaranteed to be correct.
+        /// it is strongly recommended to also set the <see cref="ItemSizeProvider"/> property. Otherwise, the position 
+        /// of the items is not always guaranteed to be correct.
         /// </summary>
         public bool AllowDifferentSizedItems { get => (bool)GetValue(AllowDifferentSizedItemsProperty); set => SetValue(AllowDifferentSizedItemsProperty, value); }
 

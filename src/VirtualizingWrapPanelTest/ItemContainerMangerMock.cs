@@ -18,6 +18,8 @@ internal class ItemContainerMangerMock : IItemContainerManger
 
     public IReadOnlyList<ArrangableMock> RealizedContainers => realizedContainers.ToList();
 
+    public ISet<IArrangeable> CachedContainers { get; } = new HashSet<IArrangeable>();
+
     private readonly List<TestItem> items;
 
     private readonly IList<ArrangableMock> realizedContainers = new List<ArrangableMock>();
@@ -60,7 +62,7 @@ internal class ItemContainerMangerMock : IItemContainerManger
         realizedContainers.RemoveAt(childIndex);
     }
 
-    public bool IsItemRealized(TestItem item) 
+    public bool IsItemRealized(TestItem item)
     {
         return realizedContainers.Any(c => c.Item == item);
     }

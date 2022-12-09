@@ -17,9 +17,17 @@ internal class ItemContainerManager : IItemContainerManger
 
     private readonly IVirtualizingPanelWrapper virtualizingPanel;
 
-    public IReadOnlyList<IArrangeable> RealizedContainers => realizedContainers;
+    public IReadOnlyList<IItemContainerInfo> RealizedContainers => realizedContainers;
 
-    private readonly List<IArrangeable> realizedContainers = new List<IArrangeable>();
+#if NET6_0_OR_GREATER
+    public IReadOnlySet<IItemContainerInfo> CachedContainers => cachedContainers;
+#else
+    public IEnumerable<IItemContainerInfo> CachedContainers => cachedContainers;
+#endif
+
+    private readonly List<IItemContainerInfo> realizedContainers = new List<IItemContainerInfo>();
+
+    private readonly HashSet<IItemContainerInfo> cachedContainers = new HashSet<IItemContainerInfo>();
 
     public ItemContainerManager(IVirtualizingPanelWrapper virtualizingPanel)
     {
@@ -33,19 +41,34 @@ internal class ItemContainerManager : IItemContainerManger
         using (itemContainerGenerator.StartAt(startPosition, GeneratorDirection.Forward, true))
         {
             var container = (UIElement)itemContainerGenerator.GenerateNext(out bool isNewlyRealized);
-            if (isNewlyRealized || !virtualizingPanel.ContainsInternalChild(container))
+
+            if (!virtualizingPanel.ContainsInternalChild(container))
             {
                 if (childIndex >= virtualizingPanel.InternalChildrenCount)
                 {
                     virtualizingPanel.AddInternalChild(container);
-                    realizedContainers.Add(Arrangeable.For(container));
                 }
                 else
                 {
                     virtualizingPanel.InsertInternalChild(childIndex, container);
-                    realizedContainers.Insert(childIndex, Arrangeable.For(container));
                 }
             }
+
+            var containerInfo = ItemContainerInfo.For(container);
+            if (!realizedContainers.Contains(containerInfo))
+            {
+                cachedContainers.Remove(containerInfo);
+
+                if (childIndex >= realizedContainers.Count)
+                {
+                    realizedContainers.Add(containerInfo);
+                }
+                else
+                {
+                    realizedContainers.Insert(childIndex, containerInfo);
+                }
+            }
+
             itemContainerGenerator.PrepareItemContainer(container);
             container.Measure(availableSize);
             return container.DesiredSize;
@@ -56,18 +79,18 @@ internal class ItemContainerManager : IItemContainerManger
     {
         var itemContainerGenerator = virtualizingPanel.ItemContainerGenerator;
         var generatorPosition = new GeneratorPosition(childIndex, 0);
-        if (itemContainerGenerator.IndexFromGeneratorPosition(generatorPosition) != -1)
+
+        if (IsRecycling)
         {
-            if (IsRecycling)
-            {
-                itemContainerGenerator.Recycle(generatorPosition, 1);
-            }
-            else
-            {
-                itemContainerGenerator.Remove(generatorPosition, 1);
-            }
+            itemContainerGenerator.Recycle(generatorPosition, 1);
+            cachedContainers.Add(realizedContainers[childIndex]);
         }
-        virtualizingPanel.RemoveInternalChildAt(childIndex);
+        else
+        {
+            itemContainerGenerator.Remove(generatorPosition, 1);
+            virtualizingPanel.RemoveInternalChildAt(childIndex);
+        }
+
         realizedContainers.RemoveAt(childIndex);
     }
 

@@ -56,7 +56,7 @@ public class VirtualizingWrapPanelModelTest
         }
 
 
-        sut.OnArrange(new Size(600, 400));
+        sut.OnArrange(new Size(600, 400), new Point(0, 0));
 
         var containers = itemContainerManger.RealizedContainers;
         Assert.AreEqual(new Rect(0, 0, 100, 100), containers[0].ArrangeRect);
@@ -79,11 +79,49 @@ public class VirtualizingWrapPanelModelTest
     }
 
     [TestMethod]
+    public void Measure_Offset0x0_NoCache_FixedSize()
+    {
+        var items = Enumerable.Repeat(0, 100).Select(x => new TestItem(100, 100)).ToList();
+        itemContainerManger = new ItemContainerMangerMock(items);
+        sut = new VirtualizingWrapPanelModel(itemContainerManger);
+        sut.Items = items;
+        sut.CacheLength = new VirtualizationCacheLength(0, 0);
+        sut.FixedItemSize = new Size(100, 100);
+
+        sut.OnMeasure(new Size(600, 400), new Point(0, 0));
+
+        Assert.AreEqual(24, itemContainerManger.RealizedContainers.Count);
+        for (int i = 0; i < 24; i++)
+        {
+            Assert.IsTrue(itemContainerManger.IsItemRealized(items[i]));
+        }
+    }
+
+    [TestMethod]
+    public void Measure_Offset0x400_to_0x0_NoCache_FixedSize()
+    {
+        var items = Enumerable.Repeat(0, 100).Select(x => new TestItem(100, 100)).ToList();
+        itemContainerManger = new ItemContainerMangerMock(items);
+        sut = new VirtualizingWrapPanelModel(itemContainerManger);
+        sut.Items = items;
+        sut.CacheLength = new VirtualizationCacheLength(0, 0);
+        sut.FixedItemSize = new Size(100, 100);
+
+        sut.OnMeasure(new Size(600, 400), new Point(0, 800));
+        sut.OnMeasure(new Size(600, 400), new Point(0, 0));
+
+        Assert.AreEqual(24, itemContainerManger.RealizedContainers.Count);
+        for (int i = 0; i < 24; i++)
+        {
+            Assert.IsTrue(itemContainerManger.IsItemRealized(items[i]));
+        }
+    }
+
+    [TestMethod]
     public void Offset0x400_NoCache()
     {
         sut.Items = items;
         sut.CacheLength = new VirtualizationCacheLength(0, 0);
-
 
         sut.OnMeasure(new Size(600, 400), new Point(0, 400));
 
@@ -93,7 +131,7 @@ public class VirtualizingWrapPanelModelTest
             Assert.IsTrue(itemContainerManger.IsItemRealized(items[i]));
         }
 
-        sut.OnArrange(new Size(600, 400));
+        sut.OnArrange(new Size(600, 400), new Point(0, 400));
     }
 
     [TestMethod]
@@ -108,6 +146,74 @@ public class VirtualizingWrapPanelModelTest
         Assert.AreEqual(0, desiredSize.Width);
         Assert.AreEqual(0, desiredSize.Height);
     }
+
+    [TestMethod]
+    public void Cache_Page_1x1()
+    {
+
+    }
+
+    [TestMethod]
+    public void Cache_Pixel_200x200()
+    {
+
+    }
+
+
+    [TestMethod]
+    public void Cache_Item_10x10()
+    {
+
+    }
+
+    [TestMethod]
+    public void SpacingMode_None()
+    { 
+    
+    }
+
+    [TestMethod]
+    public void SpacingMode_Uniform()
+    {
+
+    }
+
+    [TestMethod]
+    public void SpacingMode_BetweenItemsOnly()
+    {
+
+    }
+
+    [TestMethod]
+    public void SpacingMode_StartAndEndOnly()
+    {
+
+    }
+
+    [TestMethod]
+    public void SpacingMode_StretchItemsTrue()
+    {
+
+    }
+
+    [TestMethod]
+    public void Orientation_Vertical()
+    {
+
+    }
+
+    [TestMethod]
+    public void Items_Remove()
+    {
+
+    }
+
+    [TestMethod]
+    public void Items_Insert()
+    {
+
+    }
+
 
     // TODO
     // cache

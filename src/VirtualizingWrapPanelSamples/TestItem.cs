@@ -8,6 +8,11 @@ namespace VirtualizingWrapPanelSamples
 {
     public class TestItem : INotifyPropertyChanged
     {
+        private static readonly int MinWidth = 100;
+        private static readonly int MaxWidth = 200;
+        private static readonly int MinHeight = 80;
+        private static readonly int MaxHeight = 160;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string Group { get; }
@@ -16,30 +21,36 @@ namespace VirtualizingWrapPanelSamples
 
         public Color Background { get; }
 
-        public Size Size
+        public Size SizeLazy
         {
             get
             {
-                if (size == new Size(0, 0))
+                if (sizeLazy == Size.Empty)
                 {
-                    Task.Delay(10).ContinueWith((_) =>
+                    Task.Delay(1000).ContinueWith((_) =>
                     {
-                        size = new Size(Width, Height);
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Size)));
+                        sizeLazy = Size;
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SizeLazy)));
                     });
+                    return new Size(MinWidth, MinHeight);
                 }
-                return size;
+                return sizeLazy;
             }
         }
 
-        public DateTime CurrentDateTime => DateTime.Now;
+        public DateTime CurrentDateTime 
+        { 
+            get { 
+                sizeLazy = Size.Empty; 
+                return DateTime.Now; 
+            } 
+        }
+
+        public Size Size { get; }
 
         private static Random random = new Random();
 
-        private Size size = new Size(0, 0);
-
-        public int Width { get; } = random.Next(80, 200);
-        public int Height { get; } = random.Next(40, 100);
+        private Size sizeLazy = Size.Empty;
 
         public TestItem(string group, int number)
         {
@@ -48,8 +59,9 @@ namespace VirtualizingWrapPanelSamples
             byte[] randomBytes = new byte[3];
             random.NextBytes(randomBytes);
             Background = Color.FromRgb(randomBytes[0], randomBytes[1], randomBytes[2]);
-            Width = random.Next(80, 200);
-            Height = random.Next(40, 100);
+            var width = random.Next(MinWidth, MaxWidth);
+            var height = random.Next(MinHeight, MaxHeight);
+            Size = new Size(width, height);
         }
     }
 }

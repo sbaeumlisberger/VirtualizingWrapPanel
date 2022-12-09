@@ -11,6 +11,9 @@ namespace WpfToolkit.Controls;
 
 internal class VirtualizingWrapPanelModel
 {
+    private static readonly Size FallbackSize = new Size(16, 16);
+
+    // TODO base class ?
     public Size Extent { get; private set; } = new Size(0, 0);
     public Size ViewportSize { get; private set; } = new Size(0, 0);
     public Point ScrollOffset { get; private set; } = new Point(0, 0);
@@ -24,11 +27,14 @@ internal class VirtualizingWrapPanelModel
 
     public bool StretchItems { get; set; }
     public SpacingMode SpacingMode { get; set; }
+
+    // TODO base class ?
     public IReadOnlyList<object> Items { get; set; } = new List<object>();
 
     private Size? firstRealizedItemSize;
     private Dictionary<object, Size> itemSizesCache = new Dictionary<object, Size>();
     private Dictionary<object, Size> itemSizesCacheForProvider = new Dictionary<object, Size>();
+    private Size averageItemSizeCache = Size.Empty;
 
     private int itemsInKnownExtend = 0;
 
@@ -42,14 +48,14 @@ internal class VirtualizingWrapPanelModel
 
     private readonly IItemContainerManger itemContainerManager;
 
-    private static int i = 0;
-    private int instance;
-
     public VirtualizingWrapPanelModel(IItemContainerManger itemContainerManager)
     {
-        instance = i++;
-        Debug.WriteLine("VirtualizingWrapPanelModel " + instance);
         this.itemContainerManager = itemContainerManager;
+    }
+
+    public Size OnMeasure(Size availableSize, Point scrollOffset)
+    {
+        return OnMeasure(availableSize, availableSize, scrollOffset);
     }
 
     public Size OnMeasure(Size availableSize, Size viewportSize, Point scrollOffset)
@@ -60,6 +66,7 @@ internal class VirtualizingWrapPanelModel
         }
 
         ScrollOffset = scrollOffset;
+        averageItemSizeCache = Size.Empty;
         UpdateViewport(viewportSize);
         FindStartIndexAndOffset();
         VirtualizeItemsBeforeStartIndex();
@@ -73,16 +80,21 @@ internal class VirtualizingWrapPanelModel
 
     public Size OnArrange(Size finalSize, Point scrollOffset)
     {
+        foreach(var cachedContainer in itemContainerManager.CachedContainers)
+        {
+            cachedContainer.Arrange(new Rect(0, 0, 0, 0));
+        }
+
         double x = GetX(scrollOffset);
         double y = startItemOffsetY - GetY(scrollOffset);
         double rowHeight = 0;
-        var rowChilds = new List<IArrangeable>();
+        var rowChilds = new List<IItemContainerInfo>();
         var childSizes = new List<Size>();
 
         var realizedContainers = itemContainerManager.RealizedContainers;
         for (int childIndex = 0; childIndex < realizedContainers.Count; childIndex++)
         {
-            IArrangeable child = realizedContainers[childIndex];
+            IItemContainerInfo child = realizedContainers[childIndex];
 
             int itemIndex = itemContainerManager.ItemIndexForChildIndex(childIndex);
             Size? upfrontKnownItemSize = GetUpfrontKnownItemSize(itemIndex);
@@ -115,12 +127,40 @@ internal class VirtualizingWrapPanelModel
 
     public Size GetAverageItemSize()
     {
-        if (FixedItemSize != Size.Empty)
+        if (averageItemSizeCache == Size.Empty)
         {
-            return FixedItemSize;
+            if (FixedItemSize != Size.Empty)
+            {
+                averageItemSizeCache = FixedItemSize;
+            }            
+            else if (!AllowDifferentSizedItems)
+            {
+                averageItemSizeCache = firstRealizedItemSize ?? FallbackSize;
+            }
+            else if (ItemSizeProvider != null)
+            {
+                if (itemSizesCacheForProvider.Values.Any())
+                {
+                    averageItemSizeCache = CalculateAverageSize(itemSizesCacheForProvider.Values);
+                }
+                else 
+                {
+                    averageItemSizeCache = FallbackSize;
+                }
+            }
+            else
+            {
+                if (itemSizesCache.Values.Any())
+                {
+                    averageItemSizeCache = CalculateAverageSize(itemSizesCache.Values);
+                }
+                else
+                {
+                    averageItemSizeCache = FallbackSize;
+                }
+            }
         }
-        var itemSizes = itemSizesCache.Select(entry => entry.Value).ToList();
-        return new Size(itemSizes.Average(size => size.Width), itemSizes.Average(size => size.Height));
+        return averageItemSizeCache;
     }
 
     public void OnItemsChanged(NotifyCollectionChangedAction action)
@@ -151,7 +191,7 @@ internal class VirtualizingWrapPanelModel
 
         for (int i = 0; i <= itemIndex; i++)
         {
-            Size itemSize = GetItemSize(i);
+            Size itemSize = GetAssumedItemSize(i);
 
             if (x + GetWidth(itemSize) > GetWidth(ViewportSize))
             {
@@ -215,7 +255,7 @@ internal class VirtualizingWrapPanelModel
 
         for (int itemIndex = 0; itemIndex < Items.Count; itemIndex++)
         {
-            Size itemSize = GetItemSize(itemIndex);
+            Size itemSize = GetAssumedItemSize(itemIndex);
 
             if (x + GetWidth(itemSize) > GetWidth(ViewportSize) && x != 0)
             {
@@ -323,7 +363,8 @@ internal class VirtualizingWrapPanelModel
 
     private void VirtualizeItemsBeforeStartIndex()
     {
-        for (int childIndex = itemContainerManager.RealizedContainers.Count - 1; childIndex >= 0; childIndex--)
+        int count = itemContainerManager.RealizedContainers.Count;
+        for (int childIndex = count - 1; childIndex >= 0; childIndex--)
         {
             int itemIndex = itemContainerManager.ItemIndexForChildIndex(childIndex);
 
@@ -336,7 +377,8 @@ internal class VirtualizingWrapPanelModel
 
     private void VirtualizeItemsAfterEndIndex()
     {
-        for (int childIndex = itemContainerManager.RealizedContainers.Count - 1; childIndex >= 0; childIndex--)
+        int count = itemContainerManager.RealizedContainers.Count;
+        for (int childIndex = count - 1; childIndex >= 0; childIndex--)
         {
             int itemIndex = itemContainerManager.ItemIndexForChildIndex(childIndex);
 
@@ -365,7 +407,8 @@ internal class VirtualizingWrapPanelModel
 
         if (itemsInKnownExtend == 0)
         {
-            Extent = CalculateExtentForSameSizeItems(new Size(16, 16)); // TODO using min width/height
+            // No Items? return new Size(0,0)
+            Extent = CalculateExtentForSameSizeItems(new Size(16, 16)); // TODO ?
         }
         else
         {
@@ -425,6 +468,10 @@ internal class VirtualizingWrapPanelModel
         {
             return FixedItemSize;
         }
+        if (!AllowDifferentSizedItems && firstRealizedItemSize != null)
+        {
+            return firstRealizedItemSize;
+        }
         if (ItemSizeProvider != null)
         {
             var item = Items[itemIndex];
@@ -435,14 +482,10 @@ internal class VirtualizingWrapPanelModel
             }
             return size;
         }
-        if (!AllowDifferentSizedItems && firstRealizedItemSize != null) 
-        {
-            return firstRealizedItemSize;
-        }
         return null;
     }
 
-    private Size GetItemSize(int itemIndex)
+    private Size GetAssumedItemSize(int itemIndex)
     {
         var item = Items[itemIndex];
 
@@ -456,20 +499,10 @@ internal class VirtualizingWrapPanelModel
             return cachedItemSize;
         }
 
-        Size itemSize = MeasureItemTempoary(itemIndex);
-        itemSizesCache.Add(item, itemSize);
-        return itemSize;
+        return GetAverageItemSize();
     }
 
-    private Size MeasureItemTempoary(int itemIndex)
-    {
-        Size availableSize = new Size(double.PositiveInfinity, double.PositiveInfinity);
-        Size itemSize = itemContainerManager.RealizeItem(itemIndex, 0, availableSize);
-        itemContainerManager.VirtualizeItem(0);
-        return itemSize;
-    }
-
-    private void ArrangeRow(double rowWidth, List<IArrangeable> children, List<Size> childSizes, double y)
+    private void ArrangeRow(double rowWidth, List<IItemContainerInfo> children, List<Size> childSizes, double y)
     {
         double extraWidth = 0;
         double innerSpacing = 0;
@@ -480,6 +513,9 @@ internal class VirtualizingWrapPanelModel
             double summedUpChildWidth = childSizes.Sum(childSize => GetWidth(childSize));
             double unusedWidth = rowWidth - summedUpChildWidth;
             extraWidth = unusedWidth / children.Count;
+
+            // recursive verteilen an childs wo max width nicht erreicht
+            // extraWidth = unusedWidth / increaseableChilds
         }
         else
         {
@@ -497,7 +533,7 @@ internal class VirtualizingWrapPanelModel
         }
     }
 
-    private void CalculateRowSpacing(double rowWidth, List<IArrangeable> children, List<Size> childSizes, out double innerSpacing, out double outerSpacing)
+    private void CalculateRowSpacing(double rowWidth, List<IItemContainerInfo> children, List<Size> childSizes, out double innerSpacing, out double outerSpacing)
     {
         int childCount;
         double summedUpChildWidth;       
@@ -537,6 +573,15 @@ internal class VirtualizingWrapPanelModel
                 outerSpacing = 0;
                 break;
         }
+    }
+
+    private Size CalculateAverageSize(ICollection<Size> sizes) 
+    {
+        if (sizes.Any())
+        {
+            return new Size(sizes.Average(size => size.Width), sizes.Average(size => size.Height));
+        }
+        return Size.Empty;
     }
 
     #region orientation aware helper methods

@@ -7,9 +7,11 @@ using System.Windows;
 
 namespace WpfToolkit.Controls
 {
-    internal interface IArrangeable
+    internal interface IItemContainerInfo
     {
         Size DesiredSize { get; }
+
+        Size MaxSize { get; }
 
         void Arrange(Rect rect);
     }

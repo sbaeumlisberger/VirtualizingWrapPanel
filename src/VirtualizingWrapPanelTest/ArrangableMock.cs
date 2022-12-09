@@ -12,10 +12,12 @@ internal class ArrangableMock : IArrangeable
 {
     public Size DesiredSize { get; }
 
+    public Size MaxSize { get; }
+
     public TestItem Item { get; }
 
     public Rect ArrangeRect { get; private set; }
-
+     
     public ArrangableMock(TestItem item)
     {
         DesiredSize = new Size(item.Width, item.Height);
