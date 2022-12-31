@@ -1,5 +1,5 @@
 [![Nuget](https://img.shields.io/nuget/v/VirtualizingWrapPanel)](https://www.nuget.org/packages/VirtualizingWrapPanel)
-[<img alt="GitHub" src="https://img.shields.io/github/license/sbaeumlisberger/VirtualizingWrapPanel">](https://img.shields.io/github/license/sbaeumlisberger/VirtualizingWrapPanel)
+[<img alt="GitHub" src="https://img.shields.io/github/license/sbaeumlisberger/VirtualizingWrapPanel">](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/blob/master/LICENSE)
 
 ## VirtualizingWrapPanel
 
