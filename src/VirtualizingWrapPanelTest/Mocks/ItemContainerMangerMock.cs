@@ -15,7 +15,7 @@ namespace VirtualizingWrapPanelTest.Mocks;
 
 internal class ItemContainerMangerMock : IItemContainerManager
 {
-    public event EventHandler<ItemsChangedEventArgs2>? ItemsChanged;
+    public event EventHandler<ItemContainerManagerItemsChangedEventArgs>? ItemsChanged;
 
     public bool IsRecycling { get; set; } = false;
 
@@ -40,7 +40,7 @@ internal class ItemContainerMangerMock : IItemContainerManager
         this.items = items;
     }
 
-    public void InvokeItemsChangedEvent(ItemsChangedEventArgs2 eventArgs)
+    public void InvokeItemsChangedEvent(ItemContainerManagerItemsChangedEventArgs eventArgs)
     {
         ItemsChanged?.Invoke(this, eventArgs);
     }

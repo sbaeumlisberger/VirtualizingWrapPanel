@@ -32,7 +32,7 @@ public class ItemsChangeTest
         var item = (TestItem)items[17];
         items.Remove(item);
         var action = NotifyCollectionChangedAction.Remove;
-        var eventArgs = new ItemsChangedEventArgs2(action, new[] { new ItemContainerInfoMock(item) });
+        var eventArgs = new ItemContainerManagerItemsChangedEventArgs(action, new[] { new ItemContainerInfoMock(item) });
         itemContainerManager.InvokeItemsChangedEvent(eventArgs);
 
         Assert.AreEqual(19, childrenCollectionMock.Collection.Count);
@@ -64,7 +64,7 @@ public class ItemsChangeTest
         var item = (TestItem)items[58];
         items.Remove(item);
         var action = NotifyCollectionChangedAction.Remove;
-        var eventArgs = new ItemsChangedEventArgs2(action, new[] { new ItemContainerInfoMock(item) });
+        var eventArgs = new ItemContainerManagerItemsChangedEventArgs(action, new[] { new ItemContainerInfoMock(item) });
         itemContainerManager.InvokeItemsChangedEvent(eventArgs);
 
         Assert.AreEqual(20, childrenCollectionMock.Collection.Count);

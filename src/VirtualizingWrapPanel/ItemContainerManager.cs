@@ -10,12 +10,12 @@ using System.Windows.Controls.Primitives;
 
 namespace WpfToolkit.Controls;
 
-internal class ItemsChangedEventArgs2
+internal class ItemContainerManagerItemsChangedEventArgs
 {
     public NotifyCollectionChangedAction Action { get; }
     public IReadOnlyCollection<IItemContainerInfo> RemovedContainers { get; }
 
-    public ItemsChangedEventArgs2(
+    public ItemContainerManagerItemsChangedEventArgs(
         NotifyCollectionChangedAction action,
         IReadOnlyCollection<IItemContainerInfo> removedContainers)
     {
@@ -26,7 +26,7 @@ internal class ItemsChangedEventArgs2
 
 internal interface IItemContainerManager
 {
-    public event EventHandler<ItemsChangedEventArgs2>? ItemsChanged;
+    public event EventHandler<ItemContainerManagerItemsChangedEventArgs>? ItemsChanged;
 
     bool IsRecycling { get; set; }
 
@@ -55,7 +55,7 @@ internal interface IItemContainerManager
 internal class ItemContainerManager : IItemContainerManager
 {
 
-    public event EventHandler<ItemsChangedEventArgs2>? ItemsChanged;
+    public event EventHandler<ItemContainerManagerItemsChangedEventArgs>? ItemsChanged;
 
     public bool IsRecycling { get; set; }
 
@@ -105,11 +105,11 @@ internal class ItemContainerManager : IItemContainerManager
             {
                 removedCotainers.ForEach(container => cachedContainers.Add(container));
             }
-            ItemsChanged?.Invoke(this, new ItemsChangedEventArgs2(e.Action, removedCotainers));
+            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action, removedCotainers));
         }
         else
         {
-            ItemsChanged?.Invoke(this, new ItemsChangedEventArgs2(e.Action, new IItemContainerInfo[0]));
+            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action, new IItemContainerInfo[0]));
         }
     }
 

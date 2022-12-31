@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
@@ -24,9 +22,6 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
     public bool StretchItems { get; set; }
     public SpacingMode SpacingMode { get; set; }
 
-    // TODO base class ?
-    public ReadOnlyCollection<object> Items => itemContainerManager.Items;
-
     private Size? sizeOfFirstItem;
     private Dictionary<object, Size> itemSizesCache = new Dictionary<object, Size>();
     private Dictionary<object, Size> itemSizesCacheForProvider = new Dictionary<object, Size>(); // TODO reuse itemSizesCache?
@@ -44,38 +39,47 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
     private double knownExtendY = 0;
 
     private readonly IItemContainerManager itemContainerManager;
-    private readonly IChildrenCollection children;
+    private readonly IChildrenCollection childrenCollection;
 
-    public VirtualizingWrapPanelModel(IItemContainerManager itemContainerManager, IChildrenCollection virtualizingPanel)
+    private readonly List<object> items;
+
+    public VirtualizingWrapPanelModel(IItemContainerManager itemContainerManager, IChildrenCollection childrenCollection)
     {
         this.itemContainerManager = itemContainerManager;
-        this.children = virtualizingPanel;
+        this.childrenCollection = childrenCollection;
         itemContainerManager.ItemsChanged += ItemContainerManager_ItemsChanged;
+        items = new List<object>(itemContainerManager.Items);
     }
 
-    private void ItemContainerManager_ItemsChanged(object? sender, ItemsChangedEventArgs2 e)
+    private void ItemContainerManager_ItemsChanged(object? sender, ItemContainerManagerItemsChangedEventArgs e)
     {
         if (e.Action == NotifyCollectionChangedAction.Remove
             || e.Action == NotifyCollectionChangedAction.Replace)
         {
-            foreach (var container in e.RemovedContainers)
+            foreach (var item in items.Except(itemContainerManager.Items))
             {
-                if (!itemContainerManager.IsRecycling)
+                itemSizesCache.Remove(item);
+                itemSizesCacheForProvider.Remove(item);
+            }
+            if (!itemContainerManager.IsRecycling)
+            {
+                foreach (var container in e.RemovedContainers)
                 {
-                    children.RemoveChild(container);
+                    childrenCollection.RemoveChild(container);
                 }
-                itemSizesCache.Remove(container.Item); // TODO for all items, not only containers!
-                itemSizesCacheForProvider.Remove(container.Item);
             }
         }
-
-        if (e.Action == NotifyCollectionChangedAction.Reset)
+        else if (e.Action == NotifyCollectionChangedAction.Reset)
         {
             itemSizesCache.Clear();
             itemSizesCacheForProvider.Clear();
+            // childrenCollection is cleared automatically
         }
 
-        itemsInKnownExtend = 0;
+        itemsInKnownExtend = 0; // force recalucaltion of extend
+               
+        items.Clear();
+        items.AddRange(itemContainerManager.Items);
     }
 
     public Size OnMeasure(Size availableSize)
@@ -85,7 +89,7 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
 
     public Size OnMeasure(Size availableSize, Size viewportSize, Point scrollOffset)
     {
-        bool invalidateScrollInfo = false;      
+        bool invalidateScrollInfo = false;
         ScrollOffset = scrollOffset;
         averageItemSizeCache = null;
 
@@ -179,15 +183,15 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
 
     public void BringIndexIntoView(int itemIndex)
     {
-        if (itemIndex < 0 || itemIndex >= Items.Count)
+        if (itemIndex < 0 || itemIndex >= items.Count)
         {
             throw new ArgumentOutOfRangeException(nameof(itemIndex), $"The argument {nameof(itemIndex)} must be >= 0 and < the count of items.");
         }
 
         var itemOffset = FindItemOffset(itemIndex);
 
-        if (GetY(itemOffset) < GetY(ScrollOffset) 
-            || GetY(itemOffset) + GetHeight(GetAssumedItemSize(Items[itemIndex])) > GetY(ScrollOffset))
+        if (GetY(itemOffset) < GetY(ScrollOffset)
+            || GetY(itemOffset) + GetHeight(GetAssumedItemSize(items[itemIndex])) > GetY(ScrollOffset))
         {
             if (Orientation == Orientation.Horizontal)
             {
@@ -206,7 +210,7 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
 
         for (int i = 0; i <= itemIndex; i++)
         {
-            Size itemSize = GetAssumedItemSize(Items[i]);
+            Size itemSize = GetAssumedItemSize(items[i]);
 
             if (x + GetWidth(itemSize) > GetWidth(ViewportSize))
             {
@@ -242,7 +246,7 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
     {
         double startOffsetY = DetermineStartOffsetY();
 
-        if (startOffsetY <= 0) 
+        if (startOffsetY <= 0)
         {
             startItemIndex = 0;
             startItemOffsetX = 0;
@@ -254,7 +258,7 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
         int indexOfFirstRowItem = 0;
 
         int itemIndex = 0;
-        foreach (var item in Items) // foreach seems to be faster than a for loop
+        foreach (var item in items) // foreach seems to be faster than a for loop
         {
             Size itemSize = GetAssumedItemSize(item);
 
@@ -301,7 +305,7 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
             return;
         }
 
-        int newEndItemIndex = Items.Count - 1;
+        int newEndItemIndex = items.Count - 1;
 
         double endOffsetY = DetermineEndOffsetY();
 
@@ -311,19 +315,19 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
 
         knownExtendX = 0;
 
-        for (int itemIndex = startItemIndex, childIndex = 0; itemIndex < Items.Count; itemIndex++, childIndex++)
+        for (int itemIndex = startItemIndex, childIndex = 0; itemIndex < items.Count; itemIndex++, childIndex++)
         {
             if (!AllowDifferentSizedItems && itemIndex == 0)
             {
                 sizeOfFirstItem = null;
             }
 
-            object item = Items[itemIndex];
+            object item = items[itemIndex];
 
             var container = itemContainerManager.Realize(itemIndex, out bool wasAlreadyRealized, out bool newContainerGenerated);
             if (newContainerGenerated)
             {
-                children.AddChild(container);
+                childrenCollection.AddChild(container);
             }
 
             Size? upfrontKnownItemSize = GetUpfrontKnownItemSize(item);
@@ -352,10 +356,10 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
             x += GetWidth(containerSize);
             rowHeight = Math.Max(rowHeight, GetHeight(containerSize));
 
-            if (newEndItemIndex == Items.Count - 1)
+            if (newEndItemIndex == items.Count - 1)
             {
                 if (!AllowDifferentSizedItems && y + rowHeight >= endOffsetY
-                    && itemIndex + 1 < Items.Count
+                    && itemIndex + 1 < items.Count
                     && x + sizeOfFirstItem!.Value.Width > GetWidth(ViewportSize))
                 {
                     newEndItemIndex = itemIndex;
@@ -365,9 +369,9 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
                     newEndItemIndex = itemIndex;
                 }
 
-                if (newEndItemIndex != Items.Count - 1 && CacheLengthUnit == VirtualizationCacheLengthUnit.Item)
+                if (newEndItemIndex != items.Count - 1 && CacheLengthUnit == VirtualizationCacheLengthUnit.Item)
                 {
-                    newEndItemIndex = Math.Min(newEndItemIndex + (int)CacheLength.CacheAfterViewport, Items.Count - 1);
+                    newEndItemIndex = Math.Min(newEndItemIndex + (int)CacheLength.CacheAfterViewport, items.Count - 1);
                 }
             }
 
@@ -436,10 +440,10 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
     }
 
     private void Virtualize(IItemContainerInfo container)
-    {        
+    {
         if (itemContainerManager.Virtualize(container))
         {
-            children.RemoveChild(container);
+            childrenCollection.RemoveChild(container);
         }
     }
 
@@ -466,7 +470,7 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
             }
             else
             {
-                double estimatedExtend = ((double)Items.Count / itemsInKnownExtend) * knownExtendY;
+                double estimatedExtend = ((double)items.Count / itemsInKnownExtend) * knownExtendY;
                 extent = CreateSize(knownExtendX, estimatedExtend);
             }
         }
@@ -487,7 +491,7 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
     private Size CalculateExtentForSameSizeItems(Size itemSize)
     {
         int itemsPerRow = (int)Math.Max(1, Math.Floor(GetWidth(ViewportSize) / GetWidth(itemSize)));
-        double extentY = Math.Ceiling(((double)Items.Count) / itemsPerRow) * GetHeight(itemSize);
+        double extentY = Math.Ceiling(((double)items.Count) / itemsPerRow) * GetHeight(itemSize);
         return CreateSize(knownExtendX, extentY);
     }
 
