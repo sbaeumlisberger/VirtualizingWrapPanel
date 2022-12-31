@@ -1,58 +1,81 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
-namespace WpfToolkit.Controls
+namespace WpfToolkit.Controls;
+
+internal interface IItemContainerInfo
 {
-    internal class ItemContainerInfo : IItemContainerInfo
+    UIElement UIElement { get; }
+
+    Size DesiredSize { get; }
+
+    bool IsMeasureValid { get; }
+
+    Size MaxSize { get; }
+
+    object Item { get; }
+
+    Size Measure(Size availableSize);
+
+    void Arrange(Rect rect);
+}
+
+internal class ItemContainerInfo : IItemContainerInfo
+{
+    public UIElement UIElement { get; }
+
+    public Size DesiredSize => UIElement.DesiredSize;
+
+    public bool IsMeasureValid => UIElement.IsMeasureValid;
+
+    public Size MaxSize { get; } = new Size(double.PositiveInfinity, double.PositiveInfinity);
+
+    public object Item { get; }
+
+    private ItemContainerInfo(UIElement uiElement, object item)
     {
-        public UIElement UIElement { get; }
+        UIElement = uiElement;
+        Item = item;
 
-        public Size DesiredSize => UIElement.DesiredSize;
-
-        public Size MaxSize { get; } = new Size(double.PositiveInfinity, double.PositiveInfinity);
-
-        private ItemContainerInfo(UIElement uiElement)
+        if (uiElement is FrameworkElement fe)
         {
-            UIElement = uiElement;
-
-            if (uiElement is FrameworkElement fe)
-            {
-                MaxSize = new Size(fe.MaxWidth, fe.MaxHeight);
-            }
+            MaxSize = new Size(fe.MaxWidth, fe.MaxHeight);
         }
+        Item = item;
+    }
 
-        public static IItemContainerInfo For(UIElement uiElement)
-        {
-            return new ItemContainerInfo(uiElement);
-        }
+    public static IItemContainerInfo For(UIElement uiElement, object item)
+    {
+        return new ItemContainerInfo(uiElement, item);
+    }
 
-        public void Arrange(Rect rect)
-        {
-            UIElement.Arrange(rect);
-        }
+    public Size Measure(Size availableSize)
+    {
+        UIElement.Measure(availableSize);
+        return UIElement.DesiredSize;
+    }
 
-        public override bool Equals(object? obj)
-        {
-            return obj is ItemContainerInfo other && ReferenceEquals(UIElement, other.UIElement);
-        }
+    public void Arrange(Rect rect)
+    {
+        UIElement.Arrange(rect);
+    }
 
-        public override int GetHashCode()
-        {
-            return UIElement.GetHashCode();
-        }
+    public override bool Equals(object? obj)
+    {
+        return obj is ItemContainerInfo other && ReferenceEquals(UIElement, other.UIElement);
+    }
 
-        public static bool operator ==(ItemContainerInfo obj1, ItemContainerInfo obj2) 
-        {
-            return ReferenceEquals(obj1?.UIElement, obj2?.UIElement);
-        }
+    public override int GetHashCode()
+    {
+        return UIElement.GetHashCode();
+    }
 
-        public static bool operator !=(ItemContainerInfo obj1, ItemContainerInfo obj2)
-        {
-            return !ReferenceEquals(obj1?.UIElement, obj2?.UIElement);
-        }
+    public static bool operator ==(ItemContainerInfo obj1, ItemContainerInfo obj2)
+    {
+        return ReferenceEquals(obj1?.UIElement, obj2?.UIElement);
+    }
+
+    public static bool operator !=(ItemContainerInfo obj1, ItemContainerInfo obj2)
+    {
+        return !ReferenceEquals(obj1?.UIElement, obj2?.UIElement);
     }
 }

@@ -94,5 +94,10 @@ namespace VirtualizingWrapPanelSamples
                 return true;
             });
         }
+
+        private void RemoveMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            model.RemoveItem((TestItem)((FrameworkElement)sender).DataContext);
+        }
     }
 }

@@ -22,6 +22,11 @@
                 VerticalAlignment="Stretch"
                 Loaded="Item_Loaded"
                 Unloaded="Item_Unloaded">
+                <StackPanel.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Remove" Click="RemoveMenuItem_Click"/>
+                    </ContextMenu>
+                </StackPanel.ContextMenu>
                 <TextBlock
                     Width="100"
                     FontSize="20"
@@ -404,7 +409,7 @@
                         ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
                         ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}"
                         ItemContainerStyle="{StaticResource ItemContainerStyle}">
-                        <ListView.ItemsPanel>
+                        <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <wpftk:VirtualizingWrapPanel
                                     AllowDifferentSizedItems="False"
@@ -416,13 +421,15 @@
                                     MouseWheelDeltaItem="{Binding DataContext.MouseWheelDeltaItem, Mode=OneWay, ElementName=window}"
                                     StretchItems="{Binding DataContext.StretchItems, Mode=OneWay, ElementName=window}"/>
                             </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                        <ListView.GroupStyle>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.GroupStyle>
                             <GroupStyle HidesIfEmpty="True">
                                 <GroupStyle.HeaderTemplate>
                                     <DataTemplate>
                                         <TextBlock
-                                            HorizontalAlignment="Left" 
+                                            Background="LightGray"
+                                            Padding="8"
+                                            HorizontalAlignment="Stretch" 
                                             FontWeight="Bold" 
                                             FontSize="14"
                                             Text="{Binding Name}" />
@@ -435,7 +442,7 @@
                                     </ItemsPanelTemplate>
                                 </GroupStyle.Panel>
                             </GroupStyle>
-                        </ListView.GroupStyle>
+                        </ItemsControl.GroupStyle>
                     </ListView>
                 </DockPanel>
             </TabItem>

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 
 namespace WpfToolkit.Controls
 {
@@ -37,7 +39,7 @@ namespace WpfToolkit.Controls
         /// <summary>
         /// Scroll line delta for item based scrolling. The default value is 1 item.
         /// </summary>
-        public double ScrollLineDeltaItem { get => (int)GetValue(ScrollLineDeltaItemProperty); set => SetValue(ScrollLineDeltaItemProperty, value); }
+        public int ScrollLineDeltaItem { get => (int)GetValue(ScrollLineDeltaItemProperty); set => SetValue(ScrollLineDeltaItemProperty, value); }
 
         /// <summary>
         /// Mouse wheel delta for item based scrolling. The default value is 3 items.
@@ -102,39 +104,37 @@ namespace WpfToolkit.Controls
         }
         private DependencyObject? _itemsOwner;
 
-        protected ReadOnlyCollection<object> Items => ((ItemContainerGenerator)ItemContainerGenerator).Items;
+        protected ReadOnlyCollection<object> Items => ItemContainerGenerator.Items;
 
-        protected new IRecyclingItemContainerGenerator ItemContainerGenerator
+        protected new ItemContainerGenerator ItemContainerGenerator
         {
             get
             {
                 if (_itemContainerGenerator is null)
                 {
-                    /* Because of a bug in the framework the ItemContainerGenerator 
-                     * is null until InternalChildren accessed at least one time. */
+                    // The ItemContainerGenerator is null until InternalChildren is accessed at least one time.
                     var children = InternalChildren;
-                    _itemContainerGenerator = (IRecyclingItemContainerGenerator)base.ItemContainerGenerator;
+                    _itemContainerGenerator = base.ItemContainerGenerator.GetItemContainerGeneratorForPanel(this);
+
                 }
                 return _itemContainerGenerator;
             }
         }
-        private IRecyclingItemContainerGenerator? _itemContainerGenerator;
+        private ItemContainerGenerator? _itemContainerGenerator;
 
-        public double ExtentWidth => Extent.Width;
-        public double ExtentHeight => Extent.Height;
-        protected Size Extent { get; private set; } = new Size(0, 0);
+        public double ExtentWidth => BaseModel.Extent.Width;
+        public double ExtentHeight => BaseModel.Extent.Height;
 
-        public double HorizontalOffset => Offset.X;
-        public double VerticalOffset => Offset.Y;
-        protected Point Offset { get; private set; } = new Point(0, 0);
+        public double HorizontalOffset => BaseModel.ScrollOffset.X;
+        public double VerticalOffset => BaseModel.ScrollOffset.Y;
 
-        public double ViewportWidth => ViewportSize.Width;
-        public double ViewportHeight => ViewportSize.Height;
-        protected Size ViewportSize { get; private set; } = new Size(0, 0);
+        public double ViewportWidth => BaseModel.ViewportSize.Width;
+        public double ViewportHeight => BaseModel.ViewportSize.Height;
+
+        internal abstract VirtualizingPanelModelBase BaseModel { get; }
 
         private Visibility previousVerticalScrollBarVisibility = Visibility.Collapsed;
         private Visibility previousHorizontalScrollBarVisibility = Visibility.Collapsed;
-
         protected bool ShouldIgnoreMeasure()
         {
             /* Sometimes when scrolling the scrollbar gets hidden without any reason. In this case the "IsMeasureValid" 
@@ -160,172 +160,60 @@ namespace WpfToolkit.Controls
             return false;
         }
 
-        protected virtual void SetViewportAndExtend(Size viewportSize, Size extent)
-        {
-            bool invalidateScrollInfo = false;
-
-            if (extent != Extent)
-            {
-                Extent = extent;
-                invalidateScrollInfo = true;
-
-            }
-            if (viewportSize != ViewportSize)
-            {
-                ViewportSize = viewportSize;
-                invalidateScrollInfo = true;
-            }
-
-            if (VerticalOffset + ViewportHeight + 0.1 > ExtentHeight)
-            {
-                Offset = new Point(Offset.X, Math.Max(0, ExtentHeight - ViewportHeight));
-                invalidateScrollInfo = true;
-            }
-            if (HorizontalOffset + ViewportWidth + 0.1 > ExtentWidth)
-            {
-                Offset = new Point(Math.Max(0, ExtentWidth - ViewportWidth), Offset.Y);
-                invalidateScrollInfo = true;
-            }
-
-            if (invalidateScrollInfo)
-            {
-                ScrollOwner?.InvalidateScrollInfo();
-            }
-        }
-
         public virtual Rect MakeVisible(Visual visual, Rect rectangle)
         {
-            Point pos = visual.TransformToAncestor(this).Transform(Offset);
+            Point pos = visual.TransformToAncestor(this).Transform(BaseModel.ScrollOffset);
 
             double scrollAmountX = 0;
             double scrollAmountY = 0;
 
-            if (pos.X < Offset.X)
+            if (pos.X < HorizontalOffset)
             {
-                scrollAmountX = -(Offset.X - pos.X);
+                scrollAmountX = -(HorizontalOffset - pos.X);
             }
-            else if ((pos.X + rectangle.Width) > (Offset.X + ViewportSize.Width))
+            else if ((pos.X + rectangle.Width) > (HorizontalOffset + ViewportWidth))
             {
-                double notVisibleX = (pos.X + rectangle.Width) - (Offset.X + ViewportSize.Width);
-                double maxScrollX = pos.X - Offset.X; // keep left of the visual visible
+                double notVisibleX = (pos.X + rectangle.Width) - (HorizontalOffset + ViewportWidth);
+                double maxScrollX = pos.X - HorizontalOffset; // keep left of the visual visible
                 scrollAmountX = Math.Min(notVisibleX, maxScrollX);
             }
 
-            if (pos.Y < Offset.Y)
+            if (pos.Y < VerticalOffset)
             {
-                scrollAmountY = -(Offset.Y - pos.Y);
+                scrollAmountY = -(VerticalOffset - pos.Y);
             }
-            else if ((pos.Y + rectangle.Height) > (Offset.Y + ViewportSize.Height))
+            else if ((pos.Y + rectangle.Height) > (VerticalOffset + ViewportHeight))
             {
-                double notVisibleY = (pos.Y + rectangle.Height) - (Offset.Y + ViewportSize.Height);
-                double maxScrollY = pos.Y - Offset.Y; // keep top of the visual visible
+                double notVisibleY = (pos.Y + rectangle.Height) - (VerticalOffset + ViewportHeight);
+                double maxScrollY = pos.Y - VerticalOffset; // keep top of the visual visible
                 scrollAmountY = Math.Min(notVisibleY, maxScrollY);
             }
 
-            SetHorizontalOffset(Offset.X + scrollAmountX);
-            SetVerticalOffset(Offset.Y + scrollAmountY);
+            BaseModel.SetHorizontalOffset(HorizontalOffset + scrollAmountX);
+            BaseModel.SetVerticalOffset(VerticalOffset + scrollAmountY);
 
-            double visibleRectWidth = Math.Min(rectangle.Width, ViewportSize.Width);
-            double visibleRectHeight = Math.Min(rectangle.Height, ViewportSize.Height);
+            double visibleRectWidth = Math.Min(rectangle.Width, ViewportWidth);
+            double visibleRectHeight = Math.Min(rectangle.Height, ViewportHeight);
 
             return new Rect(scrollAmountX, scrollAmountY, visibleRectWidth, visibleRectHeight);
         }
 
-        protected virtual GeneratorPosition GetGeneratorPositionFromChildIndex(int childIndex)
-        {
-            return new GeneratorPosition(childIndex, 0);
-        }
+        public void LineUp() => BaseModel.LineUp();
+        public void LineDown() => BaseModel.LineDown();
+        public void LineLeft() => BaseModel.LineLeft();
+        public void LineRight() => BaseModel.LineRight();
 
-        public void SetVerticalOffset(double offset)
-        {
-            if (offset < 0 || ViewportSize.Height >= Extent.Height)
-            {
-                offset = 0;
-            }
-            else if (offset + ViewportSize.Height >= Extent.Height)
-            {
-                offset = Extent.Height - ViewportSize.Height;
-            }
-            this.Offset = new Point(this.Offset.X, offset);
-            ScrollOwner?.InvalidateScrollInfo();
-            InvalidateMeasure();
-        }
+        public void MouseWheelUp() => BaseModel.MouseWheelUp();
+        public void MouseWheelDown() => BaseModel.MouseWheelDown();
+        public void MouseWheelLeft() => BaseModel.MouseWheelLeft();
+        public void MouseWheelRight() => BaseModel.MouseWheelRight();
 
-        public void SetHorizontalOffset(double offset)
-        {
-            if (offset < 0 || ViewportSize.Width >= Extent.Width)
-            {
-                offset = 0;
-            }
-            else if (offset + ViewportSize.Width >= Extent.Width)
-            {
-                offset = Extent.Width - ViewportSize.Width;
-            }
-            this.Offset = new Point(offset, this.Offset.Y);
-            ScrollOwner?.InvalidateScrollInfo();
-            InvalidateMeasure();
-        }
+        public void PageUp() => BaseModel.PageUp();
+        public void PageDown() => BaseModel.PageDown();
+        public void PageLeft() => BaseModel.PageLeft();
+        public void PageRight() => BaseModel.PageRight();
 
-        protected void ScrollVertical(double amount)
-        {
-            SetVerticalOffset(VerticalOffset + amount);
-        }
-
-        protected void ScrollHorizontal(double amount)
-        {
-            SetHorizontalOffset(HorizontalOffset + amount);
-        }
-
-        public void LineUp() => ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -ScrollLineDelta : GetLineUpScrollAmount());
-        public void LineDown() => ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? ScrollLineDelta : GetLineDownScrollAmount());
-        public void LineLeft() => ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -ScrollLineDelta : GetLineLeftScrollAmount());
-        public void LineRight() => ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? ScrollLineDelta : GetLineRightScrollAmount());
-
-        public void MouseWheelUp()
-        {
-            if (MouseWheelScrollDirection == ScrollDirection.Vertical)
-            {
-                ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -MouseWheelDelta : GetMouseWheelUpScrollAmount());
-            }
-            else
-            {
-                MouseWheelLeft();
-            }
-        }
-
-        public void MouseWheelDown()
-        {
-            if (MouseWheelScrollDirection == ScrollDirection.Vertical)
-            {
-                ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? MouseWheelDelta : GetMouseWheelDownScrollAmount());
-            }
-            else
-            {
-                MouseWheelRight();
-            }
-        }
-
-        public void MouseWheelLeft() => ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -MouseWheelDelta : GetMouseWheelLeftScrollAmount());
-        public void MouseWheelRight() => ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? MouseWheelDelta : GetMouseWheelRightScrollAmount());
-
-        public void PageUp() => ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -ViewportHeight : GetPageUpScrollAmount());
-        public void PageDown() => ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? ViewportHeight : GetPageDownScrollAmount());
-        public void PageLeft() => ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -ViewportHeight : GetPageLeftScrollAmount());
-        public void PageRight() => ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? ViewportHeight : GetPageRightScrollAmount());
-
-        protected abstract double GetLineUpScrollAmount();
-        protected abstract double GetLineDownScrollAmount();
-        protected abstract double GetLineLeftScrollAmount();
-        protected abstract double GetLineRightScrollAmount();
-
-        protected abstract double GetMouseWheelUpScrollAmount();
-        protected abstract double GetMouseWheelDownScrollAmount();
-        protected abstract double GetMouseWheelLeftScrollAmount();
-        protected abstract double GetMouseWheelRightScrollAmount();
-
-        protected abstract double GetPageUpScrollAmount();
-        protected abstract double GetPageDownScrollAmount();
-        protected abstract double GetPageLeftScrollAmount();
-        protected abstract double GetPageRightScrollAmount();
+        public void SetHorizontalOffset(double offset) => BaseModel.SetHorizontalOffset(offset);
+        public void SetVerticalOffset(double offset) => BaseModel?.SetVerticalOffset(offset);
     }
 }

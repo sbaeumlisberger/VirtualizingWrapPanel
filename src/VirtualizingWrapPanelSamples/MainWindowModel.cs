@@ -93,8 +93,8 @@ namespace VirtualizingWrapPanelSamples
 
         public void InsertItemAtRandomPosition()
         {
-            int index = random.Next(Items.Count);
-            Items.Insert(index, new TestItem("Group " + new Random().Next(50), Items.Count));
+            int number = Items.Any() ? Items.Select(item => item.Number).Max() + 1 : 1;
+            Items.Add(new TestItem("Group " + new Random().Next(50), number));
         }
 
         public void AddItems()
@@ -113,6 +113,11 @@ namespace VirtualizingWrapPanelSamples
                 int index = random.Next(Items.Count);
                 Items.RemoveAt(index);
             }
+        }
+
+        public void RemoveItem(TestItem item)
+        {
+            Items.Remove(item);            
         }
 
         public void RemoveAllItems()

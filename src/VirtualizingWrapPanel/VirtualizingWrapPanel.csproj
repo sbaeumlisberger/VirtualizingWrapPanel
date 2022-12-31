@@ -40,7 +40,7 @@
     <PackageTags>VirtualizingWrapPanel, VirtualizingPanel, WrapPanel, GridView, Virtualization, WPF, XAML, .NET </PackageTags>
 
     <PackageReleaseNotes>
-      - Breaking Change: Inverted behaviour and defualt value of Orientation property
+      - Breaking Change: Inverted behaviour and default value of Orientation property
       - Breaking Change: Removed deprecated properties SpacingEnabled, IsSpacingEnabled and ChildrenSize
       - New Feature: #22 Add support for different sized items
       - New Feature: Add option for wrapping keyboard navigation to GridView control

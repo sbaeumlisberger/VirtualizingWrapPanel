@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media.Media3D;
+using System.Xml.Linq;
 
 namespace WpfToolkit.Controls
 {
@@ -30,7 +31,7 @@ namespace WpfToolkit.Controls
 
         public static readonly DependencyProperty StretchItemsProperty = DependencyProperty.Register(nameof(StretchItems), typeof(bool), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsArrange));
 
-        public static readonly DependencyProperty HorizontalGroupOffsetProperty = DependencyProperty.Register(nameof(HorizontalGroupOffset), typeof(double), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(6d, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        public static readonly DependencyProperty HorizontalGroupOffsetProperty = DependencyProperty.Register(nameof(HorizontalGroupOffset), typeof(double), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(5d, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Gets or sets a value that specifies the orientation in which items are arranged. The default value is <see cref="Orientation.Horizontal"/>.
@@ -84,23 +85,59 @@ namespace WpfToolkit.Controls
 
         protected override Orientation LogicalOrientation => Orientation == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal;
 
+        private IItemContainerManager ItemContainerManager
+        {
+            get
+            {
+                _itemContainerManager ??= new ItemContainerManager(ItemContainerGenerator);
+                return _itemContainerManager;
+            }
+        }
+        private IItemContainerManager? _itemContainerManager;
+
+        private VirtualizingWrapPanelModel Model
+        {
+            get
+            {
+                if (_model is null)
+                {
+                    _model = new VirtualizingWrapPanelModel(ItemContainerManager, internalChildrenWrapper);
+                    _model.ScrollInfoInvalidated += Model_ScrollInfoInvalidated;
+                    _model.MeasureInvalidated += Model_MeasureInvalidated;
+                }
+                return _model;
+            }
+        }
+
+        private VirtualizingWrapPanelModel? _model;
+
+        internal override VirtualizingPanelModelBase BaseModel => Model;
+
         private readonly VirtualizingPanelWrapper internalChildrenWrapper;
-        private readonly IItemContainerManger itemContainerManager;
-        private readonly VirtualizingWrapPanelModel model;
 
         public VirtualizingWrapPanel()
         {
             internalChildrenWrapper = new VirtualizingPanelWrapper(
-                () => InternalChildren,
-                container => AddInternalChild(container),
-                (index, container) => InsertInternalChild(index, container),
-                index => RemoveInternalChildRange(index, 1),
-                () => ItemContainerGenerator
+                child => AddInternalChild(child),
+                child => RemoveInternalChildRange(InternalChildren.IndexOf(child), 1)
             );
+        }
 
-            itemContainerManager = new ItemContainerManager(internalChildrenWrapper);
+        private void Model_ScrollInfoInvalidated(object? sender, EventArgs e)
+        {
+            ScrollOwner?.InvalidateScrollInfo();
+        }
 
-            model = new VirtualizingWrapPanelModel(itemContainerManager);
+        private void Model_MeasureInvalidated(object? sender, EventArgs e)
+        {
+            InvalidateMeasure();
+        }
+
+        private void Orientation_Changed()
+        {
+            MouseWheelScrollDirection = Orientation == Orientation.Horizontal
+                                        ? ScrollDirection.Vertical
+                                        : ScrollDirection.Horizontal;
         }
 
         protected override Size MeasureOverride(Size availableSize)
@@ -110,156 +147,50 @@ namespace WpfToolkit.Controls
                 return availableSize;
             }
 
-            itemContainerManager.IsRecycling = IsRecycling;
-            model.Items = Items;
-            model.Orientation = Orientation;
-            model.FixedItemSize = ItemSize;
-            model.ItemSizeProvider = ItemSizeProvider;
-            model.AllowDifferentSizedItems = AllowDifferentSizedItems;
-
-            Size desiredSize;
+            ItemContainerManager.IsRecycling = IsRecycling;
+            Model.Orientation = Orientation;
+            Model.FixedItemSize = ItemSize;
+            Model.ItemSizeProvider = ItemSizeProvider;
+            Model.AllowDifferentSizedItems = AllowDifferentSizedItems;
 
             if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem)
             {
-                var constraints = groupItem.Constraints;
+                var viewport = groupItem.Constraints.Viewport;
+                var headerSize = groupItem.HeaderDesiredSizes.PixelSize;           
 
-                var viewportSize = groupItem.Constraints.Viewport.Size;
-                var headerSize = groupItem.HeaderDesiredSizes.PixelSize;
-                double viewportWidth = Math.Max(viewportSize.Width - 2 * HorizontalGroupOffset, 0);
-                double viewporteHeight = Math.Max(viewportSize.Height - headerSize.Height, 0);
-                viewportSize = new Size(viewportWidth, viewporteHeight);
+                double viewportWidth = Math.Max(viewport.Size.Width, 0);
+                double viewporteHeight = Orientation == Orientation.Horizontal 
+                    ? Math.Max(viewport.Size.Height, 0) 
+                    : Math.Max(viewport.Size.Height - headerSize.Height, 0);
 
-                model.CacheLength = groupItem.Constraints.CacheLength;
-                model.CacheLengthUnit = groupItem.Constraints.CacheLengthUnit;
+                var viewportSize = new Size(viewportWidth, viewporteHeight);
 
-                // TODO
-                Point offset = new Point(Math.Max(0, constraints.Viewport.Location.X), Math.Max(0, constraints.Viewport.Location.Y));
+                Margin = new Thickness(-HorizontalGroupOffset, 0, 0, 0);
 
-                desiredSize = model.OnMeasure(availableSize, viewportSize, offset);
-                desiredSize.Width += 2 * HorizontalGroupOffset;
+                Model.CacheLength = groupItem.Constraints.CacheLength;
+                Model.CacheLengthUnit = groupItem.Constraints.CacheLengthUnit;
+
+                return Model.OnMeasure(availableSize, viewportSize, viewport.Location);
             }
             else
             {
-                model.CacheLength = CacheLength;
-                model.CacheLengthUnit = CacheLengthUnit;
-
-                desiredSize = model.OnMeasure(availableSize, availableSize, Offset);
+                Model.CacheLength = CacheLength;
+                Model.CacheLengthUnit = CacheLengthUnit;
+                return Model.OnMeasure(availableSize);
             }
-
-            SetViewportAndExtend(model.ViewportSize, model.Extent);
-
-            if (desiredSize.Height == double.PositiveInfinity)
-            {
-                Debug.WriteLine(desiredSize);
-            }
-            return desiredSize;
-        }
-
-        private void Orientation_Changed()
-        {
-            MouseWheelScrollDirection = Orientation == Orientation.Horizontal ? ScrollDirection.Vertical : ScrollDirection.Horizontal;
-        }
-
-        protected override void OnItemsChanged(object sender, ItemsChangedEventArgs args)
-        {
-            model.OnItemsChanged(args.Action);
         }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            model.StretchItems = StretchItems;
-            model.SpacingMode = SpacingMode;
-            if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem)
-            {
-                var finalSize_ = finalSize;       
-                finalSize_.Width -= 2 * HorizontalGroupOffset;
-                model.OnArrange(finalSize_, 
-                    Orientation == Orientation.Horizontal ? new Point(Offset.X, 0) : new Point(0, Offset.Y));
-            }
-            else
-            {
-                model.OnArrange(finalSize, Offset);
-            }
+            Model.StretchItems = StretchItems;
+            Model.SpacingMode = SpacingMode;
+            Model.OnArrange(finalSize, ItemsOwner is IHierarchicalVirtualizationAndScrollInfo);     
             return finalSize;
         }
 
         protected override void BringIndexIntoView(int index)
         {
-            if (index < 0 || index >= Items.Count)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), $"The argument {nameof(index)} must be >= 0 and < the number of items.");
-            }
-
-            var offset = model.FindOffsetOfItem(index);
-
-            if (Orientation == Orientation.Horizontal)
-            {
-                SetHorizontalOffset(offset);
-            }
-            else
-            {
-                SetVerticalOffset(offset);
-            }
-        }
-
-        protected override double GetLineUpScrollAmount()
-        {
-            return -Math.Min(model.GetAverageItemSize().Height * ScrollLineDeltaItem, ViewportSize.Height);
-        }
-
-        protected override double GetLineDownScrollAmount()
-        {
-            return Math.Min(model.GetAverageItemSize().Height * ScrollLineDeltaItem, ViewportSize.Height);
-        }
-
-        protected override double GetLineLeftScrollAmount()
-        {
-            return -Math.Min(model.GetAverageItemSize().Width * ScrollLineDeltaItem, ViewportSize.Width);
-        }
-
-        protected override double GetLineRightScrollAmount()
-        {
-            return Math.Min(model.GetAverageItemSize().Width * ScrollLineDeltaItem, ViewportSize.Width);
-        }
-
-        protected override double GetMouseWheelUpScrollAmount()
-        {
-            return -Math.Min(model.GetAverageItemSize().Height * MouseWheelDeltaItem, ViewportSize.Height);
-        }
-
-        protected override double GetMouseWheelDownScrollAmount()
-        {
-            return Math.Min(model.GetAverageItemSize().Height * MouseWheelDeltaItem, ViewportSize.Height);
-        }
-
-        protected override double GetMouseWheelLeftScrollAmount()
-        {
-            return -Math.Min(model.GetAverageItemSize().Width * MouseWheelDeltaItem, ViewportSize.Width);
-        }
-
-        protected override double GetMouseWheelRightScrollAmount()
-        {
-            return Math.Min(model.GetAverageItemSize().Width * MouseWheelDeltaItem, ViewportSize.Width);
-        }
-
-        protected override double GetPageUpScrollAmount()
-        {
-            return -ViewportSize.Height;
-        }
-
-        protected override double GetPageDownScrollAmount()
-        {
-            return ViewportSize.Height;
-        }
-
-        protected override double GetPageLeftScrollAmount()
-        {
-            return -ViewportSize.Width;
-        }
-
-        protected override double GetPageRightScrollAmount()
-        {
-            return ViewportSize.Width;
+            Model.BringIndexIntoView(index);
         }
     }
 }
