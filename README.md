@@ -1,3 +1,5 @@
+![Nuget](https://img.shields.io/nuget/v/VirtualizingWrapPanel)
+
 ## VirtualizingWrapPanel
 
 Implementation of a [VirtualizingWrapPanel](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.VirtualizingWrapPanel.html) control for WPF running .NET Framework 4.5.2+, .NET Core 3.1+ or .NET 5.0+. The additional [GridView](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.GridView.html) and [GridDetailsView](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.GridDetailsView.html) controls are providing a easy to use out-of-the-box experience.
