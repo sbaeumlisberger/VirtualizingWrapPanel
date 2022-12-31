@@ -1,4 +1,4 @@
-![Nuget](https://img.shields.io/nuget/v/VirtualizingWrapPanel)
+[![Nuget](https://img.shields.io/nuget/v/VirtualizingWrapPanel)](https://www.nuget.org/packages/VirtualizingWrapPanel)
 
 ## VirtualizingWrapPanel
 
