@@ -77,7 +77,7 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
         }
 
         itemsInKnownExtend = 0; // force recalucaltion of extend
-               
+
         items.Clear();
         items.AddRange(itemContainerManager.Items);
     }
@@ -105,7 +105,7 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
             InvalidateScrollInfo();
         }
 
-        double desiredWidth = GetWidth(viewportSize);
+        double desiredWidth = Math.Min(GetWidth(availableSize), GetWidth(Extent));
         double desiredHeight = Math.Min(GetHeight(availableSize), GetHeight(Extent));
         return CreateSize(desiredWidth, desiredHeight);
     }
@@ -130,9 +130,9 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
 
             Size childSize = upfrontKnownItemSize ?? itemSizesCache[child.Item];
 
-            if (x + GetWidth(childSize) > GetWidth(finalSize))
+            if (x != 0 && x + GetWidth(childSize) > GetWidth(finalSize))
             {
-                ArrangeRow(GetWidth(finalSize), rowChilds, childSizes, y);
+                ArrangeRow(GetWidth(finalSize), rowChilds, childSizes, y, hierarchical);
                 x = 0;
                 y += rowHeight;
                 rowHeight = 0;
@@ -148,7 +148,7 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
 
         if (rowChilds.Any())
         {
-            ArrangeRow(GetWidth(finalSize), rowChilds, childSizes, y);
+            ArrangeRow(GetWidth(finalSize), rowChilds, childSizes, y, hierarchical);
         }
 
         return finalSize;
@@ -347,20 +347,21 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
 
             if (x + GetWidth(containerSize) > GetWidth(ViewportSize) && x != 0)
             {
-                knownExtendX = Math.Max(x, knownExtendX);
                 x = 0;
                 y += rowHeight;
                 rowHeight = 0;
             }
 
             x += GetWidth(containerSize);
+            knownExtendX = Math.Max(x, knownExtendX);
             rowHeight = Math.Max(rowHeight, GetHeight(containerSize));
 
             if (newEndItemIndex == items.Count - 1)
             {
-                if (!AllowDifferentSizedItems && y + rowHeight >= endOffsetY
+                if (!AllowDifferentSizedItems
                     && itemIndex + 1 < items.Count
-                    && x + sizeOfFirstItem!.Value.Width > GetWidth(ViewportSize))
+                    && x + sizeOfFirstItem!.Value.Width > GetWidth(ViewportSize)
+                    && y + rowHeight >= endOffsetY)
                 {
                     newEndItemIndex = itemIndex;
                 }
@@ -564,7 +565,7 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
         return GetAverageItemSize();
     }
 
-    private void ArrangeRow(double rowWidth, List<IItemContainerInfo> children, List<Size> childSizes, double y)
+    private void ArrangeRow(double rowWidth, List<IItemContainerInfo> children, List<Size> childSizes, double y, bool hierarchical)
     {
         double extraWidth = 0;
         double innerSpacing = 0;
@@ -581,7 +582,7 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
             CalculateRowSpacing(rowWidth, children, childSizes, out innerSpacing, out outerSpacing);
         }
 
-        double x = outerSpacing;
+        double x = hierarchical ? outerSpacing : -GetX(ScrollOffset) + outerSpacing;
 
         for (int i = 0; i < children.Count; i++)
         {
@@ -604,11 +605,11 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
         }
         else
         {
-            childCount = (int)Math.Floor(rowWidth / GetWidth(sizeOfFirstItem!.Value));
+            childCount = (int)Math.Max(1, Math.Floor(rowWidth / GetWidth(sizeOfFirstItem!.Value)));
             summedUpChildWidth = childCount * GetWidth(sizeOfFirstItem.Value);
         }
 
-        double unusedWidth = rowWidth - summedUpChildWidth;
+        double unusedWidth = Math.Max(0, rowWidth - summedUpChildWidth);
 
         switch (SpacingMode)
         {
