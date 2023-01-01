@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <title>VirtualizingWrapPanel</title>
-    <Version>2.0.0-preview1</Version>
+    <Version>2.0.0-preview2</Version>
     <Authors>S. Bäumlisbergerr</Authors>
     <Copyright>© S. Bäumlisberger</Copyright>
     <Description>Implementation of a VirtualizingWrapPanel for WPF running .NET Framework or .NET Core. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. In addition a simple VirtualizingItemsControl is included. Samples, API-Documentation and Source Code are available on the project site.</Description>
@@ -40,11 +40,12 @@
     <PackageTags>VirtualizingWrapPanel, VirtualizingPanel, WrapPanel, GridView, Virtualization, WPF, XAML, .NET </PackageTags>
 
     <PackageReleaseNotes>
-      - Breaking Change: Inverted behaviour and default value of Orientation property
-      - Breaking Change: Removed deprecated properties SpacingEnabled, IsSpacingEnabled and ChildrenSize
-      - New Feature: #22 Add support for different sized items
-      - New Feature: Add option for wrapping keyboard navigation to GridView control
-      - New Feature: Finalized grouping support</PackageReleaseNotes>
+- Breaking Change: Inverted behaviour and default value of Orientation property
+- Breaking Change: Removed deprecated properties SpacingEnabled, IsSpacingEnabled and ChildrenSize
+- New Feature: #22 Add support for different sized items
+- New Feature: Add option for wrapping keyboard navigation to GridView control
+- New Feature: Finalized grouping support
+    </PackageReleaseNotes>
 
     <RootNamespace>WpfToolkit.Controls</RootNamespace>
   </PropertyGroup>

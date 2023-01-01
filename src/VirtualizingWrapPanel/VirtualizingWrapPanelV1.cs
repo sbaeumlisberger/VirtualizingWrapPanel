@@ -73,7 +73,7 @@ namespace WpfToolkit.Controls
 
         private void Orientation_Changed()
         {
-            MouseWheelScrollDirection = Orientation == Orientation.Vertical ? ScrollDirection.Vertical : ScrollDirection.Horizontal;
+            MouseWheelScrollDirection = Orientation == Orientation.Horizontal ? ScrollDirection.Vertical : ScrollDirection.Horizontal;
         }
 
         protected override Size MeasureOverride(Size availableSize)
@@ -457,13 +457,13 @@ namespace WpfToolkit.Controls
 
         /* orientation aware helper methods */
 
-        protected double GetX(Point point) => Orientation == Orientation.Vertical ? point.X : point.Y;
-        protected double GetY(Point point) => Orientation == Orientation.Vertical ? point.Y : point.X;
+        protected double GetX(Point point) => Orientation == Orientation.Horizontal ? point.X : point.Y;
+        protected double GetY(Point point) => Orientation == Orientation.Horizontal ? point.Y : point.X;
 
-        protected double GetWidth(Size size) => Orientation == Orientation.Vertical ? size.Width : size.Height;
-        protected double GetHeight(Size size) => Orientation == Orientation.Vertical ? size.Height : size.Width;
+        protected double GetWidth(Size size) => Orientation == Orientation.Horizontal ? size.Width : size.Height;
+        protected double GetHeight(Size size) => Orientation == Orientation.Horizontal ? size.Height : size.Width;
 
-        protected Size CreateSize(double width, double height) => Orientation == Orientation.Vertical ? new Size(width, height) : new Size(height, width);
-        protected Rect CreateRect(double x, double y, double width, double height) => Orientation == Orientation.Vertical ? new Rect(x, y, width, height) : new Rect(y, x, width, height);
+        protected Size CreateSize(double width, double height) => Orientation == Orientation.Horizontal ? new Size(width, height) : new Size(height, width);
+        protected Rect CreateRect(double x, double y, double width, double height) => Orientation == Orientation.Horizontal ? new Rect(x, y, width, height) : new Rect(y, x, width, height);
     }
 }

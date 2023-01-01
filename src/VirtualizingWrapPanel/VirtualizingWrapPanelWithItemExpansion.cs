@@ -51,7 +51,7 @@ namespace WpfToolkit.Controls
 
             if (expandedItemChild != null)
             {
-                if (Orientation == Orientation.Vertical)
+                if (Orientation == Orientation.Horizontal)
                 {
                     extent.Height += expandedItemChild.DesiredSize.Height;
                 }
@@ -89,7 +89,7 @@ namespace WpfToolkit.Controls
                         width = itemsPerRowCount * GetWidth(childSize);
                     }
 
-                    if (Orientation == Orientation.Vertical)
+                    if (Orientation == Orientation.Horizontal)
                     {
                         expandedItemChild.Arrange(CreateRect(x - GetX(Offset), y - GetY(Offset), width, height));
                     }

@@ -513,7 +513,6 @@
                         <wpftk:GridDetailsView.ExpandedItemTemplate>
                             <DataTemplate DataType="local:TestItem">
                                 <TextBlock
-                                    HorizontalAlignment="Stretch"
                                     Background="Gray"
                                     FontSize="64"
                                     Text="{Binding Number}"
