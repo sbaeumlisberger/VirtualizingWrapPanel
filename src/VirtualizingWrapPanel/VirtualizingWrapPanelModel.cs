@@ -24,7 +24,7 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
 
     private Size? sizeOfFirstItem;
     private Dictionary<object, Size> itemSizesCache = new Dictionary<object, Size>();
-    private Dictionary<object, Size> itemSizesCacheForProvider = new Dictionary<object, Size>(); // TODO reuse itemSizesCache?
+    private Dictionary<object, Size> itemSizesFromProviderCache = new Dictionary<object, Size>();
     private Size? averageItemSizeCache;
 
     private int itemsInKnownExtend = 0;
@@ -59,7 +59,7 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
             foreach (var item in items.Except(itemContainerManager.Items))
             {
                 itemSizesCache.Remove(item);
-                itemSizesCacheForProvider.Remove(item);
+                itemSizesFromProviderCache.Remove(item);
             }
             if (!itemContainerManager.IsRecycling)
             {
@@ -72,7 +72,7 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
         else if (e.Action == NotifyCollectionChangedAction.Reset)
         {
             itemSizesCache.Clear();
-            itemSizesCacheForProvider.Clear();
+            itemSizesFromProviderCache.Clear();
             // childrenCollection is cleared automatically
         }
 
@@ -168,9 +168,9 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
         {
             if (averageItemSizeCache is null)
             {
-                if (ItemSizeProvider != null && itemSizesCacheForProvider.Values.Any())
+                if (ItemSizeProvider != null && itemSizesFromProviderCache.Values.Any())
                 {
-                    averageItemSizeCache = CalculateAverageSize(itemSizesCacheForProvider.Values);
+                    averageItemSizeCache = CalculateAverageSize(itemSizesFromProviderCache.Values);
                 }
                 else if (itemSizesCache.Values.Any())
                 {
@@ -324,8 +324,8 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
 
             object item = items[itemIndex];
 
-            var container = itemContainerManager.Realize(itemIndex, out bool wasAlreadyRealized, out bool newContainerGenerated);
-            if (newContainerGenerated)
+            var container = itemContainerManager.Realize(itemIndex, out bool _, out bool isNewContainer);
+            if (isNewContainer)
             {
                 childrenCollection.AddChild(container);
             }
@@ -395,14 +395,6 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
             {
                 return upfrontKnownItemSize.Value;
             }
-
-            if (itemSizesCache.TryGetValue(container.Item, out Size cachedSize)
-                && container.DesiredSize.Width <= cachedSize.Width
-                && container.DesiredSize.Height <= cachedSize.Height)
-            {
-                return cachedSize;
-            }
-
             itemSizesCache[container.Item] = container.DesiredSize;
             return container.DesiredSize;
         }

@@ -38,4 +38,6 @@ public class SpacingModeTest
     {
         Assert.Fail();
     }
+
+    // TODO horizontal alignment center
 }

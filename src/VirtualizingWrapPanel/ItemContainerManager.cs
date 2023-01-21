@@ -44,7 +44,14 @@ internal interface IItemContainerManager
     IEnumerable<IItemContainerInfo> CachedContainers { get; }
 #endif
 
-    IItemContainerInfo Realize(int itemIndex, out bool wasAlreadyRealized, out bool newContainerGenerated);
+    /// <summary>
+    /// Realizes the specified item. If the item is already realized, nothing happens.
+    /// </summary>
+    /// <param name="itemIndex">Index of the item to relaize</param>
+    /// <param name="isNewlyRealized">Indicates whether the specified item is newly realized</param>
+    /// <param name="isNewContainer">Indicates whether a new container was generated</param>
+    /// <returns>A object with information about the container of the specified item</returns>
+    IItemContainerInfo Realize(int itemIndex, out bool isNewlyRealized, out bool isNewContainer);
 
     /// <returns>true if the container should be removed, otherwise false (container is recylced)</returns>
     bool Virtualize(IItemContainerInfo containerInfo);
@@ -113,22 +120,22 @@ internal class ItemContainerManager : IItemContainerManager
         }
     }
 
-    public IItemContainerInfo Realize(int itemIndex, out bool wasAlreadyRealized, out bool newContainerGenerated)
+    public IItemContainerInfo Realize(int itemIndex, out bool isNewlyRealized, out bool isNewContainer)
     {
         var item = Items[itemIndex];
 
         if (RealizedContainers.FirstOrDefault(container => container.Item == item) is { } containerInfo)
         {
-            wasAlreadyRealized = true;
-            newContainerGenerated = false;
+            isNewlyRealized = false;
+            isNewContainer = false;
             return containerInfo;
         }
 
-        wasAlreadyRealized = false;
+        isNewlyRealized = true;
         var generatorPosition = recyclingItemContainerGenerator.GeneratorPositionFromIndex(itemIndex);
         using (recyclingItemContainerGenerator.StartAt(generatorPosition, GeneratorDirection.Forward))
         {
-            var container = recyclingItemContainerGenerator.GenerateNext(out newContainerGenerated);
+            var container = recyclingItemContainerGenerator.GenerateNext(out isNewContainer);
             recyclingItemContainerGenerator.PrepareItemContainer(container);
             containerInfo = ItemContainerInfo.For((UIElement)container, item);
             cachedContainers.Remove(containerInfo);

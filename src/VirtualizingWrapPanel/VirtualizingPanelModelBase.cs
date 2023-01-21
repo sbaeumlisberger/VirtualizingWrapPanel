@@ -38,7 +38,7 @@ internal abstract class VirtualizingPanelModelBase
         {
             ScrollOffset = new Point(ScrollOffset.X, offset);
             InvalidateScrollInfo();
-            MeasureInvalidated?.Invoke(this, EventArgs.Empty);
+            InvalidateMeasure();
         }
     }
 
@@ -56,7 +56,7 @@ internal abstract class VirtualizingPanelModelBase
         {
             ScrollOffset = new Point(offset, ScrollOffset.Y);
             InvalidateScrollInfo();
-            MeasureInvalidated?.Invoke(this, EventArgs.Empty);
+            InvalidateMeasure();
         }
     }
 
@@ -143,6 +143,11 @@ internal abstract class VirtualizingPanelModelBase
     protected void InvalidateScrollInfo()
     {
         ScrollInfoInvalidated?.Invoke(this, EventArgs.Empty);
+    }
+
+    protected void InvalidateMeasure()
+    {
+        MeasureInvalidated?.Invoke(this, EventArgs.Empty);
     }
 
     private void ScrollVertical(double amount)
