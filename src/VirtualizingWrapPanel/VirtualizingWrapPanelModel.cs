@@ -24,7 +24,6 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
 
     private Size? sizeOfFirstItem;
     private Dictionary<object, Size> itemSizesCache = new Dictionary<object, Size>();
-    private Dictionary<object, Size> itemSizesFromProviderCache = new Dictionary<object, Size>();
     private Size? averageItemSizeCache;
 
     private int itemsInKnownExtend = 0;
@@ -59,7 +58,6 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
             foreach (var item in items.Except(itemContainerManager.Items))
             {
                 itemSizesCache.Remove(item);
-                itemSizesFromProviderCache.Remove(item);
             }
             if (!itemContainerManager.IsRecycling)
             {
@@ -72,7 +70,6 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
         else if (e.Action == NotifyCollectionChangedAction.Reset)
         {
             itemSizesCache.Clear();
-            itemSizesFromProviderCache.Clear();
             // childrenCollection is cleared automatically
         }
 
@@ -166,16 +163,9 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
         }
         else
         {
-            if (averageItemSizeCache is null)
+            if (averageItemSizeCache is null && itemSizesCache.Values.Any())
             {
-                if (ItemSizeProvider != null && itemSizesFromProviderCache.Values.Any())
-                {
-                    averageItemSizeCache = CalculateAverageSize(itemSizesFromProviderCache.Values);
-                }
-                else if (itemSizesCache.Values.Any())
-                {
-                    averageItemSizeCache = CalculateAverageSize(itemSizesCache.Values);
-                }
+                averageItemSizeCache = CalculateAverageSize(itemSizesCache.Values);
             }
             return averageItemSizeCache ?? FallbackSize;
         }
@@ -532,11 +522,8 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
         }
         if (ItemSizeProvider != null)
         {
-            if (!itemSizesCacheForProvider.TryGetValue(item, out Size size))
-            {
-                size = ItemSizeProvider.GetSizeForItem(item);
-                itemSizesCacheForProvider.Add(item, size);
-            }
+            var size = ItemSizeProvider.GetSizeForItem(item);
+            itemSizesCache[item] = size;
             return size;
         }
         return null;
