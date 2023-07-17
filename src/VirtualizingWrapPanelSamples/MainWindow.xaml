@@ -228,8 +228,8 @@
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
-                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
-                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}"
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=OneWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=OneWay}"
                         ItemContainerStyle="{StaticResource ItemContainerStyle}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -256,8 +256,8 @@
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
-                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
-                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}"
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=OneWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=OneWay}"
                         ItemContainerStyle="{StaticResource ItemContainerStyle}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -284,8 +284,8 @@
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
-                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
-                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}"
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=OneWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=OneWay}"
                         ItemContainerStyle="{StaticResource ItemContainerStyle}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -313,8 +313,8 @@
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
-                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
-                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}"
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=OneWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=OneWay}"
                         ItemContainerStyle="{StaticResource ItemContainerStyle}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -342,8 +342,8 @@
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
-                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
-                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}"
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=OneWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=OneWay}"
                         ItemContainerStyle="{StaticResource ItemContainerStyle}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -374,8 +374,8 @@
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
-                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
-                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}"
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=OneWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=OneWay}"
                         ItemContainerStyle="{StaticResource ItemContainerStyle}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -406,8 +406,8 @@
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
                         VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
-                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}"
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=OneWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=OneWay}"
                         ItemContainerStyle="{StaticResource ItemContainerStyle}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -456,8 +456,8 @@
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
-                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
-                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}">
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=OneWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=OneWay}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <wpftk:VirtualizingWrapPanel
