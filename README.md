@@ -10,9 +10,9 @@ Implementation of a [VirtualizingWrapPanel](https://sbaeumlisberger.github.io/Vi
 * Configurable spacing behaviour
 
 ### Resources
-* [Sample Application](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/tree/master/SamplesApplication.md)
+* [Getting started](GettingStarted.md)
+* [Sample Application](SamplesApplication.md)
 * [API-Documentation](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.html)
-* [Source Code](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/tree/master/src/VirtualizingWrapPanel)
 
 ### Download
 * [NuGet Package](https://www.nuget.org/packages/VirtualizingWrapPanel/)
