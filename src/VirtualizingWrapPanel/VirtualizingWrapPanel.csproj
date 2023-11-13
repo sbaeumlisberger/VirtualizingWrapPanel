@@ -1,55 +1,62 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
-  <PropertyGroup>
-    <TargetFrameworks>net452;netcoreapp3.1;net5.0-windows;net6.0-windows</TargetFrameworks>
-    <UseWPF>true</UseWPF>
-    <LangVersion>9.0</LangVersion>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>net452;netcoreapp3.1;net5.0-windows;net6.0-windows</TargetFrameworks>
+        <UseWPF>true</UseWPF>
+        <LangVersion>9.0</LangVersion>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <title>VirtualizingWrapPanel</title>
-    <Version>1.5.8</Version>
-    <Authors>S. Bäumlisbergerr</Authors>
-    <Copyright>© S. Bäumlisberger</Copyright>
-    <Description>Implementation of a VirtualizingWrapPanel for WPF running .NET Framework or .NET Core. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. In addition a simple VirtualizingItemsControl is included. Samples, API-Documentation and Source Code are available on the project site.</Description>
-  </PropertyGroup>
+    <PropertyGroup>
+        <title>VirtualizingWrapPanel</title>
+        <Version>1.5.8</Version>
+        <Authors>S. Bäumlisbergerr</Authors>
+        <Copyright>© S. Bäumlisberger</Copyright>
+        <Description>Implementation of a VirtualizingWrapPanel for WPF running .NET Framework or .NET Core. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. In addition a simple VirtualizingItemsControl is included. Samples, API-Documentation and Source Code are available on the project site.</Description>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <BuildDocFx>false</BuildDocFx>
-  </PropertyGroup>
+    <PropertyGroup>
+        <BuildDocFx>false</BuildDocFx>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="docfx.console" Version="2.56.4">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="docfx.console" Version="2.56.4">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
 
-  <!-- pack options -->
-  <PropertyGroup>
-    <PackageId>VirtualizingWrapPanel</PackageId>
+    <!-- pack options -->
+    
+    <ItemGroup>
+        <None Include="README-NUGET.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
 
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/sbaeumlisberger/VirtualizingWrapPanel</RepositoryUrl>
+    <PropertyGroup>
+        <PackageId>VirtualizingWrapPanel</PackageId>
 
-    <PackageProjectUrl>https://github.com/sbaeumlisberger/VirtualizingWrapPanel</PackageProjectUrl>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/sbaeumlisberger/VirtualizingWrapPanel</RepositoryUrl>
 
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/sbaeumlisberger/VirtualizingWrapPanel</PackageProjectUrl>
 
-    <PackageTags>VirtualizingWrapPanel, VirtualizingPanel, WrapPanel, GridView, Virtualization, WPF, XAML, .NET </PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <PackageReleaseNotes>- Fix #29 Freeze when trying to moving up and down with keyboard keys and tiles bigger than panel size</PackageReleaseNotes>
+        <PackageTags>VirtualizingWrapPanel, VirtualizingPanel, WrapPanel, GridView, Virtualization, WPF, XAML, .NET </PackageTags>
 
-    <RootNamespace>WpfToolkit.Controls</RootNamespace>
-  </PropertyGroup>
+        <PackageReleaseNotes>- Fix #47 MakeVisible behaviour failing when there is a RenderTransform on hover</PackageReleaseNotes>
 
-  <PropertyGroup>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <EmbedAllSources>true</EmbedAllSources>
-    <Deterministic>true</Deterministic>
-    <PathMap>$(MSBuildProjectDirectory)=C:\</PathMap>
-  </PropertyGroup>
+        <RootNamespace>WpfToolkit.Controls</RootNamespace>
+
+        <PackageReadmeFile>README-NUGET.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <EmbedAllSources>true</EmbedAllSources>
+        <Deterministic>true</Deterministic>
+        <PathMap>$(MSBuildProjectDirectory)=C:\</PathMap>
+    </PropertyGroup>
 
 </Project>
