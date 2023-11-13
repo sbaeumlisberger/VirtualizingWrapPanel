@@ -190,7 +190,7 @@ namespace WpfToolkit.Controls
             }
             else if (transformedBounds.Right > ViewportWidth)
             {
-                scrollAmountX = transformedBounds.Right - ViewportWidth;
+                scrollAmountX = Math.Min(transformedBounds.Right - ViewportWidth, transformedBounds.Left); ;
             }
 
             if (transformedBounds.Top < 0)
@@ -199,13 +199,16 @@ namespace WpfToolkit.Controls
             }
             else if (transformedBounds.Bottom > ViewportHeight)
             {
-                scrollAmountY = transformedBounds.Bottom - ViewportHeight;
+                scrollAmountY = Math.Min(transformedBounds.Bottom - ViewportHeight, transformedBounds.Top);
             }
 
             SetHorizontalOffset(HorizontalOffset + scrollAmountX);
             SetVerticalOffset(VerticalOffset + scrollAmountY);
 
-            return transformedBounds;
+            double visibleRectWidth = Math.Min(transformedBounds.Width, Viewport.Width);
+            double visibleRectHeight = Math.Min(transformedBounds.Height, Viewport.Height);
+
+            return new Rect(transformedBounds.X, transformedBounds.Y, visibleRectWidth, visibleRectHeight);
         }
 
         protected override void OnItemsChanged(object sender, ItemsChangedEventArgs args)
