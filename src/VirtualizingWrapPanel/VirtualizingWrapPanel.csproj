@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <title>VirtualizingWrapPanel</title>
-    <Version>1.5.7</Version>
+    <Version>1.5.8</Version>
     <Authors>S. Bäumlisbergerr</Authors>
     <Copyright>© S. Bäumlisberger</Copyright>
     <Description>Implementation of a VirtualizingWrapPanel for WPF running .NET Framework or .NET Core. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. In addition a simple VirtualizingItemsControl is included. Samples, API-Documentation and Source Code are available on the project site.</Description>
