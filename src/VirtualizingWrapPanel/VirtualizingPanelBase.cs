@@ -162,40 +162,36 @@ namespace WpfToolkit.Controls
 
         public virtual Rect MakeVisible(Visual visual, Rect rectangle)
         {
-            Point pos = visual.TransformToAncestor(this).Transform(BaseModel.ScrollOffset);
+            var transformedBounds = visual.TransformToAncestor(this).TransformBounds(rectangle);
 
             double scrollAmountX = 0;
             double scrollAmountY = 0;
 
-            if (pos.X < HorizontalOffset)
+            if (transformedBounds.Left < 0)
             {
-                scrollAmountX = -(HorizontalOffset - pos.X);
+                scrollAmountX = transformedBounds.Left;
             }
-            else if ((pos.X + rectangle.Width) > (HorizontalOffset + ViewportWidth))
+            else if (transformedBounds.Right > ViewportWidth)
             {
-                double notVisibleX = (pos.X + rectangle.Width) - (HorizontalOffset + ViewportWidth);
-                double maxScrollX = pos.X - HorizontalOffset; // keep left of the visual visible
-                scrollAmountX = Math.Min(notVisibleX, maxScrollX);
+                scrollAmountX = Math.Min(transformedBounds.Right - ViewportWidth, transformedBounds.Left); ;
             }
 
-            if (pos.Y < VerticalOffset)
+            if (transformedBounds.Top < 0)
             {
-                scrollAmountY = -(VerticalOffset - pos.Y);
+                scrollAmountY = transformedBounds.Top;
             }
-            else if ((pos.Y + rectangle.Height) > (VerticalOffset + ViewportHeight))
+            else if (transformedBounds.Bottom > ViewportHeight)
             {
-                double notVisibleY = (pos.Y + rectangle.Height) - (VerticalOffset + ViewportHeight);
-                double maxScrollY = pos.Y - VerticalOffset; // keep top of the visual visible
-                scrollAmountY = Math.Min(notVisibleY, maxScrollY);
+                scrollAmountY = Math.Min(transformedBounds.Bottom - ViewportHeight, transformedBounds.Top);
             }
 
-            BaseModel.SetHorizontalOffset(HorizontalOffset + scrollAmountX);
-            BaseModel.SetVerticalOffset(VerticalOffset + scrollAmountY);
+            SetHorizontalOffset(HorizontalOffset + scrollAmountX);
+            SetVerticalOffset(VerticalOffset + scrollAmountY);
 
-            double visibleRectWidth = Math.Min(rectangle.Width, ViewportWidth);
-            double visibleRectHeight = Math.Min(rectangle.Height, ViewportHeight);
+            double visibleRectWidth = Math.Min(transformedBounds.Width, ViewportWidth);
+            double visibleRectHeight = Math.Min(transformedBounds.Height, ViewportHeight);
 
-            return new Rect(scrollAmountX, scrollAmountY, visibleRectWidth, visibleRectHeight);
+            return new Rect(transformedBounds.X, transformedBounds.Y, visibleRectWidth, visibleRectHeight);
         }
 
         public void LineUp() => BaseModel.LineUp();
