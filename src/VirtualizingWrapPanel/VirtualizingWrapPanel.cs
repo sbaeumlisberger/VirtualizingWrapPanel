@@ -22,7 +22,7 @@ namespace WpfToolkit.Controls
 
         public static readonly DependencyProperty ItemSizeProviderProperty = DependencyProperty.Register(nameof(ItemSizeProvider), typeof(IItemSizeProvider), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-        public static readonly DependencyProperty AllowDifferentSizedItemsProperty = DependencyProperty.Register(nameof(AllowDifferentSizedItems), typeof(bool), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        public static readonly DependencyProperty AllowDifferentSizedItemsProperty = DependencyProperty.Register(nameof(AllowDifferentSizedItems), typeof(bool), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsMeasure, (obj, args) => ((VirtualizingWrapPanel)obj).AllowDifferentSizedItems_Changed()));
 
         public static readonly DependencyProperty SpacingModeProperty = DependencyProperty.Register(nameof(SpacingMode), typeof(SpacingMode), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(SpacingMode.Uniform, FrameworkPropertyMetadataOptions.AffectsArrange));
 
@@ -135,6 +135,14 @@ namespace WpfToolkit.Controls
             MouseWheelScrollDirection = Orientation == Orientation.Horizontal
                                         ? ScrollDirection.Vertical
                                         : ScrollDirection.Horizontal;
+        }
+
+        private void AllowDifferentSizedItems_Changed()
+        {
+            foreach(var child in InternalChildren.Cast<UIElement>()) 
+            {
+                child.InvalidateMeasure();
+            }
         }
 
         protected override Size MeasureOverride(Size availableSize)
