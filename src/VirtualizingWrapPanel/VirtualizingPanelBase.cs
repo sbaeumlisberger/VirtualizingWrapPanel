@@ -76,7 +76,7 @@ namespace WpfToolkit.Controls
         /// <summary>
         /// The ItemsControl (e.g. ListView).
         /// </summary>
-        protected ItemsControl ItemsControl => ItemsControl.GetItemsOwner(this);
+        public ItemsControl ItemsControl => ItemsControl.GetItemsOwner(this);
 
         /// <summary>
         /// The ItemsControl (e.g. ListView) or if the ItemsControl is grouping a GroupItem.

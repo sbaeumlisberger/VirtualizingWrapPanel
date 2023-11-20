@@ -307,7 +307,7 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
 
         for (int itemIndex = startItemIndex, childIndex = 0; itemIndex < items.Count; itemIndex++, childIndex++)
         {
-            if (!AllowDifferentSizedItems && itemIndex == 0)
+            if (itemIndex == 0)
             {
                 sizeOfFirstItem = null;
             }
