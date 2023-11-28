@@ -90,6 +90,11 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
         ScrollOffset = scrollOffset;
         averageItemSizeCache = null;
 
+        if (GetWidth(viewportSize) != GetWidth(ViewportSize))
+        {
+            knownExtendY = 0;
+        }
+
         UpdateViewport(viewportSize, ref invalidateScrollInfo);
         FindStartIndexAndOffset();
         VirtualizeItemsBeforeStartIndex();
