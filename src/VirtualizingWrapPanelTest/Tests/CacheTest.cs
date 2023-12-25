@@ -1,140 +1,90 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using VirtualizingWrapPanelTest.Mocks;
 using WpfToolkit.Controls;
+using Xunit;
+using Assert = Xunit.Assert;
 
-namespace VirtualizingWrapPanelTest.VirtualizingWrapPanelModelTests;
+namespace VirtualizingWrapPanelTest.Tests;
 
-[TestClass]
 public class CacheTest
 {
-    private ChildrenCollectionMock childrenCollectionMock = new ChildrenCollectionMock();
+    private VirtualizingWrapPanel vwp = TestUtil.CreateVirtualizingWrapPanel(500, 400);
 
-    [TestMethod]
-    public void NoCache()
+    [UITheory]
+    [InlineData(0, 20)]
+    [InlineData(500, 20)]
+    [InlineData(550, 25)] // row partial visible
+    public void NoCache(double offset, int expectedChildCount)
     {
-        var items = Enumerable.Repeat(0, 100).Select(x => new TestItem(100, 100)).Cast<object>().ToList();
-        var itemContainerManager = new ItemContainerMangerMock(items);
-        var sut = new VirtualizingWrapPanelModel(itemContainerManager, childrenCollectionMock);
-        sut.CacheLength = new VirtualizationCacheLength(0);
+        VirtualizingPanel.SetCacheLength(vwp.ItemsControl, new VirtualizationCacheLength(0));
+        vwp.SetVerticalOffset(offset);
 
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(20, childrenCollectionMock.Collection.Count);
+        vwp.UpdateLayout();
 
-        sut.SetVerticalOffset(501);
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(20, childrenCollectionMock.Collection.Count);
+        Assert.Equal(expectedChildCount, vwp.Children.Count);
     }
 
-    [TestMethod]
-    public void CachePage()
+    [UITheory]
+    [InlineData(0, 60)]
+    [InlineData(1000, 100)]
+    [InlineData(1050, 105)] // row partial visible
+    public void CacheUnitPage(double offset, int expectedChildCount)
     {
-        var items = Enumerable.Repeat(0, 100).Select(x => new TestItem(100, 100)).Cast<object>().ToList();
-        var itemContainerManager = new ItemContainerMangerMock(items);
-        var sut = new VirtualizingWrapPanelModel(itemContainerManager, childrenCollectionMock);
-        sut.CacheLengthUnit = VirtualizationCacheLengthUnit.Page;
-        sut.CacheLength = new VirtualizationCacheLength(1, 1);
+        VirtualizingPanel.SetCacheLength(vwp.ItemsControl, new VirtualizationCacheLength(2));
+        vwp.SetVerticalOffset(offset);
 
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(40, childrenCollectionMock.Collection.Count);
+        vwp.UpdateLayout();
 
-        sut.SetVerticalOffset(101);
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(45, childrenCollectionMock.Collection.Count);
-
-        sut.SetVerticalOffset(501);
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(60, childrenCollectionMock.Collection.Count);
-
-        sut.SetVerticalOffset(650);
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(65, childrenCollectionMock.Collection.Count);
-
-        sut.SetVerticalOffset(1601);
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(40, childrenCollectionMock.Collection.Count);
+        Assert.Equal(expectedChildCount, vwp.Children.Count);
     }
 
-    [TestMethod]
-    public void CacheItem()
+    [UITheory]
+    [InlineData(0, 22)]
+    [InlineData(500, 24)]
+    [InlineData(550, 29)] // row partial visible
+    public void CacheUnitItem(double offset, int expectedChildCount)
     {
-        var items = Enumerable.Repeat(0, 100).Select(x => new TestItem(100, 100)).Cast<object>().ToList();
-        var itemContainerManager = new ItemContainerMangerMock(items);
-        var sut = new VirtualizingWrapPanelModel(itemContainerManager, childrenCollectionMock);
-        sut.CacheLengthUnit = VirtualizationCacheLengthUnit.Item;
-        sut.CacheLength = new VirtualizationCacheLength(10, 10);
+        VirtualizingPanel.SetCacheLength(vwp.ItemsControl, new VirtualizationCacheLength(2));
+        VirtualizingPanel.SetCacheLengthUnit(vwp.ItemsControl, VirtualizationCacheLengthUnit.Item);
+        vwp.SetVerticalOffset(offset);
 
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(30, childrenCollectionMock.Collection.Count);
+        vwp.UpdateLayout();
 
-        sut.SetVerticalOffset(101);
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(35, childrenCollectionMock.Collection.Count);
-
-        sut.SetVerticalOffset(501);
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(40, childrenCollectionMock.Collection.Count);
-
-        sut.SetVerticalOffset(650);
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(45, childrenCollectionMock.Collection.Count);
-
-        sut.SetVerticalOffset(1601);
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(30, childrenCollectionMock.Collection.Count);
+        Assert.Equal(expectedChildCount, vwp.Children.Count);
     }
 
-    [TestMethod]
-    public void CacheItem_StartInMidOfRow()
+    [UIFact]
+    public void CacheUnitItem_DifferentLengths()
     {
-        var items = Enumerable.Repeat(0, 100).Select(x => new TestItem(100, 100)).Cast<object>().ToList();
-        var itemContainerManager = new ItemContainerMangerMock(items);
-        var sut = new VirtualizingWrapPanelModel(itemContainerManager, childrenCollectionMock);
-        sut.CacheLengthUnit = VirtualizationCacheLengthUnit.Item;
-        sut.CacheLength = new VirtualizationCacheLength(3, 3);
+        VirtualizingPanel.SetCacheLength(vwp.ItemsControl, new VirtualizationCacheLength(1, 2));
+        VirtualizingPanel.SetCacheLengthUnit(vwp.ItemsControl, VirtualizationCacheLengthUnit.Item);
+        vwp.SetVerticalOffset(500);
 
-        sut.OnMeasure(new Size(500, 398));
-        sut.SetVerticalOffset(101);
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(26, childrenCollectionMock.Collection.Count);
+        vwp.UpdateLayout();
 
-        sut.OnArrange(new Size(500, 398), false);
-        var firstContainerInViewport = childrenCollectionMock.ContainerForItem(items[5]);
-        Assert.AreEqual(new Rect(0, -1, 100, 100), ((ItemContainerInfoMock)firstContainerInViewport).ArrangeRect);
+        Assert.Equal(23, vwp.Children.Count);
     }
 
-    [TestMethod]
-    public void CachePixel()
+    [UITheory]
+    [InlineData(0, 150, 30)]
+    [InlineData(50, 150, 30)]
+    [InlineData(51, 150, 35)]
+    [InlineData(50, 200, 35)]
+    [InlineData(500, 150, 40)]
+    [InlineData(500, 200, 40)]
+    public void CacheUnitPixel(double offset, int cacheSize, int expectedChildCount)
     {
-        var items = Enumerable.Repeat(0, 100).Select(x => new TestItem(100, 100)).Cast<object>().ToList();
-        var itemContainerManager = new ItemContainerMangerMock(items);
-        var sut = new VirtualizingWrapPanelModel(itemContainerManager, childrenCollectionMock);
-        sut.CacheLengthUnit = VirtualizationCacheLengthUnit.Pixel;
-        sut.CacheLength = new VirtualizationCacheLength(100, 100);
+        VirtualizingPanel.SetCacheLength(vwp.ItemsControl, new VirtualizationCacheLength(cacheSize));
+        VirtualizingPanel.SetCacheLengthUnit(vwp.ItemsControl, VirtualizationCacheLengthUnit.Pixel);
+        vwp.SetVerticalOffset(offset);
 
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(25, childrenCollectionMock.Collection.Count);
+        vwp.UpdateLayout();
 
-        sut.SetVerticalOffset(101);
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(30, childrenCollectionMock.Collection.Count);
-
-        sut.SetVerticalOffset(501);
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(30, childrenCollectionMock.Collection.Count);
-
-        sut.SetVerticalOffset(650);
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(35, childrenCollectionMock.Collection.Count);
-
-        sut.SetVerticalOffset(1601);
-        sut.OnMeasure(new Size(500, 398));
-        Assert.AreEqual(25, childrenCollectionMock.Collection.Count);
+        Assert.Equal(expectedChildCount, vwp.Children.Count);
     }
 }

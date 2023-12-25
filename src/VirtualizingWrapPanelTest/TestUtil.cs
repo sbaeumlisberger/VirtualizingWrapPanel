@@ -13,20 +13,21 @@ using Assert = Xunit.Assert;
 
 namespace VirtualizingWrapPanelTest;
 
-public record class Item(string Name, int Width, int Height);
+public record class TestItem(string Name, int Width, int Height);
 
 internal class TestUtil
 {
     public static VirtualizingWrapPanel CreateVirtualizingWrapPanel(
-        double width, 
+        double width,
         double height,
-        IList<Item>? items = null,
+        IList<TestItem>? items = null,
         int itemCount = 1000)
     {
         var itemsControl = new VirtualizingItemsControl();
+        ScrollViewer.SetVerticalScrollBarVisibility(itemsControl, ScrollBarVisibility.Hidden);
         itemsControl.ItemsPanel = new ItemsPanelTemplate(new FrameworkElementFactory(typeof(VirtualizingWrapPanel)));
-        itemsControl.ItemsSource = items ?? Enumerable.Range(1, itemCount).Select(x => new Item("Item " + x, 100, 100)).ToList();
-        itemsControl.ItemTemplate = CreateItemTemplate();
+        itemsControl.ItemsSource = items ?? Enumerable.Range(1, itemCount).Select(x => new TestItem("Item " + x, 100, 100)).ToList();
+        itemsControl.ItemTemplate = CreateDefaultItemTemplate();
         itemsControl.Width = width;
         itemsControl.Height = height;
         itemsControl.Background = new SolidColorBrush(Colors.Red);
@@ -45,32 +46,55 @@ internal class TestUtil
         return GetVisualChild<VirtualizingWrapPanel>(itemsControl)!;
     }
 
-    public static void AssertItemPosition(VirtualizingWrapPanel vwp, string item, int x, int y)
+    public static FrameworkElement AssertItemRealized(VirtualizingWrapPanel vwp, string itemName)
     {
-        var itemContainer = Assert.Single(vwp.Children.OfType<FrameworkElement>().Where(x => ((Item)x.DataContext).Name == item));
+        var itemContainer = FindItemContainer(vwp, itemName);
+        Assert.True(itemContainer != null, $"{itemName} is not realized, but should be");
+        return itemContainer;
+    }
+
+    public static void AssertItemNotRealized(VirtualizingWrapPanel vwp, string itemName)
+    {
+        var itemContainer = FindItemContainer(vwp, itemName);
+        Assert.True(itemContainer == null, $"{itemName} is realized, but should not be");
+    }
+
+    public static void AssertItem(VirtualizingWrapPanel vwp, string itemName, int x, int y, int width = 100, int height = 100)
+    {
+        var itemContainer = AssertItemRealized(vwp, itemName);
         var position = itemContainer.TranslatePoint(new Point(0, 0), vwp);
         Assert.Equal(x, position.X);
         Assert.Equal(y, position.Y);
+        Assert.Equal(width, itemContainer.ActualWidth);
+        Assert.Equal(height, itemContainer.ActualHeight);
     }
 
-    public static void AssertPanelPosition(VirtualizingWrapPanel vwp, int x, int y) 
+    public static void AssertPanelPosition(VirtualizingWrapPanel vwp, int x, int y)
     {
         var position = vwp.TranslatePoint(new Point(0, 0), vwp.ItemsControl);
         Assert.Equal(x, position.X);
         Assert.Equal(y, position.Y);
     }
 
-    private static DataTemplate CreateItemTemplate()
+    public static DataTemplate CreateItemTemplate(string dataTemplate)
     {
-        var stringReader = new StringReader("""
+        return (DataTemplate)XamlReader.Load(XmlReader.Create(new StringReader(dataTemplate)));
+    }
+
+    private static FrameworkElement? FindItemContainer(VirtualizingWrapPanel vwp, string itemName)
+    {
+        return vwp.Children.OfType<FrameworkElement>().Where(x => ((TestItem)x.DataContext).Name == itemName).SingleOrDefault();
+    }
+
+    private static DataTemplate CreateDefaultItemTemplate()
+    {
+        return CreateItemTemplate("""
             <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"> 
                 <Border Width="{Binding Width}" Height="{Binding Height}" Background="Blue">
                     <TextBlock Text="{Binding Name}"/>
                 </Border>
             </DataTemplate>
             """);
-        var xmlReader = XmlReader.Create(stringReader);
-        return (DataTemplate)XamlReader.Load(xmlReader);
     }
 
     private static T? GetVisualChild<T>(DependencyObject parent) where T : Visual

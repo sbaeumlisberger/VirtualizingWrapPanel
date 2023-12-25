@@ -267,7 +267,7 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
             x += GetWidth(itemSize);
             rowHeight = Math.Max(rowHeight, GetHeight(itemSize));
 
-            if (y + rowHeight >= startOffsetY)
+            if (y + rowHeight > startOffsetY)
             {
                 if (CacheLengthUnit == VirtualizationCacheLengthUnit.Item)
                 {
@@ -557,9 +557,19 @@ internal class VirtualizingWrapPanelModel : VirtualizingPanelModelBase
 
         if (StretchItems) // TODO: handle MaxWidth/MaxHeight and apply spacing
         {
-            double summedUpChildWidth = childSizes.Sum(childSize => GetWidth(childSize));
-            double unusedWidth = rowWidth - summedUpChildWidth;
-            extraWidth = unusedWidth / children.Count;
+            if (AllowDifferentSizedItems)
+            {
+                double summedUpChildWidth = childSizes.Sum(childSize => GetWidth(childSize));
+                double unusedWidth = rowWidth - summedUpChildWidth;
+                extraWidth = unusedWidth / children.Count;
+            }
+            else 
+            {
+                double childsWidth = GetWidth(sizeOfFirstItem!.Value);
+                var itemsPerRow = Math.Max(1, Math.Floor(rowWidth / childsWidth));
+                double unusedWidth = rowWidth - itemsPerRow * childsWidth;            
+                extraWidth = unusedWidth / itemsPerRow;
+            }
         }
         else
         {
