@@ -18,7 +18,7 @@ namespace WpfToolkit.Controls
     {
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(nameof(Orientation), typeof(Orientation), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(Orientation.Horizontal, FrameworkPropertyMetadataOptions.AffectsMeasure, (obj, args) => ((VirtualizingWrapPanel)obj).Orientation_Changed()));
 
-        public static readonly DependencyProperty ItemSizeProperty = DependencyProperty.Register(nameof(ItemSize), typeof(Size), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(Size.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        public static readonly DependencyProperty ItemSizeProperty = DependencyProperty.Register(nameof(ItemSize), typeof(Size), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(Size.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure, (obj, args) => ((VirtualizingWrapPanel)obj).ItemSize_Changed()));
 
         public static readonly DependencyProperty ItemSizeProviderProperty = DependencyProperty.Register(nameof(ItemSizeProvider), typeof(IItemSizeProvider), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
@@ -139,7 +139,15 @@ namespace WpfToolkit.Controls
 
         private void AllowDifferentSizedItems_Changed()
         {
-            foreach(var child in InternalChildren.Cast<UIElement>()) 
+            foreach (var child in InternalChildren.Cast<UIElement>())
+            {
+                child.InvalidateMeasure();
+            }
+        }
+
+        private void ItemSize_Changed()
+        {
+            foreach (var child in InternalChildren.Cast<UIElement>())
             {
                 child.InvalidateMeasure();
             }
