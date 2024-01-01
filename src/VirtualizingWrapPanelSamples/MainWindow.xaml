@@ -441,6 +441,25 @@
                                             Orientation="{Binding DataContext.OrientationGroupPanel, Mode=OneWay, ElementName=window}" />
                                     </ItemsPanelTemplate>
                                 </GroupStyle.Panel>
+                                <GroupStyle.ContainerStyle>
+                                    <!-- orginal WPF style but with zero Margin on the ItemsPresenter -->
+                                    <Style TargetType="{x:Type GroupItem}">
+                                        <Setter Property="Control.Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                    <StackPanel>
+                                                        <ContentPresenter
+                                                            Content="{TemplateBinding ContentControl.Content}"
+                                                            ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                                                            ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                                                            Name="PART_Header" />
+                                                        <ItemsPresenter Name="ItemsPresenter" Margin="0" />
+                                                    </StackPanel>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
                             </GroupStyle>
                         </ItemsControl.GroupStyle>
                     </ListView>

@@ -113,7 +113,7 @@ namespace WpfToolkit.Controls
                 if (_itemContainerGenerator is null)
                 {
                     // The ItemContainerGenerator is null until InternalChildren is accessed at least one time.
-                    var children = InternalChildren;
+                    _ = InternalChildren;
                     _itemContainerGenerator = base.ItemContainerGenerator.GetItemContainerGeneratorForPanel(this);
 
                 }
@@ -164,34 +164,46 @@ namespace WpfToolkit.Controls
         {
             var transformedBounds = visual.TransformToAncestor(this).TransformBounds(rectangle);
 
-            double scrollAmountX = 0;
-            double scrollAmountY = 0;
+            double offsetX = 0;
+            double offsetY = 0;
+
+            double visibleX = 0;
+            double visibleY = 0;
+            double visibleWidth = Math.Min(rectangle.Width, ViewportWidth);
+            double visibleHeight = Math.Min(rectangle.Height, ViewportHeight);
 
             if (transformedBounds.Left < 0)
             {
-                scrollAmountX = transformedBounds.Left;
+                offsetX = transformedBounds.Left;
             }
             else if (transformedBounds.Right > ViewportWidth)
             {
-                scrollAmountX = Math.Min(transformedBounds.Right - ViewportWidth, transformedBounds.Left); ;
+                offsetX = Math.Min(transformedBounds.Right - ViewportWidth, transformedBounds.Left);
+
+                if (rectangle.Width > ViewportWidth)
+                {
+                    visibleX = rectangle.Width - ViewportWidth;
+                }
             }
 
             if (transformedBounds.Top < 0)
             {
-                scrollAmountY = transformedBounds.Top;
+                offsetY = transformedBounds.Top; 
             }
             else if (transformedBounds.Bottom > ViewportHeight)
             {
-                scrollAmountY = Math.Min(transformedBounds.Bottom - ViewportHeight, transformedBounds.Top);
+                offsetY = Math.Min(transformedBounds.Bottom - ViewportHeight, transformedBounds.Top);
+
+                if (rectangle.Height > ViewportHeight)
+                {
+                    visibleY = rectangle.Height - ViewportHeight;
+                }        
             }
 
-            SetHorizontalOffset(HorizontalOffset + scrollAmountX);
-            SetVerticalOffset(VerticalOffset + scrollAmountY);
+            SetHorizontalOffset(HorizontalOffset + offsetX);
+            SetVerticalOffset(VerticalOffset + offsetY);
 
-            double visibleRectWidth = Math.Min(transformedBounds.Width, ViewportWidth);
-            double visibleRectHeight = Math.Min(transformedBounds.Height, ViewportHeight);
-
-            return new Rect(transformedBounds.X, transformedBounds.Y, visibleRectWidth, visibleRectHeight);
+            return new Rect(visibleX, visibleY, visibleWidth, visibleHeight);
         }
 
         public void LineUp() => BaseModel.LineUp();

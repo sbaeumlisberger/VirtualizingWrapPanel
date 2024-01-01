@@ -226,7 +226,7 @@ public class AllowDifferentSizedItemsTest
 
     private static List<TestItem> GenerateItems(int itemCount)
     {
-        return Enumerable.Range(0, itemCount).Select(i => new TestItem("Item " + i + 1, Random.Shared.Next(120), Random.Shared.Next(120))).ToList();
+        return Enumerable.Range(1, itemCount + 1).Select(i => new TestItem("Item " + i, Random.Shared.Next(120), Random.Shared.Next(120))).ToList();
     }
 
 }

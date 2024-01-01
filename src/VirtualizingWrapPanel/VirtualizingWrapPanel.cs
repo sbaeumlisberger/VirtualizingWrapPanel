@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Xml.Linq;
+using System.Windows.Media;
 
 namespace WpfToolkit.Controls
 {
@@ -27,8 +24,6 @@ namespace WpfToolkit.Controls
         public static readonly DependencyProperty SpacingModeProperty = DependencyProperty.Register(nameof(SpacingMode), typeof(SpacingMode), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(SpacingMode.Uniform, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         public static readonly DependencyProperty StretchItemsProperty = DependencyProperty.Register(nameof(StretchItems), typeof(bool), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsArrange));
-
-        public static readonly DependencyProperty HorizontalGroupOffsetProperty = DependencyProperty.Register(nameof(HorizontalGroupOffset), typeof(double), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(5d, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Gets or sets a value that specifies the orientation in which items are arranged. The default value is <see cref="Orientation.Horizontal"/>.
@@ -68,8 +63,6 @@ namespace WpfToolkit.Controls
         /// In this case the use of the remaining space will be determined by the SpacingMode property. 
         /// </remarks>
         public bool StretchItems { get => (bool)GetValue(StretchItemsProperty); set => SetValue(StretchItemsProperty, value); }
-
-        public double HorizontalGroupOffset { get => (double)GetValue(HorizontalGroupOffsetProperty); set => SetValue(HorizontalGroupOffsetProperty, value); }
 
         /// <summary>
         /// Gets value that indicates whether the <see cref="VirtualizingPanel"/> can virtualize items 
@@ -135,6 +128,8 @@ namespace WpfToolkit.Controls
             MouseWheelScrollDirection = Orientation == Orientation.Horizontal
                                         ? ScrollDirection.Vertical
                                         : ScrollDirection.Horizontal;
+            SetVerticalOffset(0);
+            SetHorizontalOffset(0);
         }
 
         private void AllowDifferentSizedItems_Changed()
@@ -169,21 +164,24 @@ namespace WpfToolkit.Controls
             if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem)
             {
                 var viewport = groupItem.Constraints.Viewport;
-                var headerSize = groupItem.HeaderDesiredSizes.PixelSize;           
+                var headerSize = groupItem.HeaderDesiredSizes.PixelSize;
 
                 double viewportWidth = Math.Max(viewport.Size.Width, 0);
-                double viewporteHeight = Orientation == Orientation.Horizontal 
-                    ? Math.Max(viewport.Size.Height, 0) 
-                    : Math.Max(viewport.Size.Height - headerSize.Height, 0);
+                double viewporteHeight = Math.Max(viewport.Size.Height, 0);
+
+                if (Orientation == Orientation.Vertical)
+                {
+                    viewporteHeight = Math.Max(viewporteHeight - headerSize.Height, 0);
+                }
 
                 var viewportSize = new Size(viewportWidth, viewporteHeight);
-
-                Margin = new Thickness(-HorizontalGroupOffset, 0, 0, 0);
 
                 Model.CacheLength = groupItem.Constraints.CacheLength;
                 Model.CacheLengthUnit = groupItem.Constraints.CacheLengthUnit;
 
-                return Model.OnMeasure(availableSize, viewportSize, viewport.Location);
+                var desiredSize = Model.OnMeasure(availableSize, viewportSize, viewport.Location);
+
+                return desiredSize;
             }
             else
             {
@@ -197,13 +195,13 @@ namespace WpfToolkit.Controls
         {
             Model.StretchItems = StretchItems;
             Model.SpacingMode = SpacingMode;
-            Model.OnArrange(finalSize, ItemsOwner is IHierarchicalVirtualizationAndScrollInfo);     
+            Model.OnArrange(finalSize, ItemsOwner is IHierarchicalVirtualizationAndScrollInfo);
             return finalSize;
         }
 
         protected override void BringIndexIntoView(int index)
         {
-            Model.BringIndexIntoView(index);
+            Model.BringIndexIntoView(index, Dispatcher, UpdateLayout);
         }
     }
 }

@@ -10,27 +10,74 @@ using WpfToolkit.Controls;
 using System.Xml;
 using System.Windows.Markup;
 using Assert = Xunit.Assert;
+using System.Collections;
 
 namespace VirtualizingWrapPanelTest;
 
-public record class TestItem(string Name, int Width, int Height);
+public record class TestItem(string Name, int Width, int Height, string? Group = null);
 
 internal class TestUtil
 {
+    public const int DefaultItemWidth = 100;
+    public const int DefaultItemHeight = 100;
+
     public static VirtualizingWrapPanel CreateVirtualizingWrapPanel(
         double width,
         double height,
-        IList<TestItem>? items = null,
+        IEnumerable? items = null,
         int itemCount = 1000)
     {
+        var itemsControl = CreateVirtualizingItemsControl(width, height, items ?? GenerateItems(itemCount));
+        return GetVisualChild<VirtualizingWrapPanel>(itemsControl)!;
+    }
+
+    public static ListBox CreateListBox(
+        double width,
+        double height,
+        IEnumerable items)
+    {
+        var itemsControl = new ListBox();
+        SetupAndShowItemsControl(itemsControl, width, height, items);
+        return itemsControl;
+    }
+
+    public static VirtualizingItemsControl CreateVirtualizingItemsControl(
+        double width,
+        double height,
+        IEnumerable items)
+    {
         var itemsControl = new VirtualizingItemsControl();
+        SetupAndShowItemsControl(itemsControl, width, height, items);
+        return itemsControl;
+    }
+
+    private static void SetupAndShowItemsControl(
+        ItemsControl itemsControl,
+       double width,
+       double height,
+       IEnumerable items)
+    {
         ScrollViewer.SetVerticalScrollBarVisibility(itemsControl, ScrollBarVisibility.Hidden);
+        ScrollViewer.SetHorizontalScrollBarVisibility(itemsControl, ScrollBarVisibility.Hidden);
+
         itemsControl.ItemsPanel = new ItemsPanelTemplate(new FrameworkElementFactory(typeof(VirtualizingWrapPanel)));
-        itemsControl.ItemsSource = items ?? Enumerable.Range(1, itemCount).Select(x => new TestItem("Item " + x, 100, 100)).ToList();
+        itemsControl.ItemsSource = items;
         itemsControl.ItemTemplate = CreateDefaultItemTemplate();
         itemsControl.Width = width;
         itemsControl.Height = height;
+        itemsControl.BorderThickness = new Thickness(0);
+        itemsControl.Padding = new Thickness(0);
         itemsControl.Background = new SolidColorBrush(Colors.Red);
+
+        itemsControl.ItemContainerStyle = new Style()
+        {
+            Setters =
+            {
+                new Setter(Control.MarginProperty, new Thickness(0)),
+                new Setter(Control.PaddingProperty, new Thickness(0)),
+                new Setter(Control.BorderThicknessProperty, new Thickness(0))
+            }
+        };
 
         var window = new Window
         {
@@ -42,8 +89,11 @@ internal class TestUtil
             Content = itemsControl
         };
         window.Show();
+    }
 
-        return GetVisualChild<VirtualizingWrapPanel>(itemsControl)!;
+    public static List<TestItem> GenerateItems(int itemCount, int groupSize = 100)
+    {
+        return Enumerable.Range(1, itemCount).Select(i => new TestItem("Item " + i, DefaultItemWidth, DefaultItemHeight, "Group " + (i - 1) / groupSize)).ToList();
     }
 
     public static FrameworkElement AssertItemRealized(VirtualizingWrapPanel vwp, string itemName)
@@ -59,7 +109,7 @@ internal class TestUtil
         Assert.True(itemContainer == null, $"{itemName} is realized, but should not be");
     }
 
-    public static void AssertItem(VirtualizingWrapPanel vwp, string itemName, int x, int y, int width = 100, int height = 100)
+    public static void AssertItem(VirtualizingWrapPanel vwp, string itemName, int x, int y, int width = DefaultItemWidth, int height = DefaultItemHeight)
     {
         var itemContainer = AssertItemRealized(vwp, itemName);
         var position = itemContainer.TranslatePoint(new Point(0, 0), vwp);
@@ -76,7 +126,7 @@ internal class TestUtil
         Assert.Equal(y, position.Y);
     }
 
-    public static DataTemplate CreateItemTemplate(string dataTemplate)
+    public static DataTemplate CreateDateTemplate(string dataTemplate)
     {
         return (DataTemplate)XamlReader.Load(XmlReader.Create(new StringReader(dataTemplate)));
     }
@@ -88,7 +138,7 @@ internal class TestUtil
 
     private static DataTemplate CreateDefaultItemTemplate()
     {
-        return CreateItemTemplate("""
+        return CreateDateTemplate("""
             <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"> 
                 <Border Width="{Binding Width}" Height="{Binding Height}" Background="Blue">
                     <TextBlock Text="{Binding Name}"/>
@@ -97,7 +147,7 @@ internal class TestUtil
             """);
     }
 
-    private static T? GetVisualChild<T>(DependencyObject parent) where T : Visual
+    public static T? GetVisualChild<T>(DependencyObject parent) where T : Visual
     {
         int childCount = VisualTreeHelper.GetChildrenCount(parent);
 
@@ -116,6 +166,29 @@ internal class TestUtil
             }
         }
         return null;
+    }
+
+    public static List<T> GetVisualChilds<T>(DependencyObject parent) where T : Visual
+    {
+        var foundChilds = new List<T>();
+
+        int childCount = VisualTreeHelper.GetChildrenCount(parent);
+
+        for (int i = 0; i < childCount; i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+
+            if (child is T result)
+            {
+                foundChilds.Add(result);
+            }
+            else
+            {
+                foundChilds.AddRange(GetVisualChilds<T>(child));
+            }
+        }
+
+        return foundChilds;
     }
 
 }

@@ -24,7 +24,7 @@ public class BasisTest
     {
         Assert.Equal(500, vwp.DesiredSize.Width);
         Assert.Equal(400, vwp.DesiredSize.Height);
-       
+
         Assert.Equal(500, vwp.ExtentWidth);
         Assert.Equal(20_000, vwp.ExtentHeight);
 
@@ -135,6 +135,162 @@ public class BasisTest
         TestUtil.AssertItem(vwp, "Item 71", 0, 550);
         TestUtil.AssertItem(vwp, "Item 76", 0, 650);
         TestUtil.AssertItem(vwp, "Item 81", 0, 750);
+    }
+
+
+    [UIFact]
+    public void BringIndexIntoView_AfterViewport()
+    {
+        vwp.BringIndexIntoViewPublic(500);
+        vwp.UpdateLayout();
+
+        Assert.Equal(9700, vwp.VerticalOffset);
+        Assert.Equal(500, vwp.ExtentWidth);
+        Assert.Equal(20_000, vwp.ExtentHeight);
+        Assert.Equal(60, vwp.Children.Count);
+        TestUtil.AssertItem(vwp, "Item 501", 0, 300);
+    }
+
+    [UIFact]
+    public void BringIndexIntoView_BeforeViewport()
+    {
+        vwp.SetVerticalOffset(16_000);
+        vwp.UpdateLayout();
+
+        vwp.BringIndexIntoViewPublic(500);
+        vwp.UpdateLayout();
+
+        Assert.Equal(10000, vwp.VerticalOffset);
+        Assert.Equal(500, vwp.ExtentWidth);
+        Assert.Equal(20_000, vwp.ExtentHeight);
+        Assert.Equal(60, vwp.Children.Count);
+        TestUtil.AssertItem(vwp, "Item 501", 0, 0);
+    }
+
+    [UIFact]
+    public void MakeVisible_InViewport() 
+    {
+        var child6 = vwp.Children[5];
+
+        var visibleRect = vwp.MakeVisible(child6, new Rect(0, 0, 100, 100));    
+    
+        Assert.Equal(new Rect(0, 0, 100, 100), visibleRect);
+        Assert.Equal(0, vwp.VerticalOffset);
+    }
+
+    [UIFact]
+    public void MakeVisible_AfterViewport()
+    {
+        var child21 = vwp.Children[20];
+
+        var visibleRect = vwp.MakeVisible(child21, new Rect(0, 0, 100, 100));
+
+        Assert.Equal(new Rect(0, 0, 100, 100), visibleRect);
+        Assert.Equal(100, vwp.VerticalOffset);
+    }
+
+    [UIFact]
+    public void MakeVisible_BeforeViewport()
+    {
+        vwp.SetVerticalOffset(100);
+        vwp.UpdateLayout();
+        var child1 = vwp.Children[0];
+
+        var visibleRect = vwp.MakeVisible(child1, new Rect(0, 0, 100, 100));
+
+        Assert.Equal(new Rect(0, 0, 100, 100), visibleRect);
+        Assert.Equal(0, vwp.VerticalOffset);
+    }
+
+    [UIFact]
+    public void MakeVisible_BeforeViewportAndGreaterThanViewport()
+    {
+        vwp.ItemsControl.Height = 60;
+        vwp.SetVerticalOffset(100);
+        vwp.UpdateLayout();
+        var child1 = vwp.Children[0];
+
+        var visibleRect = vwp.MakeVisible(child1, new Rect(0, 0, 100, 100));
+
+        Assert.Equal(new Rect(0, 0, 100, 60), visibleRect);
+        Assert.Equal(0, vwp.VerticalOffset);
+    }
+
+
+    [UIFact]
+    public void MakeVisible_AfterViewportAndGreaterThanViewport()
+    {
+        vwp.ItemsControl.Height = 60;
+        vwp.UpdateLayout();
+        var child6 = vwp.Children[5];
+
+        var visibleRect = vwp.MakeVisible(child6, new Rect(0, 0, 100, 100));
+
+        Assert.Equal(new Rect(0, 40, 100, 60), visibleRect);
+        Assert.Equal(100, vwp.VerticalOffset);
+    }
+
+    // TODO item based scrolling
+
+    [UIFact]
+    public void ExtentIsUpdatedWhenItemSizeChanged()
+    {
+        vwp.ItemSize = new Size(100, 200);
+        vwp.UpdateLayout();
+
+        Assert.Equal(40_000, vwp.ExtentHeight);
+
+        vwp.ItemSize = new Size(200, 200);
+        vwp.UpdateLayout();
+
+        Assert.Equal(100_000, vwp.ExtentHeight);
+
+        vwp.ItemSize = new Size(100, 100);
+        vwp.UpdateLayout();
+
+        Assert.Equal(20_000, vwp.ExtentHeight);
+
+    }
+
+    // TODO item size stretch content
+        //vwp.ItemsControl.ItemContainerStyle = new Style()
+    //{
+    //    Setters = {
+    //        new Setter(Control.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch),
+    //            new Setter(Control.VerticalContentAlignmentProperty, VerticalAlignment.Stretch),
+    //        }
+    //};
+
+    [UIFact]
+    public void ChildrensAreMeasuredWhenItemSizeChanged() // Issue #50
+    {
+        var itemTemplate = """
+            <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"> 
+                <Grid Width="100" Height="100">
+                    <TextBlock Text="{Binding Name}"/>
+                </Grid>
+            </DataTemplate>
+            """;
+        vwp.ItemsControl.ItemTemplate = TestUtil.CreateDateTemplate(itemTemplate);
+        vwp.ItemSize = new Size(100, 100);
+        vwp.UpdateLayout();
+
+        vwp.ItemSize = new Size(50, 50);
+
+        foreach (var child in vwp.Children.Cast<UIElement>())
+        {
+            Assert.False(child.IsMeasureValid);
+        }
+
+        vwp.UpdateLayout();
+
+        foreach (var child in vwp.Children.Cast<UIElement>())
+        {
+            Assert.True(child.IsMeasureValid);
+
+            Assert.Equal(50, child.DesiredSize.Width);
+            Assert.Equal(50, child.DesiredSize.Height);
+        }
     }
 
 }
