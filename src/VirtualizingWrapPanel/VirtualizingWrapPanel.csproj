@@ -9,10 +9,10 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.0.0-preview4</Version>
+        <Version>2.0.0-preview5</Version>
         <Authors>S. Bäumlisbergerr</Authors>
         <Copyright>© S. Bäumlisberger</Copyright>
-        <Description>Implementation of a VirtualizingWrapPanel for WPF running .NET Framework or .NET Core. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. In addition a simple VirtualizingItemsControl is included. Samples, API-Documentation and Source Code are available on the project site.</Description>
+        <Description>Implementation of a VirtualizingWrapPanel for WPF. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. In addition a simple VirtualizingItemsControl is included. Samples, API-Documentation and Source Code are available on the project site.</Description>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -54,6 +54,7 @@
 - New Feature: Finalized grouping support
 - [Preview 4] Fix: #47 MakeVisible behaviour failing when there is a RenderTransform on hover (ported from 1.5.8)
 - [Preview 4] Fix: #48 Height calculation when using grouping with ItemSizeProvider
+- [Preview 5] Fix: #49 ScrollIntoView does not work when item is not within cache
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>
