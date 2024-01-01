@@ -58,7 +58,6 @@ namespace WpfToolkit.Controls
         /// </summary>
         public SpacingMode SpacingMode { get => (SpacingMode)GetValue(SpacingModeProperty); set => SetValue(SpacingModeProperty, value); }
 
-
         /// <summary>
         /// Gets or sets a value that specifies if the items get stretched to fill up remaining space. The default value is false.
         /// </summary>
@@ -78,6 +77,8 @@ namespace WpfToolkit.Controls
         protected override bool HasLogicalOrientation => true;
 
         protected override Orientation LogicalOrientation => Orientation == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal;
+        
+        private static readonly Size FallbackSize = new Size(48, 48);
 
         private IItemContainerManager ItemContainerManager
         {
@@ -96,7 +97,15 @@ namespace WpfToolkit.Controls
         }
         private IItemContainerManager? _itemContainerManager;
 
-        private static readonly Size FallbackSize = new Size(48, 48);
+        /// <summary>
+        /// The cache length before and after the viewport. 
+        /// </summary>
+        private VirtualizationCacheLength cacheLength;
+        /// <summary>
+        /// The Unit of the cache length. Can be Pixel, Item or Page. 
+        /// When the ItemsOwner is a group item it can only be pixel or item.
+        /// </summary>
+        private VirtualizationCacheLengthUnit cacheLengthUnit;
 
         private Size? sizeOfFirstItem;
         private Dictionary<object, Size> itemSizesCache = new Dictionary<object, Size>(); // TODO allow clear cache?
@@ -183,9 +192,8 @@ namespace WpfToolkit.Controls
 
                 var viewportSize = new Size(viewportWidth, viewporteHeight);
 
-                // TODO
-                //Model.CacheLength = groupItem.Constraints.CacheLength;
-                //Model.CacheLengthUnit = groupItem.Constraints.CacheLengthUnit;
+                cacheLength = groupItem.Constraints.CacheLength;
+                cacheLengthUnit = groupItem.Constraints.CacheLengthUnit;
 
                 var desiredSize = Measure(availableSize, viewportSize, viewport.Location, itemsOwnerIsGroupItem: true);
 
@@ -193,6 +201,9 @@ namespace WpfToolkit.Controls
             }
             else
             {
+                cacheLength = GetCacheLength(ItemsOwner);
+                cacheLengthUnit = GetCacheLengthUnit(ItemsOwner);
+
                 return Measure(availableSize, availableSize, ScrollOffset, itemsOwnerIsGroupItem: false);
             }
         }
@@ -423,9 +434,9 @@ namespace WpfToolkit.Controls
 
                 if (y + rowHeight > startOffsetY)
                 {
-                    if (CacheLengthUnit == VirtualizationCacheLengthUnit.Item)
+                    if (cacheLengthUnit == VirtualizationCacheLengthUnit.Item)
                     {
-                        startItemIndex = Math.Max(indexOfFirstRowItem - (int)CacheLength.CacheBeforeViewport, 0);
+                        startItemIndex = Math.Max(indexOfFirstRowItem - (int)cacheLength.CacheBeforeViewport, 0);
                         var itemOffset = FindItemOffset(startItemIndex);
                         startItemOffsetX = GetX(itemOffset);
                         startItemOffsetY = GetY(itemOffset);
@@ -523,9 +534,9 @@ namespace WpfToolkit.Controls
                         newEndItemIndex = itemIndex;
                     }
 
-                    if (newEndItemIndex != Items.Count - 1 && CacheLengthUnit == VirtualizationCacheLengthUnit.Item)
+                    if (newEndItemIndex != Items.Count - 1 && cacheLengthUnit == VirtualizationCacheLengthUnit.Item)
                     {
-                        newEndItemIndex = Math.Min(newEndItemIndex + (int)CacheLength.CacheAfterViewport, Items.Count - 1);
+                        newEndItemIndex = Math.Min(newEndItemIndex + (int)cacheLength.CacheAfterViewport, Items.Count - 1);
                     }
                 }
 
@@ -637,13 +648,13 @@ namespace WpfToolkit.Controls
         {
             double cacheLength = 0;
 
-            if (CacheLengthUnit == VirtualizationCacheLengthUnit.Page)
+            if (cacheLengthUnit == VirtualizationCacheLengthUnit.Page)
             {
-                cacheLength = CacheLength.CacheBeforeViewport * GetHeight(ViewportSize);
+                cacheLength = this.cacheLength.CacheBeforeViewport * GetHeight(ViewportSize);
             }
-            else if (CacheLengthUnit == VirtualizationCacheLengthUnit.Pixel)
+            else if (cacheLengthUnit == VirtualizationCacheLengthUnit.Pixel)
             {
-                cacheLength = CacheLength.CacheBeforeViewport;
+                cacheLength = this.cacheLength.CacheBeforeViewport;
             }
 
             return Math.Max(GetY(ScrollOffset) - cacheLength, 0);
@@ -653,13 +664,13 @@ namespace WpfToolkit.Controls
         {
             double cacheLength = 0;
 
-            if (CacheLengthUnit == VirtualizationCacheLengthUnit.Page)
+            if (cacheLengthUnit == VirtualizationCacheLengthUnit.Page)
             {
-                cacheLength = CacheLength.CacheAfterViewport * GetHeight(ViewportSize);
+                cacheLength = this.cacheLength.CacheAfterViewport * GetHeight(ViewportSize);
             }
-            else if (CacheLengthUnit == VirtualizationCacheLengthUnit.Pixel)
+            else if (cacheLengthUnit == VirtualizationCacheLengthUnit.Pixel)
             {
-                cacheLength = CacheLength.CacheAfterViewport;
+                cacheLength = this.cacheLength.CacheAfterViewport;
             }
 
             return Math.Max(GetY(ScrollOffset), 0) + GetHeight(ViewportSize) + cacheLength;

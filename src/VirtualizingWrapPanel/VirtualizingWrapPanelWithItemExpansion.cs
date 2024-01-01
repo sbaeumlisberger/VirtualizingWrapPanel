@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Specialized;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -10,11 +12,44 @@ namespace WpfToolkit.Controls
     /// In addition the panel allows to expand one specific item.
     /// <p class="note">In order to work properly all items must have the same size.</p>
     /// </summary>
-    public class VirtualizingWrapPanelWithItemExpansion : VirtualizingWrapPanelV1
+    public class VirtualizingWrapPanelWithItemExpansion : VirtualizingPanelBase
     {
+        public static readonly DependencyProperty SpacingModeProperty = DependencyProperty.Register(nameof(SpacingMode), typeof(SpacingMode), typeof(VirtualizingWrapPanelWithItemExpansion), new FrameworkPropertyMetadata(SpacingMode.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(nameof(Orientation), typeof(Orientation), typeof(VirtualizingWrapPanelWithItemExpansion), new FrameworkPropertyMetadata(Orientation.Vertical, FrameworkPropertyMetadataOptions.AffectsMeasure, (obj, args) => ((VirtualizingWrapPanelWithItemExpansion)obj).Orientation_Changed()));
+
+        public static readonly DependencyProperty ItemSizeProperty = DependencyProperty.Register(nameof(ItemSize), typeof(Size), typeof(VirtualizingWrapPanelWithItemExpansion), new FrameworkPropertyMetadata(Size.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        public static readonly DependencyProperty StretchItemsProperty = DependencyProperty.Register(nameof(StretchItems), typeof(bool), typeof(VirtualizingWrapPanelWithItemExpansion), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsArrange));
+
         public static readonly DependencyProperty ExpandedItemTemplateProperty = DependencyProperty.Register(nameof(ExpandedItemTemplate), typeof(DataTemplate), typeof(VirtualizingWrapPanelWithItemExpansion), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public static readonly DependencyProperty ExpandedItemProperty = DependencyProperty.Register(nameof(ExpandedItem), typeof(object), typeof(VirtualizingWrapPanelWithItemExpansion), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure, (o, a) => ((VirtualizingWrapPanelWithItemExpansion)o).ExpandedItemPropertyChanged(a)));
+
+        /// <summary>
+        /// Gets or sets the spacing mode used when arranging the items. The default value is <see cref="SpacingMode.Uniform"/>.
+        /// </summary>
+        public SpacingMode SpacingMode { get => (SpacingMode)GetValue(SpacingModeProperty); set => SetValue(SpacingModeProperty, value); }
+
+        /// <summary>
+        /// Gets or sets a value that specifies the orientation in which items are arranged. The default value is <see cref="Orientation.Vertical"/>.
+        /// </summary>
+        public Orientation Orientation { get => (Orientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
+
+        /// <summary>
+        /// Gets or sets a value that specifies the size of the items. The default value is <see cref="Size.Empty"/>. 
+        /// If the value is <see cref="Size.Empty"/> the size of the items gots measured by the first realized item.
+        /// </summary>
+        public Size ItemSize { get => (Size)GetValue(ItemSizeProperty); set => SetValue(ItemSizeProperty, value); }
+
+        /// <summary>
+        /// Gets or sets a value that specifies if the items get stretched to fill up remaining space. The default value is false.
+        /// </summary>
+        /// <remarks>
+        /// The MaxWidth and MaxHeight properties of the ItemContainerStyle can be used to limit the stretching. 
+        /// In this case the use of the remaining space will be determined by the SpacingMode property. 
+        /// </remarks>
+        public bool StretchItems { get => (bool)GetValue(StretchItemsProperty); set => SetValue(StretchItemsProperty, value); }
 
         /// <summary>
         /// Gets or sets the data template used for the item expansion.
@@ -26,11 +61,58 @@ namespace WpfToolkit.Controls
         /// </summary>
         public object? ExpandedItem { get => GetValue(ExpandedItemProperty); set => SetValue(ExpandedItemProperty, value); }
 
+        /// <summary>
+        /// The cache length before and after the viewport. 
+        /// </summary>
+        protected VirtualizationCacheLength CacheLength { get; private set; }
+
+        /// <summary>
+        /// The Unit of the cache length. Can be Pixel, Item or Page. 
+        /// When the ItemsOwner is a group item it can only be pixel or item.
+        /// </summary>
+        protected VirtualizationCacheLengthUnit CacheLengthUnit { get; private set; }
+
+        protected Size childSize;
+
+        protected int rowCount;
+
+        protected int itemsPerRowCount;
+
+        /// <summary>
+        /// The range of items that a realized in viewport or cache.
+        /// </summary>
+        protected ItemRange ItemRange { get; set; }
+
         private int ExpandedItemIndex => Items.IndexOf(ExpandedItem);
 
         private FrameworkElement? expandedItemChild = null;
 
         private int itemIndexFollwingExpansion;
+
+        protected override void OnClearChildren()
+        {
+            base.OnClearChildren();
+            expandedItemChild = null;
+        }
+
+        protected override void OnItemsChanged(object sender, ItemsChangedEventArgs args)
+        {
+            switch (args.Action)
+            {
+                case NotifyCollectionChangedAction.Remove:
+                case NotifyCollectionChangedAction.Replace:
+                    RemoveInternalChildRange(args.Position.Index, args.ItemUICount);
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                    RemoveInternalChildRange(args.OldPosition.Index, args.ItemUICount);
+                    break;
+            }
+        }
+
+        private void Orientation_Changed()
+        {
+            MouseWheelScrollDirection = Orientation == Orientation.Horizontal ? ScrollDirection.Vertical : ScrollDirection.Horizontal;
+        }
 
         private void ExpandedItemPropertyChanged(DependencyPropertyChangedEventArgs args)
         {
@@ -45,80 +127,118 @@ namespace WpfToolkit.Controls
             }
         }
 
-        protected override Size CalculateExtent(Size availableSize)
+        private int GetItemIndexFromChildIndex(int childIndex)
         {
-            Size extent = base.CalculateExtent(availableSize);
-
-            if (expandedItemChild != null)
-            {
-                if (Orientation == Orientation.Horizontal)
-                {
-                    extent.Height += expandedItemChild.DesiredSize.Height;
-                }
-                else
-                {
-                    extent.Width += expandedItemChild.DesiredSize.Width;
-                }
-            }
-
-            return extent;
+            var generatorPosition = GetGeneratorPositionFromChildIndex(childIndex);
+            return RecyclingItemContainerGenerator.IndexFromGeneratorPosition(generatorPosition);
         }
 
-        protected override Size ArrangeOverride(Size finalSize)
+        private GeneratorPosition GetGeneratorPositionFromChildIndex(int childIndex)
         {
-            double expandedItemChildHeight = 0;
-
-            Size childSize = CalculateChildArrangeSize(finalSize);
-
-            CalculateSpacing(finalSize, out double innerSpacing, out double outerSpacing);
-
-            for (int childIndex = 0; childIndex < InternalChildren.Count; childIndex++)
+            int expandedItemChildIndex = InternalChildren.IndexOf(expandedItemChild);
+            if (expandedItemChildIndex != -1 && childIndex > expandedItemChildIndex)
             {
-                UIElement child = InternalChildren[childIndex];
-
-                if (child == expandedItemChild)
-                {
-                    int rowIndex = ExpandedItemIndex / itemsPerRowCount + 1;
-                    double x = outerSpacing;
-                    double y = rowIndex * GetHeight(childSize);
-                    double width = GetWidth(finalSize) - (2 * outerSpacing);
-                    double height = GetHeight(expandedItemChild.DesiredSize);
-
-                    if (!IsSpacingEnabled || SpacingMode == SpacingMode.None)
-                    {
-                        width = itemsPerRowCount * GetWidth(childSize);
-                    }
-
-                    if (Orientation == Orientation.Horizontal)
-                    {
-                        expandedItemChild.Arrange(CreateRect(x - GetX(Offset), y - GetY(Offset), width, height));
-                    }
-                    else
-                    {
-                        expandedItemChild.Arrange(CreateRect(x - GetX(Offset), y - GetY(Offset), height, width));
-                    }
-                    expandedItemChildHeight = height;
-                }
-                else
-                {
-                    int itemIndex = GetItemIndexFromChildIndex(childIndex);
-
-                    int columnIndex = itemIndex % itemsPerRowCount;
-                    int rowIndex = itemIndex / itemsPerRowCount;
-
-                    double x = outerSpacing + columnIndex * (GetWidth(childSize) + innerSpacing);
-                    double y = rowIndex * GetHeight(childSize) + expandedItemChildHeight;
-
-                    child.Arrange(CreateRect(x - GetX(Offset), y - GetY(Offset), childSize.Width, childSize.Height));
-                }
+                return new GeneratorPosition(childIndex - 1, 0);
             }
-
-            return finalSize;
+            else
+            {
+                return new GeneratorPosition(childIndex, 0);
+            }
         }
 
-        protected override void RealizeItems()
+        protected override Size MeasureOverride(Size availableSize)
         {
-            var startPosition = ItemContainerGenerator.GeneratorPositionFromIndex(ItemRange.StartIndex);
+            UpdateChildSize(availableSize);
+
+            if (ShouldIgnoreMeasure())
+            {
+                return availableSize;
+            }
+
+            var groupItem = ItemsOwner as IHierarchicalVirtualizationAndScrollInfo;
+
+            Size extent;
+            Size desiredSize;
+
+            if (groupItem != null)
+            {
+                /* If the ItemsOwner is a group item the availableSize is ifinity. 
+                 * Therfore the vieport size provided by the group item is used. */
+                var viewportSize = groupItem.Constraints.Viewport.Size;
+                var headerSize = groupItem.HeaderDesiredSizes.PixelSize;
+                double availableWidth = Math.Max(viewportSize.Width - 5, 0); // left margin of 5 dp
+                double availableHeight = Math.Max(viewportSize.Height - headerSize.Height, 0);
+                availableSize = new Size(availableWidth, availableHeight);
+
+                extent = CalculateExtent(availableSize);
+
+                desiredSize = new Size(extent.Width, extent.Height);
+
+                Extent = extent;
+                ScrollOffset = groupItem.Constraints.Viewport.Location;
+                ViewportSize = groupItem.Constraints.Viewport.Size;
+                CacheLength = groupItem.Constraints.CacheLength;
+                CacheLengthUnit = groupItem.Constraints.CacheLengthUnit; // can be Item or Pixel
+            }
+            else
+            {
+                extent = CalculateExtent(availableSize);
+                double desiredWidth = Math.Min(availableSize.Width, extent.Width);
+                double desiredHeight = Math.Min(availableSize.Height, extent.Height);
+                desiredSize = new Size(desiredWidth, desiredHeight);
+
+                UpdateScrollInfo(desiredSize, extent);
+                CacheLength = GetCacheLength(ItemsOwner);
+                CacheLengthUnit = GetCacheLengthUnit(ItemsOwner); // can be Page, Item or Pixel
+            }
+
+            ItemRange = UpdateItemRange();
+
+            RealizeItems();
+            VirtualizeItems();
+
+            return desiredSize;
+        }
+
+        protected virtual void UpdateScrollInfo(Size availableSize, Size extent)
+        {
+            bool invalidateScrollInfo = false;
+
+            if (extent != Extent)
+            {
+                Extent = extent;
+                invalidateScrollInfo = true;
+
+            }
+            if (availableSize != ViewportSize)
+            {
+                ViewportSize = availableSize;
+                invalidateScrollInfo = true;
+            }
+
+            if (ViewportHeight != 0 && VerticalOffset != 0 && VerticalOffset + ViewportHeight + 1 >= ExtentHeight)
+            {
+                ScrollOffset = new Point(ScrollOffset.X, extent.Height - availableSize.Height);
+                invalidateScrollInfo = true;
+            }
+            if (ViewportWidth != 0 && HorizontalOffset != 0 && HorizontalOffset + ViewportWidth + 1 >= ExtentWidth)
+            {
+                ScrollOffset = new Point(extent.Width - availableSize.Width, ScrollOffset.Y);
+                invalidateScrollInfo = true;
+            }
+
+            if (invalidateScrollInfo)
+            {
+                ScrollOwner?.InvalidateScrollInfo();
+            }
+        }
+
+        /// <summary>
+        /// Realizes visible and cached items.
+        /// </summary>
+        protected virtual void RealizeItems()
+        {
+            var startPosition = RecyclingItemContainerGenerator.GeneratorPositionFromIndex(ItemRange.StartIndex);
 
             int childIndex = startPosition.Offset == 0 ? startPosition.Index : startPosition.Index + 1;
 
@@ -132,11 +252,11 @@ namespace WpfToolkit.Controls
                 expandedItemChild = null;
             }
 
-            using (ItemContainerGenerator.StartAt(startPosition, GeneratorDirection.Forward, true))
+            using (RecyclingItemContainerGenerator.StartAt(startPosition, GeneratorDirection.Forward, true))
             {
                 for (int itemIndex = ItemRange.StartIndex; itemIndex <= ItemRange.EndIndex; itemIndex++, childIndex++)
                 {
-                    FrameworkElement child = (FrameworkElement)ItemContainerGenerator.GenerateNext(out bool isNewlyRealized);
+                    UIElement child = (UIElement)RecyclingItemContainerGenerator.GenerateNext(out bool isNewlyRealized);
 
                     if (isNewlyRealized || /*recycling*/!InternalChildren.Contains(child))
                     {
@@ -149,7 +269,7 @@ namespace WpfToolkit.Controls
                             InsertInternalChild(childIndex, child);
                         }
 
-                        ItemContainerGenerator.PrepareItemContainer(child);
+                        RecyclingItemContainerGenerator.PrepareItemContainer(child);
 
                         if (ItemSize == Size.Empty)
                         {
@@ -188,26 +308,10 @@ namespace WpfToolkit.Controls
             }
         }
 
-        protected override void OnClearChildren()
-        {
-            base.OnClearChildren();
-            expandedItemChild = null;
-        }
-
-        protected override GeneratorPosition GetGeneratorPositionFromChildIndex(int childIndex)
-        {
-            int expandedItemChildIndex = InternalChildren.IndexOf(expandedItemChild);
-            if (expandedItemChildIndex != -1 && childIndex > expandedItemChildIndex)
-            {
-                return new GeneratorPosition(childIndex - 1, 0);
-            }
-            else
-            {
-                return new GeneratorPosition(childIndex, 0);
-            }
-        }
-
-        protected override void VirtualizeItems()
+        /// <summary>
+        /// Virtualizes (cleanups) no longer visible or cached items.
+        /// </summary>
+        private void VirtualizeItems()
         {
             for (int childIndex = InternalChildren.Count - 1; childIndex >= 0; childIndex--)
             {
@@ -225,24 +329,333 @@ namespace WpfToolkit.Controls
                 {
                     int itemIndex = Items.IndexOf(child.DataContext);
 
-                    var position = ItemContainerGenerator.GeneratorPositionFromIndex(itemIndex);
+                    var position = RecyclingItemContainerGenerator.GeneratorPositionFromIndex(itemIndex);
 
                     if (!ItemRange.Contains(itemIndex))
                     {
 
                         if (IsRecycling)
                         {
-                            ItemContainerGenerator.Recycle(position, 1);
+                            RecyclingItemContainerGenerator.Recycle(position, 1);
                         }
                         else
                         {
-                            ItemContainerGenerator.Remove(position, 1);
+                            RecyclingItemContainerGenerator.Remove(position, 1);
                         }
 
                         RemoveInternalChildRange(childIndex, 1);
                     }
                 }
             }
+        }
+
+        private void UpdateChildSize(Size availableSize)
+        {
+            if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem && GetIsVirtualizingWhenGrouping(ItemsControl))
+            {
+                if (Orientation == Orientation.Vertical)
+                {
+                    availableSize.Width = groupItem.Constraints.Viewport.Size.Width;
+                    availableSize.Width = Math.Max(availableSize.Width - (Margin.Left + Margin.Right), 0);
+                }
+                else
+                {
+                    availableSize.Height = groupItem.Constraints.Viewport.Size.Height;
+                    availableSize.Height = Math.Max(availableSize.Height - (Margin.Top + Margin.Bottom), 0);
+                }
+            }
+
+            if (ItemSize != Size.Empty)
+            {
+                childSize = ItemSize;
+            }
+            else if (InternalChildren.Count != 0)
+            {
+                childSize = InternalChildren[0].DesiredSize;
+            }
+            else
+            {
+                childSize = CalculateChildSize(availableSize);
+            }
+
+            if (double.IsInfinity(GetWidth(availableSize)))
+            {
+                itemsPerRowCount = Items.Count;
+            }
+            else
+            {
+                itemsPerRowCount = Math.Max(1, (int)Math.Floor(GetWidth(availableSize) / GetWidth(childSize)));
+            }
+
+            rowCount = (int)Math.Ceiling((double)Items.Count / itemsPerRowCount);
+        }
+
+        private Size CalculateChildSize(Size availableSize)
+        {
+            if (Items.Count == 0)
+            {
+                return new Size(0, 0);
+            }
+            var startPosition = RecyclingItemContainerGenerator.GeneratorPositionFromIndex(0);
+            using (RecyclingItemContainerGenerator.StartAt(startPosition, GeneratorDirection.Forward, true))
+            {
+                var child = (UIElement)RecyclingItemContainerGenerator.GenerateNext();
+                AddInternalChild(child);
+                RecyclingItemContainerGenerator.PrepareItemContainer(child);
+                child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                return child.DesiredSize;
+            }
+        }
+
+        private Size CalculateExtent(Size availableSize)
+        {
+            double extentWidth = SpacingMode != SpacingMode.None && !double.IsInfinity(GetWidth(availableSize))
+                ? GetWidth(availableSize)
+                : GetWidth(childSize) * itemsPerRowCount;
+
+            if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem)
+            {
+                if (Orientation == Orientation.Vertical)
+                {
+                    extentWidth = Math.Max(extentWidth - (Margin.Left + Margin.Right), 0);
+                }
+                else
+                {
+                    extentWidth = Math.Max(extentWidth - (Margin.Top + Margin.Bottom), 0);
+                }
+            }
+
+            double extentHeight = GetHeight(childSize) * rowCount;
+
+            Size extent = CreateSize(extentWidth, extentHeight);
+
+            if (expandedItemChild != null)
+            {
+                if (Orientation == Orientation.Horizontal)
+                {
+                    extent.Height += expandedItemChild.DesiredSize.Height;
+                }
+                else
+                {
+                    extent.Width += expandedItemChild.DesiredSize.Width;
+                }
+            }
+
+            return extent;
+        }
+
+        protected void CalculateSpacing(Size finalSize, out double innerSpacing, out double outerSpacing)
+        {
+            Size childSize = CalculateChildArrangeSize(finalSize);
+
+            double finalWidth = GetWidth(finalSize);
+
+            double totalItemsWidth = Math.Min(GetWidth(childSize) * itemsPerRowCount, finalWidth);
+            double unusedWidth = finalWidth - totalItemsWidth;
+
+            switch (SpacingMode)
+            {
+                case SpacingMode.Uniform:
+                    innerSpacing = outerSpacing = unusedWidth / (itemsPerRowCount + 1);
+                    break;
+
+                case SpacingMode.BetweenItemsOnly:
+                    innerSpacing = unusedWidth / Math.Max(itemsPerRowCount - 1, 1);
+                    outerSpacing = 0;
+                    break;
+
+                case SpacingMode.StartAndEndOnly:
+                    innerSpacing = 0;
+                    outerSpacing = unusedWidth / 2;
+                    break;
+
+                case SpacingMode.None:
+                default:
+                    innerSpacing = 0;
+                    outerSpacing = 0;
+                    break;
+            }
+        }
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            double expandedItemChildHeight = 0;
+
+            Size childSize = CalculateChildArrangeSize(finalSize);
+
+            CalculateSpacing(finalSize, out double innerSpacing, out double outerSpacing);
+
+            for (int childIndex = 0; childIndex < InternalChildren.Count; childIndex++)
+            {
+                UIElement child = InternalChildren[childIndex];
+
+                if (child == expandedItemChild)
+                {
+                    int rowIndex = ExpandedItemIndex / itemsPerRowCount + 1;
+                    double x = outerSpacing;
+                    double y = rowIndex * GetHeight(childSize);
+                    double width = GetWidth(finalSize) - (2 * outerSpacing);
+                    double height = GetHeight(expandedItemChild.DesiredSize);
+
+                    if (SpacingMode == SpacingMode.None)
+                    {
+                        width = itemsPerRowCount * GetWidth(childSize);
+                    }
+
+                    if (Orientation == Orientation.Horizontal)
+                    {
+                        expandedItemChild.Arrange(CreateRect(x - GetX(ScrollOffset), y - GetY(ScrollOffset), width, height));
+                    }
+                    else
+                    {
+                        expandedItemChild.Arrange(CreateRect(x - GetX(ScrollOffset), y - GetY(ScrollOffset), height, width));
+                    }
+                    expandedItemChildHeight = height;
+                }
+                else
+                {
+                    int itemIndex = GetItemIndexFromChildIndex(childIndex);
+
+                    int columnIndex = itemIndex % itemsPerRowCount;
+                    int rowIndex = itemIndex / itemsPerRowCount;
+
+                    double x = outerSpacing + columnIndex * (GetWidth(childSize) + innerSpacing);
+                    double y = rowIndex * GetHeight(childSize) + expandedItemChildHeight;
+
+                    child.Arrange(CreateRect(x - GetX(ScrollOffset), y - GetY(ScrollOffset), childSize.Width, childSize.Height));
+                }
+            }
+
+            return finalSize;
+        }
+
+        protected Size CalculateChildArrangeSize(Size finalSize)
+        {
+            if (StretchItems)
+            {
+                if (Orientation == Orientation.Vertical)
+                {
+                    double childMaxWidth = ReadItemContainerStyle(MaxWidthProperty, double.PositiveInfinity);
+                    double maxPossibleChildWith = finalSize.Width / itemsPerRowCount;
+                    double childWidth = Math.Min(maxPossibleChildWith, childMaxWidth);
+                    return new Size(childWidth, childSize.Height);
+                }
+                else
+                {
+                    double childMaxHeight = ReadItemContainerStyle(MaxHeightProperty, double.PositiveInfinity);
+                    double maxPossibleChildHeight = finalSize.Height / itemsPerRowCount;
+                    double childHeight = Math.Min(maxPossibleChildHeight, childMaxHeight);
+                    return new Size(childSize.Width, childHeight);
+                }
+            }
+            else
+            {
+                return childSize;
+            }
+        }
+
+        private T ReadItemContainerStyle<T>(DependencyProperty property, T fallbackValue) where T : notnull
+        {
+            var value = ItemsControl.ItemContainerStyle?.Setters.OfType<Setter>()
+                .FirstOrDefault(setter => setter.Property == property)?.Value;
+            return (T)(value ?? fallbackValue);
+        }
+
+        private ItemRange UpdateItemRange()
+        {
+            if (!IsVirtualizing)
+            {
+                return new ItemRange(0, Items.Count - 1);
+            }
+
+            int startIndex;
+            int endIndex;
+
+            if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem)
+            {
+                if (!GetIsVirtualizingWhenGrouping(ItemsControl))
+                {
+                    return new ItemRange(0, Items.Count - 1);
+                }
+
+                var offset = new Point(ScrollOffset.X, groupItem.Constraints.Viewport.Location.Y);
+
+                int offsetRowIndex;
+                double offsetInPixel;
+
+                int rowCountInViewport;
+
+                if (ScrollUnit == ScrollUnit.Item)
+                {
+                    offsetRowIndex = GetY(offset) >= 1 ? (int)GetY(offset) - 1 : 0; // ignore header
+                    offsetInPixel = offsetRowIndex * GetHeight(childSize);
+                }
+                else
+                {
+                    offsetInPixel = Math.Min(Math.Max(GetY(offset) - GetHeight(groupItem.HeaderDesiredSizes.PixelSize), 0), GetHeight(Extent));
+                    offsetRowIndex = GetRowIndex(offsetInPixel);
+                }
+
+                double viewportHeight = Math.Min(GetHeight(ViewportSize), Math.Max(GetHeight(Extent) - offsetInPixel, 0));
+
+                rowCountInViewport = (int)Math.Ceiling((offsetInPixel + viewportHeight) / GetHeight(childSize)) - (int)Math.Floor(offsetInPixel / GetHeight(childSize));
+
+                startIndex = offsetRowIndex * itemsPerRowCount;
+                endIndex = Math.Min(((offsetRowIndex + rowCountInViewport) * itemsPerRowCount) - 1, Items.Count - 1);
+
+                if (CacheLengthUnit == VirtualizationCacheLengthUnit.Pixel)
+                {
+                    double cacheBeforeInPixel = Math.Min(CacheLength.CacheBeforeViewport, offsetInPixel);
+                    double cacheAfterInPixel = Math.Min(CacheLength.CacheAfterViewport, GetHeight(Extent) - viewportHeight - offsetInPixel);
+                    int rowCountInCacheBefore = (int)(cacheBeforeInPixel / GetHeight(childSize));
+                    int rowCountInCacheAfter = ((int)Math.Ceiling((offsetInPixel + viewportHeight + cacheAfterInPixel) / GetHeight(childSize))) - (int)Math.Ceiling((offsetInPixel + viewportHeight) / GetHeight(childSize));
+                    startIndex = Math.Max(startIndex - rowCountInCacheBefore * itemsPerRowCount, 0);
+                    endIndex = Math.Min(endIndex + rowCountInCacheAfter * itemsPerRowCount, Items.Count - 1);
+                }
+                else if (CacheLengthUnit == VirtualizationCacheLengthUnit.Item)
+                {
+                    startIndex = Math.Max(startIndex - (int)CacheLength.CacheBeforeViewport, 0);
+                    endIndex = Math.Min(endIndex + (int)CacheLength.CacheAfterViewport, Items.Count - 1);
+                }
+            }
+            else
+            {
+                double viewportSartPos = GetY(ScrollOffset);
+                double viewportEndPos = GetY(ScrollOffset) + GetHeight(ViewportSize);
+
+                if (CacheLengthUnit == VirtualizationCacheLengthUnit.Pixel)
+                {
+                    viewportSartPos = Math.Max(viewportSartPos - CacheLength.CacheBeforeViewport, 0);
+                    viewportEndPos = Math.Min(viewportEndPos + CacheLength.CacheAfterViewport, GetHeight(Extent));
+                }
+
+                int startRowIndex = GetRowIndex(viewportSartPos);
+                startIndex = startRowIndex * itemsPerRowCount;
+
+                int endRowIndex = GetRowIndex(viewportEndPos);
+                endIndex = Math.Min(endRowIndex * itemsPerRowCount + (itemsPerRowCount - 1), Items.Count - 1);
+
+                if (CacheLengthUnit == VirtualizationCacheLengthUnit.Page)
+                {
+                    int itemsPerPage = endIndex - startIndex + 1;
+                    startIndex = Math.Max(startIndex - (int)CacheLength.CacheBeforeViewport * itemsPerPage, 0);
+                    endIndex = Math.Min(endIndex + (int)CacheLength.CacheAfterViewport * itemsPerPage, Items.Count - 1);
+                }
+                else if (CacheLengthUnit == VirtualizationCacheLengthUnit.Item)
+                {
+                    startIndex = Math.Max(startIndex - (int)CacheLength.CacheBeforeViewport, 0);
+                    endIndex = Math.Min(endIndex + (int)CacheLength.CacheAfterViewport, Items.Count - 1);
+                }
+            }
+
+            return new ItemRange(startIndex, endIndex);
+        }
+
+        private int GetRowIndex(double location)
+        {
+            int calculatedRowIndex = (int)Math.Floor(location / GetHeight(childSize));
+            int maxRowIndex = (int)Math.Ceiling((double)Items.Count / (double)itemsPerRowCount);
+            return Math.Max(Math.Min(calculatedRowIndex, maxRowIndex), 0);
         }
 
         protected override void BringIndexIntoView(int index)
@@ -263,5 +676,76 @@ namespace WpfToolkit.Controls
                 SetVerticalOffset(offset);
             }
         }
+
+        protected override double GetLineUpScrollAmount()
+        {
+            return -Math.Min(childSize.Height * ScrollLineDeltaItem, ViewportSize.Height);
+        }
+
+        protected override double GetLineDownScrollAmount()
+        {
+            return Math.Min(childSize.Height * ScrollLineDeltaItem, ViewportSize.Height);
+        }
+
+        protected override double GetLineLeftScrollAmount()
+        {
+            return -Math.Min(childSize.Width * ScrollLineDeltaItem, ViewportSize.Width);
+        }
+
+        protected override double GetLineRightScrollAmount()
+        {
+            return Math.Min(childSize.Width * ScrollLineDeltaItem, ViewportSize.Width);
+        }
+
+        protected override double GetMouseWheelUpScrollAmount()
+        {
+            return -Math.Min(childSize.Height * MouseWheelDeltaItem, ViewportSize.Height);
+        }
+
+        protected override double GetMouseWheelDownScrollAmount()
+        {
+            return Math.Min(childSize.Height * MouseWheelDeltaItem, ViewportSize.Height);
+        }
+
+        protected override double GetMouseWheelLeftScrollAmount()
+        {
+            return -Math.Min(childSize.Width * MouseWheelDeltaItem, ViewportSize.Width);
+        }
+
+        protected override double GetMouseWheelRightScrollAmount()
+        {
+            return Math.Min(childSize.Width * MouseWheelDeltaItem, ViewportSize.Width);
+        }
+
+        protected override double GetPageUpScrollAmount()
+        {
+            return -ViewportSize.Height;
+        }
+
+        protected override double GetPageDownScrollAmount()
+        {
+            return ViewportSize.Height;
+        }
+
+        protected override double GetPageLeftScrollAmount()
+        {
+            return -ViewportSize.Width;
+        }
+
+        protected override double GetPageRightScrollAmount()
+        {
+            return ViewportSize.Width;
+        }
+
+        /* orientation aware helper methods */
+
+        protected double GetX(Point point) => Orientation == Orientation.Horizontal ? point.X : point.Y;
+        protected double GetY(Point point) => Orientation == Orientation.Horizontal ? point.Y : point.X;
+
+        protected double GetWidth(Size size) => Orientation == Orientation.Horizontal ? size.Width : size.Height;
+        protected double GetHeight(Size size) => Orientation == Orientation.Horizontal ? size.Height : size.Width;
+
+        protected Size CreateSize(double width, double height) => Orientation == Orientation.Horizontal ? new Size(width, height) : new Size(height, width);
+        protected Rect CreateRect(double x, double y, double width, double height) => Orientation == Orientation.Horizontal ? new Rect(x, y, width, height) : new Rect(y, x, width, height);
     }
 }

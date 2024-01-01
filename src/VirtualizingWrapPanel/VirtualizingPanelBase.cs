@@ -63,17 +63,6 @@ namespace WpfToolkit.Controls
         protected bool IsRecycling => VirtualizationMode == VirtualizationMode.Recycling;
 
         /// <summary>
-        /// The cache length before and after the viewport. 
-        /// </summary>
-        protected VirtualizationCacheLength CacheLength => GetCacheLength(ItemsControl);
-
-        /// <summary>
-        /// The Unit of the cache length. Can be Pixel, Item or Page. 
-        /// When the ItemsOwner is a group item it can only be pixel or item.
-        /// </summary>
-        protected VirtualizationCacheLengthUnit CacheLengthUnit => GetCacheLengthUnit(ItemsControl);
-
-        /// <summary>
         /// The ItemsControl (e.g. ListView).
         /// </summary>
         public ItemsControl ItemsControl => ItemsControl.GetItemsOwner(this);
@@ -105,6 +94,8 @@ namespace WpfToolkit.Controls
         private DependencyObject? _itemsOwner;
 
         protected ReadOnlyCollection<object> Items => ItemContainerGenerator.Items;
+
+        protected IRecyclingItemContainerGenerator RecyclingItemContainerGenerator => ItemContainerGenerator;
 
         protected new ItemContainerGenerator ItemContainerGenerator
         {
