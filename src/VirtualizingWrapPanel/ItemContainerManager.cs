@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media.Animation;
 
 namespace WpfToolkit.Controls;
 
@@ -32,17 +33,9 @@ internal interface IItemContainerManager
 
     ReadOnlyCollection<object> Items { get; }
 
-#if NET6_0_OR_GREATER
-    IReadOnlySet<IItemContainerInfo> RealizedContainers { get; }
-#else
-    IEnumerable<IItemContainerInfo> RealizedContainers { get; }
-#endif
+    IReadOnlyCollection<IItemContainerInfo> RealizedContainers { get; }
 
-#if NET6_0_OR_GREATER
-    IReadOnlySet<IItemContainerInfo> CachedContainers { get; }
-#else
-    IEnumerable<IItemContainerInfo> CachedContainers { get; }
-#endif
+    IReadOnlyCollection<IItemContainerInfo> CachedContainers { get; }
 
     /// <summary>
     /// Realizes the specified item. If the item is already realized, nothing happens.
@@ -53,8 +46,7 @@ internal interface IItemContainerManager
     /// <returns>A object with information about the container of the specified item</returns>
     IItemContainerInfo Realize(int itemIndex, out bool isNewlyRealized, out bool isNewContainer);
 
-    /// <returns>true if the container should be removed, otherwise false (container is recylced)</returns>
-    bool Virtualize(IItemContainerInfo containerInfo);
+    void Virtualize(IItemContainerInfo containerInfo);
 
     int FindItemIndexOfContainer(IItemContainerInfo containerInfo);
 }
@@ -68,17 +60,9 @@ internal class ItemContainerManager : IItemContainerManager
 
     public ReadOnlyCollection<object> Items => itemContainerGenerator.Items;
 
-#if NET6_0_OR_GREATER
-    public IReadOnlySet<IItemContainerInfo> RealizedContainers => realizedContainers;
-#else
-    public IEnumerable<IItemContainerInfo> RealizedContainers => realizedContainers;
-#endif
+    public IReadOnlyCollection<IItemContainerInfo> RealizedContainers => realizedContainers;
 
-#if NET6_0_OR_GREATER
-    public IReadOnlySet<IItemContainerInfo> CachedContainers => cachedContainers;
-#else
-    public IEnumerable<IItemContainerInfo> CachedContainers => cachedContainers;
-#endif
+    public IReadOnlyCollection<IItemContainerInfo> CachedContainers => cachedContainers;
 
     private readonly HashSet<IItemContainerInfo> realizedContainers = new HashSet<IItemContainerInfo>();
 
@@ -88,10 +72,15 @@ internal class ItemContainerManager : IItemContainerManager
 
     private readonly IRecyclingItemContainerGenerator recyclingItemContainerGenerator;
 
-    public ItemContainerManager(ItemContainerGenerator itemContainerGenerator)
+    private readonly Action<UIElement> addInternalChild;
+    private readonly Action<UIElement> removeInternalChild;
+
+    public ItemContainerManager(ItemContainerGenerator itemContainerGenerator, Action<UIElement> addInternalChild, Action<UIElement> removeInternalChild)
     {
         this.itemContainerGenerator = itemContainerGenerator;
         this.recyclingItemContainerGenerator = itemContainerGenerator;
+        this.addInternalChild = addInternalChild;
+        this.removeInternalChild = removeInternalChild;
         itemContainerGenerator.ItemsChanged += ItemContainerGenerator_ItemsChanged;
     }
 
@@ -101,22 +90,31 @@ internal class ItemContainerManager : IItemContainerManager
         {
             realizedContainers.Clear();
             cachedContainers.Clear();
-        }
+            // childrenCollection is cleared automatically
 
-        if (e.Action == NotifyCollectionChangedAction.Remove
+            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action, realizedContainers));
+        }
+        else if (e.Action == NotifyCollectionChangedAction.Remove
             || e.Action == NotifyCollectionChangedAction.Replace)
         {
             var removedCotainers = realizedContainers.Where(container => !Items.Contains(container.Item)).ToList();
+           
             removedCotainers.ForEach(container => realizedContainers.Remove(container));
+           
             if (IsRecycling)
             {
                 removedCotainers.ForEach(container => cachedContainers.Add(container));
             }
+            else 
+            {
+                removedCotainers.ForEach(container => removeInternalChild(container.UIElement));
+            }
+
             ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action, removedCotainers));
         }
         else
-        {
-            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action, new IItemContainerInfo[0]));
+        {          
+            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action, Array.Empty<IItemContainerInfo>()));
         }
     }
 
@@ -124,7 +122,7 @@ internal class ItemContainerManager : IItemContainerManager
     {
         var item = Items[itemIndex];
 
-        if (RealizedContainers.FirstOrDefault(container => container.Item == item) is { } containerInfo)
+        if (realizedContainers.FirstOrDefault(container => container.Item == item) is { } containerInfo)
         {
             isNewlyRealized = false;
             isNewContainer = false;
@@ -135,16 +133,22 @@ internal class ItemContainerManager : IItemContainerManager
         var generatorPosition = recyclingItemContainerGenerator.GeneratorPositionFromIndex(itemIndex);
         using (recyclingItemContainerGenerator.StartAt(generatorPosition, GeneratorDirection.Forward))
         {
-            var container = recyclingItemContainerGenerator.GenerateNext(out isNewContainer);
+            var container = (UIElement)recyclingItemContainerGenerator.GenerateNext(out isNewContainer);
             recyclingItemContainerGenerator.PrepareItemContainer(container);
-            containerInfo = ItemContainerInfo.For((UIElement)container, item);
+            containerInfo = ItemContainerInfo.For(container, item);
             cachedContainers.Remove(containerInfo);
             realizedContainers.Add(containerInfo);
+
+            if (isNewContainer)
+            {
+                addInternalChild(container);
+            }
+
             return containerInfo;
         }
     }
 
-    public bool Virtualize(IItemContainerInfo containerInfo)
+    public void Virtualize(IItemContainerInfo containerInfo)
     {
         int itemIndex = FindItemIndexOfContainer(containerInfo);
 
@@ -152,7 +156,7 @@ internal class ItemContainerManager : IItemContainerManager
         {
             Debug.WriteLine("Virtualize no more existing item");
             realizedContainers.Remove(containerInfo);
-            return true;
+            removeInternalChild(containerInfo.UIElement);
         }
 
         var generatorPosition = recyclingItemContainerGenerator.GeneratorPositionFromIndex(itemIndex);
@@ -162,13 +166,12 @@ internal class ItemContainerManager : IItemContainerManager
             recyclingItemContainerGenerator.Recycle(generatorPosition, 1);
             realizedContainers.Remove(containerInfo);
             cachedContainers.Add(containerInfo);
-            return false;
         }
         else
         {
             recyclingItemContainerGenerator.Remove(generatorPosition, 1);
             realizedContainers.Remove(containerInfo);
-            return true;
+            removeInternalChild(containerInfo.UIElement);
         }
     }
 

@@ -18,12 +18,18 @@ You can use the VirtualizingWrapPanel with an existing ItemsControl like a ListV
 <Window xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel">
     <ListView
         ItemsSource="{Binding YourItemsSource, Mode=OneWay}"
-        ItemTemplate="{StaticResource YourItemTemplate}">
+        ItemTemplate="{StaticResource YourItemTemplate}">       
         <ListView.ItemsPanel>
             <ItemsPanelTemplate>
                 <vwp:VirtualizingWrapPanel/>
             </ItemsPanelTemplate>
         </ListView.ItemsPanel>
+         <ListView.ItemContainerStyle>
+            <Style x:Key="ItemContainerStyle" TargetType="{x:Type ListViewItem}">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            </Style>
+        </ListView.ItemContainerStyle>
     </ListView>
 </Window>
 ```
@@ -110,7 +116,7 @@ Grouping is fully supported and can be used as shown in the following example:
     ItemsSource='{Binding Source={StaticResource GroupingItemsSource}}'>
     <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
-            <vwp:VirtualizingWrapPanel Orientation="Horizontal"/>
+            <vwp:VirtualizingWrapPanel/>
         </ItemsPanelTemplate>
     </ItemsControl.ItemsPanel>
     <ItemsControl.GroupStyle>
@@ -120,6 +126,25 @@ Grouping is fully supported and can be used as shown in the following example:
                     <VirtualizingStackPanel Orientation="Vertical"/>
                 </ItemsPanelTemplate>
             </GroupStyle.Panel>
+            <GroupStyle.ContainerStyle>
+                <!-- orginal WPF style but with zero Margin on the ItemsPresenter -->
+                <Style TargetType="{x:Type GroupItem}">
+                    <Setter Property="Control.Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type GroupItem}">
+                                <StackPanel>
+                                    <ContentPresenter
+                                        Content="{TemplateBinding ContentControl.Content}"
+                                        ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                                        ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                                        Name="PART_Header" />
+                                    <ItemsPresenter Name="ItemsPresenter" Margin="0" />
+                                </StackPanel>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </GroupStyle.ContainerStyle>
         </GroupStyle>
      </ItemsControl.GroupStyle>
 </ListView>

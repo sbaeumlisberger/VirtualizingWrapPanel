@@ -10,7 +10,7 @@ namespace WpfToolkit.Controls
     /// A implementation of a wrap panel that supports virtualization and can be used in horizontal and vertical orientation.
     /// <p class="note">In order to work properly all items must have the same size.</p>
     /// </summary>
-    public class VirtualizingWrapPanelV1 : VirtualizingPanelBaseV1
+    public class VirtualizingWrapPanelV1 : VirtualizingPanelBaseV1 // TODO replace V1
     {
         #region Deprecated properties
 

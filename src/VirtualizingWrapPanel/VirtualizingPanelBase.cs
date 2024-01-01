@@ -122,19 +122,22 @@ namespace WpfToolkit.Controls
         }
         private ItemContainerGenerator? _itemContainerGenerator;
 
-        public double ExtentWidth => BaseModel.Extent.Width;
-        public double ExtentHeight => BaseModel.Extent.Height;
+        public double ExtentWidth => Extent.Width;
+        public double ExtentHeight => Extent.Height;
 
-        public double HorizontalOffset => BaseModel.ScrollOffset.X;
-        public double VerticalOffset => BaseModel.ScrollOffset.Y;
+        public double HorizontalOffset => ScrollOffset.X;
+        public double VerticalOffset => ScrollOffset.Y;
 
-        public double ViewportWidth => BaseModel.ViewportSize.Width;
-        public double ViewportHeight => BaseModel.ViewportSize.Height;
+        public double ViewportWidth => ViewportSize.Width;
+        public double ViewportHeight => ViewportSize.Height;
 
-        internal abstract VirtualizingPanelModelBase BaseModel { get; }
+        protected Size Extent { get; set; } = new Size(0, 0);
+        protected Size ViewportSize { get; set; } = new Size(0, 0);
+        protected Point ScrollOffset { get; set; } = new Point(0, 0);      
 
         private Visibility previousVerticalScrollBarVisibility = Visibility.Collapsed;
         private Visibility previousHorizontalScrollBarVisibility = Visibility.Collapsed;
+
         protected bool ShouldIgnoreMeasure()
         {
             /* Sometimes when scrolling the scrollbar gets hidden without any reason. In this case the "IsMeasureValid" 
@@ -206,22 +209,130 @@ namespace WpfToolkit.Controls
             return new Rect(visibleX, visibleY, visibleWidth, visibleHeight);
         }
 
-        public void LineUp() => BaseModel.LineUp();
-        public void LineDown() => BaseModel.LineDown();
-        public void LineLeft() => BaseModel.LineLeft();
-        public void LineRight() => BaseModel.LineRight();
+        public void SetVerticalOffset(double offset)
+        {
+            if (offset < 0 || ViewportSize.Height >= Extent.Height)
+            {
+                offset = 0;
+            }
+            else if (offset + ViewportSize.Height >= Extent.Height)
+            {
+                offset = Extent.Height - ViewportSize.Height;
+            }
+            if (offset != ScrollOffset.Y)
+            {
+                ScrollOffset = new Point(ScrollOffset.X, offset);
+                ScrollOwner?.InvalidateScrollInfo();
+                InvalidateMeasure(); // TODO grouping?
+            }
+        }
 
-        public void MouseWheelUp() => BaseModel.MouseWheelUp();
-        public void MouseWheelDown() => BaseModel.MouseWheelDown();
-        public void MouseWheelLeft() => BaseModel.MouseWheelLeft();
-        public void MouseWheelRight() => BaseModel.MouseWheelRight();
+        public void SetHorizontalOffset(double offset)
+        {
+            if (offset < 0 || ViewportSize.Width >= Extent.Width)
+            {
+                offset = 0;
+            }
+            else if (offset + ViewportSize.Width >= Extent.Width)
+            {
+                offset = Extent.Width - ViewportSize.Width;
+            }
+            if (offset != ScrollOffset.X)
+            {
+                ScrollOffset = new Point(offset, ScrollOffset.Y);
+                ScrollOwner?.InvalidateScrollInfo();
+                InvalidateMeasure(); // TODO grouping?
+            }
+        }
 
-        public void PageUp() => BaseModel.PageUp();
-        public void PageDown() => BaseModel.PageDown();
-        public void PageLeft() => BaseModel.PageLeft();
-        public void PageRight() => BaseModel.PageRight();
+        public void LineUp()
+        {
+            ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -ScrollLineDelta : GetLineUpScrollAmount());
+        }
+        public void LineDown()
+        {
+            ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? ScrollLineDelta : GetLineDownScrollAmount());
+        }
+        public void LineLeft()
+        {
+            ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -ScrollLineDelta : GetLineLeftScrollAmount());
+        }
+        public void LineRight()
+        {
+            ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? ScrollLineDelta : GetLineRightScrollAmount());
+        }
 
-        public void SetHorizontalOffset(double offset) => BaseModel.SetHorizontalOffset(offset);
-        public void SetVerticalOffset(double offset) => BaseModel?.SetVerticalOffset(offset);
+        public void MouseWheelUp()
+        {
+            if (MouseWheelScrollDirection == ScrollDirection.Vertical)
+            {
+                ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -MouseWheelDelta : GetMouseWheelUpScrollAmount());
+            }
+            else
+            {
+                MouseWheelLeft();
+            }
+        }
+        public void MouseWheelDown()
+        {
+            if (MouseWheelScrollDirection == ScrollDirection.Vertical)
+            {
+                ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? MouseWheelDelta : GetMouseWheelDownScrollAmount());
+            }
+            else
+            {
+                MouseWheelRight();
+            }
+        }
+        public void MouseWheelLeft()
+        {
+            ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -MouseWheelDelta : GetMouseWheelLeftScrollAmount());
+        }
+        public void MouseWheelRight()
+        {
+            ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? MouseWheelDelta : GetMouseWheelRightScrollAmount());
+        }
+
+        public void PageUp()
+        {
+            ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -ViewportSize.Height : GetPageUpScrollAmount());
+        }
+        public void PageDown()
+        {
+            ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? ViewportSize.Height : GetPageDownScrollAmount());
+        }
+        public void PageLeft()
+        {
+            ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -ViewportSize.Width : GetPageLeftScrollAmount());
+        }
+        public void PageRight()
+        {
+            ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? ViewportSize.Width : GetPageRightScrollAmount());
+        }
+
+        protected abstract double GetLineUpScrollAmount();
+        protected abstract double GetLineDownScrollAmount();
+        protected abstract double GetLineLeftScrollAmount();
+        protected abstract double GetLineRightScrollAmount();
+
+        protected abstract double GetMouseWheelUpScrollAmount();
+        protected abstract double GetMouseWheelDownScrollAmount();
+        protected abstract double GetMouseWheelLeftScrollAmount();
+        protected abstract double GetMouseWheelRightScrollAmount();
+
+        protected abstract double GetPageUpScrollAmount();
+        protected abstract double GetPageDownScrollAmount();
+        protected abstract double GetPageLeftScrollAmount();
+        protected abstract double GetPageRightScrollAmount();
+
+        private void ScrollVertical(double amount)
+        {
+            SetVerticalOffset(ScrollOffset.Y + amount);
+        }
+
+        private void ScrollHorizontal(double amount)
+        {
+            SetHorizontalOffset(ScrollOffset.X + amount);
+        }
     }
 }
