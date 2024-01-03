@@ -14,44 +14,14 @@ namespace WpfToolkit.Controls;
 internal class ItemContainerManagerItemsChangedEventArgs
 {
     public NotifyCollectionChangedAction Action { get; }
-    public IReadOnlyCollection<IItemContainerInfo> RemovedContainers { get; }
 
-    public ItemContainerManagerItemsChangedEventArgs(
-        NotifyCollectionChangedAction action,
-        IReadOnlyCollection<IItemContainerInfo> removedContainers)
+    public ItemContainerManagerItemsChangedEventArgs(NotifyCollectionChangedAction action)
     {
         Action = action;
-        RemovedContainers = removedContainers;
     }
 }
 
-internal interface IItemContainerManager
-{
-    public event EventHandler<ItemContainerManagerItemsChangedEventArgs>? ItemsChanged;
-
-    bool IsRecycling { get; set; }
-
-    ReadOnlyCollection<object> Items { get; }
-
-    IReadOnlyCollection<IItemContainerInfo> RealizedContainers { get; }
-
-    IReadOnlyCollection<IItemContainerInfo> CachedContainers { get; }
-
-    /// <summary>
-    /// Realizes the specified item. If the item is already realized, nothing happens.
-    /// </summary>
-    /// <param name="itemIndex">Index of the item to relaize</param>
-    /// <param name="isNewlyRealized">Indicates whether the specified item is newly realized</param>
-    /// <param name="isNewContainer">Indicates whether a new container was generated</param>
-    /// <returns>A object with information about the container of the specified item</returns>
-    IItemContainerInfo Realize(int itemIndex, out bool isNewlyRealized, out bool isNewContainer);
-
-    void Virtualize(IItemContainerInfo containerInfo);
-
-    int FindItemIndexOfContainer(IItemContainerInfo containerInfo);
-}
-
-internal class ItemContainerManager : IItemContainerManager
+internal class ItemContainerManager
 {
 
     public event EventHandler<ItemContainerManagerItemsChangedEventArgs>? ItemsChanged;
@@ -60,13 +30,13 @@ internal class ItemContainerManager : IItemContainerManager
 
     public ReadOnlyCollection<object> Items => itemContainerGenerator.Items;
 
-    public IReadOnlyCollection<IItemContainerInfo> RealizedContainers => realizedContainers;
+    public IReadOnlyCollection<UIElement> RealizedContainers => realizedContainers.Values;
 
-    public IReadOnlyCollection<IItemContainerInfo> CachedContainers => cachedContainers;
+    public IReadOnlyCollection<UIElement> CachedContainers => cachedContainers;
 
-    private readonly HashSet<IItemContainerInfo> realizedContainers = new HashSet<IItemContainerInfo>();
+    private readonly Dictionary<object, UIElement> realizedContainers = new Dictionary<object, UIElement>();
 
-    private readonly HashSet<IItemContainerInfo> cachedContainers = new HashSet<IItemContainerInfo>();
+    private readonly HashSet<UIElement> cachedContainers = new HashSet<UIElement>();
 
     private readonly ItemContainerGenerator itemContainerGenerator;
 
@@ -90,94 +60,90 @@ internal class ItemContainerManager : IItemContainerManager
         {
             realizedContainers.Clear();
             cachedContainers.Clear();
-            // childrenCollection is cleared automatically
+            // children collection is cleared automatically
 
-            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action, realizedContainers));
+            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));
         }
         else if (e.Action == NotifyCollectionChangedAction.Remove
             || e.Action == NotifyCollectionChangedAction.Replace)
         {
-            var removedCotainers = realizedContainers.Where(container => !Items.Contains(container.Item)).ToList();
-           
-            removedCotainers.ForEach(container => realizedContainers.Remove(container));
-           
+            var entry = realizedContainers.Where(entry => !Items.Contains(entry.Key)).Single();
+            var item = entry.Key;
+            var container = entry.Value;
+
+            realizedContainers.Remove(item);
+
             if (IsRecycling)
             {
-                removedCotainers.ForEach(container => cachedContainers.Add(container));
+                cachedContainers.Add(container);
             }
-            else 
+            else
             {
-                removedCotainers.ForEach(container => removeInternalChild(container.UIElement));
+                removeInternalChild(container);
             }
 
-            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action, removedCotainers));
+            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));
         }
         else
-        {          
-            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action, Array.Empty<IItemContainerInfo>()));
+        {
+            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));
         }
     }
 
-    public IItemContainerInfo Realize(int itemIndex, out bool isNewlyRealized, out bool isNewContainer)
+    public UIElement Realize(int itemIndex)
     {
         var item = Items[itemIndex];
 
-        if (realizedContainers.FirstOrDefault(container => container.Item == item) is { } containerInfo)
+        if (realizedContainers.TryGetValue(item, out var existingContainer))
         {
-            isNewlyRealized = false;
-            isNewContainer = false;
-            return containerInfo;
+            return existingContainer;
         }
 
-        isNewlyRealized = true;
         var generatorPosition = recyclingItemContainerGenerator.GeneratorPositionFromIndex(itemIndex);
         using (recyclingItemContainerGenerator.StartAt(generatorPosition, GeneratorDirection.Forward))
         {
-            var container = (UIElement)recyclingItemContainerGenerator.GenerateNext(out isNewContainer);
+            var container = (UIElement)recyclingItemContainerGenerator.GenerateNext(out bool isNewContainer);
             recyclingItemContainerGenerator.PrepareItemContainer(container);
-            containerInfo = ItemContainerInfo.For(container, item);
-            cachedContainers.Remove(containerInfo);
-            realizedContainers.Add(containerInfo);
+
+            cachedContainers.Remove(container);
+            realizedContainers.Add(item, container);
 
             if (isNewContainer)
             {
                 addInternalChild(container);
             }
 
-            return containerInfo;
+            return container;
         }
     }
 
-    public void Virtualize(IItemContainerInfo containerInfo)
+    public void Virtualize(UIElement container)
     {
-        int itemIndex = FindItemIndexOfContainer(containerInfo);
+        int itemIndex = FindItemIndexOfContainer(container);
 
-        if (itemIndex == -1)
-        {
-            Debug.WriteLine("Virtualize no more existing item");
-            realizedContainers.Remove(containerInfo);
-            removeInternalChild(containerInfo.UIElement);
-        }
+        Debug.Assert(itemIndex != -1);
+
+        var item = Items[itemIndex];
 
         var generatorPosition = recyclingItemContainerGenerator.GeneratorPositionFromIndex(itemIndex);
 
         if (IsRecycling)
         {
             recyclingItemContainerGenerator.Recycle(generatorPosition, 1);
-            realizedContainers.Remove(containerInfo);
-            cachedContainers.Add(containerInfo);
+            realizedContainers.Remove(item);
+            cachedContainers.Add(container);
         }
         else
         {
             recyclingItemContainerGenerator.Remove(generatorPosition, 1);
-            realizedContainers.Remove(containerInfo);
-            removeInternalChild(containerInfo.UIElement);
+            realizedContainers.Remove(item);
+            removeInternalChild(container);
         }
     }
 
-    public int FindItemIndexOfContainer(IItemContainerInfo containerInfo)
+    public int FindItemIndexOfContainer(UIElement container)
     {
-        return itemContainerGenerator.IndexFromContainer(containerInfo.UIElement);
+        return itemContainerGenerator.IndexFromContainer(container);
     }
 
 }
