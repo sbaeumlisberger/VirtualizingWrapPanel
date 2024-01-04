@@ -79,6 +79,8 @@ namespace WpfToolkit.Controls
 
         protected override Orientation LogicalOrientation => Orientation == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal;
 
+        private static readonly Size InfiniteSize = new Size(double.PositiveInfinity, double.PositiveInfinity);
+
         private static readonly Size FallbackSize = new Size(48, 48);
 
         private ItemContainerManager ItemContainerManager
@@ -233,12 +235,10 @@ namespace WpfToolkit.Controls
             var rowChilds = new List<UIElement>();
             var childSizes = new List<Size>();
 
-            foreach (var child in ItemContainerManager.RealizedContainers
-                .Except(bringIntoViewContainer)
-                .OrderBy(ItemContainerManager.FindItemIndexOfContainer))
+            foreach (var (item, child) in ItemContainerManager.RealizedContainers
+                .Where(entry => entry.Value != bringIntoViewContainer)
+                .OrderBy(entry => Items.IndexOf(entry.Key)))
             {
-                var item = ((FrameworkElement)child).DataContext;
-
                 Size? upfrontKnownItemSize = GetUpfrontKnownItemSize(item);
 
                 Size childSize = upfrontKnownItemSize ?? itemSizesCache[item];
@@ -500,11 +500,10 @@ namespace WpfToolkit.Controls
 
                 if (!container.IsMeasureValid)
                 {
-                    Size availableSize = upfrontKnownItemSize ?? new Size(double.PositiveInfinity, double.PositiveInfinity);
-                    container.Measure(availableSize);
+                    container.Measure(upfrontKnownItemSize ?? InfiniteSize);
                 }
 
-                var containerSize = DetermineContainerSize(container, upfrontKnownItemSize);
+                var containerSize = DetermineContainerSize(item, container, upfrontKnownItemSize);
 
                 if (!AllowDifferentSizedItems && sizeOfFirstItem == null)
                 {
@@ -553,7 +552,7 @@ namespace WpfToolkit.Controls
             itemsInKnownExtend = Math.Max(endItemIndex + 1, itemsInKnownExtend);
         }
 
-        private Size DetermineContainerSize(UIElement container, Size? upfrontKnownItemSize)
+        private Size DetermineContainerSize(object item, UIElement container, Size? upfrontKnownItemSize)
         {
             if (AllowDifferentSizedItems)
             {
@@ -561,7 +560,6 @@ namespace WpfToolkit.Controls
                 {
                     return upfrontKnownItemSize.Value;
                 }
-                var item = ((FrameworkElement)container).DataContext;
                 itemSizesCache[item] = container.DesiredSize;
                 return container.DesiredSize;
             }
@@ -573,8 +571,8 @@ namespace WpfToolkit.Controls
 
         private void VirtualizeItemsBeforeStartIndex()
         {
-            var containers = ItemContainerManager.RealizedContainers.ToList();
-            foreach (var container in containers.Except(bringIntoViewContainer))
+            var containers = ItemContainerManager.RealizedContainers.Values.ToList();
+            foreach (var container in containers.Where(container => container != bringIntoViewContainer))
             {
                 int itemIndex = ItemContainerManager.FindItemIndexOfContainer(container);
 
@@ -587,8 +585,8 @@ namespace WpfToolkit.Controls
 
         private void VirtualizeItemsAfterEndIndex()
         {
-            var containers = ItemContainerManager.RealizedContainers.ToList();
-            foreach (var container in containers.Except(bringIntoViewContainer))
+            var containers = ItemContainerManager.RealizedContainers.Values.ToList();
+            foreach (var container in containers.Where(container => container != bringIntoViewContainer))
             {
                 int itemIndex = ItemContainerManager.FindItemIndexOfContainer(container);
 

@@ -23,15 +23,29 @@ internal class ItemContainerManagerItemsChangedEventArgs
 
 internal class ItemContainerManager
 {
-
+    /// <summary>
+    /// Occurs when the <see cref="Items"/> collection changes.
+    /// </summary>
     public event EventHandler<ItemContainerManagerItemsChangedEventArgs>? ItemsChanged;
 
+    /// <summary>
+    /// Indicates whether containers are recycled or not.
+    /// </summary>
     public bool IsRecycling { get; set; }
 
-    public ReadOnlyCollection<object> Items => itemContainerGenerator.Items;
+    /// <summary>
+    /// Collection that contains the items for which containers are generated.
+    /// </summary>
+    public IReadOnlyList<object> Items => itemContainerGenerator.Items;
 
-    public IReadOnlyCollection<UIElement> RealizedContainers => realizedContainers.Values;
+    /// <summary>
+    /// Dictionary that contains the realised containers. The keys are the items, the values are the containers.
+    /// </summary>
+    public IReadOnlyDictionary<object, UIElement> RealizedContainers => realizedContainers;
 
+    /// <summary>
+    /// Collection that contains the cached containers. Always emtpy if <see cref="IsRecycling"/> is false.
+    /// </summary>
     public IReadOnlyCollection<UIElement> CachedContainers => cachedContainers;
 
     private readonly Dictionary<object, UIElement> realizedContainers = new Dictionary<object, UIElement>();
@@ -67,9 +81,7 @@ internal class ItemContainerManager
         else if (e.Action == NotifyCollectionChangedAction.Remove
             || e.Action == NotifyCollectionChangedAction.Replace)
         {
-            var entry = realizedContainers.Where(entry => !Items.Contains(entry.Key)).Single();
-            var item = entry.Key;
-            var container = entry.Value;
+            var (item, container) = realizedContainers.Where(entry => !Items.Contains(entry.Key)).Single();
 
             realizedContainers.Remove(item);
 
