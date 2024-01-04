@@ -111,7 +111,8 @@ namespace WpfToolkit.Controls
         private VirtualizationCacheLengthUnit cacheLengthUnit;
 
         private Size? sizeOfFirstItem;
-        private Dictionary<object, Size> itemSizesCache = new Dictionary<object, Size>(); // TODO allow clear cache?
+
+        private readonly Dictionary<object, Size> itemSizesCache = new Dictionary<object, Size>();
         private Size? averageItemSizeCache;
 
         private int itemsInKnownExtend = 0;
@@ -127,6 +128,12 @@ namespace WpfToolkit.Controls
 
         private int bringIntoViewIndex = -1;
         private FrameworkElement? bringIntoViewContainer;
+
+        public void ClearItemSizeCache() 
+        {
+            itemSizesCache.Clear();
+            averageItemSizeCache = null;
+        }
 
         private void ItemContainerManager_ItemsChanged(object? sender, ItemContainerManagerItemsChangedEventArgs e)
         {
@@ -347,7 +354,7 @@ namespace WpfToolkit.Controls
             return CreateSize(desiredWidth, desiredHeight);
         }
 
-        public Size GetAverageItemSize()
+        private Size GetAverageItemSize()
         {
             if (ItemSize != Size.Empty)
             {

@@ -11,6 +11,7 @@ using System.Xml;
 using System.Windows.Markup;
 using Assert = Xunit.Assert;
 using System.Collections;
+using System.Collections.ObjectModel;
 
 namespace VirtualizingWrapPanelTest;
 
@@ -91,9 +92,9 @@ internal class TestUtil
         window.Show();
     }
 
-    public static List<TestItem> GenerateItems(int itemCount, int groupSize = 100)
+    public static ObservableCollection<TestItem> GenerateItems(int itemCount, int groupSize = 100)
     {
-        return Enumerable.Range(1, itemCount).Select(i => new TestItem("Item " + i, DefaultItemWidth, DefaultItemHeight, "Group " + (i - 1) / groupSize)).ToList();
+        return new ObservableCollection<TestItem>(Enumerable.Range(1, itemCount).Select(i => new TestItem("Item " + i, DefaultItemWidth, DefaultItemHeight, "Group " + (i - 1) / groupSize)));
     }
 
     public static FrameworkElement AssertItemRealized(VirtualizingWrapPanel vwp, string itemName)
@@ -101,6 +102,14 @@ internal class TestUtil
         var itemContainer = FindItemContainer(vwp, itemName);
         Assert.True(itemContainer != null, $"{itemName} is not realized, but should be");
         return itemContainer;
+    }
+
+    public static void AssertItemRangeRealized(VirtualizingWrapPanel vwp, int start, int end)
+    {
+        for(int i = start; i <= end; i++)
+        {
+            AssertItemRealized(vwp, "Item " + i);
+        }
     }
 
     public static void AssertItemNotRealized(VirtualizingWrapPanel vwp, string itemName)

@@ -199,7 +199,7 @@ public class SpacingModeTest
         TestUtil.AssertItem(vwp, "Item 6", 0, 100, 112, 100);
     }
 
-    //[UIFact] TODO
+    [UIFact]
     public void StretchItemsTrue_MaxWidth()
     {
         vwp.StretchItems = true;

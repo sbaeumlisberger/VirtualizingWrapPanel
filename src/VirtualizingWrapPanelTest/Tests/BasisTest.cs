@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -292,5 +293,63 @@ public class BasisTest
             Assert.Equal(50, child.DesiredSize.Height);
         }
     }
+
+    [UIFact]
+    public void ItemRemoved()
+    {
+        var items = (ObservableCollection<TestItem>)vwp.ItemsControl.ItemsSource;
+
+        items.RemoveAt(7); // Remove Item 8
+        vwp.UpdateLayout();
+
+        TestUtil.AssertItemRangeRealized(vwp, 1, 7);
+        TestUtil.AssertItemNotRealized(vwp, "Item 8");
+        TestUtil.AssertItemRangeRealized(vwp, 9, 41);
+        TestUtil.AssertItem(vwp, "Item 9", 200, 100);                
+        Assert.Equal(40, vwp.Children.Count);
+    }
+
+    [UIFact]
+    public void ItemMoved_InViewport()
+    {
+        var items = (ObservableCollection<TestItem>)vwp.ItemsControl.ItemsSource;
+
+        items.Move(7, 8); // Move Item 8 after Item 9
+        vwp.UpdateLayout();
+
+        TestUtil.AssertItemRangeRealized(vwp, 1, 40);
+        TestUtil.AssertItem(vwp, "Item 8", 300, 100);
+        TestUtil.AssertItem(vwp, "Item 9", 200, 100);   
+        Assert.Equal(40, vwp.Children.Count);
+    }
+
+    [UIFact]
+    public void ItemMoved_OutOfViewportAndCache()
+    {
+        var items = (ObservableCollection<TestItem>)vwp.ItemsControl.ItemsSource;
+
+        items.Move(7, 99); // Move Item 8 after Item 100
+        vwp.UpdateLayout();
+
+        TestUtil.AssertItemRangeRealized(vwp, 1, 7);
+        TestUtil.AssertItemNotRealized(vwp, "Item 8");
+        TestUtil.AssertItemRangeRealized(vwp, 9, 41);
+        TestUtil.AssertItem(vwp, "Item 9", 200, 100);
+        Assert.Equal(40, vwp.Children.Count);
+    }
+
+    [UIFact]
+    public void ItemsCleared()
+    {
+        var items = (ObservableCollection<TestItem>)vwp.ItemsControl.ItemsSource;
+
+        items.Clear();
+        vwp.UpdateLayout();
+
+        Assert.Empty(vwp.Children);
+        Assert.Equal(0, vwp.ExtentHeight);
+    }
+
+    // TODO test items changes: add, replace, remove mutiple items
 
 }
