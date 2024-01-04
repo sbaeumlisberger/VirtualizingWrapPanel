@@ -9,6 +9,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace WpfToolkit.Controls
@@ -129,7 +130,7 @@ namespace WpfToolkit.Controls
         private int bringIntoViewIndex = -1;
         private FrameworkElement? bringIntoViewContainer;
 
-        public void ClearItemSizeCache() 
+        public void ClearItemSizeCache()
         {
             itemSizesCache.Clear();
             averageItemSizeCache = null;
@@ -195,6 +196,20 @@ namespace WpfToolkit.Controls
                 double viewportWidth = Math.Max(viewport.Size.Width, 0);
                 double viewporteHeight = Math.Max(viewport.Size.Height, 0);
 
+                if (VisualTreeHelper.GetParent(this) is ItemsPresenter itemsPresenter)
+                {
+                    var margin = itemsPresenter.Margin;
+
+                    if (Orientation == Orientation.Horizontal)
+                    {
+                        viewportWidth = Math.Max(0, viewportWidth - (margin.Left + margin.Right));
+                    }
+                    else
+                    {
+                        viewporteHeight = Math.Max(0, viewporteHeight - (margin.Top + margin.Bottom));
+                    }
+                }
+
                 if (Orientation == Orientation.Vertical)
                 {
                     viewporteHeight = Math.Max(viewporteHeight - headerSize.Height, 0);
@@ -250,7 +265,7 @@ namespace WpfToolkit.Controls
 
                 Size childSize = upfrontKnownItemSize ?? itemSizesCache[item];
 
-                if (x != 0 && x + GetWidth(childSize) > GetWidth(finalSize))
+                if (rowChilds.Count > 0 && x + GetWidth(childSize) > GetWidth(finalSize))
                 {
                     ArrangeRow(GetWidth(finalSize), rowChilds, childSizes, y, hierarchical);
                     x = 0;
