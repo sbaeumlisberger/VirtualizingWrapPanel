@@ -713,29 +713,48 @@ namespace WpfToolkit.Controls
 
         private void ArrangeRow(double rowWidth, List<UIElement> children, List<Size> childSizes, double y, bool hierarchical)
         {
+            double summedUpChildWidth;
             double extraWidth = 0;
-            double innerSpacing = 0;
-            double outerSpacing = 0;
 
-            if (StretchItems) // TODO: handle MaxWidth/MaxHeight and apply spacing
+            if (AllowDifferentSizedItems)
             {
-                if (AllowDifferentSizedItems)
+                if (StretchItems)
                 {
-                    double summedUpChildWidth = childSizes.Sum(childSize => GetWidth(childSize));
+                    summedUpChildWidth = rowWidth;
                     double unusedWidth = rowWidth - summedUpChildWidth;
                     extraWidth = unusedWidth / children.Count;
                 }
                 else
                 {
-                    double childsWidth = GetWidth(sizeOfFirstItem!.Value);
-                    var itemsPerRow = Math.Max(1, Math.Floor(rowWidth / childsWidth));
-                    double unusedWidth = rowWidth - itemsPerRow * childsWidth;
-                    extraWidth = unusedWidth / itemsPerRow;
+                    summedUpChildWidth = childSizes.Sum(childSize => GetWidth(childSize));
                 }
             }
             else
             {
-                CalculateRowSpacing(rowWidth, children, childSizes, out innerSpacing, out outerSpacing);
+                double childWidth = GetWidth(childSizes[0]);
+                int itemsPerRow = (int)Math.Max(Math.Floor(rowWidth / childWidth), 1);
+
+                if (StretchItems)
+                {
+                    var firstChild = (FrameworkElement)children[0];
+                    double maxWidth = Orientation == Orientation.Horizontal ? firstChild.MaxWidth : firstChild.MaxHeight;
+                    double stretchedChildWidth = Math.Min(rowWidth / itemsPerRow, maxWidth);
+                    stretchedChildWidth = Math.Max(stretchedChildWidth, childWidth); // ItemSize might be greater than MaxWidth/MaxHeight
+                    extraWidth = stretchedChildWidth - childWidth;
+                    summedUpChildWidth = itemsPerRow * stretchedChildWidth;
+                }
+                else
+                {
+                    summedUpChildWidth = itemsPerRow * childWidth;
+                }
+            }
+
+            double innerSpacing = 0;
+            double outerSpacing = 0;
+
+            if (summedUpChildWidth < rowWidth)
+            {
+                CalculateRowSpacing(rowWidth, children, summedUpChildWidth, out innerSpacing, out outerSpacing);
             }
 
             double x = hierarchical ? outerSpacing : -GetX(ScrollOffset) + outerSpacing;
@@ -749,20 +768,17 @@ namespace WpfToolkit.Controls
             }
         }
 
-        private void CalculateRowSpacing(double rowWidth, List<UIElement> children, List<Size> childSizes, out double innerSpacing, out double outerSpacing)
+        private void CalculateRowSpacing(double rowWidth, List<UIElement> children, double summedUpChildWidth, out double innerSpacing, out double outerSpacing)
         {
             int childCount;
-            double summedUpChildWidth;
 
             if (AllowDifferentSizedItems)
             {
                 childCount = children.Count;
-                summedUpChildWidth = childSizes.Sum(childSize => GetWidth(childSize));
             }
             else
             {
                 childCount = (int)Math.Max(1, Math.Floor(rowWidth / GetWidth(sizeOfFirstItem!.Value)));
-                summedUpChildWidth = childCount * GetWidth(sizeOfFirstItem.Value);
             }
 
             double unusedWidth = Math.Max(0, rowWidth - summedUpChildWidth);
@@ -802,7 +818,7 @@ namespace WpfToolkit.Controls
 
         #region scroll info
 
-        // TODO determine line height
+        // TODO determine exact scoll amount for item based scrolling when AllowDifferentSizedItems is true
 
         protected override double GetLineUpScrollAmount()
         {

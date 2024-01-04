@@ -214,7 +214,7 @@ namespace WpfToolkit.Controls
             {
                 ScrollOffset = new Point(ScrollOffset.X, offset);
                 ScrollOwner?.InvalidateScrollInfo();
-                InvalidateMeasure(); // TODO grouping?
+                InvalidateMeasure();
             }
         }
 
@@ -232,7 +232,7 @@ namespace WpfToolkit.Controls
             {
                 ScrollOffset = new Point(offset, ScrollOffset.Y);
                 ScrollOwner?.InvalidateScrollInfo();
-                InvalidateMeasure(); // TODO grouping?
+                InvalidateMeasure();
             }
         }
 
