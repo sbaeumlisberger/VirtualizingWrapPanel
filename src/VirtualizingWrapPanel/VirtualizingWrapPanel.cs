@@ -243,7 +243,8 @@ namespace WpfToolkit.Controls
             {
                 var offset = FindItemOffset(bringIntoViewIndex);
                 offset = new Point(offset.X - GetX(ScrollOffset), hierarchical ? offset.Y : offset.Y - GetY(ScrollOffset));
-                bringIntoViewContainer.Arrange(new Rect(offset, bringIntoViewContainer.DesiredSize));
+                var size = GetUpfrontKnownItemSize(Items[bringIntoViewIndex]) ?? bringIntoViewContainer.DesiredSize;
+                bringIntoViewContainer.Arrange(new Rect(offset, size));
             }
 
             foreach (var cachedContainer in ItemContainerManager.CachedContainers)
