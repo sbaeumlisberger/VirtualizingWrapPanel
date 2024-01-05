@@ -302,12 +302,9 @@ namespace WpfToolkit.Controls
             bringIntoViewIndex = index;
             bringIntoViewContainer = (FrameworkElement)container;
 
-            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, () =>
-            {
-                ItemContainerManager.Virtualize(bringIntoViewContainer);
-                bringIntoViewIndex = -1;
-                bringIntoViewContainer = null;
-            });
+            // make sure the container is measured and arranged before calling BringIntoView        
+            InvalidateMeasure();
+            UpdateLayout();
 
             bringIntoViewContainer.BringIntoView();
         }
@@ -348,6 +345,12 @@ namespace WpfToolkit.Controls
                 VirtualizeItemsBeforeStartIndex();
                 RealizeItemsAndFindEndIndex();
                 VirtualizeItemsAfterEndIndex();
+
+                if (bringIntoViewContainer is not null && bringIntoViewIndex >= startItemIndex && bringIntoViewIndex <= endItemIndex)
+                {
+                    bringIntoViewContainer = null;
+                    bringIntoViewIndex = -1;
+                }
             }
 
             UpdateExtent(ref invalidateScrollInfo);

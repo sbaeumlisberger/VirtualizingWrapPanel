@@ -133,7 +133,21 @@ internal class ItemContainerManager
     {
         int itemIndex = FindItemIndexOfContainer(container);
 
-        Debug.Assert(itemIndex != -1);
+        if (itemIndex == -1) // the item is already virtualized (can happen when grouping)
+        {
+            realizedContainers.Remove(realizedContainers.Where(entry => entry.Value == container).Single().Key);
+
+            if (IsRecycling)
+            {
+                cachedContainers.Add(container);
+            }
+            else
+            {
+                removeInternalChild(container);
+            }
+
+            return;
+        }
 
         var item = Items[itemIndex];
 
