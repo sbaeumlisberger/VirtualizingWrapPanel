@@ -115,7 +115,6 @@ internal class ItemContainerManager
         using (recyclingItemContainerGenerator.StartAt(generatorPosition, GeneratorDirection.Forward))
         {
             var container = (UIElement)recyclingItemContainerGenerator.GenerateNext(out bool isNewContainer);
-            recyclingItemContainerGenerator.PrepareItemContainer(container);
 
             cachedContainers.Remove(container);
             realizedContainers.Add(item, container);
@@ -124,7 +123,13 @@ internal class ItemContainerManager
             {
                 addInternalChild(container);
             }
-
+            else 
+            {
+                container.Measure(new Size(0, 0));
+            }
+            
+            recyclingItemContainerGenerator.PrepareItemContainer(container);
+           
             return container;
         }
     }

@@ -181,11 +181,6 @@ namespace WpfToolkit.Controls
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            if (ShouldIgnoreMeasure())
-            {
-                return availableSize;
-            }
-
             ItemContainerManager.IsRecycling = IsRecycling;
 
             if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem)
@@ -220,12 +215,21 @@ namespace WpfToolkit.Controls
                 cacheLength = groupItem.Constraints.CacheLength;
                 cacheLengthUnit = groupItem.Constraints.CacheLengthUnit;
 
-                var desiredSize = Measure(availableSize, viewportSize, viewport.Location, itemsOwnerIsGroupItem: true);
+                if (ShouldIgnoreMeasure())
+                {
+                    return DesiredSize;
+                }
 
+                var desiredSize = Measure(availableSize, viewportSize, viewport.Location, itemsOwnerIsGroupItem: true);
                 return desiredSize;
             }
             else
             {
+                if (ShouldIgnoreMeasure())
+                {
+                    return availableSize;
+                }
+
                 cacheLength = GetCacheLength(ItemsOwner);
                 cacheLengthUnit = GetCacheLengthUnit(ItemsOwner);
 
@@ -315,11 +319,7 @@ namespace WpfToolkit.Controls
             if (bringIntoViewContainer is not null && !bringIntoViewContainer.IsMeasureValid)
             {
                 bringIntoViewContainer.Measure(GetUpfrontKnownItemSize(Items[bringIntoViewIndex]) ?? availableSize);
-
-                if (sizeOfFirstItem is null)
-                {
-                    sizeOfFirstItem = bringIntoViewContainer.DesiredSize;
-                }
+                sizeOfFirstItem ??= bringIntoViewContainer.DesiredSize;
             }
 
             bool invalidateScrollInfo = false;
@@ -347,7 +347,9 @@ namespace WpfToolkit.Controls
                 RealizeItemsAndFindEndIndex();
                 VirtualizeItemsAfterEndIndex();
 
-                if (bringIntoViewContainer is not null && bringIntoViewIndex >= startItemIndex && bringIntoViewIndex <= endItemIndex)
+                if (bringIntoViewContainer is not null
+                    && bringIntoViewIndex >= startItemIndex
+                    && bringIntoViewIndex <= endItemIndex)
                 {
                     bringIntoViewContainer = null;
                     bringIntoViewIndex = -1;
@@ -361,16 +363,16 @@ namespace WpfToolkit.Controls
                 ScrollOwner?.InvalidateScrollInfo();
             }
 
-            double desiredWidth = Math.Min(GetWidth(availableSize), GetWidth(Extent));
-            double desiredHeight = Math.Min(GetHeight(availableSize), GetHeight(Extent));
+            double desiredWidth = Math.Min(availableSize.Width, Extent.Width);
+            double desiredHeight = Math.Min(availableSize.Height, Extent.Height);
 
             if (itemsOwnerIsGroupItem)
             {
-                desiredWidth = Math.Max(desiredWidth, GetWidth(viewportSize));
-                desiredHeight = Math.Max(desiredHeight, GetHeight(viewportSize));
+                desiredWidth = Math.Max(desiredWidth, viewportSize.Width);
+                desiredHeight = Math.Max(desiredHeight, viewportSize.Height);
             }
 
-            return CreateSize(desiredWidth, desiredHeight);
+            return new Size(desiredWidth, desiredHeight);
         }
 
         private Size GetAverageItemSize()
@@ -523,11 +525,8 @@ namespace WpfToolkit.Controls
                 var container = ItemContainerManager.Realize(itemIndex);
 
                 Size? upfrontKnownItemSize = GetUpfrontKnownItemSize(item);
-
-                if (!container.IsMeasureValid)
-                {
-                    container.Measure(upfrontKnownItemSize ?? InfiniteSize);
-                }
+                   
+                container.Measure(upfrontKnownItemSize ?? InfiniteSize);                
 
                 var containerSize = DetermineContainerSize(item, container, upfrontKnownItemSize);
 
@@ -837,7 +836,9 @@ namespace WpfToolkit.Controls
         {
             if (sizes.Any())
             {
-                return new Size(sizes.Average(size => size.Width), sizes.Average(size => size.Height));
+                return new Size(
+                    Math.Round(sizes.Average(size => size.Width)),
+                    Math.Round(sizes.Average(size => size.Height)));
             }
             return Size.Empty;
         }

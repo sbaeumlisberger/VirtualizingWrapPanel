@@ -124,7 +124,7 @@ namespace WpfToolkit.Controls
 
         protected Size Extent { get; set; } = new Size(0, 0);
         protected Size ViewportSize { get; set; } = new Size(0, 0);
-        protected Point ScrollOffset { get; set; } = new Point(0, 0);      
+        protected Point ScrollOffset { get; set; } = new Point(0, 0);
 
         private Visibility previousVerticalScrollBarVisibility = Visibility.Collapsed;
         private Visibility previousHorizontalScrollBarVisibility = Visibility.Collapsed;
@@ -132,21 +132,31 @@ namespace WpfToolkit.Controls
         protected bool ShouldIgnoreMeasure()
         {
             /* Sometimes when scrolling the scrollbar gets hidden without any reason. In this case the "IsMeasureValid" 
-            * property of the ScrollOwner is false. To prevent a infinite circle the mesasure call is ignored. */
-            if (ScrollOwner != null)
+            *  property of the ScrollOwner is false. To prevent a infinite circle the mesasure call has to be ignored. */
+
+            var scrollOwner = ScrollOwner;
+
+            if (ItemsOwner is GroupItem groupItem
+                && VisualTreeHelper.GetParent(groupItem) is IScrollInfo scrollInfo
+                && scrollInfo.ScrollOwner is { } parentScrollOwner)
             {
-                bool verticalScrollBarGotHidden = ScrollOwner.VerticalScrollBarVisibility == ScrollBarVisibility.Auto
-                    && ScrollOwner.ComputedVerticalScrollBarVisibility != Visibility.Visible
-                    && ScrollOwner.ComputedVerticalScrollBarVisibility != previousVerticalScrollBarVisibility;
+                scrollOwner = parentScrollOwner;
+            }
 
-                bool horizontalScrollBarGotHidden = ScrollOwner.HorizontalScrollBarVisibility == ScrollBarVisibility.Auto
-                   && ScrollOwner.ComputedHorizontalScrollBarVisibility != Visibility.Visible
-                   && ScrollOwner.ComputedHorizontalScrollBarVisibility != previousHorizontalScrollBarVisibility;
+            if (scrollOwner != null)
+            {
+                bool verticalScrollBarGotHidden = scrollOwner.VerticalScrollBarVisibility == ScrollBarVisibility.Auto
+                    && scrollOwner.ComputedVerticalScrollBarVisibility != Visibility.Visible
+                    && scrollOwner.ComputedVerticalScrollBarVisibility != previousVerticalScrollBarVisibility;
 
-                previousVerticalScrollBarVisibility = ScrollOwner.ComputedVerticalScrollBarVisibility;
-                previousHorizontalScrollBarVisibility = ScrollOwner.ComputedHorizontalScrollBarVisibility;
+                bool horizontalScrollBarGotHidden = scrollOwner.HorizontalScrollBarVisibility == ScrollBarVisibility.Auto
+                   && scrollOwner.ComputedHorizontalScrollBarVisibility != Visibility.Visible
+                   && scrollOwner.ComputedHorizontalScrollBarVisibility != previousHorizontalScrollBarVisibility;
 
-                if (!ScrollOwner.IsMeasureValid && verticalScrollBarGotHidden || horizontalScrollBarGotHidden)
+                previousVerticalScrollBarVisibility = scrollOwner.ComputedVerticalScrollBarVisibility;
+                previousHorizontalScrollBarVisibility = scrollOwner.ComputedHorizontalScrollBarVisibility;
+
+                if (!scrollOwner.IsMeasureValid && verticalScrollBarGotHidden || horizontalScrollBarGotHidden)
                 {
                     return true;
                 }
@@ -182,7 +192,7 @@ namespace WpfToolkit.Controls
 
             if (transformedBounds.Top < 0)
             {
-                offsetY = transformedBounds.Top; 
+                offsetY = transformedBounds.Top;
             }
             else if (transformedBounds.Bottom > ViewportHeight)
             {
@@ -191,7 +201,7 @@ namespace WpfToolkit.Controls
                 if (rectangle.Height > ViewportHeight)
                 {
                     visibleY = rectangle.Height - ViewportHeight;
-                }        
+                }
             }
 
             SetHorizontalOffset(HorizontalOffset + offsetX);
