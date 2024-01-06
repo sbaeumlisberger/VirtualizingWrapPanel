@@ -8,7 +8,7 @@ namespace VirtualizingWrapPanelSamples
 {
     public partial class MainWindow : Window
     {
-        private readonly MainWindowModel model = new MainWindowModel();
+        internal readonly MainWindowModel model = new MainWindowModel();
 
         private ItemsControl previousItemsControl;
 
