@@ -256,16 +256,22 @@ namespace WpfToolkit.Controls
                 cachedContainer.Arrange(new Rect(0, 0, 0, 0));
             }
 
+            if (startItemIndex == -1) 
+            {
+                return finalSize; 
+            }
+
             double x = startItemOffsetX + GetX(ScrollOffset);
             double y = hierarchical ? startItemOffsetY : startItemOffsetY - GetY(ScrollOffset);
             double rowHeight = 0;
             var rowChilds = new List<UIElement>();
             var childSizes = new List<Size>();
 
-            foreach (var (item, child) in ItemContainerManager.RealizedContainers
-                .Where(entry => entry.Value != bringIntoViewContainer)
-                .OrderBy(entry => Items.IndexOf(entry.Key)))
+            for (int i = startItemIndex; i <= endItemIndex; i++)
             {
+                var item = Items[i];
+                var child = ItemContainerManager.RealizedContainers[item];
+
                 Size? upfrontKnownItemSize = GetUpfrontKnownItemSize(item);
 
                 Size childSize = upfrontKnownItemSize ?? itemSizesCache[item];
@@ -525,8 +531,8 @@ namespace WpfToolkit.Controls
                 var container = ItemContainerManager.Realize(itemIndex);
 
                 Size? upfrontKnownItemSize = GetUpfrontKnownItemSize(item);
-                   
-                container.Measure(upfrontKnownItemSize ?? InfiniteSize);                
+
+                container.Measure(upfrontKnownItemSize ?? InfiniteSize);
 
                 var containerSize = DetermineContainerSize(item, container, upfrontKnownItemSize);
 

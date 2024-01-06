@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace WpfToolkit.Controls;
@@ -123,13 +124,13 @@ internal class ItemContainerManager
             {
                 addInternalChild(container);
             }
-            else 
+            else
             {
-                container.Measure(new Size(0, 0));
+                InvalidateMeasureRecursively(container);
             }
-            
+
             recyclingItemContainerGenerator.PrepareItemContainer(container);
-           
+
             return container;
         }
     }
@@ -175,6 +176,21 @@ internal class ItemContainerManager
     public int FindItemIndexOfContainer(UIElement container)
     {
         return itemContainerGenerator.IndexFromContainer(container);
+    }
+
+    private void InvalidateMeasureRecursively(UIElement element)
+    {
+        element.InvalidateMeasure();
+
+        for (int i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
+        {
+            var child = VisualTreeHelper.GetChild(element, i) as UIElement;
+
+            if (child != null)
+            {
+                InvalidateMeasureRecursively(child);
+            }
+        }
     }
 
 }
