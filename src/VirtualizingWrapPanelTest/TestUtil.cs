@@ -37,9 +37,9 @@ internal class TestUtil
         double height,
         IEnumerable items)
     {
-        var itemsControl = new ListBox();
-        SetupAndShowItemsControl(itemsControl, width, height, items);
-        return itemsControl;
+        var listBox = new ListBox();
+        SetupAndShowItemsControl(listBox, width, height, items);
+        return listBox;
     }
 
     public static VirtualizingItemsControl CreateVirtualizingItemsControl(
@@ -96,10 +96,10 @@ internal class TestUtil
     {
         return new ObservableCollection<TestItem>(Enumerable.Range(1, itemCount).Select(i => new TestItem("Item " + i, DefaultItemWidth, DefaultItemHeight, "Group " + (i - 1) / groupSize)));
     }
-
-    public static FrameworkElement AssertItemRealized(VirtualizingWrapPanel vwp, string itemName)
+ 
+    public static FrameworkElement AssertItemRealized(VirtualizingPanel virtualizingPanel, string itemName)
     {
-        var itemContainer = FindItemContainer(vwp, itemName);
+        var itemContainer = FindItemContainer(virtualizingPanel, itemName);
         Assert.True(itemContainer != null, $"{itemName} is not realized, but should be");
         return itemContainer;
     }
@@ -118,10 +118,10 @@ internal class TestUtil
         Assert.True(itemContainer == null, $"{itemName} is realized, but should not be");
     }
 
-    public static void AssertItem(VirtualizingWrapPanel vwp, string itemName, int x, int y, int width = DefaultItemWidth, int height = DefaultItemHeight)
+    public static void AssertItem(VirtualizingPanel virtualizingPanel, string itemName, int x, int y, int width = DefaultItemWidth, int height = DefaultItemHeight)
     {
-        var itemContainer = AssertItemRealized(vwp, itemName);
-        var position = itemContainer.TranslatePoint(new Point(0, 0), vwp);
+        var itemContainer = AssertItemRealized(virtualizingPanel, itemName);
+        var position = itemContainer.TranslatePoint(new Point(0, 0), virtualizingPanel);
         Assert.Equal(x, position.X);
         Assert.Equal(y, position.Y);
         Assert.Equal(width, itemContainer.ActualWidth);
@@ -140,9 +140,10 @@ internal class TestUtil
         return (DataTemplate)XamlReader.Load(XmlReader.Create(new StringReader(dataTemplate)));
     }
 
-    private static FrameworkElement? FindItemContainer(VirtualizingWrapPanel vwp, string itemName)
+    private static FrameworkElement? FindItemContainer(VirtualizingPanel virtualizingPanel, string itemName)
     {
-        return vwp.Children.OfType<FrameworkElement>().Where(x => ((TestItem)x.DataContext).Name == itemName).SingleOrDefault();
+        return (FrameworkElement?)GetVisualChild(virtualizingPanel, 
+            child => child is FrameworkElement fe && fe.DataContext is TestItem testItem && testItem.Name == itemName);
     }
 
     private static DataTemplate CreateDefaultItemTemplate()
@@ -156,7 +157,7 @@ internal class TestUtil
             """);
     }
 
-    public static T? GetVisualChild<T>(DependencyObject parent) where T : Visual
+    public static DependencyObject? GetVisualChild(DependencyObject parent, Func<DependencyObject, bool> condition)
     {
         int childCount = VisualTreeHelper.GetChildrenCount(parent);
 
@@ -164,20 +165,41 @@ internal class TestUtil
         {
             var child = VisualTreeHelper.GetChild(parent, i);
 
-            if (child is not T)
+            if (condition(child))
             {
-                child = GetVisualChild<T>(child);
+                return child;
             }
 
-            if (child is T result)
+            if (GetVisualChild(child, condition) is { } childRecursive)
             {
-                return result;
+                return childRecursive;
             }
         }
         return null;
     }
 
-    public static List<T> GetVisualChilds<T>(DependencyObject parent) where T : Visual
+    public static T? GetVisualChild<T>(DependencyObject parent) where T : DependencyObject
+    {
+        int childCount = VisualTreeHelper.GetChildrenCount(parent);
+
+        for (int i = 0; i < childCount; i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+
+            if (child is T result)
+            {
+                return result;
+            }
+
+            if (GetVisualChild<T>(child) is T childRecursive)
+            {
+                return childRecursive;
+            }            
+        }
+        return null;
+    }
+
+    public static List<T> GetVisualChilds<T>(DependencyObject parent) where T : DependencyObject
     {
         var foundChilds = new List<T>();
 

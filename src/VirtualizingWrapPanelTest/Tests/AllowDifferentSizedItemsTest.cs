@@ -118,9 +118,23 @@ public class AllowDifferentSizedItemsTest
         Assert.Equal(extend, vwp.ExtentHeight);
     }
 
-    [UIFact]
+    [UIFact] // TODO: fails sometimes
     public void ScrollHugeStep()
     {
+        vwp.SetVerticalOffset((vwp.ExtentHeight - panelSize.Height) / 2);
+        vwp.UpdateLayout();
+
+        TestUtil.AssertItemNotRealized(vwp, items.First().Name);
+        TestUtil.AssertItemNotRealized(vwp, items.Last().Name);
+        Assert.True(vwp.ExtentHeight >= vwp.VerticalOffset + panelSize.Height);
+    }
+
+    [UIFact] // TODO: fails sometimes
+    public void ScrollHugeStep_Recycling()
+    {
+        VirtualizingPanel.SetVirtualizationMode(vwp.ItemsControl, VirtualizationMode.Recycling);
+        vwp.UpdateLayout();
+
         vwp.SetVerticalOffset((vwp.ExtentHeight - panelSize.Height) / 2);
         vwp.UpdateLayout();
 
@@ -143,7 +157,7 @@ public class AllowDifferentSizedItemsTest
         Assert.True(vwp.ExtentHeight < oldExtend);
     }
 
-    [UIFact]
+    [UIFact] // TODO: fails sometimes
     public void ScrollHugeStep_UsingItemSizeProvider()
     {
         vwp.ItemSizeProvider = new TestItemSizeProvider();

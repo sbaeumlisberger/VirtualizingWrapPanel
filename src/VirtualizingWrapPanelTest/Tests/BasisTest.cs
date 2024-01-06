@@ -104,6 +104,39 @@ public class BasisTest
     }
 
     [UIFact]
+    public void OffsetOfMultiplePages_Recycling()
+    {
+        VirtualizingPanel.SetVirtualizationMode(vwp.ItemsControl, VirtualizationMode.Recycling);
+        vwp.UpdateLayout();
+
+        vwp.SetVerticalOffset(800);
+        vwp.UpdateLayout();
+
+        Assert.Equal(500, vwp.DesiredSize.Width);
+        Assert.Equal(400, vwp.DesiredSize.Height);
+
+        Assert.Equal(60, vwp.Children.Count);
+
+        // before viewport
+        TestUtil.AssertItem(vwp, "Item 31", 0, -200);
+        TestUtil.AssertItem(vwp, "Item 36", 0, -100);
+        TestUtil.AssertItem(vwp, "Item 37", 100, -100);
+        TestUtil.AssertItem(vwp, "Item 40", 400, -100);
+
+        // in viewport
+        TestUtil.AssertItem(vwp, "Item 41", 0, 0);
+        TestUtil.AssertItem(vwp, "Item 42", 100, 0);
+        TestUtil.AssertItem(vwp, "Item 45", 400, 0);
+        TestUtil.AssertItem(vwp, "Item 46", 0, 100);
+        TestUtil.AssertItem(vwp, "Item 51", 0, 200);
+        TestUtil.AssertItem(vwp, "Item 56", 0, 300);
+
+        // after viewport
+        TestUtil.AssertItem(vwp, "Item 61", 0, 400);
+        TestUtil.AssertItem(vwp, "Item 66", 0, 500);
+    }
+
+    [UIFact]
     public void RowPartiallyInViewport()
     {
         vwp.SetVerticalOffset(850);
@@ -153,6 +186,22 @@ public class BasisTest
     }
 
     [UIFact]
+    public void BringIndexIntoView_AfterViewport_Recycling()
+    {
+        VirtualizingPanel.SetVirtualizationMode(vwp.ItemsControl, VirtualizationMode.Recycling);
+        vwp.UpdateLayout();
+
+        vwp.BringIndexIntoViewPublic(500);
+        vwp.UpdateLayout();
+
+        Assert.Equal(9700, vwp.VerticalOffset);
+        Assert.Equal(500, vwp.ExtentWidth);
+        Assert.Equal(20_000, vwp.ExtentHeight);
+        Assert.Equal(60, vwp.Children.Count);
+        TestUtil.AssertItem(vwp, "Item 501", 0, 300);
+    }
+
+    [UIFact]
     public void BringIndexIntoView_BeforeViewport()
     {
         vwp.SetVerticalOffset(16_000);
@@ -169,12 +218,29 @@ public class BasisTest
     }
 
     [UIFact]
-    public void MakeVisible_InViewport() 
+    public void BringIndexIntoView_BeforeViewport_Recycling()
+    {
+        VirtualizingPanel.SetVirtualizationMode(vwp.ItemsControl, VirtualizationMode.Recycling);
+        vwp.UpdateLayout();
+        vwp.SetVerticalOffset(16_000);
+        vwp.UpdateLayout();
+
+        vwp.BringIndexIntoViewPublic(500);
+        vwp.UpdateLayout();
+
+        Assert.Equal(10000, vwp.VerticalOffset);
+        Assert.Equal(500, vwp.ExtentWidth);
+        Assert.Equal(20_000, vwp.ExtentHeight);
+        TestUtil.AssertItem(vwp, "Item 501", 0, 0);
+    }
+
+    [UIFact]
+    public void MakeVisible_InViewport()
     {
         var child6 = vwp.Children[5];
 
-        var visibleRect = vwp.MakeVisible(child6, new Rect(0, 0, 100, 100));    
-    
+        var visibleRect = vwp.MakeVisible(child6, new Rect(0, 0, 100, 100));
+
         Assert.Equal(new Rect(0, 0, 100, 100), visibleRect);
         Assert.Equal(0, vwp.VerticalOffset);
     }
@@ -254,7 +320,7 @@ public class BasisTest
     }
 
     // TODO item size stretch content
-        //vwp.ItemsControl.ItemContainerStyle = new Style()
+    //vwp.ItemsControl.ItemContainerStyle = new Style()
     //{
     //    Setters = {
     //        new Setter(Control.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch),
@@ -305,7 +371,7 @@ public class BasisTest
         TestUtil.AssertItemRangeRealized(vwp, 1, 7);
         TestUtil.AssertItemNotRealized(vwp, "Item 8");
         TestUtil.AssertItemRangeRealized(vwp, 9, 41);
-        TestUtil.AssertItem(vwp, "Item 9", 200, 100);                
+        TestUtil.AssertItem(vwp, "Item 9", 200, 100);
         Assert.Equal(40, vwp.Children.Count);
     }
 
@@ -319,7 +385,7 @@ public class BasisTest
 
         TestUtil.AssertItemRangeRealized(vwp, 1, 40);
         TestUtil.AssertItem(vwp, "Item 8", 300, 100);
-        TestUtil.AssertItem(vwp, "Item 9", 200, 100);   
+        TestUtil.AssertItem(vwp, "Item 9", 200, 100);
         Assert.Equal(40, vwp.Children.Count);
     }
 

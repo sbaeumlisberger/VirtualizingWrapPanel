@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 
 namespace WpfToolkit.Controls;
 
@@ -67,40 +64,6 @@ internal class ItemContainerManager
         this.addInternalChild = addInternalChild;
         this.removeInternalChild = removeInternalChild;
         itemContainerGenerator.ItemsChanged += ItemContainerGenerator_ItemsChanged;
-    }
-
-    private void ItemContainerGenerator_ItemsChanged(object sender, ItemsChangedEventArgs e)
-    {
-        if (e.Action == NotifyCollectionChangedAction.Reset)
-        {
-            realizedContainers.Clear();
-            cachedContainers.Clear();
-            // children collection is cleared automatically
-
-            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));
-        }
-        else if (e.Action == NotifyCollectionChangedAction.Remove
-            || e.Action == NotifyCollectionChangedAction.Replace)
-        {
-            var (item, container) = realizedContainers.Where(entry => !Items.Contains(entry.Key)).Single();
-
-            realizedContainers.Remove(item);
-
-            if (IsRecycling)
-            {
-                cachedContainers.Add(container);
-            }
-            else
-            {
-                removeInternalChild(container);
-            }
-
-            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));
-        }
-        else
-        {
-            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));
-        }
     }
 
     public UIElement Realize(int itemIndex)
@@ -178,15 +141,47 @@ internal class ItemContainerManager
         return itemContainerGenerator.IndexFromContainer(container);
     }
 
-    private void InvalidateMeasureRecursively(UIElement element)
+    private void ItemContainerGenerator_ItemsChanged(object sender, ItemsChangedEventArgs e)
+    {
+        if (e.Action == NotifyCollectionChangedAction.Reset)
+        {
+            realizedContainers.Clear();
+            cachedContainers.Clear();
+            // children collection is cleared automatically
+
+            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));
+        }
+        else if (e.Action == NotifyCollectionChangedAction.Remove
+            || e.Action == NotifyCollectionChangedAction.Replace)
+        {
+            var (item, container) = realizedContainers.Where(entry => !Items.Contains(entry.Key)).Single();
+
+            realizedContainers.Remove(item);
+
+            if (IsRecycling)
+            {
+                cachedContainers.Add(container);
+            }
+            else
+            {
+                removeInternalChild(container);
+            }
+
+            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));
+        }
+        else
+        {
+            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));
+        }
+    }
+
+    private static void InvalidateMeasureRecursively(UIElement element)
     {
         element.InvalidateMeasure();
 
         for (int i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
         {
-            var child = VisualTreeHelper.GetChild(element, i) as UIElement;
-
-            if (child != null)
+            if (VisualTreeHelper.GetChild(element, i) is UIElement child)
             {
                 InvalidateMeasureRecursively(child);
             }
