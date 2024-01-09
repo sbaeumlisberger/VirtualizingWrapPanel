@@ -45,7 +45,7 @@
   </ItemGroup> 
 
   <ItemGroup>
-    <PackageReference Include="MaterialDesignThemes" Version="4.2.1" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
   </ItemGroup>
 
   <ItemGroup>
