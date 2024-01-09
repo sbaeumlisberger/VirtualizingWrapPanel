@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace WpfToolkit.Controls
 {
@@ -11,14 +12,16 @@ namespace WpfToolkit.Controls
     /// </summary>
     public class GridView : ListView
     {
-        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(nameof(Orientation), typeof(Orientation), typeof(GridView), new FrameworkPropertyMetadata(Orientation.Vertical));
+        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(nameof(Orientation), typeof(Orientation), typeof(GridView), new FrameworkPropertyMetadata(Orientation.Horizontal));
 
         public static readonly DependencyProperty SpacingModeProperty = DependencyProperty.Register(nameof(SpacingMode), typeof(SpacingMode), typeof(GridView), new FrameworkPropertyMetadata(SpacingMode.Uniform));
 
         public static readonly DependencyProperty StretchItemsProperty = DependencyProperty.Register(nameof(StretchItems), typeof(bool), typeof(GridView), new FrameworkPropertyMetadata(false));
 
+        public static readonly DependencyProperty IsWrappingKeyboardNavigationEnabledProperty = DependencyProperty.Register(nameof(IsWrappingKeyboardNavigationEnabled), typeof(bool), typeof(GridView), new FrameworkPropertyMetadata(false));
+
         /// <summary>
-        /// Gets or sets a value that specifies the orientation in which items are arranged. The default value is <see cref="Orientation.Vertical"/>.
+        /// Gets or sets a value that specifies the orientation in which items are arranged. The default value is <see cref="Orientation.Horizontal"/>.
         /// </summary>
         public Orientation Orientation { get => (Orientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
 
@@ -35,6 +38,11 @@ namespace WpfToolkit.Controls
         /// In this case the use of the remaining space will be determined by the SpacingMode property. 
         /// </remarks>
         public bool StretchItems { get => (bool)GetValue(StretchItemsProperty); set => SetValue(StretchItemsProperty, value); }
+
+        /// <summary>
+        /// Enables a improved wrapping keyboard navigation. The default value is false.
+        /// </summary>
+        public bool IsWrappingKeyboardNavigationEnabled { get => (bool)GetValue(IsWrappingKeyboardNavigationEnabledProperty); set => SetValue(IsWrappingKeyboardNavigationEnabledProperty, value); }
 
         static GridView()
         {
@@ -88,6 +96,54 @@ namespace WpfToolkit.Controls
             VirtualizingPanel.SetCacheLength(this, new VirtualizationCacheLength(1));
 
             VirtualizingPanel.SetIsVirtualizingWhenGrouping(this, true);
+
+            PreviewKeyDown += GridView_PreviewKeyDown;
+        }
+
+        private void GridView_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (!IsWrappingKeyboardNavigationEnabled) return;
+
+            var gridView = (GridView)sender;
+
+            var currentItem = gridView.ItemContainerGenerator.ItemFromContainer((DependencyObject)Keyboard.FocusedElement);
+
+            int targetIndex;
+            if (Orientation == Orientation.Vertical)
+            {
+                switch (e.Key)
+                {
+                    case Key.Left:
+                        targetIndex = gridView.Items.IndexOf(currentItem) - 1;
+                        break;
+                    case Key.Right:
+                        targetIndex = gridView.Items.IndexOf(currentItem) + 1;
+                        break;
+                    default:
+                        return;
+                }
+            }
+            else
+            {
+                switch (e.Key)
+                {
+                    case Key.Up:
+                        targetIndex = gridView.Items.IndexOf(currentItem) - 1;
+                        break;
+                    case Key.Down:
+                        targetIndex = gridView.Items.IndexOf(currentItem) + 1;
+                        break;
+                    default:
+                        return;
+                }
+            }
+
+            if (targetIndex >= 0 && targetIndex < gridView.Items.Count)
+            {
+                ((UIElement)gridView.ItemContainerGenerator.ContainerFromIndex(targetIndex)).Focus();
+            }
+
+            e.Handled = true;
         }
     }
 }

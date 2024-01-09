@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
     <PropertyGroup>
-        <TargetFrameworks>net452;netcoreapp3.1;net5.0-windows;net6.0-windows</TargetFrameworks>
+        <TargetFrameworks>net462;net6.0-windows</TargetFrameworks>
         <UseWPF>true</UseWPF>
-        <LangVersion>9.0</LangVersion>
+        <LangVersion>10.0</LangVersion>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>1.5.8</Version>
+        <Version>2.0.0</Version>
         <Authors>S. Bäumlisbergerr</Authors>
         <Copyright>© S. Bäumlisberger</Copyright>
-        <Description>Implementation of a VirtualizingWrapPanel for WPF running .NET Framework or .NET Core. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. In addition a simple VirtualizingItemsControl is included. Samples, API-Documentation and Source Code are available on the project site.</Description>
+        <Description>Implementation of a VirtualizingWrapPanel for WPF. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. In addition a simple VirtualizingItemsControl is included. Samples, API-Documentation and Source Code are available on the project site.</Description>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -27,9 +27,9 @@
     </ItemGroup>
 
     <!-- pack options -->
-    
+
     <ItemGroup>
-        <None Include="README-NUGET.md" Pack="true" PackagePath="\"/>
+        <None Include="nuget/README.md" Pack="true" PackagePath="/"/>
     </ItemGroup>
 
     <PropertyGroup>
@@ -44,11 +44,19 @@
 
         <PackageTags>VirtualizingWrapPanel, VirtualizingPanel, WrapPanel, GridView, Virtualization, WPF, XAML, .NET </PackageTags>
 
-        <PackageReleaseNotes>- Fix #47 MakeVisible behaviour failing when there is a RenderTransform on hover</PackageReleaseNotes>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        
+        <PackageReleaseNotes>
+- Breaking Change: Inverted behaviour and default value of the Orientation property to match the behaviour of the WPF WrapPanel control
+- Breaking Change: Removed thr deprecated properties SpacingEnabled, IsSpacingEnabled and ChildrenSize
+- Breaking Change: Drop support for target frameworks which have reached end of life 
+- Feature: #22 Add support for different sized items (see Getting started)
+- Feature: Add option for wrapping keyboard navigation to GridView control
+- Feature: Finalized grouping support
+- Performance improvements
+        </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>
-
-        <PackageReadmeFile>README-NUGET.md</PackageReadmeFile>
     </PropertyGroup>
 
     <PropertyGroup>
