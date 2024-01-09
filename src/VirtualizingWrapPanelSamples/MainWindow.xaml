@@ -496,7 +496,7 @@
                 <DockPanel Margin="8,0,8,2">
                     <Grid DockPanel.Dock="Top">
                         <TextBlock Text="The GridView control is a easy to use control displaying a grid of items using a VirtualizingWrapPanel." />
-                        <CheckBox HorizontalAlignment="Right" IsChecked="{Binding IsWrappingKeyboardNavigationEnabled}">Enable wrapping keyboard navigation</CheckBox>
+                        <CheckBox HorizontalAlignment="Right" IsChecked="{Binding IsWrappingKeyboardNavigationEnabled, Mode=TwoWay}">Enable wrapping keyboard navigation</CheckBox>
                     </Grid>
                     <wpftk:GridView
                         IsWrappingKeyboardNavigationEnabled="{Binding IsWrappingKeyboardNavigationEnabled, Mode=OneWay}"

@@ -108,7 +108,7 @@ namespace WpfToolkit.Controls
             var currentItem = gridView.ItemContainerGenerator.ItemFromContainer((DependencyObject)Keyboard.FocusedElement);
 
             int targetIndex;
-            if (Orientation == Orientation.Vertical)
+            if (Orientation == Orientation.Horizontal)
             {
                 switch (e.Key)
                 {
