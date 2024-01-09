@@ -94,9 +94,28 @@ internal class TestUtil
 
     public static ObservableCollection<TestItem> GenerateItems(int itemCount, int groupSize = 100)
     {
-        return new ObservableCollection<TestItem>(Enumerable.Range(1, itemCount).Select(i => new TestItem("Item " + i, DefaultItemWidth, DefaultItemHeight, "Group " + (i - 1) / groupSize)));
+        return new ObservableCollection<TestItem>(Enumerable.Range(1, itemCount)
+            .Select(i => new TestItem("Item " + i, DefaultItemWidth, DefaultItemHeight, "Group " + ((i - 1) / groupSize + 1))));
     }
- 
+
+    public static ObservableCollection<TestItem> GenerateItemsWithRandomGroupSizes(int itemCount, int minGroupSize = 50, int maxGroupSize = 150)
+    {
+        int currentGroupNumber = 1;
+        int groupSize = Random.Shared.Next(minGroupSize, maxGroupSize + 1);
+        int getGroupNumber()
+        {
+            int groupNumber = currentGroupNumber;
+            if (--groupSize == 0)
+            {
+                groupSize = Random.Shared.Next(minGroupSize, maxGroupSize + 1);
+                currentGroupNumber++;
+            }
+            return groupNumber;
+        }
+        return new ObservableCollection<TestItem>(Enumerable.Range(1, itemCount)
+            .Select(i => new TestItem("Item " + i, DefaultItemWidth, DefaultItemHeight, "Group " + getGroupNumber())));
+    }
+
     public static FrameworkElement AssertItemRealized(VirtualizingPanel virtualizingPanel, string itemName)
     {
         var itemContainer = FindItemContainer(virtualizingPanel, itemName);
@@ -106,7 +125,7 @@ internal class TestUtil
 
     public static void AssertItemRangeRealized(VirtualizingWrapPanel vwp, int start, int end)
     {
-        for(int i = start; i <= end; i++)
+        for (int i = start; i <= end; i++)
         {
             AssertItemRealized(vwp, "Item " + i);
         }
@@ -142,7 +161,7 @@ internal class TestUtil
 
     private static FrameworkElement? FindItemContainer(VirtualizingPanel virtualizingPanel, string itemName)
     {
-        return (FrameworkElement?)GetVisualChild(virtualizingPanel, 
+        return (FrameworkElement?)GetVisualChild(virtualizingPanel,
             child => child is FrameworkElement fe && fe.DataContext is TestItem testItem && testItem.Name == itemName);
     }
 
@@ -194,7 +213,7 @@ internal class TestUtil
             if (GetVisualChild<T>(child) is T childRecursive)
             {
                 return childRecursive;
-            }            
+            }
         }
         return null;
     }

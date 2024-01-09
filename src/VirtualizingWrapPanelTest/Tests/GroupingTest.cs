@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using WpfToolkit.Controls;
 using Xunit;
@@ -7,23 +9,36 @@ namespace VirtualizingWrapPanelTest.Tests;
 
 public class GroupingTest
 {
-    private ListBox itemsControl;
+    private const int ViewportWidth = 500;
 
-    private VirtualizingStackPanel vsp;
+    private const int ViewportHeight = 400;
+
+    private const int HeaderHeight = 10;
+
+    private static readonly string HeaderTemplate = $"""
+        <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"> 
+            <Border Height="{HeaderHeight}"/>
+        </DataTemplate>
+        """;
+
+    private readonly ListBox itemsControl;
+
+    private readonly VirtualizingStackPanel vsp;
 
     public GroupingTest()
     {
-        var headerTemplate = """
-            <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"> 
-                <Border Height="10"/>
-            </DataTemplate>
-            """;
-        var collectionView = CollectionViewSource.GetDefaultView(TestUtil.GenerateItems(1000));
-        collectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TestItem.Group)));
-        itemsControl = TestUtil.CreateListBox(500 + 5 /*Margin*/ + 2 /*Padding*/, 400 + 2 /*Padding*/, collectionView);
-        itemsControl.GroupStyle.Add(new GroupStyle() { HeaderTemplate = TestUtil.CreateDateTemplate(headerTemplate) });
-        VirtualizingPanel.SetIsVirtualizingWhenGrouping(itemsControl, true);
+        itemsControl = Setup(TestUtil.GenerateItems(1000));
         vsp = TestUtil.GetVisualChild<VirtualizingStackPanel>(itemsControl)!;
+    }
+
+    private static ListBox Setup(ObservableCollection<TestItem> items)
+    {
+        var collectionView = CollectionViewSource.GetDefaultView(items);
+        collectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TestItem.Group)));
+        var itemsControl = TestUtil.CreateListBox(ViewportWidth + 5 /*Margin*/ + 2 /*Padding*/, ViewportHeight + 2 /*Padding*/, collectionView);
+        itemsControl.GroupStyle.Add(new GroupStyle() { HeaderTemplate = TestUtil.CreateDateTemplate(HeaderTemplate) });
+        VirtualizingPanel.SetIsVirtualizingWhenGrouping(itemsControl, true);
+        return itemsControl;
     }
 
     [UITheory]
@@ -54,7 +69,7 @@ public class GroupingTest
         itemsControl.ScrollIntoView(itemsControl.Items[549]); // Item 550
         itemsControl.UpdateLayout();
 
-        TestUtil.AssertItem(vsp, "Item 550", 400 + 5 /*Margin*/, 300);
+        TestUtil.AssertItem(vsp, "Item 550", 400 + 5 /*Margin*/, ViewportHeight - TestUtil.DefaultItemHeight);
         Assert.Equal(10660, vsp.VerticalOffset);
     }
 
@@ -75,6 +90,24 @@ public class GroupingTest
 
         TestUtil.AssertItem(vsp, "Item 550", 400 + 5 /*Margin*/, 0);
         Assert.Equal(10960, vsp.VerticalOffset);
+    }
+
+    [UITheory]
+    [InlineData(VirtualizationMode.Standard)]
+    [InlineData(VirtualizationMode.Recycling)]
+    public void ScrollIntoView_ItemAfterViewportAndCache_DifferentGroupSizes(VirtualizationMode virtualizationMode)
+    {
+        var itemsControl = Setup(TestUtil.GenerateItemsWithRandomGroupSizes(1000));
+        var vsp = TestUtil.GetVisualChild<VirtualizingStackPanel>(itemsControl)!;
+        VirtualizingPanel.SetVirtualizationMode(itemsControl, virtualizationMode);
+        itemsControl.UpdateLayout();
+
+        itemsControl.ScrollIntoView(itemsControl.Items[549]); // Item 550
+        itemsControl.UpdateLayout();
+
+        var itemContainer = TestUtil.AssertItemRealized(vsp, "Item 550");
+        var position = itemContainer.TranslatePoint(new Point(0, 0), vsp);
+        Assert.Equal(ViewportHeight - TestUtil.DefaultItemHeight, position.Y);
     }
 
     // TODO: ScrollIntoView orientation

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -379,7 +378,7 @@ namespace WpfToolkit.Controls
             {
                 Size itemSize = GetAssumedItemSize(Items[i]);
 
-                if (x + GetWidth(itemSize) > GetWidth(ViewportSize))
+                if (x != 0 && x + GetWidth(itemSize) > GetWidth(ViewportSize))
                 {
                     x = 0;
                     y += rowHeight;
@@ -500,6 +499,7 @@ namespace WpfToolkit.Controls
             }
 
             int newEndItemIndex = Items.Count - 1;
+            bool endItemIndexFound = false;
 
             double endOffsetY = DetermineEndOffsetY();
 
@@ -509,7 +509,7 @@ namespace WpfToolkit.Controls
 
             knownExtendX = 0;
 
-            for (int itemIndex = startItemIndex; itemIndex < Items.Count; itemIndex++)
+            for (int itemIndex = startItemIndex; itemIndex <= newEndItemIndex; itemIndex++)
             {
                 if (itemIndex == 0)
                 {
@@ -532,7 +532,7 @@ namespace WpfToolkit.Controls
 
                 var containerSize = DetermineContainerSize(item, container, upfrontKnownItemSize);
 
-                if (!AllowDifferentSizedItems && sizeOfFirstItem == null)
+                if (AllowDifferentSizedItems == false && sizeOfFirstItem is null)
                 {
                     sizeOfFirstItem = containerSize;
                 }
@@ -548,29 +548,23 @@ namespace WpfToolkit.Controls
                 knownExtendX = Math.Max(x, knownExtendX);
                 rowHeight = Math.Max(rowHeight, GetHeight(containerSize));
 
-                if (newEndItemIndex == Items.Count - 1)
+                if (endItemIndexFound == false)
                 {
-                    if (!AllowDifferentSizedItems
-                        && itemIndex + 1 < Items.Count
-                        && x + sizeOfFirstItem!.Value.Width > GetWidth(ViewportSize)
-                        && y + rowHeight >= endOffsetY)
+                    if (y >= endOffsetY
+                        || (AllowDifferentSizedItems == false
+                            && x + GetWidth(sizeOfFirstItem!.Value) > GetWidth(ViewportSize)
+                            && y + rowHeight >= endOffsetY))
                     {
-                        newEndItemIndex = itemIndex;
-                    }
-                    else if (y >= endOffsetY)
-                    {
-                        newEndItemIndex = itemIndex;
-                    }
+                        endItemIndexFound = true;
 
-                    if (newEndItemIndex != Items.Count - 1 && cacheLengthUnit == VirtualizationCacheLengthUnit.Item)
-                    {
-                        newEndItemIndex = Math.Min(newEndItemIndex + (int)cacheLength.CacheAfterViewport, Items.Count - 1);
-                    }
-                }
+                        newEndItemIndex = itemIndex;
 
-                if (itemIndex >= newEndItemIndex)
-                {
-                    break;
+                        if (cacheLengthUnit == VirtualizationCacheLengthUnit.Item)
+                        {
+                            newEndItemIndex = Math.Min(newEndItemIndex + (int)cacheLength.CacheAfterViewport, Items.Count - 1);
+                            // loop continues unitl newEndItemIndex is reached
+                        }
+                    }
                 }
             }
 
@@ -745,7 +739,7 @@ namespace WpfToolkit.Controls
                 summedUpChildWidth = childSizes.Sum(childSize => GetWidth(childSize));
 
                 if (StretchItems)
-                {                 
+                {
                     double unusedWidth = rowWidth - summedUpChildWidth;
                     extraWidth = unusedWidth / children.Count;
                     summedUpChildWidth = rowWidth;
