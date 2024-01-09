@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.0.0-preview5</Version>
+        <Version>2.0.0</Version>
         <Authors>S. Bäumlisbergerr</Authors>
         <Copyright>© S. Bäumlisberger</Copyright>
         <Description>Implementation of a VirtualizingWrapPanel for WPF. The panel supports horizontal and vertical orientation, caching, container recycling and grouping. The package also contains a GridView and GridDetailsView control based on the VirtualizingWrapPanel. In addition a simple VirtualizingItemsControl is included. Samples, API-Documentation and Source Code are available on the project site.</Description>
@@ -47,14 +47,13 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         
         <PackageReleaseNotes>
-- Breaking Change: Inverted behaviour and default value of Orientation property
-- Breaking Change: Removed deprecated properties SpacingEnabled, IsSpacingEnabled and ChildrenSize
-- New Feature: #22 Add support for different sized items
-- New Feature: Add option for wrapping keyboard navigation to GridView control
-- New Feature: Finalized grouping support
-- [Preview 4] Fix: #47 MakeVisible behaviour failing when there is a RenderTransform on hover (ported from 1.5.8)
-- [Preview 4] Fix: #48 Height calculation when using grouping with ItemSizeProvider
-- [Preview 5] Fix: #49 ScrollIntoView does not work when item is not within cache
+- Breaking Change: Inverted behaviour and default value of the Orientation property to match the behaviour of the WPF WrapPanel control
+- Breaking Change: Removed thr deprecated properties SpacingEnabled, IsSpacingEnabled and ChildrenSize
+- Breaking Change: Drop support for target frameworks which have reached end of life 
+- Feature: #22 Add support for different sized items (see Getting started)
+- Feature: Add option for wrapping keyboard navigation to GridView control
+- Feature: Finalized grouping support
+- Performance improvements
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>
