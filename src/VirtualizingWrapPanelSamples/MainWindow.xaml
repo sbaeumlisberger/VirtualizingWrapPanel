@@ -542,16 +542,16 @@
                     </wpftk:GridDetailsView>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Material Design">
-                <TabItem.Resources>
-                    <ResourceDictionary>
-                        <ResourceDictionary.MergedDictionaries>
-                            <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
-                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-                        </ResourceDictionary.MergedDictionaries>
-                    </ResourceDictionary>
-                </TabItem.Resources>
+            <TabItem Header="Material Design">               
                 <DockPanel Margin="8,0,8,2">
+                    <DockPanel.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </DockPanel.Resources>
                     <TextBlock DockPanel.Dock="Top" Text="A VirtualizingWrapPanel used by a MaterialDesignListBox as ItemsPanel." />
                     <ListBox    
                         Margin="0,2,0,0"
