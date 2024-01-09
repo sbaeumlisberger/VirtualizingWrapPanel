@@ -15,17 +15,6 @@
         <Description>Implementation of a VirtualizingWrapPanel for WPF.</Description>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <BuildDocFx>false</BuildDocFx>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="docfx.console" Version="2.59.4">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
-
     <!-- pack options -->
 
     <ItemGroup>

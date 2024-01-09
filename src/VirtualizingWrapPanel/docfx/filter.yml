@@ -1,0 +1,8 @@
+apiRules:
+- exclude:
+    hasAttribute:
+        uid: System.ObsoleteAttribute
+- exclude:
+      uidRegex: ^WpfToolkit\.Controls\.ScrollDirection
+      type: Enum
+      

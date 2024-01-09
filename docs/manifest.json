@@ -1,0 +1,160 @@
+{
+  "source_base_path": "C:/Users/Sebastian/Workspace/git/virtualizing-wrap-panel/src/VirtualizingWrapPanel/docfx",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/WpfToolkit.Controls.GridDetailsView.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/WpfToolkit.Controls.GridDetailsView.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/WpfToolkit.Controls.GridView.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/WpfToolkit.Controls.GridView.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/WpfToolkit.Controls.IItemSizeProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/WpfToolkit.Controls.IItemSizeProvider.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/WpfToolkit.Controls.SpacingMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/WpfToolkit.Controls.SpacingMode.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/WpfToolkit.Controls.VirtualizingItemsControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/WpfToolkit.Controls.VirtualizingItemsControl.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/WpfToolkit.Controls.VirtualizingPanelBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/WpfToolkit.Controls.VirtualizingPanelBase.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/WpfToolkit.Controls.VirtualizingWrapPanel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/WpfToolkit.Controls.VirtualizingWrapPanel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/WpfToolkit.Controls.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/WpfToolkit.Controls.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docs/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docs/toc.html"
+        },
+        ".json": {
+          "relative_path": "docs/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

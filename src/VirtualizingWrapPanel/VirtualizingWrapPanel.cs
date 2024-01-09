@@ -71,7 +71,7 @@ namespace WpfToolkit.Controls
         /// <returns>always true for <see cref="VirtualizingWrapPanel"/></returns>
         protected override bool CanHierarchicallyScrollAndVirtualizeCore => true;
 
-        protected override bool HasLogicalOrientation => true;
+        protected override bool HasLogicalOrientation => false;
 
         protected override Orientation LogicalOrientation => Orientation == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal;
 
