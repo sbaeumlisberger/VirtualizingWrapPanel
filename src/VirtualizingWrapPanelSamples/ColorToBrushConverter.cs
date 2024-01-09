@@ -9,12 +9,12 @@ namespace VirtualizingWrapPanelSamples
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is Color color ? new SolidColorBrush(color) : null;
+            return new SolidColorBrush((Color)value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (value as SolidColorBrush)?.Color;
+            return ((SolidColorBrush)value).Color;
         }
     }
 }
