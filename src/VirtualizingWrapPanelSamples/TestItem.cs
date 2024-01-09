@@ -13,7 +13,7 @@ namespace VirtualizingWrapPanelSamples
         private static readonly int MinHeight = 80;
         private static readonly int MaxHeight = 160;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public string Group { get; }
 
@@ -62,6 +62,11 @@ namespace VirtualizingWrapPanelSamples
             var width = random.Next(MinWidth, MaxWidth);
             var height = random.Next(MinHeight, MaxHeight);
             Size = new Size(width, height);
+        }
+
+        override public string ToString()
+        {
+            return $"TestItem({Number})";
         }
     }
 }

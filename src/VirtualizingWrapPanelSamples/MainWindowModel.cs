@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
@@ -13,7 +14,7 @@ namespace VirtualizingWrapPanelSamples
 {
     class MainWindowModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public ObservableCollection<TestItem> Items { get; } = new ObservableCollection<TestItem>();
 
@@ -45,6 +46,7 @@ namespace VirtualizingWrapPanelSamples
         public int MouseWheelDeltaItem { get => mouseWheelDeltaItem; set => SetField(ref mouseWheelDeltaItem, value); }
         public ScrollBarVisibility HorizontalScrollBarVisibility { get => horizontalScrollBarVisibility; set => SetField(ref horizontalScrollBarVisibility, value); }
         public ScrollBarVisibility VerticalScrollBarVisibility { get => verticalScrollBarVisibility; set => SetField(ref verticalScrollBarVisibility, value); }
+        public Size ItemSize { get => itemSize; set => SetField(ref itemSize, value); }
 
         public bool IsWrappingKeyboardNavigationEnabled { get => isWrappingKeyboardNavigationEnabled; set => SetField(ref isWrappingKeyboardNavigationEnabled, value); }
 
@@ -57,7 +59,7 @@ namespace VirtualizingWrapPanelSamples
 
         private VirtualizationCacheLengthUnit cacheUnit = VirtualizationCacheLengthUnit.Page;
         private VirtualizationCacheLength cacheLength = new VirtualizationCacheLength(1);
-        private VirtualizationMode virtualizationMode = VirtualizationMode.Standard;
+        private VirtualizationMode virtualizationMode = VirtualizationMode.Recycling;
         private Orientation orientation = Orientation.Horizontal;
         private Orientation orientationGroupPanel = Orientation.Vertical;
         private SpacingMode spacingMode = SpacingMode.Uniform;
@@ -69,6 +71,7 @@ namespace VirtualizingWrapPanelSamples
         private int mouseWheelDeltaItem = 3;
         private ScrollBarVisibility horizontalScrollBarVisibility = ScrollBarVisibility.Auto;
         private ScrollBarVisibility verticalScrollBarVisibility = ScrollBarVisibility.Auto;
+        private Size itemSize = Size.Empty;
 
         private bool isWrappingKeyboardNavigationEnabled = false;
 
@@ -134,7 +137,7 @@ namespace VirtualizingWrapPanelSamples
             }
         }
 
-        private void MainWindowModel_PropertyChanged(object sender, PropertyChangedEventArgs args)
+        private void MainWindowModel_PropertyChanged(object? sender, PropertyChangedEventArgs args)
         {
             switch (args.PropertyName)
             {
@@ -145,8 +148,8 @@ namespace VirtualizingWrapPanelSamples
                     UpdateMemoryUsageRefreshTimer();
                     break;
                 case nameof(ScrollUnit):
-                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(IsScrollByPixel)));
-                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(IsScrollByItem)));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsScrollByPixel)));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsScrollByItem)));
                     break;
                 case nameof(Orientation):
                     OrientationGroupPanel = Orientation == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal;
@@ -182,7 +185,7 @@ namespace VirtualizingWrapPanelSamples
             }
         }
 
-        private bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        private bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
         {
             if (Equals(value, field))
             {

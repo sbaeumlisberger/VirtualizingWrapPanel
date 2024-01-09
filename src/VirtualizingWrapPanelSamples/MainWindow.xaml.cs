@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace VirtualizingWrapPanelSamples
@@ -10,7 +13,7 @@ namespace VirtualizingWrapPanelSamples
     {
         internal readonly MainWindowModel model = new MainWindowModel();
 
-        private ItemsControl previousItemsControl;
+        private ItemsControl? previousItemsControl;
 
         public MainWindow()
         {
@@ -44,7 +47,7 @@ namespace VirtualizingWrapPanelSamples
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs args)
         {
             var content = (DependencyObject)tabControl.SelectedContent;
-            var itemsControl = content as ItemsControl ?? GetChildOfType<ItemsControl>(content);
+            var itemsControl = content as ItemsControl ?? GetChildOfType<ItemsControl>(content)!;
 
             if (itemsControl != previousItemsControl)
             {
@@ -72,7 +75,7 @@ namespace VirtualizingWrapPanelSamples
             model.RefreshMemoryUsage();
         }
 
-        private static T GetChildOfType<T>(DependencyObject element) where T : DependencyObject
+        private static T? GetChildOfType<T>(DependencyObject element) where T : DependencyObject
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
             {
@@ -98,6 +101,44 @@ namespace VirtualizingWrapPanelSamples
         private void RemoveMenuItem_Click(object sender, RoutedEventArgs e)
         {
             model.RemoveItem((TestItem)((FrameworkElement)sender).DataContext);
+        }
+
+        private void ScrollIntoViewTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                ScrollIntoView();
+            }
+        }
+
+        private void ScrollIntoViewTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ScrollIntoView();
+        }
+
+        private void ScrollIntoView()
+        {
+            if (int.TryParse(scrollIntoViewTextBox.Text, out int itemNumber)
+                && model.Items.Where(item => item.Number == itemNumber).FirstOrDefault() is { } item)
+            {
+                var itemsControl = FindItemsControl();
+
+                if (itemsControl is ListView listView)
+                {
+                    listView?.ScrollIntoView(item);
+                }
+                else if (itemsControl is ListBox listBox)
+                {
+                    listBox?.ScrollIntoView(item);
+                }
+            }
+            scrollIntoViewTextBox.Clear();
+        }
+
+        private ItemsControl FindItemsControl()
+        {
+            var content = (DependencyObject)tabControl.SelectedContent;
+            return content as ItemsControl ?? GetChildOfType<ItemsControl>(content)!;
         }
     }
 }
