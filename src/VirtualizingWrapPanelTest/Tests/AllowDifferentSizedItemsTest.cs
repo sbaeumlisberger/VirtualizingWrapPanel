@@ -172,6 +172,46 @@ public class AllowDifferentSizedItemsTest
         Assert.True(vwp.ExtentHeight >= maxOffset / 2 + panelSize.Height);
     }
 
+    [UIFact]
+    public void ExtendShouldAdjustWhenCollectionChanged() 
+    {
+        double extend = CalculateExtend(items, panelSize.Width);
+        double maxOffset = extend - panelSize.Height;
+        while (vwp.VerticalOffset < maxOffset)
+        {
+            vwp.SetVerticalOffset(Math.Min(vwp.VerticalOffset + vwp.MouseWheelDelta, maxOffset));
+            vwp.UpdateLayout();
+        }
+        double extendBefore = vwp.ExtentHeight;
+
+        var newItems = GenerateItems(100);
+        vwp.ItemsControl.ItemsSource = newItems;
+        vwp.ItemsControl.UpdateLayout();
+
+        Assert.True(vwp.ExtentHeight < extendBefore / 8);
+        TestUtil.AssertItemRealized(vwp, "Item 1");
+        TestUtil.AssertItemRealized(vwp, "Item 2");
+    }
+
+    [UIFact]
+    public void ExtendShouldAdjustWhenCollectionChangedWithItemSizeProvider()
+    {
+        vwp.ItemSizeProvider = new TestItemSizeProvider();
+        double extend = CalculateExtend(items, panelSize.Width);
+        double maxOffset = extend - panelSize.Height;
+        vwp.SetVerticalOffset(maxOffset);
+        vwp.UpdateLayout();
+
+        var newItems = GenerateItems(100);
+        vwp.ItemsControl.ItemsSource = newItems;
+        vwp.ItemsControl.UpdateLayout();
+
+        double exptectedExtend = CalculateExtend(newItems, panelSize.Width);
+        Assert.Equal(exptectedExtend, vwp.ExtentHeight);
+        TestUtil.AssertItemRealized(vwp, "Item 99");
+        TestUtil.AssertItemRealized(vwp, "Item 100");
+    }
+
     private static double CalculateExtend(List<TestItem> items, double viewportWidth)
     {
         double rowWidth = 0;
@@ -240,7 +280,7 @@ public class AllowDifferentSizedItemsTest
 
     private static List<TestItem> GenerateItems(int itemCount)
     {
-        return Enumerable.Range(1, itemCount + 1).Select(i => new TestItem("Item " + i, Random.Shared.Next(120), Random.Shared.Next(120))).ToList();
+        return Enumerable.Range(1, itemCount).Select(i => new TestItem("Item " + i, Random.Shared.Next(60, 120), Random.Shared.Next(60, 120))).ToList();
     }
 
 }

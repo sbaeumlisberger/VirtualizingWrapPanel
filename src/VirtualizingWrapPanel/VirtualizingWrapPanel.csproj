@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.0.2</Version>
+        <Version>2.0.3</Version>
         <Authors>S. Bäumlisbergerr</Authors>
         <Copyright>© S. Bäumlisberger</Copyright>
         <Description>Implementation of a VirtualizingWrapPanel for WPF.</Description>
@@ -36,13 +36,7 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         
         <PackageReleaseNotes>
-- Breaking Change: Inverted behaviour and default value of the Orientation property to match the behaviour of the WPF WrapPanel control
-- Breaking Change: Removed thr deprecated properties SpacingEnabled, IsSpacingEnabled and ChildrenSize
-- Breaking Change: Drop support for target frameworks which have reached end of life 
-- Feature: #22 Add support for different sized items (see Getting started)
-- Feature: Add option for wrapping keyboard navigation to GridView control
-- Feature: Finalized grouping support
-- Performance improvements
+- Fix: #51 VirtualizingWrapPanel does not shrink when items are changed
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>

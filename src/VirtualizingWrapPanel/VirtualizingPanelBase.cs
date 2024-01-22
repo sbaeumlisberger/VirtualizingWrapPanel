@@ -131,15 +131,17 @@ namespace WpfToolkit.Controls
 
         protected bool ShouldIgnoreMeasure()
         {
-            /* Sometimes when scrolling the scrollbar gets hidden without any reason. In this case the "IsMeasureValid" 
-            *  property of the ScrollOwner is false. To prevent a infinite circle the mesasure call has to be ignored. */
+            /* Sometimes when scrolling the scrollbar gets hidden without any reason. 
+             * To prevent a infinite circle the mesasure call has to be ignored. */
 
-            var scrollOwner = ScrollOwner;
+            IScrollInfo scrollInfo = this;
+            ScrollViewer? scrollOwner = ScrollOwner;
 
             if (ItemsOwner is GroupItem groupItem
-                && VisualTreeHelper.GetParent(groupItem) is IScrollInfo scrollInfo
-                && scrollInfo.ScrollOwner is { } parentScrollOwner)
+                && VisualTreeHelper.GetParent(groupItem) is IScrollInfo parentScrollInfo
+                && parentScrollInfo.ScrollOwner is { } parentScrollOwner)
             {
+                scrollInfo = parentScrollInfo;
                 scrollOwner = parentScrollOwner;
             }
 
@@ -156,7 +158,8 @@ namespace WpfToolkit.Controls
                 previousVerticalScrollBarVisibility = scrollOwner.ComputedVerticalScrollBarVisibility;
                 previousHorizontalScrollBarVisibility = scrollOwner.ComputedHorizontalScrollBarVisibility;
 
-                if (!scrollOwner.IsMeasureValid && verticalScrollBarGotHidden || horizontalScrollBarGotHidden)
+                if ((verticalScrollBarGotHidden && scrollInfo.ExtentHeight > scrollInfo.ViewportHeight)
+                    || (horizontalScrollBarGotHidden && scrollInfo.ExtentWidth > scrollInfo.ViewportWidth))
                 {
                     return true;
                 }

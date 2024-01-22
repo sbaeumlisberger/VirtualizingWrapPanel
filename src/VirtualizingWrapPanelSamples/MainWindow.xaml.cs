@@ -44,6 +44,11 @@ namespace VirtualizingWrapPanelSamples
             model.RemoveAllItems();
         }
 
+        private void Random_Click(object sender, RoutedEventArgs args)
+        {
+            model.RandomizeItems();
+        }
+
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs args)
         {
             var content = (DependencyObject)tabControl.SelectedContent;

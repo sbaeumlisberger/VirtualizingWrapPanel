@@ -154,17 +154,18 @@ internal class ItemContainerManager
         else if (e.Action == NotifyCollectionChangedAction.Remove
             || e.Action == NotifyCollectionChangedAction.Replace)
         {
-            var (item, container) = realizedContainers.Where(entry => !Items.Contains(entry.Key)).Single();
-
-            realizedContainers.Remove(item);
-
-            if (IsRecycling)
+            foreach (var (item, container) in realizedContainers.Where(entry => !Items.Contains(entry.Key)).ToList())
             {
-                cachedContainers.Add(container);
-            }
-            else
-            {
-                removeInternalChild(container);
+                realizedContainers.Remove(item);
+
+                if (IsRecycling)
+                {
+                    cachedContainers.Add(container);
+                }
+                else
+                {
+                    removeInternalChild(container);
+                }
             }
 
             ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));

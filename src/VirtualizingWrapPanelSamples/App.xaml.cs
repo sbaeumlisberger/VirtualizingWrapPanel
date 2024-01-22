@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -15,6 +16,8 @@ namespace VirtualizingWrapPanelSamples
 
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
+            Debug.WriteLine(e.Exception);
+
             if (e.Exception is InvalidOperationException)
             {
                 e.Handled = true;
@@ -24,7 +27,6 @@ namespace VirtualizingWrapPanelSamples
                     ? VirtualizationMode.Recycling
                     : VirtualizationMode.Standard;
                 MessageBox.Show(e.Exception.Message);
-
             }
         }
     }

@@ -233,11 +233,13 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Margin="0" Content="Add item at random position" Click="InsertButton_Click" />
             <Button Grid.Column="1" Margin="8,0,0,0" Content="Add 5000 items" Click="FillButton_Click" />
             <Button Grid.Column="2" Margin="8,0,0,0" Content="Remove random item" Click="RemoveButton_Click" />
             <Button Grid.Column="3" Margin="8,0,0,0" Content="Remove all items" Click="ClearButton_Click" />
+            <Button Grid.Column="4" Margin="8,0,0,0" Content="Random" Click="Random_Click" />
         </Grid>
 
         <TabControl 
