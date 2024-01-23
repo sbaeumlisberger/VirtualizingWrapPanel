@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.0.3</Version>
+        <Version>2.0.4</Version>
         <Authors>S. Bäumlisbergerr</Authors>
         <Copyright>© S. Bäumlisberger</Copyright>
         <Description>Implementation of a VirtualizingWrapPanel for WPF.</Description>
@@ -36,7 +36,7 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         
         <PackageReleaseNotes>
-- Fix: #51 VirtualizingWrapPanel does not shrink when items are changed
+- Fix: InvalidOperationException when items collection is empty
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>

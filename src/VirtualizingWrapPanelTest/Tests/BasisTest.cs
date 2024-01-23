@@ -21,6 +21,15 @@ public class BasisTest
     private VirtualizingWrapPanel vwp = TestUtil.CreateVirtualizingWrapPanel(500, 400);
 
     [UIFact]
+    public void NoItems()
+    {
+        vwp = TestUtil.CreateVirtualizingWrapPanel(500, 400, itemCount: 0);
+
+        Assert.Equal(0, vwp.DesiredSize.Width);
+        Assert.Equal(0, vwp.DesiredSize.Height);
+    }
+
+    [UIFact]
     public void Inital()
     {
         Assert.Equal(500, vwp.DesiredSize.Width);

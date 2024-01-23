@@ -439,7 +439,7 @@ namespace WpfToolkit.Controls
 
             if (startOffsetY <= 0)
             {
-                startItemIndex = 0;
+                startItemIndex = Items.Count > 0 ? 0 : -1;
                 startItemOffsetX = 0;
                 startItemOffsetY = 0;
                 return;
