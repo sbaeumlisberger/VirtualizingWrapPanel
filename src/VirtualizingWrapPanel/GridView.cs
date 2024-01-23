@@ -19,6 +19,12 @@ namespace WpfToolkit.Controls
 
         public static readonly DependencyProperty IsWrappingKeyboardNavigationEnabledProperty = DependencyProperty.Register(nameof(IsWrappingKeyboardNavigationEnabled), typeof(bool), typeof(GridView), new FrameworkPropertyMetadata(false));
 
+        public static readonly DependencyProperty ItemSizeProperty = DependencyProperty.Register(nameof(ItemSize), typeof(Size), typeof(GridView), new FrameworkPropertyMetadata(Size.Empty));
+
+        public static readonly DependencyProperty AllowDifferentSizedItemsProperty = DependencyProperty.Register(nameof(AllowDifferentSizedItems), typeof(bool), typeof(GridView), new FrameworkPropertyMetadata(false));
+
+        public static readonly DependencyProperty ItemSizeProviderProperty = DependencyProperty.Register(nameof(ItemSizeProvider), typeof(IItemSizeProvider), typeof(GridView), new FrameworkPropertyMetadata(null));
+
         /// <summary>
         /// Gets or sets a value that specifies the orientation in which items are arranged. The default value is <see cref="Orientation.Horizontal"/>.
         /// </summary>
@@ -37,6 +43,25 @@ namespace WpfToolkit.Controls
         /// In this case the use of the remaining space will be determined by the SpacingMode property. 
         /// </remarks>
         public bool StretchItems { get => (bool)GetValue(StretchItemsProperty); set => SetValue(StretchItemsProperty, value); }
+
+        /// <summary>
+        /// Gets or sets a value that specifies the size of the items. The default value is <see cref="Size.Empty"/>. 
+        /// If the value is <see cref="Size.Empty"/> the item size is determined by measuring the first realized item.
+        /// </summary>
+        public Size ItemSize { get => (Size)GetValue(ItemSizeProperty); set => SetValue(ItemSizeProperty, value); }
+
+        /// <summary>
+        /// Specifies whether items can have different sizes. The default value is false. If this property is enabled, 
+        /// it is strongly recommended to also set the <see cref="ItemSizeProvider"/> property. Otherwise, the position 
+        /// of the items is not always guaranteed to be correct.
+        /// </summary>
+        public bool AllowDifferentSizedItems { get => (bool)GetValue(AllowDifferentSizedItemsProperty); set => SetValue(AllowDifferentSizedItemsProperty, value); }
+
+        /// <summary>
+        /// Specifies an instance of <see cref="IItemSizeProvider"/> which provides the size of the items. In order to allow
+        /// different sized items, also enable the <see cref="AllowDifferentSizedItems"/> property.
+        /// </summary>
+        public IItemSizeProvider ItemSizeProvider { get => (IItemSizeProvider)GetValue(ItemSizeProviderProperty); set => SetValue(ItemSizeProviderProperty, value); }
 
         /// <summary>
         /// Enables a improved wrapping keyboard navigation. The default value is false.
@@ -87,6 +112,24 @@ namespace WpfToolkit.Controls
             {
                 Source = this,
                 Path = new PropertyPath(nameof(StretchItems)),
+                Mode = BindingMode.OneWay
+            });
+            factory.SetBinding(VirtualizingWrapPanel.ItemSizeProperty, new Binding
+            {
+                Source = this,
+                Path = new PropertyPath(nameof(ItemSize)),
+                Mode = BindingMode.OneWay
+            });
+            factory.SetBinding(VirtualizingWrapPanel.AllowDifferentSizedItemsProperty, new Binding
+            {
+                Source = this,
+                Path = new PropertyPath(nameof(AllowDifferentSizedItems)),
+                Mode = BindingMode.OneWay
+            });
+            factory.SetBinding(VirtualizingWrapPanel.ItemSizeProviderProperty, new Binding
+            {
+                Source = this,
+                Path = new PropertyPath(nameof(ItemSizeProvider)),
                 Mode = BindingMode.OneWay
             });
             ItemsPanel = new ItemsPanelTemplate(factory);
