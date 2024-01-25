@@ -568,7 +568,7 @@ namespace WpfToolkit.Controls
         {
             if (StretchItems)
             {
-                if (Orientation == Orientation.Vertical)
+                if (Orientation == Orientation.Horizontal)
                 {
                     double childMaxWidth = ReadItemContainerStyle(MaxWidthProperty, double.PositiveInfinity);
                     double maxPossibleChildWith = finalSize.Width / itemsPerRowCount;
