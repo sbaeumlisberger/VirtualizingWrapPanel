@@ -137,6 +137,12 @@ namespace WpfToolkit.Controls
 
             ItemContainerManager.IsRecycling = IsRecycling;
 
+            if(bringIntoViewItemIndex >= Items.Count)
+            {
+                bringIntoViewItemIndex = -1;
+                bringIntoViewContainer = null;
+            }
+
             MeasureBringIntoViewContainer(InfiniteSize);
 
             Size newViewportSize;
@@ -191,6 +197,12 @@ namespace WpfToolkit.Controls
         protected override Size ArrangeOverride(Size finalSize)
         {
             ViewportSize = finalSize;
+
+            if (bringIntoViewItemIndex >= Items.Count)
+            {
+                bringIntoViewItemIndex = -1;
+                bringIntoViewContainer = null;
+            }
 
             ArrangeBringIntoViewContainer();
 
