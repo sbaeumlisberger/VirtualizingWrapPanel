@@ -357,7 +357,7 @@ namespace WpfToolkit.Controls
             {
                 bool hierarchical = ItemsOwner is IHierarchicalVirtualizationAndScrollInfo;
                 var offset = FindItemOffset(bringIntoViewItemIndex);
-                offset = new Point(offset.X - GetX(ScrollOffset), hierarchical ? offset.Y : offset.Y - GetY(ScrollOffset));
+                offset = new Point(offset.X - ScrollOffset.X, hierarchical ? offset.Y : offset.Y - ScrollOffset.Y);
                 var size = GetUpfrontKnownItemSize(Items[bringIntoViewItemIndex]) ?? bringIntoViewContainer.DesiredSize;
                 bringIntoViewContainer.Arrange(new Rect(offset, size));
             }
