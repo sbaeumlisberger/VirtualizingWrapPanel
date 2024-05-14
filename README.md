@@ -14,7 +14,7 @@ Implementation of a [VirtualizingWrapPanel](https://sbaeumlisberger.github.io/Vi
 * Displaying different sized items
 
 ### Resources
-* [Getting started](GettingStarted.md)
+* [Getting started](src/VirtualizingWrapPanel/docfx/docs/getting-started.md)
 * [Sample Application](SamplesApplication.md)
 * [API-Documentation](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.html)
 
