@@ -10,7 +10,7 @@
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
         <Version>2.0.7</Version>
-        <Authors>S. Bäumlisbergerr</Authors>
+        <Authors>S. Bäumlisberger</Authors>
         <Copyright>© S. Bäumlisberger</Copyright>
         <Description>Implementation of a comprehensive VirtualizingWrapPanel for WPF.</Description>
     </PropertyGroup>
