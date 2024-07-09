@@ -143,8 +143,9 @@ namespace WpfToolkit.Controls
 
             if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem)
             {
-                ScrollOffset = groupItem.Constraints.Viewport.Location;
-                newViewportSize = GetViewportSizeFromGroupItem(groupItem);
+                Rect viewport = GetViewportFromGroupItem(groupItem);
+                ScrollOffset = viewport.Location;
+                newViewportSize = viewport.Size;
                 cacheLength = groupItem.Constraints.CacheLength;
                 cacheLengthUnit = groupItem.Constraints.CacheLengthUnit;
             }
@@ -315,8 +316,10 @@ namespace WpfToolkit.Controls
             }
         }
 
-        private Size GetViewportSizeFromGroupItem(IHierarchicalVirtualizationAndScrollInfo groupItem)
+        private Rect GetViewportFromGroupItem(IHierarchicalVirtualizationAndScrollInfo groupItem)
         {
+            double viewportX = groupItem.Constraints.Viewport.Location.X;
+            double viewportY = groupItem.Constraints.Viewport.Location.Y;
             double viewportWidth = Math.Max(groupItem.Constraints.Viewport.Size.Width, 0);
             double viewporteHeight = Math.Max(groupItem.Constraints.Viewport.Size.Height, 0);
 
@@ -334,12 +337,18 @@ namespace WpfToolkit.Controls
                 }
             }
 
-            if (Orientation == Orientation.Vertical)
+            if (Orientation == Orientation.Horizontal)
+            {
+                viewportY = Math.Max(0, viewportY - groupItem.HeaderDesiredSizes.PixelSize.Height);
+                double visibleHeaderHeight = Math.Max(0, groupItem.HeaderDesiredSizes.PixelSize.Height - viewportY);
+                viewporteHeight = Math.Max(0, viewporteHeight - visibleHeaderHeight);
+            }
+            else 
             {
                 viewporteHeight = Math.Max(0, viewporteHeight - groupItem.HeaderDesiredSizes.PixelSize.Height);
             }
 
-            return new Size(viewportWidth, viewporteHeight);
+            return new Rect(viewportX, viewportY, viewportWidth, viewporteHeight);
         }
 
         private void MeasureBringIntoViewContainer(Size availableSize)
