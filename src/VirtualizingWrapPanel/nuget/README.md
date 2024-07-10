@@ -9,6 +9,6 @@ Implementation of a comprehensive [VirtualizingWrapPanel](https://sbaeumlisberge
 * Displaying different sized items
 
 ### Resources
-* [Getting started](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/blob/master/src/VirtualizingWrapPanel/docfx/docs/getting-started.md)
+* [Getting started](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/docs/getting-started.html)
 * [Sample Application](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/tree/master/SamplesApplication.md)
 * [API-Documentation](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.html)

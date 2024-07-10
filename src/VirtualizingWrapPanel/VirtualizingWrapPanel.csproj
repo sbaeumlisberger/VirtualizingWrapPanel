@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.0.8</Version>
+        <Version>2.0.9</Version>
         <Authors>S. Bäumlisberger</Authors>
         <Copyright>© S. Bäumlisberger</Copyright>
         <Description>Implementation of a comprehensive VirtualizingWrapPanel for WPF.</Description>
@@ -36,7 +36,7 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         
         <PackageReleaseNotes>
-- Fix: #61  Items disappear from top row while using grouping
+- Fix: Not all items of last row realized when using grouping with small cache size and partially visible header (see #61) 
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>
