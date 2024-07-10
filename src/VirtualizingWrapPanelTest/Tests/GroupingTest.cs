@@ -134,17 +134,38 @@ public class GroupingTest
     [UITheory]
     [InlineData(VirtualizationMode.Standard)]
     [InlineData(VirtualizationMode.Recycling)]
-    public void HeaderSizeIsIncludedInItemRangeCalculation(VirtualizationMode virtualizationMode)
+    public void HeaderSizeIsIncludedInItemRangeCalculation_Start(VirtualizationMode virtualizationMode)
     {
         VirtualizingPanel.SetVirtualizationMode(itemsControl, virtualizationMode);
         VirtualizingPanel.SetCacheLengthUnit(itemsControl, VirtualizationCacheLengthUnit.Item);
         VirtualizingPanel.SetCacheLength(itemsControl, new VirtualizationCacheLength(3));
         itemsControl.UpdateLayout();
 
-        vsp.SetVerticalOffset(110);
+        vsp.SetVerticalOffset(TestUtil.DefaultItemHeight + HeaderHeight / 2);
         itemsControl.UpdateLayout();
 
-        var itemContainer = TestUtil.AssertItemRealized(vsp, "Item 1");
+        TestUtil.AssertItemRealized(vsp, "Item 1");
+    }
+
+    // Bug #61: Items disappear from top row while using grouping 
+    [UITheory]
+    [InlineData(VirtualizationMode.Standard)]
+    [InlineData(VirtualizationMode.Recycling)]
+    public void HeaderSizeIsIncludedInItemRangeCalculation_End(VirtualizationMode virtualizationMode)
+    {
+        itemsControl.Height = 415;
+        int cacheLength = 3;
+        VirtualizingPanel.SetVirtualizationMode(itemsControl, virtualizationMode);
+        VirtualizingPanel.SetCacheLengthUnit(itemsControl, VirtualizationCacheLengthUnit.Item);
+        VirtualizingPanel.SetCacheLength(itemsControl, new VirtualizationCacheLength(cacheLength));
+        itemsControl.UpdateLayout();
+
+        TestUtil.AssertItemRangeRealized(vsp, 1, 20 + cacheLength);
+
+        vsp.SetVerticalOffset(HeaderHeight / 2);
+        itemsControl.UpdateLayout();
+
+        TestUtil.AssertItemRangeRealized(vsp, 1, 25 + cacheLength);
     }
 
     private static void AssertItem(VirtualizingPanel virtualizingPanel, string itemName, int x, int y, int width = TestUtil.DefaultItemWidth, int height = TestUtil.DefaultItemHeight)

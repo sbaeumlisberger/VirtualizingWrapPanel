@@ -123,7 +123,7 @@ internal class TestUtil
         return itemContainer;
     }
 
-    public static void AssertItemRangeRealized(VirtualizingWrapPanel vwp, int start, int end)
+    public static void AssertItemRangeRealized(VirtualizingPanel vwp, int start, int end)
     {
         for (int i = start; i <= end; i++)
         {
@@ -131,7 +131,7 @@ internal class TestUtil
         }
     }
 
-    public static void AssertItemNotRealized(VirtualizingWrapPanel vwp, string itemName)
+    public static void AssertItemNotRealized(VirtualizingPanel vwp, string itemName)
     {
         var itemContainer = FindItemContainer(vwp, itemName);
         Assert.True(itemContainer == null, $"{itemName} is realized, but should not be");

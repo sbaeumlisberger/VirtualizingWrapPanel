@@ -340,7 +340,7 @@ namespace WpfToolkit.Controls
             if (Orientation == Orientation.Horizontal)
             {
                 viewportY = Math.Max(0, viewportY - groupItem.HeaderDesiredSizes.PixelSize.Height);
-                double visibleHeaderHeight = Math.Max(0, groupItem.HeaderDesiredSizes.PixelSize.Height - viewportY);
+                double visibleHeaderHeight = Math.Max(0, groupItem.HeaderDesiredSizes.PixelSize.Height - groupItem.Constraints.Viewport.Location.Y);
                 viewporteHeight = Math.Max(0, viewporteHeight - visibleHeaderHeight);
             }
             else 
