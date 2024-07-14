@@ -8,20 +8,19 @@ namespace WpfToolkit.Controls
     /// <summary>
     /// Simple control that displays a gird of items. Depending on the orientation, the items are either stacked horizontally or vertically 
     /// until the items are wrapped to the next row or column. The control is using virtualization to support large amount of items.
-    /// <p class="note">In order to work properly all items must have the same size.</p>
     /// </summary>
     public class GridView : ListView
     {
-        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(nameof(Orientation), typeof(Orientation), typeof(GridView), new FrameworkPropertyMetadata(Orientation.Vertical));
+        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(nameof(Orientation), typeof(Orientation), typeof(GridView), new FrameworkPropertyMetadata(Orientation.Horizontal));
 
         public static readonly DependencyProperty SpacingModeProperty = DependencyProperty.Register(nameof(SpacingMode), typeof(SpacingMode), typeof(GridView), new FrameworkPropertyMetadata(SpacingMode.Uniform));
 
         public static readonly DependencyProperty StretchItemsProperty = DependencyProperty.Register(nameof(StretchItems), typeof(bool), typeof(GridView), new FrameworkPropertyMetadata(false));
 
-        public static readonly DependencyProperty IsImprovedKeyboardNavigationEnabledProperty = DependencyProperty.Register(nameof(IsImprovedKeyboardNavigationEnabled), typeof(bool), typeof(GridView), new FrameworkPropertyMetadata(false));
+        public static readonly DependencyProperty IsWrappingKeyboardNavigationEnabledProperty = DependencyProperty.Register(nameof(IsWrappingKeyboardNavigationEnabled), typeof(bool), typeof(GridView), new FrameworkPropertyMetadata(false));
 
         /// <summary>
-        /// Gets or sets a value that specifies the orientation in which items are arranged. The default value is <see cref="Orientation.Vertical"/>.
+        /// Gets or sets a value that specifies the orientation in which items are arranged. The default value is <see cref="Orientation.Horizontal"/>.
         /// </summary>
         public Orientation Orientation { get => (Orientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
 
@@ -40,9 +39,9 @@ namespace WpfToolkit.Controls
         public bool StretchItems { get => (bool)GetValue(StretchItemsProperty); set => SetValue(StretchItemsProperty, value); }
 
         /// <summary>
-        /// Enables a improved custom keyboard navigation. The default value is false.
+        /// Enables a improved wrapping keyboard navigation. The default value is false.
         /// </summary>
-        public bool IsImprovedKeyboardNavigationEnabled { get => (bool)GetValue(IsImprovedKeyboardNavigationEnabledProperty); set => SetValue(IsImprovedKeyboardNavigationEnabledProperty, value); }
+        public bool IsWrappingKeyboardNavigationEnabled { get => (bool)GetValue(IsWrappingKeyboardNavigationEnabledProperty); set => SetValue(IsWrappingKeyboardNavigationEnabledProperty, value); }
 
         static GridView()
         {
@@ -102,14 +101,14 @@ namespace WpfToolkit.Controls
 
         private void GridView_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (!IsImprovedKeyboardNavigationEnabled) return;
+            if (!IsWrappingKeyboardNavigationEnabled) return;
 
             var gridView = (GridView)sender;
 
             var currentItem = gridView.ItemContainerGenerator.ItemFromContainer((DependencyObject)Keyboard.FocusedElement);
 
             int targetIndex;
-            if (Orientation == Orientation.Vertical)
+            if (Orientation == Orientation.Horizontal)
             {
                 switch (e.Key)
                 {

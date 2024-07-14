@@ -88,7 +88,6 @@ namespace WpfToolkit.Controls
 
             if (expandedItemContainerRoot == null)
             {
-
                 expandedItemContainerRoot = (FrameworkElement)sender;
                 MaxContainerSize = 0;
 
@@ -125,7 +124,7 @@ namespace WpfToolkit.Controls
                 {
                     throw new NullReferenceException($"{nameof(expandedItemContainerRoot)} is null");
                 }
-                if (Orientation == Orientation.Vertical)
+                if (Orientation == Orientation.Horizontal)
                 {
                     return expandedItemContainerRoot.DesiredSize.Height;
                 }
@@ -144,7 +143,7 @@ namespace WpfToolkit.Controls
                 {
                     throw new NullReferenceException($"{nameof(expandedItemContainerRoot)} is null");
                 }
-                if (Orientation == Orientation.Vertical)
+                if (Orientation == Orientation.Horizontal)
                 {
                     return expandedItemContainerRoot.MaxHeight;
                 }
@@ -159,7 +158,7 @@ namespace WpfToolkit.Controls
                 {
                     throw new NullReferenceException($"{nameof(expandedItemContainerRoot)} is null");
                 }
-                if (Orientation == Orientation.Vertical)
+                if (Orientation == Orientation.Horizontal)
                 {
                     expandedItemContainerRoot.MaxHeight = value;
                 }

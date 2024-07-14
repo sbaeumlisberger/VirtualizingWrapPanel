@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title> | VirtualizingWrapPanel </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content=" | VirtualizingWrapPanel ">
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/docfx/docs/getting-started.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+  </head>
+
+  <script type="module" src="./../public/docfx.min.js"></script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="VirtualizingWrapPanel">
+            VirtualizingWrapPanel
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+
+<h2 id="getting-started">Getting started</h2>
+<h3 id="installation">Installation</h3>
+<p>First, add the package to your project. For example via the .NET CLI:<br>
+<code>dotnet add package VirtualizingWrapPanel</code></p>
+<p>More installation options can be found <a href="https://www.nuget.org/packages/VirtualizingWrapPanel/">here</a>.</p>
+<p>Then add the following namespace to the xaml files, where you want to use package:<br>
+<code>xmlns:vwp=&quot;clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel&quot;</code></p>
+<h3 id="basic-usage">Basic usage</h3>
+<p>You can use the VirtualizingWrapPanel with an existing ItemsControl like a ListView as follows:</p>
+<pre><code>&lt;Window xmlns:vwp=&quot;clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel&quot;&gt;
+    &lt;ListView
+        ItemsSource=&quot;{Binding YourItemsSource, Mode=OneWay}&quot;
+        ItemTemplate=&quot;{StaticResource YourItemTemplate}&quot;&gt;       
+        &lt;ListView.ItemsPanel&gt;
+            &lt;ItemsPanelTemplate&gt;
+                &lt;vwp:VirtualizingWrapPanel/&gt;
+            &lt;/ItemsPanelTemplate&gt;
+        &lt;/ListView.ItemsPanel&gt;
+         &lt;ListView.ItemContainerStyle&gt;
+            &lt;Style x:Key=&quot;ItemContainerStyle&quot; TargetType=&quot;{x:Type ListViewItem}&quot;&gt;
+                &lt;Setter Property=&quot;HorizontalContentAlignment&quot; Value=&quot;Stretch&quot;/&gt;
+                &lt;Setter Property=&quot;VerticalContentAlignment&quot; Value=&quot;Stretch&quot;/&gt;
+            &lt;/Style&gt;
+        &lt;/ListView.ItemContainerStyle&gt;
+    &lt;/ListView&gt;
+&lt;/Window&gt;
+</code></pre>
+<p>Alternatively, you can use the included GridView control, which is using a VirtualizingWrapPanel by default:</p>
+<pre><code>&lt;Window xmlns:vwp=&quot;clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel&quot;&gt;
+    &lt;vwp:GridView
+        ItemsSource=&quot;{Binding YourItemsSource, Mode=OneWay}&quot;
+        ItemTemplate=&quot;{StaticResource YourItemTemplate}&quot;&gt;
+&lt;/Window&gt;
+</code></pre>
+<h3 id="spacing-behaviour">Spacing Behaviour</h3>
+<p>The <code>SpacingMode</code> property controls how the remaining space of a layout row is used. The default value is <code>Uniform</code> which means that the remaining space is evenly distributed between the items, as well as the start and end of each row.</p>
+<pre><code>&lt;vwp:VirtualizingWrapPanel SpacingMode=&quot;Uniform&quot; StretchItems=&quot;false&quot;/&gt;
+</code></pre>
+<pre><code>&lt;vwp:GridView SpacingMode=&quot;Uniform&quot; StretchItems=&quot;false&quot;/&gt;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>SpacingMode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>None</td>
+<td>The items are placed next to each other without spacing.</td>
+</tr>
+<tr>
+<td>Uniform</td>
+<td>The remaining space is evenly distributed between the items on a layout row, as well as the start and end of each row.</td>
+</tr>
+<tr>
+<td>BetweenItemsOnly</td>
+<td>The remaining space is evenly distributed between the items on a layout row, but not the start and end of each row.</td>
+</tr>
+<tr>
+<td>StartAndEndOnly</td>
+<td>The remaining space is evenly distributed between start and end of each row.</td>
+</tr>
+</tbody>
+</table>
+<p>When the <code>StretchItems</code> property is set to <code>true</code> the items get stretched up to their maximum size to fill as much remaining space as possible. The still remaining space is distributed according to the <code>SpacingMode</code> property.</p>
+<h3 id="caching">Caching</h3>
+<p>The attached properties <code>VirtualizingPanel.CacheLength</code> and <code>VirtualizingPanel.CacheLengthUnit</code> can be used to control the caching behaviour.
+For more information visit the official <a href="https://learn.microsoft.com/dotnet/api/system.windows.controls.virtualizingpanel.cachelength">.NET API documentation</a>.</p>
+<pre><code>&lt;ListView
+    VirtualizingPanel.CacheLength=&quot;200&quot;
+    VirtualizingPanel.CacheLengthUnit=&quot;Pixel&quot;&gt;
+    &lt;ListView.ItemsPanel&gt;
+         &lt;ItemsPanelTemplate&gt;
+            &lt;vwp:VirtualizingWrapPanel/&gt;
+        &lt;/ItemsPanelTemplate&gt;
+    &lt;/ListView.ItemsPanel&gt;
+&lt;/ListView&gt;
+</code></pre>
+<pre><code>&lt;GridView
+    VirtualizingPanel.CacheLength=&quot;200&quot;
+    VirtualizingPanel.CacheLengthUnit=&quot;Pixel&quot;/&gt;
+</code></pre>
+<h3 id="orientation">Orientation</h3>
+<p>⚠️ This information is only valid for version 2.x</p>
+<p>The <code>Orientation</code> property controls how the items are arranged. The default value is <code>Horizontal</code>, which means that the elements are arranged horizontally and wrap to the next row when the edge of the panel is reached. The scroll direction is vertical. When the property is set to <code>Vertical</code>, the items are arranged vertically and warp to a new column when the bottom of the panel is reached. The scroll direction is horizontal.</p>
+<pre><code>&lt;vwp:VirtualizingWrapPanel Orientation=&quot;Vertical&quot;/&gt;
+</code></pre>
+<pre><code>&lt;vwp:GridView Orientation=&quot;Vertical&quot;/&gt;
+</code></pre>
+<h3 id="grouping">Grouping</h3>
+<p>Grouping is fully supported and can be used as shown in the following example:</p>
+<pre><code>&lt;YouControl.Resources&gt;
+    &lt;CollectionViewSource
+        x:Key=&quot;GroupingItemsSource&quot;
+        Source=&quot;{Binding YourItemsSource, Mode=OneWay}&quot;&gt;
+        &lt;CollectionViewSource.GroupDescriptions&gt;
+            &lt;PropertyGroupDescription PropertyName=&quot;PropertyUsedForGrouping&quot;/&gt;
+        &lt;/CollectionViewSource.GroupDescriptions&gt;
+    &lt;/CollectionViewSource&gt;
+&lt;YouControl.Resources/&gt;  
+
+&lt;ListView 
+    VirtualizingPanel.IsVirtualizingWhenGrouping=&quot;True&quot;  
+    ItemsSource='{Binding Source={StaticResource GroupingItemsSource}}'&gt;
+    &lt;ItemsControl.ItemsPanel&gt;
+        &lt;ItemsPanelTemplate&gt;
+            &lt;vwp:VirtualizingWrapPanel/&gt;
+        &lt;/ItemsPanelTemplate&gt;
+    &lt;/ItemsControl.ItemsPanel&gt;
+    &lt;ItemsControl.GroupStyle&gt;
+        &lt;GroupStyle&gt;
+            &lt;GroupStyle.Panel&gt;
+                &lt;ItemsPanelTemplate&gt;
+                    &lt;VirtualizingStackPanel Orientation=&quot;Vertical&quot;/&gt;
+                &lt;/ItemsPanelTemplate&gt;
+            &lt;/GroupStyle.Panel&gt;
+            &lt;GroupStyle.ContainerStyle&gt;
+                &lt;!-- orginal WPF style but with zero Margin on the ItemsPresenter --&gt;
+                &lt;Style TargetType=&quot;{x:Type GroupItem}&quot;&gt;
+                    &lt;Setter Property=&quot;Control.Template&quot;&gt;
+                        &lt;Setter.Value&gt;
+                            &lt;ControlTemplate TargetType=&quot;{x:Type GroupItem}&quot;&gt;
+                                &lt;StackPanel&gt;
+                                    &lt;ContentPresenter
+                                        Content=&quot;{TemplateBinding ContentControl.Content}&quot;
+                                        ContentTemplate=&quot;{TemplateBinding ContentControl.ContentTemplate}&quot;
+                                        ContentStringFormat=&quot;{TemplateBinding ContentControl.ContentStringFormat}&quot;
+                                        Name=&quot;PART_Header&quot; /&gt;
+                                    &lt;ItemsPresenter Name=&quot;ItemsPresenter&quot; Margin=&quot;0&quot; /&gt;
+                                &lt;/StackPanel&gt;
+                            &lt;/ControlTemplate&gt;
+                        &lt;/Setter.Value&gt;
+                    &lt;/Setter&gt;
+                &lt;/Style&gt;
+            &lt;/GroupStyle.ContainerStyle&gt;
+        &lt;/GroupStyle&gt;
+     &lt;/ItemsControl.GroupStyle&gt;
+&lt;/ListView&gt;
+</code></pre>
+<h3 id="different-sized-items">Different Sized Items</h3>
+<p>⚠️ This information is only valid for version 2.x</p>
+<p>In order to use different sized items the property <code>AllowDifferentSizedItems</code> must be set to <code>true</code>. If this property is enabled, it is strongly recommended to also set the <code>ItemSizeProvider</code> property to an instance of the <code>IItemSizeProvider</code> interface. Otherwise, the position of the items is not guaranteed to be correct when the user is scrolling fast.</p>
+<p>The purpose of the <code>IItemSizeProvider</code> is to provide the size of the items based on the data. For example, when displaying images or other data where the resulting size is known without creating the UI elements. When the user scrolls quickly, it is not possible to realize all the items and get the desired size of the UI element. If this would be done, the performance would be really bad. Therefore, if no <code>IItemSizeProvider</code> is provided, the size of the items is assumed based on the size of the already realized items. Since in this case the size is assumed, it is not possible to guarantee that the items will always be shown at the right position.</p>
+<h3 id="item-expansion--details-view">Item Expansion / Details View</h3>
+<p>The <code>GridDetailsView</code> provides the feature to show an inline details view. The <code>ExpandedItemTemplate</code> property can be used to specify a template for this view.</p>
+<pre><code>&lt;vwp:GridDetailsView
+    ItemsSource=&quot;{Binding YourItemsSource, Mode=OneWay}&quot;
+    ItemTemplate=&quot;{StaticResource ItemTemplate}&quot;
+    ExpandedItemTemplate=&quot;{StaticResource ExpandedItemTemplate}&quot;&gt;
+</code></pre>
+<h3 id="virtualizingitemscontrol">VirtualizingItemsControl</h3>
+<p>The <code>VirtualizingItemsControl</code> is an extension of the standard <code>ItemsControl</code> to support virtualization.</p>
+<pre><code>&lt;vwp:VirtualizingItemsControl
+    ItemsSource=&quot;{Binding YourItemsSource, Mode=OneWay}&quot;
+    ItemTemplate=&quot;{StaticResource ItemTemplate}&quot;&gt;
+</code></pre>
+<h3 id="more-information--help">More Information / Help</h3>
+<p>To get more information checkout the <a href="https://github.com/sbaeumlisberger/VirtualizingWrapPanel/issues">Issues page</a> and feel free to open a new issue.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/docfx/docs/getting-started.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

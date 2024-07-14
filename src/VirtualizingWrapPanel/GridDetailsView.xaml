@@ -17,13 +17,11 @@
                 StretchItems="{Binding StretchItems, ElementName=uc, Mode=OneWay}">
                 <local:VirtualizingWrapPanelWithItemExpansion.ExpandedItemTemplate>
                     <DataTemplate>
-                        <StackPanel
-                            Loaded="ExpandedItemContainerRoot_Loaded"
-                            Orientation="{Binding Orientation, ElementName=uc, Mode=OneWay}">
+                        <Grid Loaded="ExpandedItemContainerRoot_Loaded">
                             <ContentControl
                                 ContentTemplate="{Binding ExpandedItemTemplate, Source={x:Reference uc}, Mode=OneWay}"
                                 Content="{Binding Mode=OneWay}" />
-                        </StackPanel>
+                        </Grid>
                     </DataTemplate>
                 </local:VirtualizingWrapPanelWithItemExpansion.ExpandedItemTemplate>
             </local:VirtualizingWrapPanelWithItemExpansion>

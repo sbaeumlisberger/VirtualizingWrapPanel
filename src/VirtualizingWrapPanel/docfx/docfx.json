@@ -1,0 +1,47 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../",
+          "files": [
+            "**/*.csproj"
+          ]
+        }
+      ],
+      "filter": "filter.yml",
+      "dest": "api"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.{md,yml}"
+        ],
+        "exclude": [
+          "_site/**"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "output": "../../../docs",
+    "template": [
+      "default",
+      "modern",
+      "custom"
+    ],
+    "globalMetadata": {
+      "_appName": "VirtualizingWrapPanel",
+      "_appTitle": "VirtualizingWrapPanel",
+      "_enableSearch": false,
+      "pdf": false
+    }
+  }
+}

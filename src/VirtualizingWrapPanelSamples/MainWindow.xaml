@@ -10,20 +10,52 @@
         x:Name="window"
         Title="VirtualizingWrapPanel Samples"
         Width="1000"
-        Height="680">
+        Height="800">
 
     <Window.Resources>
         <local:ColorToBrushConverter x:Key="ColorToBrushConverter" />
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <DataTemplate x:Key="ItemTemplate" DataType="local:TestItem">
             <StackPanel
+                MinWidth="100"
+                MinHeight="100"
                 Background="{Binding Background, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 Loaded="Item_Loaded"
                 Unloaded="Item_Unloaded">
+                <StackPanel.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Remove" Click="RemoveMenuItem_Click"/>
+                    </ContextMenu>
+                </StackPanel.ContextMenu>
                 <TextBlock
-                    Width="100"
+                    FontSize="20"     
+                    TextAlignment="Center"
+                    Text="{Binding Number, Mode=OneWay}"
+                    Padding="4" />
+                <TextBlock
+                    TextAlignment="Center"
+                    Text="{Binding CurrentDateTime, Mode=OneTime, StringFormat='{}{0:hh:mm:ss}'}"
+                    Padding="4" />
+            </StackPanel>
+
+        </DataTemplate>
+        <DataTemplate x:Key="RandomSizedItemTemplateLazy" DataType="local:TestItem">
+            <StackPanel
+                Width="{Binding SizeLazy.Width, Mode=OneWay}"
+                Height="{Binding SizeLazy.Height, Mode=OneWay}"
+                Background="{Binding Background, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Loaded="Item_Loaded"
+                Unloaded="Item_Unloaded">
+                <StackPanel.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Remove" Click="RemoveMenuItem_Click"/>
+                    </ContextMenu>
+                </StackPanel.ContextMenu>
+                <TextBlock     
                     FontSize="20"
                     TextAlignment="Center"
                     Text="{Binding Number, Mode=OneWay}"
@@ -34,6 +66,36 @@
                     Padding="8" />
             </StackPanel>
         </DataTemplate>
+        <DataTemplate x:Key="RandomSizedItemTemplate" DataType="local:TestItem">
+            <StackPanel
+                Width="{Binding Size.Width, Mode=OneWay}"
+                Height="{Binding Size.Height, Mode=OneWay}"
+                Background="{Binding Background, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Loaded="Item_Loaded"
+                Unloaded="Item_Unloaded">
+                <StackPanel.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Remove" Click="RemoveMenuItem_Click"/>
+                    </ContextMenu>
+                </StackPanel.ContextMenu>
+                <TextBlock     
+                    FontSize="20"
+                    TextAlignment="Center"
+                    Text="{Binding Number, Mode=OneWay}"
+                    Padding="8" />
+                <TextBlock
+                    TextAlignment="Center"
+                    Text="{Binding CurrentDateTime, Mode=OneTime, StringFormat='{}{0:hh:mm:ss}'}"
+                    Padding="8" />
+            </StackPanel>
+        </DataTemplate>
+        <Style x:Key="ItemContainerStyle" TargetType="{x:Type ListViewItem}">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Background" Value="LightGray"/>
+        </Style>
     </Window.Resources>
 
     <DockPanel Margin="8">
@@ -71,7 +133,7 @@
         <StackPanel 
             DockPanel.Dock="Left"
             Margin="0,0,12,0"
-            Width="144">
+            Width="152">
             <TextBlock VerticalAlignment="Center" Text="Orientation" />
             <ComboBox
                 Margin="0,2,0,0"
@@ -86,8 +148,10 @@
 
             <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Stretch Items" />
             <CheckBox 
-                Margin="0,2,0,0"
-                IsChecked="{Binding StretchItems, Mode=TwoWay}"/>
+                Margin="0,2,0,0"                
+                IsChecked="{Binding StretchItems, Mode=TwoWay}">
+                Enabled
+            </CheckBox>
 
             <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Cache Unit" />
             <ComboBox
@@ -144,15 +208,28 @@
                 ItemsSource="{Binding AvailableScrollBarVisibilities, Mode=OneTime}"
                 SelectedItem="{Binding VerticalScrollBarVisibility, Mode=TwoWay}" />
 
-            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Filter (>)" />
+            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Filter (Number >)" />
             <TextBox 
                 x:Name="filterTextBox" 
                 Margin="0,2,0,0"
                 TextChanged="FilterTextBox_TextChanged" />
+
+            <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Item Size" />
+            <TextBox 
+              Margin="0,2,0,0"
+              Text="{Binding ItemSize, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+
+            <TextBlock Margin="0,16,0,0" Text="ScrollIntoView (Number)"/>
+            <TextBox
+                x:Name="scrollIntoViewTextBox"
+                Margin="0,0,2,0" 
+                KeyDown="ScrollIntoViewTextBox_KeyDown"
+                LostFocus="ScrollIntoViewTextBox_LostFocus"/>
         </StackPanel>
 
         <Grid DockPanel.Dock="Bottom" Margin="0,8,0,0">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -162,6 +239,7 @@
             <Button Grid.Column="1" Margin="8,0,0,0" Content="Add 5000 items" Click="FillButton_Click" />
             <Button Grid.Column="2" Margin="8,0,0,0" Content="Remove random item" Click="RemoveButton_Click" />
             <Button Grid.Column="3" Margin="8,0,0,0" Content="Remove all items" Click="ClearButton_Click" />
+            <Button Grid.Column="4" Margin="8,0,0,0" Content="Random" Click="Random_Click" />
         </Grid>
 
         <TabControl 
@@ -178,14 +256,9 @@
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
-                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
-                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListViewItem}">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                            </Style>
-                        </ListView.ItemContainerStyle>
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=OneWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=OneWay}"
+                        ItemContainerStyle="{StaticResource ItemContainerStyle}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <wpftk:VirtualizingWrapPanel
@@ -195,13 +268,103 @@
                                     ScrollLineDelta="{Binding ScrollLineDelta, Mode=OneWay}"
                                     MouseWheelDelta="{Binding MouseWheelDelta, Mode=OneWay}"
                                     ScrollLineDeltaItem="{Binding ScrollLineDeltaItem, Mode=OneWay}"
-                                    MouseWheelDeltaItem="{Binding MouseWheelDeltaItem, Mode=OneWay}"/>
+                                    MouseWheelDeltaItem="{Binding MouseWheelDeltaItem, Mode=OneWay}"
+                                    ItemSize="{Binding ItemSize, Mode=OneWay}"/>
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
                     </ListView>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="ItemSize">
+            <TabItem Header="VirtualizingWrapPanel AllowDifferentSizedItems">
+                <DockPanel Margin="8,0,8,2">
+                    <TextBlock DockPanel.Dock="Top" Text="A VirtualizingWrapPanel used by a ListView as ItemsPanel." />
+                    <ListView
+                        Margin="0,2,0,0"
+                        ItemTemplate="{StaticResource RandomSizedItemTemplate}"
+                        VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
+                        VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
+                        VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
+                        VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=OneWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=OneWay}"
+                        ItemContainerStyle="{StaticResource ItemContainerStyle}">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <wpftk:VirtualizingWrapPanel
+                                    Orientation="{Binding Orientation, Mode=OneWay}"
+                                    SpacingMode="{Binding SpacingMode, Mode=OneWay}"
+                                    StretchItems="{Binding StretchItems, Mode=OneWay}"
+                                    ScrollLineDelta="{Binding ScrollLineDelta, Mode=OneWay}"
+                                    MouseWheelDelta="{Binding MouseWheelDelta, Mode=OneWay}"
+                                    ScrollLineDeltaItem="{Binding ScrollLineDeltaItem, Mode=OneWay}"
+                                    MouseWheelDeltaItem="{Binding MouseWheelDeltaItem, Mode=OneWay}"
+                                    AllowDifferentSizedItems="True"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="VirtualizingWrapPanel AllowDifferentSizedItems Lazy">
+                <DockPanel Margin="8,0,8,2">
+                    <TextBlock DockPanel.Dock="Top" Text="A VirtualizingWrapPanel used by a ListView as ItemsPanel." />
+                    <ListView
+                        Margin="0,2,0,0"
+                        ItemTemplate="{StaticResource RandomSizedItemTemplateLazy}"
+                        VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
+                        VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
+                        VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
+                        VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=OneWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=OneWay}"
+                        ItemContainerStyle="{StaticResource ItemContainerStyle}">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <wpftk:VirtualizingWrapPanel
+                                    Orientation="{Binding Orientation, Mode=OneWay}"
+                                    SpacingMode="{Binding SpacingMode, Mode=OneWay}"
+                                    StretchItems="{Binding StretchItems, Mode=OneWay}"
+                                    ScrollLineDelta="{Binding ScrollLineDelta, Mode=OneWay}"
+                                    MouseWheelDelta="{Binding MouseWheelDelta, Mode=OneWay}"
+                                    ScrollLineDeltaItem="{Binding ScrollLineDeltaItem, Mode=OneWay}"
+                                    MouseWheelDeltaItem="{Binding MouseWheelDeltaItem, Mode=OneWay}"
+                                    AllowDifferentSizedItems="True"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="VirtualizingWrapPanel AllowDifferentSizedItems Lazy IItemSizeProvider">
+                <DockPanel Margin="8,0,8,2">
+                    <TextBlock DockPanel.Dock="Top" Text="A VirtualizingWrapPanel used by a ListView as ItemsPanel." />
+                    <ListView
+                        Margin="0,2,0,0"
+                        ItemTemplate="{StaticResource RandomSizedItemTemplateLazy}"
+                        VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
+                        VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
+                        VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
+                        VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
+                        VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=OneWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=OneWay}"
+                        ItemContainerStyle="{StaticResource ItemContainerStyle}">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <wpftk:VirtualizingWrapPanel
+                                    Orientation="{Binding Orientation, Mode=OneWay}"
+                                    SpacingMode="{Binding SpacingMode, Mode=OneWay}"
+                                    StretchItems="{Binding StretchItems, Mode=OneWay}"
+                                    ScrollLineDelta="{Binding ScrollLineDelta, Mode=OneWay}"
+                                    MouseWheelDelta="{Binding MouseWheelDelta, Mode=OneWay}"
+                                    ScrollLineDeltaItem="{Binding ScrollLineDeltaItem, Mode=OneWay}"
+                                    MouseWheelDeltaItem="{Binding MouseWheelDeltaItem, Mode=OneWay}"
+                                    ItemSizeProvider="{Binding ItemSizeProvider}"
+                                    AllowDifferentSizedItems="True"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Fixed ItemSize">
                 <DockPanel Margin="8,0,8,2">
                     <TextBlock 
                         DockPanel.Dock="Top"    
@@ -213,14 +376,9 @@
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
-                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
-                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                            </Style>
-                        </ListView.ItemContainerStyle>
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=OneWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=OneWay}"
+                        ItemContainerStyle="{StaticResource ItemContainerStyle}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <wpftk:VirtualizingWrapPanel
@@ -241,7 +399,7 @@
                 <DockPanel Margin="8,0,8,2">
                     <TextBlock 
                         DockPanel.Dock="Top"                              
-                        Text="Note: Horizontal orientation and item based scrolling are currently not working correctly." />
+                        Text="A VirtualizingWrapPanel used for grouping items inside a VirtualizingStackPanel." />
                     <ListView
                         Margin="0,2,0,0"
                         ItemTemplate="{StaticResource ItemTemplate}"
@@ -250,32 +408,30 @@
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
                         VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
-                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                        <ListView.ItemsPanel>
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=OneWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=OneWay}"
+                        ItemContainerStyle="{StaticResource ItemContainerStyle}">
+                        <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <wpftk:VirtualizingWrapPanel
+                                    AllowDifferentSizedItems="False"
                                     Orientation="{Binding DataContext.Orientation, Mode=OneWay, ElementName=window}"
                                     SpacingMode="{Binding DataContext.SpacingMode, Mode=OneWay, ElementName=window}"                                    
-                                    ScrollLineDelta="{Binding ScrollLineDelta, Mode=OneWay}"
-                                    MouseWheelDelta="{Binding MouseWheelDelta, Mode=OneWay}"
-                                    ScrollLineDeltaItem="{Binding ScrollLineDeltaItem, Mode=OneWay}"
-                                    MouseWheelDeltaItem="{Binding MouseWheelDeltaItem, Mode=OneWay}"
-                                    StretchItems="{Binding StretchItems, Mode=OneWay}"/>
+                                    ScrollLineDelta="{Binding DataContext.ScrollLineDelta, Mode=OneWay, ElementName=window}"
+                                    MouseWheelDelta="{Binding DataContext.MouseWheelDelta, Mode=OneWay, ElementName=window}"
+                                    ScrollLineDeltaItem="{Binding DataContext.ScrollLineDeltaItem, Mode=OneWay, ElementName=window}"
+                                    MouseWheelDeltaItem="{Binding DataContext.MouseWheelDeltaItem, Mode=OneWay, ElementName=window}"
+                                    StretchItems="{Binding DataContext.StretchItems, Mode=OneWay, ElementName=window}"/>
                             </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                        <ListView.GroupStyle>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.GroupStyle>
                             <GroupStyle HidesIfEmpty="True">
                                 <GroupStyle.HeaderTemplate>
                                     <DataTemplate>
                                         <TextBlock
-                                            HorizontalAlignment="Left" 
+                                            Background="LightGray"
+                                            Padding="8"
+                                            HorizontalAlignment="Stretch" 
                                             FontWeight="Bold" 
                                             FontSize="14"
                                             Text="{Binding Name}" />
@@ -283,12 +439,31 @@
                                 </GroupStyle.HeaderTemplate>
                                 <GroupStyle.Panel>
                                     <ItemsPanelTemplate>
-                                        <VirtualizingStackPanel
-                                            Orientation="{Binding Orientation, Mode=OneWay}" />
+                                        <VirtualizingStackPanel                                            
+                                            Orientation="{Binding DataContext.OrientationGroupPanel, Mode=OneWay, ElementName=window}" />
                                     </ItemsPanelTemplate>
                                 </GroupStyle.Panel>
+                                <GroupStyle.ContainerStyle>
+                                    <!-- orginal WPF style but with zero Margin on the ItemsPresenter -->
+                                    <Style TargetType="{x:Type GroupItem}">
+                                        <Setter Property="Control.Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                    <StackPanel>
+                                                        <ContentPresenter
+                                                            Content="{TemplateBinding ContentControl.Content}"
+                                                            ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                                                            ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                                                            Name="PART_Header" />
+                                                        <ItemsPresenter Name="ItemsPresenter" Margin="0" />
+                                                    </StackPanel>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
                             </GroupStyle>
-                        </ListView.GroupStyle>
+                        </ItemsControl.GroupStyle>
                     </ListView>
                 </DockPanel>
             </TabItem>
@@ -302,8 +477,8 @@
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
                         VirtualizingPanel.ScrollUnit="{Binding ScrollUnit, Mode=OneWay}"
                         VirtualizingPanel.VirtualizationMode="{Binding VirtualizationMode, Mode=OneWay}"
-                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
-                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}">
+                        ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=OneWay}"
+                        ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=OneWay}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <wpftk:VirtualizingWrapPanel
@@ -323,10 +498,10 @@
                 <DockPanel Margin="8,0,8,2">
                     <Grid DockPanel.Dock="Top">
                         <TextBlock Text="The GridView control is a easy to use control displaying a grid of items using a VirtualizingWrapPanel." />
-                        <CheckBox HorizontalAlignment="Right" IsChecked="{Binding IsImprovedKeyboardNavigationEnabled}">Enable improved keyboard navigation</CheckBox>
+                        <CheckBox HorizontalAlignment="Right" IsChecked="{Binding IsWrappingKeyboardNavigationEnabled, Mode=TwoWay}">Enable wrapping keyboard navigation</CheckBox>
                     </Grid>
                     <wpftk:GridView
-                        IsImprovedKeyboardNavigationEnabled="{Binding IsImprovedKeyboardNavigationEnabled, Mode=OneWay}"
+                        IsWrappingKeyboardNavigationEnabled="{Binding IsWrappingKeyboardNavigationEnabled, Mode=OneWay}"
                         Margin="0,2,0,0"
                         ItemTemplate="{StaticResource ItemTemplate}"
                         VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
@@ -359,7 +534,6 @@
                         <wpftk:GridDetailsView.ExpandedItemTemplate>
                             <DataTemplate DataType="local:TestItem">
                                 <TextBlock
-                                    HorizontalAlignment="Stretch"
                                     Background="Gray"
                                     FontSize="64"
                                     Text="{Binding Number}"
@@ -370,16 +544,16 @@
                     </wpftk:GridDetailsView>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Material Design">
-                <TabItem.Resources>
-                    <ResourceDictionary>
-                        <ResourceDictionary.MergedDictionaries>
-                            <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
-                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-                        </ResourceDictionary.MergedDictionaries>
-                    </ResourceDictionary>
-                </TabItem.Resources>
+            <TabItem Header="Material Design">               
                 <DockPanel Margin="8,0,8,2">
+                    <DockPanel.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </DockPanel.Resources>
                     <TextBlock DockPanel.Dock="Top" Text="A VirtualizingWrapPanel used by a MaterialDesignListBox as ItemsPanel." />
                     <ListBox    
                         Margin="0,2,0,0"

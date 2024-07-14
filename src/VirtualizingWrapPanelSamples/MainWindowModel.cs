@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
@@ -13,7 +14,7 @@ namespace VirtualizingWrapPanelSamples
 {
     class MainWindowModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public ObservableCollection<TestItem> Items { get; } = new ObservableCollection<TestItem>();
 
@@ -30,6 +31,7 @@ namespace VirtualizingWrapPanelSamples
         public ScrollBarVisibility[] AvailableScrollBarVisibilities { get; } = (ScrollBarVisibility[])Enum.GetValues(typeof(ScrollBarVisibility));
 
         public Orientation Orientation { get => orientation; set => SetField(ref orientation, value); }
+        public Orientation OrientationGroupPanel { get => orientationGroupPanel; set => SetField(ref orientationGroupPanel, value); }
         public VirtualizationCacheLengthUnit CacheUnit { get => cacheUnit; set => SetField(ref cacheUnit, value); }
         public VirtualizationCacheLength CacheLength { get => cacheLength; set => SetField(ref cacheLength, value); }
         public VirtualizationMode VirtualizationMode { get => virtualizationMode; set => SetField(ref virtualizationMode, value); }
@@ -44,8 +46,11 @@ namespace VirtualizingWrapPanelSamples
         public int MouseWheelDeltaItem { get => mouseWheelDeltaItem; set => SetField(ref mouseWheelDeltaItem, value); }
         public ScrollBarVisibility HorizontalScrollBarVisibility { get => horizontalScrollBarVisibility; set => SetField(ref horizontalScrollBarVisibility, value); }
         public ScrollBarVisibility VerticalScrollBarVisibility { get => verticalScrollBarVisibility; set => SetField(ref verticalScrollBarVisibility, value); }
-       
-        public bool IsImprovedKeyboardNavigationEnabled { get => isImprovedKeyboardNavigationEnabled; set => SetField(ref isImprovedKeyboardNavigationEnabled, value); }
+        public Size ItemSize { get => itemSize; set => SetField(ref itemSize, value); }
+
+        public bool IsWrappingKeyboardNavigationEnabled { get => isWrappingKeyboardNavigationEnabled; set => SetField(ref isWrappingKeyboardNavigationEnabled, value); }
+
+        public IItemSizeProvider ItemSizeProvider { get; } = new TestItemSizeProvider();
 
         private int renderedItemsCount = 0;
 
@@ -54,8 +59,9 @@ namespace VirtualizingWrapPanelSamples
 
         private VirtualizationCacheLengthUnit cacheUnit = VirtualizationCacheLengthUnit.Page;
         private VirtualizationCacheLength cacheLength = new VirtualizationCacheLength(1);
-        private VirtualizationMode virtualizationMode = VirtualizationMode.Standard;
-        private Orientation orientation = Orientation.Vertical;
+        private VirtualizationMode virtualizationMode = VirtualizationMode.Recycling;
+        private Orientation orientation = Orientation.Horizontal;
+        private Orientation orientationGroupPanel = Orientation.Vertical;
         private SpacingMode spacingMode = SpacingMode.Uniform;
         private bool stretchItems = false;
         private ScrollUnit scrollUnit = ScrollUnit.Pixel;
@@ -65,8 +71,9 @@ namespace VirtualizingWrapPanelSamples
         private int mouseWheelDeltaItem = 3;
         private ScrollBarVisibility horizontalScrollBarVisibility = ScrollBarVisibility.Auto;
         private ScrollBarVisibility verticalScrollBarVisibility = ScrollBarVisibility.Auto;
+        private Size itemSize = Size.Empty;
 
-        private bool isImprovedKeyboardNavigationEnabled = false;
+        private bool isWrappingKeyboardNavigationEnabled = false;
 
         private readonly Random random = new Random();
 
@@ -89,8 +96,8 @@ namespace VirtualizingWrapPanelSamples
 
         public void InsertItemAtRandomPosition()
         {
-            int index = random.Next(Items.Count);
-            Items.Insert(index, new TestItem("Group " + new Random().Next(250), Items.Count));
+            int number = Items.Any() ? Items.Select(item => item.Number).Max() + 1 : 1;
+            Items.Add(new TestItem("Group " + random.Next(50), number));
         }
 
         public void AddItems()
@@ -98,7 +105,7 @@ namespace VirtualizingWrapPanelSamples
             int newCount = Items.Count + 5000;
             for (int i = Items.Count; i < newCount; i++)
             {
-                Items.Add(new TestItem("Group " + i / 20, i + 1));
+                Items.Add(new TestItem("Group " + i / 100, i + 1));
             }
         }
 
@@ -111,9 +118,24 @@ namespace VirtualizingWrapPanelSamples
             }
         }
 
+        public void RemoveItem(TestItem item)
+        {
+            Items.Remove(item);            
+        }
+
         public void RemoveAllItems()
         {
             Items.Clear();
+        }
+
+        public void RandomizeItems()
+        {
+            Items.Clear();
+            int count = random.Next(500, 5000);
+            for (int i = 0; i < count; i++)
+            {
+                Items.Add(new TestItem("Group " + i / 100, i + 1));
+            }
         }
 
         public void RefreshMemoryUsage()
@@ -125,7 +147,7 @@ namespace VirtualizingWrapPanelSamples
             }
         }
 
-        private void MainWindowModel_PropertyChanged(object sender, PropertyChangedEventArgs args)
+        private void MainWindowModel_PropertyChanged(object? sender, PropertyChangedEventArgs args)
         {
             switch (args.PropertyName)
             {
@@ -136,8 +158,11 @@ namespace VirtualizingWrapPanelSamples
                     UpdateMemoryUsageRefreshTimer();
                     break;
                 case nameof(ScrollUnit):
-                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(IsScrollByPixel)));
-                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(IsScrollByItem)));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsScrollByPixel)));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsScrollByItem)));
+                    break;
+                case nameof(Orientation):
+                    OrientationGroupPanel = Orientation == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal;
                     break;
             }
         }
@@ -170,7 +195,7 @@ namespace VirtualizingWrapPanelSamples
             }
         }
 
-        private bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        private bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
         {
             if (Equals(value, field))
             {
