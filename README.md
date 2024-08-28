@@ -19,5 +19,5 @@ Implementation of a [VirtualizingWrapPanel](https://sbaeumlisberger.github.io/Vi
 * [API-Documentation](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.html)
 
 ### Contribution
-Feel free to open an issue if you have a problem or suggestion. Pull requests are also accepted, but please open an issue first to allow for discussion.  
-You can also make a [donation](https://www.paypal.com/paypalme/sbaeumlisberger) to support the future development of the project.
+Feel free to open an issue if you have a problem or suggestion. Pull requests are also accepted, but please make sure you open an issue first so that it can be discussed.
+To to support the future development you can [sponsor](https://github.com/sponsors/sbaeumlisberger) the project or make a donation via [PayPal](https://www.paypal.com/paypalme/sbaeumlisberger).
