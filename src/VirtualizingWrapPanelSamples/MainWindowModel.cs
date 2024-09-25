@@ -28,6 +28,7 @@ namespace VirtualizingWrapPanelSamples
         public Orientation[] AvailableOrientations { get; } = (Orientation[])Enum.GetValues(typeof(Orientation));
         public SpacingMode[] AvailableSpacingModes { get; } = (SpacingMode[])Enum.GetValues(typeof(SpacingMode));
         public ScrollUnit[] AvailableScrollUnits { get; } = (ScrollUnit[])Enum.GetValues(typeof(ScrollUnit));
+        public HorizontalAlignment[] AvailableHorizontalAlignments { get; } = (HorizontalAlignment[])Enum.GetValues(typeof(HorizontalAlignment));
         public ScrollBarVisibility[] AvailableScrollBarVisibilities { get; } = (ScrollBarVisibility[])Enum.GetValues(typeof(ScrollBarVisibility));
 
         public Orientation Orientation { get => orientation; set => SetField(ref orientation, value); }
@@ -36,6 +37,7 @@ namespace VirtualizingWrapPanelSamples
         public VirtualizationCacheLength CacheLength { get => cacheLength; set => SetField(ref cacheLength, value); }
         public VirtualizationMode VirtualizationMode { get => virtualizationMode; set => SetField(ref virtualizationMode, value); }
         public SpacingMode SpacingMode { get => spacingMode; set => SetField(ref spacingMode, value); }
+        public HorizontalAlignment HorizontalAlignmentMode { get => horizontalAlignmentMode; set => SetField(ref horizontalAlignmentMode, value); }
         public bool StretchItems { get => stretchItems; set => SetField(ref stretchItems, value); }
         public ScrollUnit ScrollUnit { get => scrollUnit; set => SetField(ref scrollUnit, value); }
         public bool IsScrollByPixel => ScrollUnit == ScrollUnit.Pixel;
@@ -63,6 +65,7 @@ namespace VirtualizingWrapPanelSamples
         private Orientation orientation = Orientation.Horizontal;
         private Orientation orientationGroupPanel = Orientation.Vertical;
         private SpacingMode spacingMode = SpacingMode.Uniform;
+        private HorizontalAlignment horizontalAlignmentMode = HorizontalAlignment.Stretch;
         private bool stretchItems = false;
         private ScrollUnit scrollUnit = ScrollUnit.Pixel;
         private double scrollLineDelta = 16.0;
@@ -74,7 +77,6 @@ namespace VirtualizingWrapPanelSamples
         private Size itemSize = Size.Empty;
 
         private bool isWrappingKeyboardNavigationEnabled = false;
-
         private readonly Random random = new Random();
 
         private readonly DispatcherTimer memoryUsageRefreshTimer;
@@ -120,7 +122,7 @@ namespace VirtualizingWrapPanelSamples
 
         public void RemoveItem(TestItem item)
         {
-            Items.Remove(item);            
+            Items.Remove(item);
         }
 
         public void RemoveAllItems()

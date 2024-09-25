@@ -26,6 +26,9 @@ namespace WpfToolkit.Controls
 
         public static readonly DependencyProperty StretchItemsProperty = DependencyProperty.Register(nameof(StretchItems), typeof(bool), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsArrange));
 
+        public static readonly DependencyProperty HorizontalAlignmentForAllowDifferentSizedProperty =
+            DependencyProperty.Register(nameof(HorizontalAlignmentForAllowDifferentSized), typeof(HorizontalAlignment), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(HorizontalAlignment.Stretch, FrameworkPropertyMetadataOptions.AffectsArrange));
+
         /// <summary>
         /// Gets or sets a value that specifies the orientation in which items are arranged before wrapping. The default value is <see cref="Orientation.Horizontal"/>.
         /// </summary>
@@ -63,6 +66,8 @@ namespace WpfToolkit.Controls
         /// In this case the use of the remaining space will be determined by the SpacingMode property. 
         /// </remarks>
         public bool StretchItems { get => (bool)GetValue(StretchItemsProperty); set => SetValue(StretchItemsProperty, value); }
+
+        public HorizontalAlignment HorizontalAlignmentForAllowDifferentSized { get => (HorizontalAlignment)GetValue(HorizontalAlignmentForAllowDifferentSizedProperty); set => SetValue(HorizontalAlignmentForAllowDifferentSizedProperty, value); }
 
         /// <summary>
         /// Gets value that indicates whether the <see cref="VirtualizingPanel"/> can virtualize items 
@@ -121,6 +126,8 @@ namespace WpfToolkit.Controls
 
         private int bringIntoViewItemIndex = -1;
         private FrameworkElement? bringIntoViewContainer;
+        private double innerSpacing;
+        private double outerSpacing;
 
         public void ClearItemSizeCache()
         {
@@ -204,7 +211,8 @@ namespace WpfToolkit.Controls
             {
                 return finalSize;
             }
-
+            innerSpacing = 0;
+            outerSpacing = 0;
             bool hierarchical = ItemsOwner is IHierarchicalVirtualizationAndScrollInfo;
             double x = startItemOffsetX + GetX(ScrollOffset);
             double y = hierarchical ? startItemOffsetY : startItemOffsetY - GetY(ScrollOffset);
@@ -223,7 +231,7 @@ namespace WpfToolkit.Controls
 
                 if (rowChilds.Count > 0 && x + GetWidth(childSize) > GetWidth(finalSize))
                 {
-                    ArrangeRow(GetWidth(finalSize), rowChilds, childSizes, y, hierarchical);
+                    ArrangeRow(GetWidth(finalSize), rowChilds, childSizes, y, hierarchical, false);
                     x = 0;
                     y += rowHeight;
                     rowHeight = 0;
@@ -239,7 +247,7 @@ namespace WpfToolkit.Controls
 
             if (rowChilds.Any())
             {
-                ArrangeRow(GetWidth(finalSize), rowChilds, childSizes, y, hierarchical);
+                ArrangeRow(GetWidth(finalSize), rowChilds, childSizes, y, hierarchical, true);
             }
 
             return finalSize;
@@ -343,7 +351,7 @@ namespace WpfToolkit.Controls
                 double visibleHeaderHeight = Math.Max(0, groupItem.HeaderDesiredSizes.PixelSize.Height - Math.Max(0, groupItem.Constraints.Viewport.Location.Y));
                 viewporteHeight = Math.Max(0, viewporteHeight - visibleHeaderHeight);
             }
-            else 
+            else
             {
                 viewporteHeight = Math.Max(0, viewporteHeight - groupItem.HeaderDesiredSizes.PixelSize.Height);
             }
@@ -682,7 +690,7 @@ namespace WpfToolkit.Controls
                 x += GetWidth(itemSize);
                 rowHeight = Math.Max(rowHeight, GetHeight(itemSize));
             }
-          
+
             return CreateSize(knownExtendX, y + rowHeight);
         }
 
@@ -750,11 +758,13 @@ namespace WpfToolkit.Controls
             return GetAverageItemSize();
         }
 
-        private void ArrangeRow(double rowWidth, List<UIElement> children, List<Size> childSizes, double y, bool hierarchical)
+        private void ArrangeRow(double rowWidth, List<UIElement> children, List<Size> childSizes, double y, bool hierarchical, bool lastRow)
         {
             double summedUpChildWidth;
             double extraWidth = 0;
+            double startOffset = 0;
 
+            double actualSummedUpChildWidth = childSizes.Sum(childSize => GetWidth(childSize));
             if (AllowDifferentSizedItems)
             {
                 summedUpChildWidth = childSizes.Sum(childSize => GetWidth(childSize));
@@ -786,12 +796,36 @@ namespace WpfToolkit.Controls
                 }
             }
 
-            double innerSpacing = 0;
-            double outerSpacing = 0;
-
-            if (summedUpChildWidth < rowWidth)
+            if (AllowDifferentSizedItems && lastRow && HorizontalAlignmentForAllowDifferentSized == HorizontalAlignment.Stretch)
             {
-                CalculateRowSpacing(rowWidth, children, summedUpChildWidth, out innerSpacing, out outerSpacing);
+                innerSpacing = 0;
+                outerSpacing = 0;
+            }
+
+            if (summedUpChildWidth < rowWidth && ((lastRow && HorizontalAlignmentForAllowDifferentSized == HorizontalAlignment.Stretch) || !lastRow))
+            {
+                double tempSummedUpChildWidth = summedUpChildWidth;
+                bool allowDifferentSizedItems = AllowDifferentSizedItems;
+                if (lastRow && HorizontalAlignmentForAllowDifferentSized == HorizontalAlignment.Stretch)
+                {
+                    tempSummedUpChildWidth = actualSummedUpChildWidth;
+                    allowDifferentSizedItems = true;
+                }
+
+
+                CalculateRowSpacing(rowWidth, children, tempSummedUpChildWidth, allowDifferentSizedItems, out innerSpacing, out outerSpacing);
+            }
+
+            if (lastRow)
+            {
+                if (HorizontalAlignmentForAllowDifferentSized == HorizontalAlignment.Right)
+                {
+                    startOffset = rowWidth - actualSummedUpChildWidth - (innerSpacing * children.Count) - outerSpacing;
+                }
+                else if (HorizontalAlignmentForAllowDifferentSized == HorizontalAlignment.Center)
+                {
+                    startOffset = (rowWidth - actualSummedUpChildWidth - (innerSpacing * children.Count) - outerSpacing) / 2;
+                }
             }
 
             double x = hierarchical ? outerSpacing : -GetX(ScrollOffset) + outerSpacing;
@@ -800,16 +834,16 @@ namespace WpfToolkit.Controls
             {
                 var child = children[i];
                 Size childSize = childSizes[i];
-                child.Arrange(CreateRect(x, y, GetWidth(childSize) + extraWidth, GetHeight(childSize)));
+                child.Arrange(CreateRect(x + startOffset, y, GetWidth(childSize) + extraWidth, GetHeight(childSize)));
                 x += GetWidth(childSize) + extraWidth + innerSpacing;
             }
         }
 
-        private void CalculateRowSpacing(double rowWidth, List<UIElement> children, double summedUpChildWidth, out double innerSpacing, out double outerSpacing)
+        private void CalculateRowSpacing(double rowWidth, List<UIElement> children, double summedUpChildWidth, bool allowDifferentSizedItems, out double innerSpacing, out double outerSpacing)
         {
             int childCount;
 
-            if (AllowDifferentSizedItems)
+            if (allowDifferentSizedItems)
             {
                 childCount = children.Count;
             }
