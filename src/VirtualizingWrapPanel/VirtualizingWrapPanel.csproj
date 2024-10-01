@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.0.10</Version>
+        <Version>2.0.11</Version>
         <Authors>S. Bäumlisberger</Authors>
         <Copyright>© S. Bäumlisberger</Copyright>
         <Description>Implementation of a comprehensive VirtualizingWrapPanel for WPF.</Description>
@@ -36,7 +36,8 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         
         <PackageReleaseNotes>
-- Fix: Not all items of last row realized when using grouping with small cache size and partially visible header (see #61) 
+- Fix: #65 Stackoverflow exception in VirtualizingWrapPanel.MeasureOverride 
+- Scroll input methods of VirtualizingPanelBase are now virtual
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>
