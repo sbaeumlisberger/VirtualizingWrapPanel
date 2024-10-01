@@ -162,9 +162,11 @@ namespace WpfToolkit.Controls
             RealizeAndVirtualizeItems();
             UpdateExtent();
 
+            const double Tolerance = 0.001;
+
             if (ItemsOwner is not IHierarchicalVirtualizationAndScrollInfo
                 && GetY(ScrollOffset) != 0
-                && GetY(ScrollOffset) + GetHeight(ViewportSize) > GetHeight(Extent))
+                && GetY(ScrollOffset) + GetHeight(ViewportSize) > GetHeight(Extent) + Tolerance)
             {
                 ScrollOffset = CreatePoint(GetX(ScrollOffset), Math.Max(0, GetHeight(Extent) - GetHeight(ViewportSize)));
                 ScrollOwner?.InvalidateScrollInfo();
