@@ -162,9 +162,11 @@ namespace WpfToolkit.Controls
             RealizeAndVirtualizeItems();
             UpdateExtent();
 
+            const double Tolerance = 0.001;
+
             if (ItemsOwner is not IHierarchicalVirtualizationAndScrollInfo
                 && GetY(ScrollOffset) != 0
-                && GetY(ScrollOffset) + GetHeight(ViewportSize) > GetHeight(Extent))
+                && GetY(ScrollOffset) + GetHeight(ViewportSize) > GetHeight(Extent) + Tolerance)
             {
                 ScrollOffset = CreatePoint(GetX(ScrollOffset), Math.Max(0, GetHeight(Extent) - GetHeight(ViewportSize)));
                 ScrollOwner?.InvalidateScrollInfo();
@@ -343,7 +345,7 @@ namespace WpfToolkit.Controls
                 double visibleHeaderHeight = Math.Max(0, groupItem.HeaderDesiredSizes.PixelSize.Height - Math.Max(0, groupItem.Constraints.Viewport.Location.Y));
                 viewporteHeight = Math.Max(0, viewporteHeight - visibleHeaderHeight);
             }
-            else 
+            else
             {
                 viewporteHeight = Math.Max(0, viewporteHeight - groupItem.HeaderDesiredSizes.PixelSize.Height);
             }
@@ -682,7 +684,7 @@ namespace WpfToolkit.Controls
                 x += GetWidth(itemSize);
                 rowHeight = Math.Max(rowHeight, GetHeight(itemSize));
             }
-          
+
             return CreateSize(knownExtendX, y + rowHeight);
         }
 

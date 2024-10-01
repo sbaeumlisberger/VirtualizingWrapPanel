@@ -38,12 +38,13 @@ namespace VirtualizingWrapPanelSamples
             }
         }
 
-        public DateTime CurrentDateTime 
-        { 
-            get { 
-                sizeLazy = Size.Empty; 
-                return DateTime.Now; 
-            } 
+        public DateTime CurrentDateTime
+        {
+            get
+            {
+                sizeLazy = Size.Empty;
+                return DateTime.Now;
+            }
         }
 
         public Size Size { get; }

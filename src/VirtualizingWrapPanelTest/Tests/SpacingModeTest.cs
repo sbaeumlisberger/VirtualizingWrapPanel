@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Xml;
+﻿using System.Windows;
 using WpfToolkit.Controls;
 using Xunit;
 using Assert = Xunit.Assert;

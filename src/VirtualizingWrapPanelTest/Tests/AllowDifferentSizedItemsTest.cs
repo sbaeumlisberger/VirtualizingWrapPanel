@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Controls;
 using WpfToolkit.Controls;
 using Xunit;
-using Xunit.Abstractions;
 using Assert = Xunit.Assert;
 
 namespace VirtualizingWrapPanelTest.Tests;
@@ -173,7 +167,7 @@ public class AllowDifferentSizedItemsTest
     }
 
     [UIFact]
-    public void ExtendShouldAdjustWhenCollectionChanged() 
+    public void ExtendShouldAdjustWhenCollectionChanged()
     {
         double extend = CalculateExtend(items, panelSize.Width);
         double maxOffset = extend - panelSize.Height;
