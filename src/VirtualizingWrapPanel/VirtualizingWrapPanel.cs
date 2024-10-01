@@ -345,7 +345,7 @@ namespace WpfToolkit.Controls
                 double visibleHeaderHeight = Math.Max(0, groupItem.HeaderDesiredSizes.PixelSize.Height - Math.Max(0, groupItem.Constraints.Viewport.Location.Y));
                 viewporteHeight = Math.Max(0, viewporteHeight - visibleHeaderHeight);
             }
-            else 
+            else
             {
                 viewporteHeight = Math.Max(0, viewporteHeight - groupItem.HeaderDesiredSizes.PixelSize.Height);
             }
@@ -684,7 +684,7 @@ namespace WpfToolkit.Controls
                 x += GetWidth(itemSize);
                 rowHeight = Math.Max(rowHeight, GetHeight(itemSize));
             }
-          
+
             return CreateSize(knownExtendX, y + rowHeight);
         }
 

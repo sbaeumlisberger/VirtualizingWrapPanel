@@ -287,7 +287,7 @@ namespace WpfToolkit.Controls
                 return new GeneratorPosition(childIndex, 0);
             }
         }
-        
+
         private void UpdateScrollInfo(Size availableSize, Size extent)
         {
             bool invalidateScrollInfo = false;

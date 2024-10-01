@@ -169,7 +169,7 @@ public class GroupingTest
     }
 
     private static void AssertItem(VirtualizingPanel virtualizingPanel, string itemName, int x, int y, int width = TestUtil.DefaultItemWidth, int height = TestUtil.DefaultItemHeight)
-    { 
+    {
         TestUtil.AssertItem(virtualizingPanel, itemName, x + Margin, y, width, height);
     }
 }

@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows;
-using WpfToolkit.Controls;
-using System.Xml;
-using System.Windows.Markup;
-using Assert = Xunit.Assert;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Markup;
+using System.Windows.Media;
+using System.Xml;
+using WpfToolkit.Controls;
+using Assert = Xunit.Assert;
 
 namespace VirtualizingWrapPanelTest;
 

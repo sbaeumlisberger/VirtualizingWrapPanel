@@ -120,7 +120,7 @@ namespace VirtualizingWrapPanelSamples
 
         public void RemoveItem(TestItem item)
         {
-            Items.Remove(item);            
+            Items.Remove(item);
         }
 
         public void RemoveAllItems()
