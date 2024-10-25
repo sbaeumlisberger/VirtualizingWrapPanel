@@ -9,9 +9,9 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.0.11</Version>
-        <Authors>S. Bäumlisberger</Authors>
-        <Copyright>© S. Bäumlisberger</Copyright>
+        <Version>2.0.12</Version>
+        <Authors>sbaeumlisberger</Authors>
+        <Copyright>sbaeumlisberger</Copyright>
         <Description>Implementation of a comprehensive VirtualizingWrapPanel for WPF.</Description>
     </PropertyGroup>
 
@@ -36,8 +36,8 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         
         <PackageReleaseNotes>
-- Fix: #65 Stackoverflow exception in VirtualizingWrapPanel.MeasureOverride 
-- Scroll input methods of VirtualizingPanelBase are now virtual
+- #66 verify that items are distinct
+- enable deterministic builds
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>
