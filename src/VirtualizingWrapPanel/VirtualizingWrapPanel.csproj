@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>net462;net6.0-windows</TargetFrameworks>
         <UseWPF>true</UseWPF>
-        <LangVersion>10.0</LangVersion>
+        <LangVersion>12.0</LangVersion>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
@@ -48,7 +48,6 @@
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <EmbedAllSources>true</EmbedAllSources>
         <Deterministic>true</Deterministic>
-        <PathMap>$(MSBuildProjectDirectory)=C:\</PathMap>
     </PropertyGroup>
 
 </Project>
