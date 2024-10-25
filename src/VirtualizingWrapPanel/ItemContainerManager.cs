@@ -64,6 +64,7 @@ internal class ItemContainerManager
         this.addInternalChild = addInternalChild;
         this.removeInternalChild = removeInternalChild;
         itemContainerGenerator.ItemsChanged += ItemContainerGenerator_ItemsChanged;
+        VerifyItemsDistinct();
     }
 
     public UIElement Realize(int itemIndex)
@@ -143,6 +144,8 @@ internal class ItemContainerManager
 
     private void ItemContainerGenerator_ItemsChanged(object sender, ItemsChangedEventArgs e)
     {
+        VerifyItemsDistinct();
+
         if (e.Action == NotifyCollectionChangedAction.Reset)
         {
             realizedContainers.Clear();
@@ -186,6 +189,14 @@ internal class ItemContainerManager
             {
                 InvalidateMeasureRecursively(child);
             }
+        }
+    }
+
+    private void VerifyItemsDistinct()
+    {
+        if (Items.Distinct().Count() != Items.Count)
+        {
+            throw new InvalidOperationException("Items must be distinct.");
         }
     }
 
