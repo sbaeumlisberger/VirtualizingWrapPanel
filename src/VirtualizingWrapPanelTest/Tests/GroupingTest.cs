@@ -33,7 +33,7 @@ public class GroupingTest
 
     private static readonly string HeaderTemplate = $"""
         <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"> 
-            <Border Height="{HeaderHeight}"/>
+            <Border Background="Green" Height="{HeaderHeight}"/>
         </DataTemplate>
         """;
 
@@ -166,6 +166,27 @@ public class GroupingTest
         itemsControl.UpdateLayout();
 
         TestUtil.AssertItemRangeRealized(vsp, 1, 25 + cacheLength);
+    }
+
+    // Bug #68: ArgumentOutOfRangeException when adding GroupStyle at runtime
+    [WpfTheory]
+    [InlineData(VirtualizationMode.Standard)]
+    [InlineData(VirtualizationMode.Recycling)]
+    public void AddGroupStyle(VirtualizationMode virtualizationMode)
+    {
+        VirtualizingPanel.SetVirtualizationMode(itemsControl, virtualizationMode);
+        itemsControl.GroupStyle.Clear();
+        itemsControl.UpdateLayout();
+        var vwp = TestUtil.GetVisualChild<VirtualizingWrapPanel>(itemsControl)!;
+
+        itemsControl.GroupStyle.Add(new GroupStyle() { HeaderTemplate = TestUtil.CreateDateTemplate(HeaderTemplate) });
+
+        // ensure no exception is thrown when the VirtualizingWrapPanel is measured after adding the GroupStyle (#68)
+        vwp.Measure(new Size(ViewportWidth, ViewportHeight));     
+
+        itemsControl.UpdateLayout();
+        var vsp = TestUtil.GetVisualChild<VirtualizingStackPanel>(itemsControl)!;
+        TestUtil.AssertItemRangeRealized(vsp, 1, 1);
     }
 
     private static void AssertItem(VirtualizingPanel virtualizingPanel, string itemName, int x, int y, int width = TestUtil.DefaultItemWidth, int height = TestUtil.DefaultItemHeight)

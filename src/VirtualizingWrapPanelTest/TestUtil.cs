@@ -49,9 +49,9 @@ internal class TestUtil
 
     private static void SetupAndShowItemsControl(
         ItemsControl itemsControl,
-       double width,
-       double height,
-       IEnumerable items)
+        double width,
+        double height,
+        IEnumerable items)
     {
         ScrollViewer.SetVerticalScrollBarVisibility(itemsControl, ScrollBarVisibility.Hidden);
         ScrollViewer.SetHorizontalScrollBarVisibility(itemsControl, ScrollBarVisibility.Hidden);

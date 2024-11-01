@@ -139,7 +139,7 @@ internal class ItemContainerManager
 
     public int FindItemIndexOfContainer(UIElement container)
     {
-        return itemContainerGenerator.IndexFromContainer(container);
+        return itemContainerGenerator.Items.IndexOf(itemContainerGenerator.ItemFromContainer(container));
     }
 
     private void ItemContainerGenerator_ItemsChanged(object sender, ItemsChangedEventArgs e)
