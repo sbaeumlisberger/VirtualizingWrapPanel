@@ -25,6 +25,8 @@ namespace WpfToolkit.Controls
         public static readonly DependencyProperty SpacingModeProperty = DependencyProperty.Register(nameof(SpacingMode), typeof(SpacingMode), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(SpacingMode.Uniform, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         public static readonly DependencyProperty StretchItemsProperty = DependencyProperty.Register(nameof(StretchItems), typeof(bool), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsArrange));
+        
+        public static readonly DependencyProperty IsGridLayoutEnabledProperty = DependencyProperty.Register(nameof(IsGridLayoutEnabled), typeof(bool), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
         /// Gets or sets a value that specifies the orientation in which items are arranged before wrapping. The default value is <see cref="Orientation.Horizontal"/>.
@@ -63,6 +65,17 @@ namespace WpfToolkit.Controls
         /// In this case the use of the remaining space will be determined by the SpacingMode property. 
         /// </remarks>
         public bool StretchItems { get => (bool)GetValue(StretchItemsProperty); set => SetValue(StretchItemsProperty, value); }
+
+        /// <summary>
+        /// Specifies whether the items are arranged in a grid-like layout. The default value is <c>true</c>.
+        /// When set to <c>true</c>, the items are arranged based on the number of items that can fit in a row. 
+        /// When set to <c>false</c>, the items are arranged based on the number of items that are actually placed in the row. 
+        /// </summary>
+        /// <remarks>
+        /// If <see cref="AllowDifferentSizedItems"/> is enabled, this property has no effect and the items are always 
+        /// arranged based on the number of items that are actually placed in the row.
+        /// </remarks>
+        public bool IsGridLayoutEnabled { get => (bool)GetValue(IsGridLayoutEnabledProperty); set => SetValue(IsGridLayoutEnabledProperty, value); }
 
         /// <summary>
         /// Gets value that indicates whether the <see cref="VirtualizingPanel"/> can virtualize items 
@@ -771,7 +784,7 @@ namespace WpfToolkit.Controls
             else
             {
                 double childWidth = GetWidth(childSizes[0]);
-                int itemsPerRow = (int)Math.Max(Math.Floor(rowWidth / childWidth), 1);
+                int itemsPerRow = IsGridLayoutEnabled ? (int)Math.Max(Math.Floor(rowWidth / childWidth), 1) : children.Count;
 
                 if (StretchItems)
                 {
@@ -796,7 +809,7 @@ namespace WpfToolkit.Controls
                 CalculateRowSpacing(rowWidth, children, summedUpChildWidth, out innerSpacing, out outerSpacing);
             }
 
-            double x = hierarchical ? outerSpacing : -GetX(ScrollOffset) + outerSpacing;
+            double x = (hierarchical ? 0 : -GetX(ScrollOffset)) + outerSpacing;
 
             for (int i = 0; i < children.Count; i++)
             {
@@ -817,7 +830,7 @@ namespace WpfToolkit.Controls
             }
             else
             {
-                childCount = (int)Math.Max(1, Math.Floor(rowWidth / GetWidth(sizeOfFirstItem!.Value)));
+                childCount = IsGridLayoutEnabled ? (int)Math.Max(1, Math.Floor(rowWidth / GetWidth(sizeOfFirstItem!.Value))) : children.Count;
             }
 
             double unusedWidth = Math.Max(0, rowWidth - summedUpChildWidth);
