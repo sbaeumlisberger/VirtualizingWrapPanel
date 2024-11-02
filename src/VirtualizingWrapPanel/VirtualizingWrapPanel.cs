@@ -186,22 +186,7 @@ namespace WpfToolkit.Controls
                 return MeasureOverride(availableSize); // repeat measure with correct ScrollOffset
             }
 
-            double desiredWidth = Math.Min(availableSize.Width, Extent.Width);
-            double desiredHeight = Math.Min(availableSize.Height, Extent.Height);
-
-            if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo)
-            {
-                if (Orientation == Orientation.Horizontal)
-                {
-                    desiredWidth = Math.Max(desiredWidth, newViewportSize.Width);
-                }
-                else
-                {
-                    desiredHeight = Math.Max(desiredHeight, newViewportSize.Height);
-                }
-            }
-
-            return new Size(desiredWidth, desiredHeight);
+            return CalculateDesiredSize(availableSize);
         }
 
         protected override Size ArrangeOverride(Size finalSize)
@@ -684,6 +669,7 @@ namespace WpfToolkit.Controls
             double x = 0;
             double y = 0;
             double rowHeight = 0;
+
             foreach (var item in Items)
             {
                 Size itemSize = GetAssumedItemSize(item);
@@ -699,6 +685,32 @@ namespace WpfToolkit.Controls
             }
 
             return CreateSize(knownExtendX, y + rowHeight);
+        }
+
+        private Size CalculateDesiredSize(Size availableSize)
+        {
+            double desiredWidth = Math.Min(availableSize.Width, Extent.Width);
+            double desiredHeight = Math.Min(availableSize.Height, Extent.Height);
+
+            if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo)
+            {
+                if (Orientation == Orientation.Horizontal)
+                {
+                    if (!double.IsPositiveInfinity(ViewportSize.Width))
+                    {
+                        desiredWidth = Math.Max(desiredWidth, ViewportSize.Width);
+                    }
+                }
+                else
+                {
+                    if (!double.IsPositiveInfinity(ViewportSize.Height))
+                    {
+                        desiredHeight = Math.Max(desiredHeight, ViewportSize.Height);
+                    }
+                }
+            }
+
+            return new Size(desiredWidth, desiredHeight);
         }
 
         private double DetermineStartOffsetY()
