@@ -452,6 +452,18 @@ public class BasisTest
         Assert.Equal(0, vwp.ExtentHeight);
     }
 
+    [WpfFact]
+    public void ThrowsExceptionWhenItemsAreNotDistinct()
+    {
+        var items = Enumerable.Repeat(new TestItem("TestItem", 100, 100), 100).ToList();
+
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            vwp = TestUtil.CreateVirtualizingWrapPanel(500, 400, items);
+            vwp.UpdateLayout();
+        });
+    }
+
     // TODO test items changes: add, replace, remove mutiple items
 
 }

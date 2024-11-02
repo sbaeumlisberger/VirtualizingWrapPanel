@@ -205,6 +205,11 @@ namespace WpfToolkit.Controls
                 return finalSize;
             }
 
+            if (ItemContainerManager.RealizedContainers.Count < endItemIndex - startItemIndex + 1)
+            {
+                throw new InvalidOperationException("Items must be distinct");
+            }
+
             bool hierarchical = ItemsOwner is IHierarchicalVirtualizationAndScrollInfo;
             double x = startItemOffsetX + GetX(ScrollOffset);
             double y = hierarchical ? startItemOffsetY : startItemOffsetY - GetY(ScrollOffset);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
@@ -34,7 +35,7 @@ internal class ItemContainerManager
     /// <summary>
     /// Collection that contains the items for which containers are generated.
     /// </summary>
-    public IReadOnlyList<object> Items => itemContainerGenerator.Items;
+    public ReadOnlyCollection<object> Items => itemContainerGenerator.Items;
 
     /// <summary>
     /// Dictionary that contains the realised containers. The keys are the items, the values are the containers.
@@ -64,7 +65,6 @@ internal class ItemContainerManager
         this.addInternalChild = addInternalChild;
         this.removeInternalChild = removeInternalChild;
         itemContainerGenerator.ItemsChanged += ItemContainerGenerator_ItemsChanged;
-        VerifyItemsDistinct();
     }
 
     public UIElement Realize(int itemIndex)
@@ -139,13 +139,11 @@ internal class ItemContainerManager
 
     public int FindItemIndexOfContainer(UIElement container)
     {
-        return itemContainerGenerator.Items.IndexOf(itemContainerGenerator.ItemFromContainer(container));
+        return Items.IndexOf(itemContainerGenerator.ItemFromContainer(container));
     }
 
     private void ItemContainerGenerator_ItemsChanged(object sender, ItemsChangedEventArgs e)
     {
-        VerifyItemsDistinct();
-
         if (e.Action == NotifyCollectionChangedAction.Reset)
         {
             realizedContainers.Clear();
@@ -189,14 +187,6 @@ internal class ItemContainerManager
             {
                 InvalidateMeasureRecursively(child);
             }
-        }
-    }
-
-    private void VerifyItemsDistinct()
-    {
-        if (Items.Distinct().Count() != Items.Count)
-        {
-            throw new InvalidOperationException("Items must be distinct.");
         }
     }
 
