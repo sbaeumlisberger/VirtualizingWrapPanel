@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.0.12</Version>
+        <Version>2.1.0</Version>
         <Authors>sbaeumlisberger</Authors>
         <Copyright>sbaeumlisberger</Copyright>
         <Description>Implementation of a comprehensive VirtualizingWrapPanel for WPF.</Description>
@@ -36,8 +36,10 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         
         <PackageReleaseNotes>
-- #66 verify that items are distinct
-- enable deterministic builds
+- Feature: Add IsGridLayoutEnabled property which, when set to false, disables the default grid layout behaviour             
+- Fix: #68 ArgumentOutOfRangeException when adding GroupStyle at runtime
+- Fix: performance regression when changing content of ItemsSource
+- Fix: return of infinte desired size is some hierarchical scenarios
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>

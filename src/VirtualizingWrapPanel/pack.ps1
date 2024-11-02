@@ -12,4 +12,13 @@ if ($currentBranch -ne "master") {
     exit 1
 }
 
+git fetch
+
+$gitStatus = git status
+
+if ($gitStatus -match "Your branch is ahead") {
+    Write-Host "There are local commits that have not been pushed to the remote."
+    exit 1
+}
+
 dotnet pack /p:ContinuousIntegrationBuild=true
