@@ -2,12 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Class GridDetailsView
- | VirtualizingWrapPanel </title>
+      <title>Class GridDetailsView | VirtualizingWrapPanel </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class GridDetailsView
- | VirtualizingWrapPanel ">
+      <meta name="title" content="Class GridDetailsView | VirtualizingWrapPanel ">
       
+      <meta name="description" content="Simple control that displays a gird of items. Depending on the orientation, the items are either stacked horizontally or vertically until the items are wrapped to the next row or column. The control is using virtualization to support large amount of items. If an item is clicked the item gots expanded until it is clicked again or an other item is clicked and gots expanded. In order to work properly all items must have the same size.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -17,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/new/master/apiSpec/new?filename=WpfToolkit_Controls_GridDetailsView.md&amp;value=---%0Auid%3A%20WpfToolkit.Controls.GridDetailsView%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/new/develop/apiSpec/new?filename=WpfToolkit_Controls_GridDetailsView.md&amp;value=---%0Auid%3A%20WpfToolkit.Controls.GridDetailsView%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -30,15 +29,15 @@
       <meta name="loc:changeTheme" content="Change theme">
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
   </head>
-
-  <script type="module" src="./../public/docfx.min.js"></script>
-
-  <script>
-    const theme = localStorage.getItem('theme') || 'auto'
-    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
-  </script>
-
 
   <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
     <header class="bg-body border-bottom">
@@ -74,7 +73,7 @@
 
       <div class="content">
         <div class="actionbar">
-          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
             <i class="bi bi-list"></i>
           </button>
 
@@ -86,8 +85,7 @@
 
 
   <h1 id="WpfToolkit_Controls_GridDetailsView" data-uid="WpfToolkit.Controls.GridDetailsView" class="text-break">
-    Class GridDetailsView
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/GridDetailsView.xaml.cs/#L15"><i class="bi bi-code-slash"></i></a>
+Class GridDetailsView  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/develop/src/VirtualizingWrapPanel/obj/Release/net462/GridDetailsView.g.cs/#L41"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -103,7 +101,7 @@ If an item is clicked the item gots expanded until it is clicked again or an oth
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class GridDetailsView : GridView, IAnimatable, IFrameworkInputElement, IInputElement, ISupportInitialize, IQueryAmbient, IAddChild, IContainItemStorage</code></pre>
+    <pre><code class="lang-csharp hljs">public class GridDetailsView : GridView, IAnimatable, IFrameworkInputElement, IInputElement, ISupportInitialize, IQueryAmbient, IAddChild, IContainItemStorage, IComponentConnector, IStyleConnector</code></pre>
   </div>
 
 
@@ -138,11 +136,13 @@ If an item is clicked the item gots expanded until it is clicked again or an oth
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.markup.iqueryambient">IQueryAmbient</a></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.markup.iaddchild">IAddChild</a></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.primitives.icontainitemstorage">IContainItemStorage</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.markup.icomponentconnector">IComponentConnector</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.markup.istyleconnector">IStyleConnector</a></div>
     </dd>
   </dl>
 
 
-  <dl class="typelist derived">
+  <dl class="typelist inheritedMembers">
     <dt>Inherited Members</dt>
     <dd>
     <div>
@@ -2260,7 +2260,7 @@ If an item is clicked the item gots expanded until it is clicked again or an oth
 
   <h3 id="WpfToolkit_Controls_GridDetailsView__ctor" data-uid="WpfToolkit.Controls.GridDetailsView.#ctor">
   GridDetailsView()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/GridDetailsView.xaml.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/develop/src/VirtualizingWrapPanel/GridDetailsView.xaml.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2289,7 +2289,7 @@ If an item is clicked the item gots expanded until it is clicked again or an oth
 
   <h3 id="WpfToolkit_Controls_GridDetailsView_ExpandedItemProperty" data-uid="WpfToolkit.Controls.GridDetailsView.ExpandedItemProperty">
   ExpandedItemProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/GridDetailsView.xaml.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/develop/src/VirtualizingWrapPanel/GridDetailsView.xaml.cs/#L19"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2319,7 +2319,7 @@ If an item is clicked the item gots expanded until it is clicked again or an oth
 
   <h3 id="WpfToolkit_Controls_GridDetailsView_ExpandedItemTemplateProperty" data-uid="WpfToolkit.Controls.GridDetailsView.ExpandedItemTemplateProperty">
   ExpandedItemTemplateProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/GridDetailsView.xaml.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/develop/src/VirtualizingWrapPanel/GridDetailsView.xaml.cs/#L17"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2354,7 +2354,7 @@ If an item is clicked the item gots expanded until it is clicked again or an oth
 
   <h3 id="WpfToolkit_Controls_GridDetailsView_ExpandedItem" data-uid="WpfToolkit.Controls.GridDetailsView.ExpandedItem">
   ExpandedItem
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/GridDetailsView.xaml.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/develop/src/VirtualizingWrapPanel/GridDetailsView.xaml.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the currently expanded item. If no item is expanded null is returned.</p>
@@ -2386,7 +2386,7 @@ If an item is clicked the item gots expanded until it is clicked again or an oth
 
   <h3 id="WpfToolkit_Controls_GridDetailsView_ExpandedItemTemplate" data-uid="WpfToolkit.Controls.GridDetailsView.ExpandedItemTemplate">
   ExpandedItemTemplate
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/GridDetailsView.xaml.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/develop/src/VirtualizingWrapPanel/GridDetailsView.xaml.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the data template used for the item expansion.</p>
@@ -2422,7 +2422,7 @@ If an item is clicked the item gots expanded until it is clicked again or an oth
 
   <h3 id="WpfToolkit_Controls_GridDetailsView_GetContainerForItemOverride" data-uid="WpfToolkit.Controls.GridDetailsView.GetContainerForItemOverride">
   GetContainerForItemOverride()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/GridDetailsView.xaml.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/develop/src/VirtualizingWrapPanel/GridDetailsView.xaml.cs/#L37"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates and returns a new <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.listviewitem">ListViewItem</a> container.</p>
@@ -2451,11 +2451,38 @@ If an item is clicked the item gots expanded until it is clicked again or an oth
 
 
 
+  <a id="WpfToolkit_Controls_GridDetailsView_InitializeComponent_" data-uid="WpfToolkit.Controls.GridDetailsView.InitializeComponent*"></a>
+
+  <h3 id="WpfToolkit_Controls_GridDetailsView_InitializeComponent" data-uid="WpfToolkit.Controls.GridDetailsView.InitializeComponent">
+  InitializeComponent()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/develop/src/VirtualizingWrapPanel/obj/Release/net462/GridDetailsView.g.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>InitializeComponent</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InitializeComponent()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/GridDetailsView.xaml.cs/#L15" class="edit-link">Edit this page</a>
+          <a href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/develop/src/VirtualizingWrapPanel/obj/Release/net462/GridDetailsView.g.cs/#L41" class="edit-link">Edit this page</a>
         </div>
 
 

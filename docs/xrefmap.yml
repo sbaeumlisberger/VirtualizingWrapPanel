@@ -83,6 +83,19 @@ references:
   isSpec: "True"
   fullName: WpfToolkit.Controls.GridDetailsView.GetContainerForItemOverride
   nameWithType: GridDetailsView.GetContainerForItemOverride
+- uid: WpfToolkit.Controls.GridDetailsView.InitializeComponent
+  name: InitializeComponent()
+  href: api/WpfToolkit.Controls.GridDetailsView.html#WpfToolkit_Controls_GridDetailsView_InitializeComponent
+  commentId: M:WpfToolkit.Controls.GridDetailsView.InitializeComponent
+  fullName: WpfToolkit.Controls.GridDetailsView.InitializeComponent()
+  nameWithType: GridDetailsView.InitializeComponent()
+- uid: WpfToolkit.Controls.GridDetailsView.InitializeComponent*
+  name: InitializeComponent
+  href: api/WpfToolkit.Controls.GridDetailsView.html#WpfToolkit_Controls_GridDetailsView_InitializeComponent_
+  commentId: Overload:WpfToolkit.Controls.GridDetailsView.InitializeComponent
+  isSpec: "True"
+  fullName: WpfToolkit.Controls.GridDetailsView.InitializeComponent
+  nameWithType: GridDetailsView.InitializeComponent
 - uid: WpfToolkit.Controls.GridView
   name: GridView
   href: api/WpfToolkit.Controls.GridView.html
@@ -1248,6 +1261,25 @@ references:
   isSpec: "True"
   fullName: WpfToolkit.Controls.VirtualizingWrapPanel.HasLogicalOrientation
   nameWithType: VirtualizingWrapPanel.HasLogicalOrientation
+- uid: WpfToolkit.Controls.VirtualizingWrapPanel.IsGridLayoutEnabled
+  name: IsGridLayoutEnabled
+  href: api/WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_IsGridLayoutEnabled
+  commentId: P:WpfToolkit.Controls.VirtualizingWrapPanel.IsGridLayoutEnabled
+  fullName: WpfToolkit.Controls.VirtualizingWrapPanel.IsGridLayoutEnabled
+  nameWithType: VirtualizingWrapPanel.IsGridLayoutEnabled
+- uid: WpfToolkit.Controls.VirtualizingWrapPanel.IsGridLayoutEnabled*
+  name: IsGridLayoutEnabled
+  href: api/WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_IsGridLayoutEnabled_
+  commentId: Overload:WpfToolkit.Controls.VirtualizingWrapPanel.IsGridLayoutEnabled
+  isSpec: "True"
+  fullName: WpfToolkit.Controls.VirtualizingWrapPanel.IsGridLayoutEnabled
+  nameWithType: VirtualizingWrapPanel.IsGridLayoutEnabled
+- uid: WpfToolkit.Controls.VirtualizingWrapPanel.IsGridLayoutEnabledProperty
+  name: IsGridLayoutEnabledProperty
+  href: api/WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_IsGridLayoutEnabledProperty
+  commentId: F:WpfToolkit.Controls.VirtualizingWrapPanel.IsGridLayoutEnabledProperty
+  fullName: WpfToolkit.Controls.VirtualizingWrapPanel.IsGridLayoutEnabledProperty
+  nameWithType: VirtualizingWrapPanel.IsGridLayoutEnabledProperty
 - uid: WpfToolkit.Controls.VirtualizingWrapPanel.ItemSize
   name: ItemSize
   href: api/WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_ItemSize
