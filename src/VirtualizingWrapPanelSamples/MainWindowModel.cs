@@ -47,6 +47,10 @@ namespace VirtualizingWrapPanelSamples
         public ScrollBarVisibility HorizontalScrollBarVisibility { get => horizontalScrollBarVisibility; set => SetField(ref horizontalScrollBarVisibility, value); }
         public ScrollBarVisibility VerticalScrollBarVisibility { get => verticalScrollBarVisibility; set => SetField(ref verticalScrollBarVisibility, value); }
         public Size ItemSize { get => itemSize; set => SetField(ref itemSize, value); }
+        public bool IsGrouping { get => isGrouping; set => SetField(ref isGrouping, value); }
+        public bool IsGridLayoutEnabled { get => isGridLayoutEnabled; set => SetField(ref isGridLayoutEnabled, value); }
+        public bool UseLazyLoadingItems { get => useLazyLoadingItems; set => SetField(ref useLazyLoadingItems, value); }
+        public bool UseItemSizeProvider { get => useItemSizeProvider; set => SetField(ref useItemSizeProvider, value); }
 
         public bool IsWrappingKeyboardNavigationEnabled { get => isWrappingKeyboardNavigationEnabled; set => SetField(ref isWrappingKeyboardNavigationEnabled, value); }
 
@@ -72,6 +76,10 @@ namespace VirtualizingWrapPanelSamples
         private ScrollBarVisibility horizontalScrollBarVisibility = ScrollBarVisibility.Auto;
         private ScrollBarVisibility verticalScrollBarVisibility = ScrollBarVisibility.Auto;
         private Size itemSize = Size.Empty;
+        private bool isGrouping = false;
+        private bool isGridLayoutEnabled = true;
+        private bool useLazyLoadingItems = false;
+        private bool useItemSizeProvider = false;
 
         private bool isWrappingKeyboardNavigationEnabled = false;
 

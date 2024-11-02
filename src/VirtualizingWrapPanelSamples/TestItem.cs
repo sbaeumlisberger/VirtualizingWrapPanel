@@ -38,14 +38,7 @@ namespace VirtualizingWrapPanelSamples
             }
         }
 
-        public DateTime CurrentDateTime
-        {
-            get
-            {
-                sizeLazy = Size.Empty;
-                return DateTime.Now;
-            }
-        }
+        public DateTime CurrentDateTime => DateTime.Now;
 
         public Size Size { get; }
 
@@ -63,6 +56,11 @@ namespace VirtualizingWrapPanelSamples
             var width = random.Next(MinWidth, MaxWidth);
             var height = random.Next(MinHeight, MaxHeight);
             Size = new Size(width, height);
+        }
+
+        public void Reset() 
+        {
+            sizeLazy = Size.Empty;
         }
 
         override public string ToString()
