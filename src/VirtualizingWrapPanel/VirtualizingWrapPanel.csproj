@@ -48,8 +48,6 @@
     <PropertyGroup>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <EmbedAllSources>true</EmbedAllSources>
-        <Deterministic>true</Deterministic>
     </PropertyGroup>
 
 </Project>
