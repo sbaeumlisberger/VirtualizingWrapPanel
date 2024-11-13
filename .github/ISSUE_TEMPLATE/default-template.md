@@ -3,7 +3,7 @@ name: Issue Template
 about: Template for creating an issue.
 title: ''
 labels: ''
-assignees: ''
+assignees: 'sbaeumlisberger'
 
 ---
 
