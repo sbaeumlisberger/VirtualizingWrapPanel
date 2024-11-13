@@ -1,6 +1,6 @@
 ---
-name: Default Template
-about: Default Template
+name: Issue Template
+about: Template for creating an issue.
 title: ''
 labels: ''
 assignees: ''
