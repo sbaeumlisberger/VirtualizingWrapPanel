@@ -153,7 +153,7 @@ If `VirtualizingStackPanel.Orientation` is `Vertical` and `VirtualizingWrapPanel
 
 If `VirtualizingStackPanel.Orientation` is `Horizontal` and `VirtualizingWrapPanel.Orientation` is `Vertical`, you can scroll horizontally through the groups and the VirtualizingWrapPanel wraps the items at the bottom of the viewport.
 
-⚠️ Any other combination is not supported.
+⚠️ Any other combination of the Orientation properties is not supported.
 
 ### Different Sized Items
 
