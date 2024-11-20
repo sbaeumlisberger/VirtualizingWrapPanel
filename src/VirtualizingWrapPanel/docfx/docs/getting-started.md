@@ -149,6 +149,12 @@ Grouping is fully supported and can be used as shown in the following example:
      </ItemsControl.GroupStyle>
 </ListView>
 ```
+If `VirtualizingStackPanel.Orientation` is `Vertical` and `VirtualizingWrapPanel.Orientation` is `Horizontal`, you can scroll vertically through the groups and the VirtualizingWrapPanel wraps the items at the right end of the viewport.
+
+If `VirtualizingStackPanel.Orientation` is `Horizontal` and `VirtualizingWrapPanel.Orientation` is `Vertical`, you can scroll horizontally through the groups and the VirtualizingWrapPanel wraps the items at the bottom of the viewport.
+
+⚠️ Any other combination is not supported.
+
 ### Different Sized Items
 
 ⚠️ This information is only valid for version 2.x
