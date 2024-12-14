@@ -102,6 +102,14 @@ namespace WpfToolkit.Controls
                 {
                     // The ItemContainerGenerator is null until InternalChildren is accessed at least one time.
                     _ = InternalChildren;
+
+                    if (base.ItemContainerGenerator is null)
+                    {
+                        throw new InvalidOperationException($"ItemContainerGenerator is null. Make sure that"
+                            + $" the {GetType().Name} is used as the ItemsPanel of an ItemsControl such as a ListView"
+                            + $" or the GridView and VirtualizingItemsControl that are part of this package.");
+                    }
+
                     _itemContainerGenerator = base.ItemContainerGenerator.GetItemContainerGeneratorForPanel(this);
 
                 }
