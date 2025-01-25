@@ -101,7 +101,12 @@ namespace WpfToolkit.Controls
                     _itemContainerManager = new ItemContainerManager(
                         ItemContainerGenerator,
                         AddInternalChild,
-                        child => RemoveInternalChildRange(InternalChildren.IndexOf(child), 1));
+                        child =>
+                        {
+                            var childIndex = InternalChildren.IndexOf(child);
+                            if(childIndex >= 0)
+                                RemoveInternalChildRange(childIndex, 1);
+                        });
                     _itemContainerManager.ItemsChanged += ItemContainerManager_ItemsChanged;
                 }
                 return _itemContainerManager;
