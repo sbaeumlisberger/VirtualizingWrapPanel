@@ -20,10 +20,17 @@ internal class TestUtil
     public static VirtualizingWrapPanel CreateVirtualizingWrapPanel(
         double width,
         double height,
-        IEnumerable? items = null,
         int itemCount = 1000)
     {
-        var itemsControl = CreateVirtualizingItemsControl(width, height, items ?? GenerateItems(itemCount));
+        return CreateVirtualizingWrapPanel(width, height, GenerateItems(itemCount));
+    }
+
+    public static VirtualizingWrapPanel CreateVirtualizingWrapPanel(
+        double width,
+        double height,
+        IEnumerable items)
+    {
+        var itemsControl = CreateVirtualizingItemsControl(width, height, items);
         return GetVisualChild<VirtualizingWrapPanel>(itemsControl)!;
     }
 

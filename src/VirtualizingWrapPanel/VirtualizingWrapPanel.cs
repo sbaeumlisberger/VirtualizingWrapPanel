@@ -269,6 +269,12 @@ namespace WpfToolkit.Controls
             container.BringIntoView();
         }
 
+        protected override void OnClearChildren()
+        {
+            ItemContainerManager.OnClearChildren();
+            base.OnClearChildren();
+        }
+
         private void ItemContainerManager_ItemsChanged(object? sender, ItemContainerManagerItemsChangedEventArgs e)
         {
             if (bringIntoViewItemIndex >= Items.Count)

@@ -66,6 +66,12 @@ internal class ItemContainerManager
         this.removeInternalChild = removeInternalChild;
         itemContainerGenerator.ItemsChanged += ItemContainerGenerator_ItemsChanged;
     }
+    
+    public void OnClearChildren()
+    {
+        realizedContainers.Clear();
+        cachedContainers.Clear();
+    }
 
     public UIElement Realize(int itemIndex)
     {
@@ -189,5 +195,4 @@ internal class ItemContainerManager
             }
         }
     }
-
 }
