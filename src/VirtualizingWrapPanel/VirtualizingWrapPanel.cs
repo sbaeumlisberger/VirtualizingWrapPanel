@@ -113,6 +113,7 @@ namespace WpfToolkit.Controls
         /// The cache length before and after the viewport. 
         /// </summary>
         private VirtualizationCacheLength cacheLength;
+
         /// <summary>
         /// The Unit of the cache length. Can be Pixel, Item or Page. 
         /// When the ItemsOwner is a group item it can only be pixel or item.
@@ -143,6 +144,8 @@ namespace WpfToolkit.Controls
 
         protected override Size MeasureOverride(Size availableSize)
         {
+            VerifyItemsControl();
+
             if (ShouldIgnoreMeasure())
             {
                 return DesiredSize;

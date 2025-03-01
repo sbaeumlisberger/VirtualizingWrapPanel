@@ -172,6 +172,27 @@ namespace WpfToolkit.Controls
             return false;
         }
 
+        protected void VerifyItemsControl() 
+        {
+            if (GetIsVirtualizing(ItemsControl) == false)
+            {
+                throw new InvalidOperationException("VirtualizingPanel.IsVirtualizing must be true." +
+                    " Make sure VirtualizingPanel.IsVirtualizing=\"True\" is set on the ItemsControl.");
+            }
+
+            if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo && GetIsVirtualizingWhenGrouping(ItemsControl) == false)
+            {
+                throw new InvalidOperationException("VirtualizingPanel.IsVirtualizingWhenGrouping must be true." +
+                    " Make sure VirtualizingPanel.IsVirtualizingWhenGrouping=\"True\" is set on the ItemsControl.");
+            }
+
+            if (ScrollViewer.GetCanContentScroll(ItemsControl) == false)
+            {
+                throw new InvalidOperationException("ScrollViewer.CanContentScroll must be true." +
+                    " Make sure ScrollViewer.CanContentScroll=\"True\" is set on the ItemsControl.");
+            }
+        }
+
         public virtual Rect MakeVisible(Visual visual, Rect rectangle)
         {
             var transformedBounds = visual.TransformToAncestor(this).TransformBounds(rectangle);
