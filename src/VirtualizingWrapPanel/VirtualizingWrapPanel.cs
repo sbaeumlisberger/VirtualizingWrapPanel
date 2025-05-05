@@ -210,7 +210,7 @@ namespace WpfToolkit.Controls
 
             if (ItemContainerManager.RealizedContainers.Count < endItemIndex - startItemIndex + 1)
             {
-                throw new InvalidOperationException("Items must be distinct");
+                throw new InvalidOperationException("The items must be distinct and must not change their hash code.");
             }
 
             bool hierarchical = ItemsOwner is IHierarchicalVirtualizationAndScrollInfo;
