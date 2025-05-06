@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.1.1</Version>
+        <Version>2.1.2</Version>
         <Authors>sbaeumlisberger</Authors>
         <Copyright>sbaeumlisberger</Copyright>
         <Description>Implementation of a comprehensive VirtualizingWrapPanel for WPF.</Description>
@@ -36,8 +36,8 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         
         <PackageReleaseNotes>
-- #73 Add a meaningful exception in case the ItemContainerGenerator is null
-- Reset the state of the ItemContainerManager when the children are cleared, for eg. when the panel is removed from the ItemsControl.
+- #82 Fix Items overlap in grouped list
+- Provide more detailed exception message if items are not distinct
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>
