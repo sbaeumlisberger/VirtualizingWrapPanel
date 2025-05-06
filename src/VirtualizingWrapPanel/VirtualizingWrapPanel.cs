@@ -274,7 +274,10 @@ namespace WpfToolkit.Controls
 
         protected override void OnClearChildren()
         {
-            ItemContainerManager.OnClearChildren();
+            if (InternalChildren.Count == 0)
+            {
+                ItemContainerManager.OnClearChildren();
+            }
             base.OnClearChildren();
         }
 
