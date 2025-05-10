@@ -338,7 +338,7 @@ namespace WpfToolkit.Controls
             double viewportX = groupItem.Constraints.Viewport.Location.X;
             double viewportY = groupItem.Constraints.Viewport.Location.Y;
             double viewportWidth = Math.Max(groupItem.Constraints.Viewport.Size.Width, 0);
-            double viewporteHeight = Math.Max(groupItem.Constraints.Viewport.Size.Height, 0);
+            double viewportHeight = Math.Max(groupItem.Constraints.Viewport.Size.Height, 0);
 
             if (VisualTreeHelper.GetParent(this) is ItemsPresenter itemsPresenter)
             {
@@ -350,7 +350,7 @@ namespace WpfToolkit.Controls
                 }
                 else
                 {
-                    viewporteHeight = Math.Max(0, viewporteHeight - (margin.Top + margin.Bottom));
+                    viewportHeight = Math.Max(0, viewportHeight - (margin.Top + margin.Bottom));
                 }
             }
 
@@ -358,14 +358,14 @@ namespace WpfToolkit.Controls
             {
                 viewportY = Math.Max(0, viewportY - groupItem.HeaderDesiredSizes.PixelSize.Height);
                 double visibleHeaderHeight = Math.Max(0, groupItem.HeaderDesiredSizes.PixelSize.Height - Math.Max(0, groupItem.Constraints.Viewport.Location.Y));
-                viewporteHeight = Math.Max(0, viewporteHeight - visibleHeaderHeight);
+                viewportHeight = Math.Max(0, viewportHeight - visibleHeaderHeight);
             }
             else
             {
-                viewporteHeight = Math.Max(0, viewporteHeight - groupItem.HeaderDesiredSizes.PixelSize.Height);
+                viewportHeight = Math.Max(0, viewportHeight - groupItem.HeaderDesiredSizes.PixelSize.Height);
             }
 
-            return new Rect(viewportX, viewportY, viewportWidth, viewporteHeight);
+            return new Rect(viewportX, viewportY, viewportWidth, viewportHeight);
         }
 
         private void MeasureBringIntoViewContainer(Size availableSize)
@@ -600,7 +600,7 @@ namespace WpfToolkit.Controls
                         if (cacheLengthUnit == VirtualizationCacheLengthUnit.Item)
                         {
                             newEndItemIndex = Math.Min(newEndItemIndex + (int)cacheLength.CacheAfterViewport, Items.Count - 1);
-                            // loop continues unitl newEndItemIndex is reached
+                            // loop continues until newEndItemIndex is reached
                         }
                     }
                 }
@@ -901,7 +901,7 @@ namespace WpfToolkit.Controls
 
         #region scroll info
 
-        // TODO determine exact scoll amount for item based scrolling when AllowDifferentSizedItems is true
+        // TODO determine exact scroll amount for item based scrolling when AllowDifferentSizedItems is true
 
         protected override double GetLineUpScrollAmount()
         {
