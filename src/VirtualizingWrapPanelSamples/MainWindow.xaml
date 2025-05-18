@@ -332,9 +332,11 @@
             <TabItem Header="AllowDifferentSizedItems">
                 <DockPanel Margin="8,0,8,2">
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                        <TextBlock DockPanel.Dock="Top" Text="A VirtualizingWrapPanel with AllowDifferentSizedItems=True used by a ListView as ItemsPanel." />
-                        <CheckBox Margin="16,0,0,0" IsChecked="{Binding UseLazyLoadingItems, Mode=TwoWay}" Content="Lazy loading items"/>
-                        <CheckBox Margin="16,0,0,0" IsChecked="{Binding UseItemSizeProvider, Mode=TwoWay}" Content="Use ItemSizeProvider"/>
+                        <TextBlock VerticalAlignment="Center" Text="A VirtualizingWrapPanel with AllowDifferentSizedItems=True used by a ListView as ItemsPanel." />
+                        <CheckBox VerticalAlignment="Center" Margin="16,0,0,0" IsChecked="{Binding UseLazyLoadingItems, Mode=TwoWay}" Content="Lazy loading items"/>
+                        <CheckBox VerticalAlignment="Center" Margin="16,0,0,0" IsChecked="{Binding UseItemSizeProvider, Mode=TwoWay}" Content="Use ItemSizeProvider"/>
+                        <TextBlock VerticalAlignment="Center" Margin="16,0,0,0" Text="ItemAlignment"/>
+                        <ComboBox Margin="4,0,0,0" ItemsSource="{Binding AvailableItemAlignments, Mode=OneTime}" SelectedItem="{Binding ItemAlignment, Mode=TwoWay}"/>
                     </StackPanel>
                     <ListView
                         x:Name="listViewAllowDifferentSizedItems"
@@ -359,7 +361,8 @@
                                     MouseWheelDeltaItem="{Binding DataContext.MouseWheelDeltaItem, Mode=OneWay, ElementName=window}"
                                     StretchItems="{Binding DataContext.StretchItems, Mode=OneWay, ElementName=window}"
                                     IsGridLayoutEnabled="{Binding DataContext.IsGridLayoutEnabled, Mode=OneWay, ElementName=window}"
-                                    AllowDifferentSizedItems="True"/>
+                                    AllowDifferentSizedItems="True"
+                                    ItemAlignment="{Binding DataContext.ItemAlignment, Mode=OneWay, ElementName=window}"/>
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
                     </ListView>

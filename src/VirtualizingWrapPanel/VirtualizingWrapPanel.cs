@@ -22,6 +22,8 @@ namespace WpfToolkit.Controls
 
         public static readonly DependencyProperty ItemSizeProviderProperty = DependencyProperty.Register(nameof(ItemSizeProvider), typeof(IItemSizeProvider), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
+        public static readonly DependencyProperty ItemAlignmentProperty = DependencyProperty.Register(nameof(ItemAlignment), typeof(ItemAlignment), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(ItemAlignment.Start, FrameworkPropertyMetadataOptions.AffectsArrange));
+
         public static readonly DependencyProperty SpacingModeProperty = DependencyProperty.Register(nameof(SpacingMode), typeof(SpacingMode), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(SpacingMode.Uniform, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         public static readonly DependencyProperty StretchItemsProperty = DependencyProperty.Register(nameof(StretchItems), typeof(bool), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsArrange));
@@ -53,6 +55,12 @@ namespace WpfToolkit.Controls
         public IItemSizeProvider? ItemSizeProvider { get => (IItemSizeProvider?)GetValue(ItemSizeProviderProperty); set => SetValue(ItemSizeProviderProperty, value); }
 
         /// <summary>
+        /// Specifies how the item are aligned on the cross axis. The default value is <see cref="ItemAlignment.Start"/>.
+        /// This property only applies when the <see cref="AllowDifferentSizedItems"/> property is enabled.
+        /// </summary>
+        public ItemAlignment ItemAlignment { get => (ItemAlignment)GetValue(ItemAlignmentProperty); set => SetValue(ItemAlignmentProperty, value); }
+
+        /// <summary>
         /// Gets or sets the spacing mode used when arranging the items. The default value is <see cref="SpacingMode.Uniform"/>.
         /// </summary>
         public SpacingMode SpacingMode { get => (SpacingMode)GetValue(SpacingModeProperty); set => SetValue(SpacingModeProperty, value); }
@@ -68,12 +76,12 @@ namespace WpfToolkit.Controls
 
         /// <summary>
         /// Specifies whether the items are arranged in a grid-like layout. The default value is <c>true</c>.
-        /// When set to <c>true</c>, the items are arranged based on the number of items that can fit in a row. 
-        /// When set to <c>false</c>, the items are arranged based on the number of items that are actually placed in the row. 
+        /// When set to <c>true</c>, the items are arranged based on the number of items that can fit in a line. 
+        /// When set to <c>false</c>, the items are arranged based on the number of items that are actually placed in the line. 
         /// </summary>
         /// <remarks>
         /// If <see cref="AllowDifferentSizedItems"/> is enabled, this property has no effect and the items are always 
-        /// arranged based on the number of items that are actually placed in the row.
+        /// arranged based on the number of items that are actually placed in the line.
         /// </remarks>
         public bool IsGridLayoutEnabled { get => (bool)GetValue(IsGridLayoutEnabledProperty); set => SetValue(IsGridLayoutEnabledProperty, value); }
 
@@ -231,7 +239,7 @@ namespace WpfToolkit.Controls
 
                 if (rowChilds.Count > 0 && x + GetWidth(childSize) > GetWidth(finalSize))
                 {
-                    ArrangeRow(GetWidth(finalSize), rowChilds, childSizes, y, hierarchical);
+                    ArrangeLine(GetWidth(finalSize), rowChilds, childSizes, y, hierarchical);
                     x = 0;
                     y += rowHeight;
                     rowHeight = 0;
@@ -247,7 +255,7 @@ namespace WpfToolkit.Controls
 
             if (rowChilds.Any())
             {
-                ArrangeRow(GetWidth(finalSize), rowChilds, childSizes, y, hierarchical);
+                ArrangeLine(GetWidth(finalSize), rowChilds, childSizes, y, hierarchical);
             }
 
             return finalSize;
@@ -528,7 +536,7 @@ namespace WpfToolkit.Controls
             }
         }
 
-        private void FindEndIndexIfPossible() 
+        private void FindEndIndexIfPossible()
         {
             // If possible, find the end index to enable containers to be virtualized and reused when scrolling upwards.
 
@@ -649,7 +657,7 @@ namespace WpfToolkit.Controls
 
             foreach (var (item, container) in ItemContainerManager.RealizedContainers)
             {
-                if(container == bringIntoViewContainer)
+                if (container == bringIntoViewContainer)
                 {
                     continue;
                 }
@@ -806,14 +814,14 @@ namespace WpfToolkit.Controls
             return GetAverageItemSize();
         }
 
-        private void ArrangeRow(double rowWidth, List<UIElement> children, List<Size> childSizes, double y, bool hierarchical)
+        private void ArrangeLine(double rowWidth, List<UIElement> children, List<Size> childSizes, double linePositionCrossAxis, bool hierarchical)
         {
             double summedUpChildWidth;
             double extraWidth = 0;
 
             if (AllowDifferentSizedItems)
             {
-                summedUpChildWidth = childSizes.Sum(childSize => GetWidth(childSize));
+                summedUpChildWidth = childSizes.Sum(GetWidth);
 
                 if (StretchItems)
                 {
@@ -850,15 +858,53 @@ namespace WpfToolkit.Controls
                 CalculateRowSpacing(rowWidth, children, summedUpChildWidth, out innerSpacing, out outerSpacing);
             }
 
-            double x = (hierarchical ? 0 : -GetX(ScrollOffset)) + outerSpacing;
+            double positionMainAxis = (hierarchical ? 0 : -GetX(ScrollOffset)) + outerSpacing;
+
+            double lineSizeCrossAxis = Enumerable.Range(0, children.Count).Select(i => GetHeight(childSizes[i])).Max();
 
             for (int i = 0; i < children.Count; i++)
             {
                 var child = children[i];
                 Size childSize = childSizes[i];
-                child.Arrange(CreateRect(x, y, GetWidth(childSize) + extraWidth, GetHeight(childSize)));
-                x += GetWidth(childSize) + extraWidth + innerSpacing;
+                double mainAxisSize = GetWidth(childSize) + extraWidth;
+                double crossAxisSize = GetsArrangeSizeCrossAxis(child, childSize, lineSizeCrossAxis);
+                double positionCrossAxis = GetArrangePositionCrossAxis(child, crossAxisSize, linePositionCrossAxis, lineSizeCrossAxis);
+                child.Arrange(CreateOrientedRect(positionMainAxis, positionCrossAxis, mainAxisSize, crossAxisSize));
+                positionMainAxis += GetWidth(childSize) + extraWidth + innerSpacing;
             }
+        }
+
+        private double GetArrangePositionCrossAxis(UIElement child, double childArrangeCrossAxisSize, double linePositionCrossAxis, double lineSizeCrossAxis)
+        {
+            if (ItemAlignment == ItemAlignment.End)
+            {
+                return linePositionCrossAxis + (lineSizeCrossAxis - childArrangeCrossAxisSize);
+            }
+            if (ItemAlignment == ItemAlignment.Center)
+            {
+                return linePositionCrossAxis + (lineSizeCrossAxis - childArrangeCrossAxisSize) / 2;
+            }
+            return linePositionCrossAxis;
+        }
+
+        private double GetsArrangeSizeCrossAxis(UIElement child, Size childSize, double lineSizeCrossAxis)
+        {
+            if (ItemAlignment == ItemAlignment.Stretch)
+            {
+                if (child is FrameworkElement fe)
+                {
+                    if (Orientation == Orientation.Horizontal && double.IsNaN(fe.Height))
+                    {
+                        return Math.Min(lineSizeCrossAxis, fe.MaxHeight);
+                    }
+                    if (Orientation == Orientation.Vertical && double.IsNaN(fe.Width))
+                    {
+                        return Math.Min(lineSizeCrossAxis, fe.MaxWidth);
+                    }
+                }
+                return lineSizeCrossAxis;
+            }
+            return GetHeight(childSize);
         }
 
         private void CalculateRowSpacing(double rowWidth, List<UIElement> children, double summedUpChildWidth, out double innerSpacing, out double outerSpacing)
@@ -985,7 +1031,7 @@ namespace WpfToolkit.Controls
         private double GetHeight(Size size) => Orientation == Orientation.Horizontal ? size.Height : size.Width;
         private Point CreatePoint(double x, double y) => Orientation == Orientation.Horizontal ? new Point(x, y) : new Point(y, x);
         private Size CreateSize(double width, double height) => Orientation == Orientation.Horizontal ? new Size(width, height) : new Size(height, width);
-        private Rect CreateRect(double x, double y, double width, double height) => Orientation == Orientation.Horizontal ? new Rect(x, y, width, height) : new Rect(y, x, height, width);
+        private Rect CreateOrientedRect(double x, double y, double width, double height) => Orientation == Orientation.Horizontal ? new Rect(x, y, width, height) : new Rect(y, x, height, width);
 
         #endregion
     }

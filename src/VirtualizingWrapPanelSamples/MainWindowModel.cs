@@ -27,6 +27,7 @@ namespace VirtualizingWrapPanelSamples
         public VirtualizationMode[] AvailableVirtualizationModes { get; } = (VirtualizationMode[])Enum.GetValues(typeof(VirtualizationMode));
         public Orientation[] AvailableOrientations { get; } = (Orientation[])Enum.GetValues(typeof(Orientation));
         public SpacingMode[] AvailableSpacingModes { get; } = (SpacingMode[])Enum.GetValues(typeof(SpacingMode));
+        public ItemAlignment[] AvailableItemAlignments { get; } = (ItemAlignment[])Enum.GetValues(typeof(ItemAlignment));
         public ScrollUnit[] AvailableScrollUnits { get; } = (ScrollUnit[])Enum.GetValues(typeof(ScrollUnit));
         public ScrollBarVisibility[] AvailableScrollBarVisibilities { get; } = (ScrollBarVisibility[])Enum.GetValues(typeof(ScrollBarVisibility));
 
@@ -51,6 +52,7 @@ namespace VirtualizingWrapPanelSamples
         public bool IsGridLayoutEnabled { get => isGridLayoutEnabled; set => SetField(ref isGridLayoutEnabled, value); }
         public bool UseLazyLoadingItems { get => useLazyLoadingItems; set => SetField(ref useLazyLoadingItems, value); }
         public bool UseItemSizeProvider { get => useItemSizeProvider; set => SetField(ref useItemSizeProvider, value); }
+        public ItemAlignment ItemAlignment { get => itemAlignment; set => SetField(ref itemAlignment, value); }
 
         public bool IsWrappingKeyboardNavigationEnabled { get => isWrappingKeyboardNavigationEnabled; set => SetField(ref isWrappingKeyboardNavigationEnabled, value); }
 
@@ -80,6 +82,7 @@ namespace VirtualizingWrapPanelSamples
         private bool isGridLayoutEnabled = true;
         private bool useLazyLoadingItems = false;
         private bool useItemSizeProvider = false;
+        private ItemAlignment itemAlignment = ItemAlignment.Start;
 
         private bool isWrappingKeyboardNavigationEnabled = false;
 

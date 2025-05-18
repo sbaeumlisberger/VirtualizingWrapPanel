@@ -84,8 +84,13 @@ namespace VirtualizingWrapPanelSamples
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs args)
         {
+            if(args.OriginalSource != sender)
+            {
+                return;
+            }
+
             var content = (DependencyObject)tabControl.SelectedContent;
-            var itemsControl = content as ItemsControl ?? GetChildOfType<ItemsControl>(content)!;
+            var itemsControl = content as ItemsControl ?? GetChildOfType<ListView>(content) ?? GetChildOfType<ItemsControl>(content)!;
 
             if (itemsControl != previousItemsControl)
             {
