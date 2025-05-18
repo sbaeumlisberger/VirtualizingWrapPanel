@@ -392,9 +392,10 @@ namespace WpfToolkit.Controls
         private void RealizeAndVirtualizeItems()
         {
             FindStartIndexAndOffset();
-            VirtualizeItemsBeforeStartIndex();
+            FindEndIndexIfPossible();
+            VirtualizeItems();
             RealizeItemsAndFindEndIndex();
-            VirtualizeItemsAfterEndIndex();
+            VirtualizeItems();
         }
 
         private Size GetAverageItemSize()
@@ -527,6 +528,27 @@ namespace WpfToolkit.Controls
             }
         }
 
+        private void FindEndIndexIfPossible() 
+        {
+            // If possible, find the end index to enable containers to be virtualized and reused when scrolling upwards.
+
+            if (!AllowDifferentSizedItems && (sizeOfFirstItem != null || ItemSize != Size.Empty))
+            {
+                double itemWidth = GetWidth(sizeOfFirstItem ?? ItemSize);
+                double itemHeight = GetHeight(sizeOfFirstItem ?? ItemSize);
+                double endOffsetY = DetermineEndOffsetY();
+                int itemsPerRow = (int)Math.Floor(GetWidth(ViewportSize) / itemWidth);
+                int rows = (int)Math.Ceiling(endOffsetY / itemHeight);
+
+                endItemIndex = (itemsPerRow * rows) - 1;
+
+                if (cacheLengthUnit == VirtualizationCacheLengthUnit.Item)
+                {
+                    endItemIndex = Math.Min(endItemIndex + (int)cacheLength.CacheAfterViewport, Items.Count - 1);
+                }
+            }
+        }
+
         private void RealizeItemsAndFindEndIndex()
         {
             if (startItemIndex == -1)
@@ -621,30 +643,20 @@ namespace WpfToolkit.Controls
             return containerSize;
         }
 
-        private void VirtualizeItemsBeforeStartIndex()
+        private void VirtualizeItems()
         {
-            var containers = ItemContainerManager.RealizedContainers.Values.ToList();
-            foreach (var container in containers.Where(container => container != bringIntoViewContainer))
-            {
-                int itemIndex = ItemContainerManager.FindItemIndexOfContainer(container);
+            var itemsToBeRealized = new HashSet<object>(Items.Skip(startItemIndex).Take(endItemIndex - startItemIndex + 1));
 
-                if (itemIndex < startItemIndex)
+            foreach (var (item, container) in ItemContainerManager.RealizedContainers)
+            {
+                if(container == bringIntoViewContainer)
                 {
-                    ItemContainerManager.Virtualize(container);
+                    continue;
                 }
-            }
-        }
 
-        private void VirtualizeItemsAfterEndIndex()
-        {
-            var containers = ItemContainerManager.RealizedContainers.Values.ToList();
-            foreach (var container in containers.Where(container => container != bringIntoViewContainer))
-            {
-                int itemIndex = ItemContainerManager.FindItemIndexOfContainer(container);
-
-                if (itemIndex > endItemIndex)
+                if (!itemsToBeRealized.Contains(item))
                 {
-                    ItemContainerManager.Virtualize(container);
+                    ItemContainerManager.Virtualize(item);
                 }
             }
         }

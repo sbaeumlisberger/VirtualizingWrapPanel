@@ -43,7 +43,7 @@ internal class ItemContainerManager
     public IReadOnlyDictionary<object, UIElement> RealizedContainers => realizedContainers;
 
     /// <summary>
-    /// Collection that contains the cached containers. Always emtpy if <see cref="IsRecycling"/> is false.
+    /// Collection that contains the cached containers. Always empty if <see cref="IsRecycling"/> is false.
     /// </summary>
     public IReadOnlyCollection<UIElement> CachedContainers => cachedContainers;
 
@@ -66,7 +66,7 @@ internal class ItemContainerManager
         this.removeInternalChild = removeInternalChild;
         itemContainerGenerator.ItemsChanged += ItemContainerGenerator_ItemsChanged;
     }
-    
+
     public void OnClearChildren()
     {
         realizedContainers.Clear();
@@ -105,47 +105,41 @@ internal class ItemContainerManager
         }
     }
 
-    public void Virtualize(UIElement container)
+    public void Virtualize(object item)
     {
-        int itemIndex = FindItemIndexOfContainer(container);
+        var container = realizedContainers[item];
 
-        if (itemIndex == -1) // the item is already virtualized (can happen when grouping)
+        var generatorPosition = GeneratorPositionFromContainer(container);
+
+        // Index is - 1 when the item is already virtualized (can happen when grouping)
+        if (generatorPosition.Index != -1)
         {
-            realizedContainers.Remove(realizedContainers.Where(entry => entry.Value == container).Single().Key);
-
             if (IsRecycling)
             {
-                cachedContainers.Add(container);
+                recyclingItemContainerGenerator.Recycle(generatorPosition, 1);
             }
             else
             {
-                removeInternalChild(container);
+                recyclingItemContainerGenerator.Remove(generatorPosition, 1);
             }
-
-            return;
         }
 
-        var item = Items[itemIndex];
-
-        var generatorPosition = recyclingItemContainerGenerator.GeneratorPositionFromIndex(itemIndex);
+        realizedContainers.Remove(item);
 
         if (IsRecycling)
         {
-            recyclingItemContainerGenerator.Recycle(generatorPosition, 1);
-            realizedContainers.Remove(item);
             cachedContainers.Add(container);
         }
         else
         {
-            recyclingItemContainerGenerator.Remove(generatorPosition, 1);
-            realizedContainers.Remove(item);
             removeInternalChild(container);
         }
     }
 
-    public int FindItemIndexOfContainer(UIElement container)
+    private GeneratorPosition GeneratorPositionFromContainer(UIElement container)
     {
-        return Items.IndexOf(itemContainerGenerator.ItemFromContainer(container));
+        int itemIndex = itemContainerGenerator.IndexFromContainer(container);
+        return recyclingItemContainerGenerator.GeneratorPositionFromIndex(itemIndex);
     }
 
     private void ItemContainerGenerator_ItemsChanged(object sender, ItemsChangedEventArgs e)
