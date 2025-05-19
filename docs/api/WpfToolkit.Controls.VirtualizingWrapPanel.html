@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -231,6 +231,9 @@ Class VirtualizingWrapPanel  <a class="header-action link-secondary" title="View
       <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_ShouldIgnoreMeasure">VirtualizingPanelBase.ShouldIgnoreMeasure()</a>
     </div>
     <div>
+      <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_VerifyItemsControl">VirtualizingPanelBase.VerifyItemsControl()</a>
+    </div>
+    <div>
       <a class="xref" href="WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_MakeVisible_System_Windows_Media_Visual_System_Windows_Rect_">VirtualizingPanelBase.MakeVisible(Visual, Rect)</a>
     </div>
     <div>
@@ -361,9 +364,6 @@ Class VirtualizingWrapPanel  <a class="header-action link-secondary" title="View
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.virtualizingpanel.shoulditemschangeaffectlayoutcore">VirtualizingPanel.ShouldItemsChangeAffectLayoutCore(bool, ItemsChangedEventArgs)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.virtualizingpanel.onclearchildren">VirtualizingPanel.OnClearChildren()</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.virtualizingpanel.bringindexintoviewpublic">VirtualizingPanel.BringIndexIntoViewPublic(int)</a>
@@ -2131,7 +2131,7 @@ Class VirtualizingWrapPanel  <a class="header-action link-secondary" title="View
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_IsGridLayoutEnabledProperty" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.IsGridLayoutEnabledProperty">
   IsGridLayoutEnabledProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L31"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2139,6 +2139,36 @@ Class VirtualizingWrapPanel  <a class="header-action link-secondary" title="View
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static readonly DependencyProperty IsGridLayoutEnabledProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_ItemAlignmentProperty" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.ItemAlignmentProperty">
+  ItemAlignmentProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty ItemAlignmentProperty</code></pre>
   </div>
 
 
@@ -2251,7 +2281,7 @@ Class VirtualizingWrapPanel  <a class="header-action link-secondary" title="View
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_SpacingModeProperty" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.SpacingModeProperty">
   SpacingModeProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L27"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2281,7 +2311,7 @@ Class VirtualizingWrapPanel  <a class="header-action link-secondary" title="View
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_StretchItemsProperty" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.StretchItemsProperty">
   StretchItemsProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L29"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2316,7 +2346,7 @@ Class VirtualizingWrapPanel  <a class="header-action link-secondary" title="View
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_AllowDifferentSizedItems" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.AllowDifferentSizedItems">
   AllowDifferentSizedItems
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L49"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Specifies whether items can have different sizes. The default value is false. If this property is enabled,
@@ -2350,7 +2380,7 @@ of the items is not always guaranteed to be correct.</p>
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_CanHierarchicallyScrollAndVirtualizeCore" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.CanHierarchicallyScrollAndVirtualizeCore">
   CanHierarchicallyScrollAndVirtualizeCore
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L93"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets value that indicates whether the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.virtualizingpanel">VirtualizingPanel</a> can virtualize items
@@ -2384,7 +2414,7 @@ that are grouped or organized in a hierarchy.</p>
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_HasLogicalOrientation" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.HasLogicalOrientation">
   HasLogicalOrientation
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L95"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a value that indicates whether this <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.panel">Panel</a> arranges its descendants in a single dimension.</p>
@@ -2417,12 +2447,12 @@ that are grouped or organized in a hierarchy.</p>
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_IsGridLayoutEnabled" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.IsGridLayoutEnabled">
   IsGridLayoutEnabled
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L86"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Specifies whether the items are arranged in a grid-like layout. The default value is <code>true</code>.
-When set to <code>true</code>, the items are arranged based on the number of items that can fit in a row.
-When set to <code>false</code>, the items are arranged based on the number of items that are actually placed in the row.</p>
+When set to <code>true</code>, the items are arranged based on the number of items that can fit in a line.
+When set to <code>false</code>, the items are arranged based on the number of items that are actually placed in the line.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -2445,8 +2475,41 @@ When set to <code>false</code>, the items are arranged based on the number of it
 
   <h4 class="section" id="WpfToolkit_Controls_VirtualizingWrapPanel_IsGridLayoutEnabled_remarks">Remarks</h4>
   <div class="markdown level1 remarks"><p>If <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_AllowDifferentSizedItems">AllowDifferentSizedItems</a> is enabled, this property has no effect and the items are always
-arranged based on the number of items that are actually placed in the row.</p>
+arranged based on the number of items that are actually placed in the line.</p>
 </div>
+
+
+
+
+  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_ItemAlignment_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.ItemAlignment*"></a>
+
+  <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_ItemAlignment" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.ItemAlignment">
+  ItemAlignment
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Specifies how the item are aligned on the cross axis. The default value is <a class="xref" href="WpfToolkit.Controls.ItemAlignment.html#WpfToolkit_Controls_ItemAlignment_Start">Start</a>.
+This property only applies when the <a class="xref" href="WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_AllowDifferentSizedItems">AllowDifferentSizedItems</a> property is enabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ItemAlignment ItemAlignment { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="WpfToolkit.Controls.ItemAlignment.html">ItemAlignment</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
 
 
 
@@ -2455,7 +2518,7 @@ arranged based on the number of items that are actually placed in the row.</p>
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_ItemSize" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.ItemSize">
   ItemSize
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L42"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a value that specifies the size of the items. The default value is <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.size.empty">Empty</a>.
@@ -2488,7 +2551,7 @@ If the value is <a class="xref" href="https://learn.microsoft.com/dotnet/api/sys
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_ItemSizeProvider" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.ItemSizeProvider">
   ItemSizeProvider
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L55"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Specifies an instance of <a class="xref" href="WpfToolkit.Controls.IItemSizeProvider.html">IItemSizeProvider</a> which provides the size of the items. In order to allow
@@ -2521,7 +2584,7 @@ different sized items, also enable the <a class="xref" href="WpfToolkit.Controls
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_LogicalOrientation" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.LogicalOrientation">
   LogicalOrientation
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L97"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.orientation">Orientation</a> of the panel, if the panel supports layout in only a single dimension.</p>
@@ -2554,7 +2617,7 @@ different sized items, also enable the <a class="xref" href="WpfToolkit.Controls
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_Orientation" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.Orientation">
   Orientation
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a value that specifies the orientation in which items are arranged before wrapping. The default value is <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.orientation#system-windows-controls-orientation-horizontal">Horizontal</a>.</p>
@@ -2586,7 +2649,7 @@ different sized items, also enable the <a class="xref" href="WpfToolkit.Controls
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_SpacingMode" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.SpacingMode">
   SpacingMode
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L66"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the spacing mode used when arranging the items. The default value is <a class="xref" href="WpfToolkit.Controls.SpacingMode.html#WpfToolkit_Controls_SpacingMode_Uniform">Uniform</a>.</p>
@@ -2618,7 +2681,7 @@ different sized items, also enable the <a class="xref" href="WpfToolkit.Controls
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_StretchItems" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.StretchItems">
   StretchItems
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L75"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a value that specifies if the items get stretched to fill up remaining space. The default value is false.</p>
@@ -2658,7 +2721,7 @@ In this case the use of the remaining space will be determined by the SpacingMod
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_ArrangeOverride_System_Windows_Size_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.ArrangeOverride(System.Windows.Size)">
   ArrangeOverride(Size)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L192"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L203"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>When overridden in a derived class, positions child elements and determines a size for a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkelement">FrameworkElement</a> derived class.</p>
@@ -2697,7 +2760,7 @@ In this case the use of the remaining space will be determined by the SpacingMod
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_BringIndexIntoView_System_Int32_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.BringIndexIntoView(System.Int32)">
   BringIndexIntoView(int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L253"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L264"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>When implemented in a derived class, generates the item at the specified index location and makes it visible.</p>
@@ -2730,7 +2793,7 @@ In this case the use of the remaining space will be determined by the SpacingMod
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_ClearItemSizeCache" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.ClearItemSizeCache">
   ClearItemSizeCache()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L138"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L147"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2756,7 +2819,7 @@ In this case the use of the remaining space will be determined by the SpacingMod
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetLineDownScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetLineDownScrollAmount">
   GetLineDownScrollAmount()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L899"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L969"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2787,7 +2850,7 @@ In this case the use of the remaining space will be determined by the SpacingMod
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetLineLeftScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetLineLeftScrollAmount">
   GetLineLeftScrollAmount()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L904"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L974"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2818,7 +2881,7 @@ In this case the use of the remaining space will be determined by the SpacingMod
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetLineRightScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetLineRightScrollAmount">
   GetLineRightScrollAmount()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L909"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L979"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2849,7 +2912,7 @@ In this case the use of the remaining space will be determined by the SpacingMod
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetLineUpScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetLineUpScrollAmount">
   GetLineUpScrollAmount()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L894"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L964"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2880,7 +2943,7 @@ In this case the use of the remaining space will be determined by the SpacingMod
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetMouseWheelDownScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetMouseWheelDownScrollAmount">
   GetMouseWheelDownScrollAmount()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L919"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L989"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2911,7 +2974,7 @@ In this case the use of the remaining space will be determined by the SpacingMod
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetMouseWheelLeftScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetMouseWheelLeftScrollAmount">
   GetMouseWheelLeftScrollAmount()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L924"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L994"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2942,7 +3005,7 @@ In this case the use of the remaining space will be determined by the SpacingMod
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetMouseWheelRightScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetMouseWheelRightScrollAmount">
   GetMouseWheelRightScrollAmount()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L929"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L999"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2973,7 +3036,7 @@ In this case the use of the remaining space will be determined by the SpacingMod
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetMouseWheelUpScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetMouseWheelUpScrollAmount">
   GetMouseWheelUpScrollAmount()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L914"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L984"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -3004,7 +3067,7 @@ In this case the use of the remaining space will be determined by the SpacingMod
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetPageDownScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetPageDownScrollAmount">
   GetPageDownScrollAmount()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L939"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L1009"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -3035,7 +3098,7 @@ In this case the use of the remaining space will be determined by the SpacingMod
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetPageLeftScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetPageLeftScrollAmount">
   GetPageLeftScrollAmount()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L944"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L1014"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -3066,7 +3129,7 @@ In this case the use of the remaining space will be determined by the SpacingMod
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetPageRightScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetPageRightScrollAmount">
   GetPageRightScrollAmount()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L949"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L1019"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -3097,7 +3160,7 @@ In this case the use of the remaining space will be determined by the SpacingMod
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_GetPageUpScrollAmount" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.GetPageUpScrollAmount">
   GetPageUpScrollAmount()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L934"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L1004"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -3128,7 +3191,7 @@ In this case the use of the remaining space will be determined by the SpacingMod
 
   <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_MeasureOverride_System_Windows_Size_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.MeasureOverride(System.Windows.Size)">
   MeasureOverride(Size)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L144"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L153"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>When overridden in a derived class, measures the size in layout required for child elements and determines a size for the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkelement">FrameworkElement</a>-derived class.</p>
@@ -3152,6 +3215,33 @@ In this case the use of the remaining space will be determined by the SpacingMod
     <dd><p>The size that this element determines it needs during layout, based on its calculations of child element sizes.</p>
 </dd>
   </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="WpfToolkit_Controls_VirtualizingWrapPanel_OnClearChildren_" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.OnClearChildren*"></a>
+
+  <h3 id="WpfToolkit_Controls_VirtualizingWrapPanel_OnClearChildren" data-uid="WpfToolkit.Controls.VirtualizingWrapPanel.OnClearChildren">
+  OnClearChildren()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/sbaeumlisberger/virtualizing-wrap-panel/blob/master/src/VirtualizingWrapPanel/VirtualizingWrapPanel.cs/#L283"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the collection of child elements is cleared by the base <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.panel">Panel</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnClearChildren()</code></pre>
+  </div>
+
+
 
 
 

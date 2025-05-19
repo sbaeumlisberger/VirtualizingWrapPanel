@@ -10,7 +10,11 @@
           "relative_path": "api/WpfToolkit.Controls.GridDetailsView.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "WpfToolkit.Controls.GridDetailsView",
+      "Summary": "<p sourcefile=\"api/WpfToolkit.Controls.GridDetailsView.yml\" sourcestartlinenumber=\"1\">Simple control that displays a gird of items. Depending on the orientation, the items are either stacked horizontally or vertically\nuntil the items are wrapped to the next row or column. The control is using virtualization to support large amount of items.\nIf an item is clicked the item gots expanded until it is clicked again or an other item is clicked and gots expanded.</p>\n<p class=\"note\">In order to work properly all items must have the same size.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -20,7 +24,11 @@
           "relative_path": "api/WpfToolkit.Controls.GridView.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "WpfToolkit.Controls.GridView",
+      "Summary": "<p sourcefile=\"api/WpfToolkit.Controls.GridView.yml\" sourcestartlinenumber=\"1\">Simple control that displays a gird of items. Depending on the orientation, the items are either stacked horizontally or vertically\nuntil the items are wrapped to the next row or column. The control is using virtualization to support large amount of items.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -30,7 +38,25 @@
           "relative_path": "api/WpfToolkit.Controls.IItemSizeProvider.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "WpfToolkit.Controls.IItemSizeProvider",
+      "Summary": "<p sourcefile=\"api/WpfToolkit.Controls.IItemSizeProvider.yml\" sourcestartlinenumber=\"1\">Provides the size of items displayed in an VirtualizingPanel.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/WpfToolkit.Controls.ItemAlignment.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/WpfToolkit.Controls.ItemAlignment.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "WpfToolkit.Controls.ItemAlignment",
+      "Summary": "<p sourcefile=\"api/WpfToolkit.Controls.ItemAlignment.yml\" sourcestartlinenumber=\"1\">Specifies how items are aligned on the cross axis of a <xref href=\"WpfToolkit.Controls.VirtualizingWrapPanel\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -40,7 +66,11 @@
           "relative_path": "api/WpfToolkit.Controls.SpacingMode.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "WpfToolkit.Controls.SpacingMode",
+      "Summary": "<p sourcefile=\"api/WpfToolkit.Controls.SpacingMode.yml\" sourcestartlinenumber=\"1\">Specifies how remaining space is distributed.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -50,7 +80,11 @@
           "relative_path": "api/WpfToolkit.Controls.VirtualizingItemsControl.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "WpfToolkit.Controls.VirtualizingItemsControl",
+      "Summary": "<p sourcefile=\"api/WpfToolkit.Controls.VirtualizingItemsControl.yml\" sourcestartlinenumber=\"1\">A ItemsControl supporting virtualization.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -60,7 +94,11 @@
           "relative_path": "api/WpfToolkit.Controls.VirtualizingPanelBase.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "WpfToolkit.Controls.VirtualizingPanelBase",
+      "Summary": "<p sourcefile=\"api/WpfToolkit.Controls.VirtualizingPanelBase.yml\" sourcestartlinenumber=\"1\">Base class for panels which are supporting virtualization.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -70,7 +108,11 @@
           "relative_path": "api/WpfToolkit.Controls.VirtualizingWrapPanel.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "WpfToolkit.Controls.VirtualizingWrapPanel",
+      "Summary": "<p sourcefile=\"api/WpfToolkit.Controls.VirtualizingWrapPanel.yml\" sourcestartlinenumber=\"1\">A implementation of a wrap panel that supports virtualization and can be used in horizontal and vertical orientation.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -80,7 +122,11 @@
           "relative_path": "api/WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion",
+      "Summary": "<p sourcefile=\"api/WpfToolkit.Controls.VirtualizingWrapPanelWithItemExpansion.yml\" sourcestartlinenumber=\"1\">A implementation of a wrap panel that supports virtualization and can be used in horizontal and vertical orientation.\nIn addition the panel allows to expand one specific item.</p>\n<p class=\"note\">In order to work properly all items must have the same size.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -90,7 +136,11 @@
           "relative_path": "api/WpfToolkit.Controls.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "WpfToolkit.Controls",
+      "Summary": null
     },
     {
       "type": "Conceptual",

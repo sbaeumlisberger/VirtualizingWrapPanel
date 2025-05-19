@@ -219,6 +219,36 @@ references:
   isSpec: "True"
   fullName: WpfToolkit.Controls.IItemSizeProvider.GetSizeForItem
   nameWithType: IItemSizeProvider.GetSizeForItem
+- uid: WpfToolkit.Controls.ItemAlignment
+  name: ItemAlignment
+  href: api/WpfToolkit.Controls.ItemAlignment.html
+  commentId: T:WpfToolkit.Controls.ItemAlignment
+  fullName: WpfToolkit.Controls.ItemAlignment
+  nameWithType: ItemAlignment
+- uid: WpfToolkit.Controls.ItemAlignment.Center
+  name: Center
+  href: api/WpfToolkit.Controls.ItemAlignment.html#WpfToolkit_Controls_ItemAlignment_Center
+  commentId: F:WpfToolkit.Controls.ItemAlignment.Center
+  fullName: WpfToolkit.Controls.ItemAlignment.Center
+  nameWithType: ItemAlignment.Center
+- uid: WpfToolkit.Controls.ItemAlignment.End
+  name: End
+  href: api/WpfToolkit.Controls.ItemAlignment.html#WpfToolkit_Controls_ItemAlignment_End
+  commentId: F:WpfToolkit.Controls.ItemAlignment.End
+  fullName: WpfToolkit.Controls.ItemAlignment.End
+  nameWithType: ItemAlignment.End
+- uid: WpfToolkit.Controls.ItemAlignment.Start
+  name: Start
+  href: api/WpfToolkit.Controls.ItemAlignment.html#WpfToolkit_Controls_ItemAlignment_Start
+  commentId: F:WpfToolkit.Controls.ItemAlignment.Start
+  fullName: WpfToolkit.Controls.ItemAlignment.Start
+  nameWithType: ItemAlignment.Start
+- uid: WpfToolkit.Controls.ItemAlignment.Stretch
+  name: Stretch
+  href: api/WpfToolkit.Controls.ItemAlignment.html#WpfToolkit_Controls_ItemAlignment_Stretch
+  commentId: F:WpfToolkit.Controls.ItemAlignment.Stretch
+  fullName: WpfToolkit.Controls.ItemAlignment.Stretch
+  nameWithType: ItemAlignment.Stretch
 - uid: WpfToolkit.Controls.SpacingMode
   name: SpacingMode
   href: api/WpfToolkit.Controls.SpacingMode.html
@@ -947,6 +977,19 @@ references:
   isSpec: "True"
   fullName: WpfToolkit.Controls.VirtualizingPanelBase.ShouldIgnoreMeasure
   nameWithType: VirtualizingPanelBase.ShouldIgnoreMeasure
+- uid: WpfToolkit.Controls.VirtualizingPanelBase.VerifyItemsControl
+  name: VerifyItemsControl()
+  href: api/WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_VerifyItemsControl
+  commentId: M:WpfToolkit.Controls.VirtualizingPanelBase.VerifyItemsControl
+  fullName: WpfToolkit.Controls.VirtualizingPanelBase.VerifyItemsControl()
+  nameWithType: VirtualizingPanelBase.VerifyItemsControl()
+- uid: WpfToolkit.Controls.VirtualizingPanelBase.VerifyItemsControl*
+  name: VerifyItemsControl
+  href: api/WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_VerifyItemsControl_
+  commentId: Overload:WpfToolkit.Controls.VirtualizingPanelBase.VerifyItemsControl
+  isSpec: "True"
+  fullName: WpfToolkit.Controls.VirtualizingPanelBase.VerifyItemsControl
+  nameWithType: VirtualizingPanelBase.VerifyItemsControl
 - uid: WpfToolkit.Controls.VirtualizingPanelBase.VerticalOffset
   name: VerticalOffset
   href: api/WpfToolkit.Controls.VirtualizingPanelBase.html#WpfToolkit_Controls_VirtualizingPanelBase_VerticalOffset
@@ -1280,6 +1323,25 @@ references:
   commentId: F:WpfToolkit.Controls.VirtualizingWrapPanel.IsGridLayoutEnabledProperty
   fullName: WpfToolkit.Controls.VirtualizingWrapPanel.IsGridLayoutEnabledProperty
   nameWithType: VirtualizingWrapPanel.IsGridLayoutEnabledProperty
+- uid: WpfToolkit.Controls.VirtualizingWrapPanel.ItemAlignment
+  name: ItemAlignment
+  href: api/WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_ItemAlignment
+  commentId: P:WpfToolkit.Controls.VirtualizingWrapPanel.ItemAlignment
+  fullName: WpfToolkit.Controls.VirtualizingWrapPanel.ItemAlignment
+  nameWithType: VirtualizingWrapPanel.ItemAlignment
+- uid: WpfToolkit.Controls.VirtualizingWrapPanel.ItemAlignment*
+  name: ItemAlignment
+  href: api/WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_ItemAlignment_
+  commentId: Overload:WpfToolkit.Controls.VirtualizingWrapPanel.ItemAlignment
+  isSpec: "True"
+  fullName: WpfToolkit.Controls.VirtualizingWrapPanel.ItemAlignment
+  nameWithType: VirtualizingWrapPanel.ItemAlignment
+- uid: WpfToolkit.Controls.VirtualizingWrapPanel.ItemAlignmentProperty
+  name: ItemAlignmentProperty
+  href: api/WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_ItemAlignmentProperty
+  commentId: F:WpfToolkit.Controls.VirtualizingWrapPanel.ItemAlignmentProperty
+  fullName: WpfToolkit.Controls.VirtualizingWrapPanel.ItemAlignmentProperty
+  nameWithType: VirtualizingWrapPanel.ItemAlignmentProperty
 - uid: WpfToolkit.Controls.VirtualizingWrapPanel.ItemSize
   name: ItemSize
   href: api/WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_ItemSize
@@ -1344,6 +1406,19 @@ references:
   isSpec: "True"
   fullName: WpfToolkit.Controls.VirtualizingWrapPanel.MeasureOverride
   nameWithType: VirtualizingWrapPanel.MeasureOverride
+- uid: WpfToolkit.Controls.VirtualizingWrapPanel.OnClearChildren
+  name: OnClearChildren()
+  href: api/WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_OnClearChildren
+  commentId: M:WpfToolkit.Controls.VirtualizingWrapPanel.OnClearChildren
+  fullName: WpfToolkit.Controls.VirtualizingWrapPanel.OnClearChildren()
+  nameWithType: VirtualizingWrapPanel.OnClearChildren()
+- uid: WpfToolkit.Controls.VirtualizingWrapPanel.OnClearChildren*
+  name: OnClearChildren
+  href: api/WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_OnClearChildren_
+  commentId: Overload:WpfToolkit.Controls.VirtualizingWrapPanel.OnClearChildren
+  isSpec: "True"
+  fullName: WpfToolkit.Controls.VirtualizingWrapPanel.OnClearChildren
+  nameWithType: VirtualizingWrapPanel.OnClearChildren
 - uid: WpfToolkit.Controls.VirtualizingWrapPanel.Orientation
   name: Orientation
   href: api/WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_Orientation

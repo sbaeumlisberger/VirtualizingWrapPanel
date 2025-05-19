@@ -113,7 +113,6 @@ namespace WpfToolkit.Controls
                     _itemContainerGenerator = base.ItemContainerGenerator.GetItemContainerGeneratorForPanel(this);
 
                     _itemContainerGenerator.ItemsChanged += ItemContainerGenerator_ItemsChanged;
-
                 }
                 return _itemContainerGenerator;
             }

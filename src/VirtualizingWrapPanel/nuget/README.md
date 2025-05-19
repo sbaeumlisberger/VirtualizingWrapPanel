@@ -1,11 +1,11 @@
-Implementation of a comprehensive [VirtualizingWrapPanel](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.VirtualizingWrapPanel.html) control for WPF. The additional [GridView](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.GridView.html) and [GridDetailsView](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.GridDetailsView.html) controls are providing a easy to use out-of-the-box experience.
+Feature-rich implementation of a [VirtualizingWrapPanel](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.VirtualizingWrapPanel.html) control for WPF. The additional [GridView](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.GridView.html) controls provides a easy to use out-of-the-box experience.
 
 ### Features
 * Horizontal and vertical orientation
-* Caching by page, items or pixels
-* Container recycling
-* Grouping / Hierarchical Virtualization
-* Configurable spacing behaviour
+* Container recycling and high performance
+* Grouping / hierarchical virtualization
+* Configurable spacing behaviour and item alignment
+* Caching based on pages, items or pixels
 * Displaying different sized items
 
 ### Resources

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -223,6 +223,9 @@ For more information visit the official <a href="https://learn.microsoft.com/dot
      &lt;/ItemsControl.GroupStyle&gt;
 &lt;/ListView&gt;
 </code></pre>
+<p>If <code>VirtualizingStackPanel.Orientation</code> is <code>Vertical</code> and <code>VirtualizingWrapPanel.Orientation</code> is <code>Horizontal</code>, you can scroll vertically through the groups and the VirtualizingWrapPanel wraps the items at the right end of the viewport.</p>
+<p>If <code>VirtualizingStackPanel.Orientation</code> is <code>Horizontal</code> and <code>VirtualizingWrapPanel.Orientation</code> is <code>Vertical</code>, you can scroll horizontally through the groups and the VirtualizingWrapPanel wraps the items at the bottom of the viewport.</p>
+<p>⚠️ Any other combination of the Orientation properties is not supported.</p>
 <h3 id="different-sized-items">Different Sized Items</h3>
 <p>⚠️ This information is only valid for version 2.x</p>
 <p>In order to use different sized items the property <code>AllowDifferentSizedItems</code> must be set to <code>true</code>. If this property is enabled, it is strongly recommended to also set the <code>ItemSizeProvider</code> property to an instance of the <code>IItemSizeProvider</code> interface. Otherwise, the position of the items is not guaranteed to be correct when the user is scrolling fast.</p>
