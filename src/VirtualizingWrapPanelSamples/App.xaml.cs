@@ -16,7 +16,7 @@ namespace VirtualizingWrapPanelSamples
 
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            Debug.WriteLine(e.Exception);
+            Trace.WriteLine(e.Exception);
 
             if (e.Exception is InvalidOperationException)
             {

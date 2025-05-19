@@ -89,8 +89,7 @@ namespace VirtualizingWrapPanelSamples
                 return;
             }
 
-            var content = (DependencyObject)tabControl.SelectedContent;
-            var itemsControl = content as ItemsControl ?? GetChildOfType<ListView>(content) ?? GetChildOfType<ItemsControl>(content)!;
+            var itemsControl = FindItemsControl();
 
             if (itemsControl != previousItemsControl)
             {
@@ -195,7 +194,7 @@ namespace VirtualizingWrapPanelSamples
         private ItemsControl FindItemsControl()
         {
             var content = (DependencyObject)tabControl.SelectedContent;
-            return content as ItemsControl ?? GetChildOfType<ItemsControl>(content)!;
+            return content as ItemsControl ?? GetChildOfType<ListView>(content) ?? GetChildOfType<ItemsControl>(content)!;
         }
 
         private void GroupingCheckBox_Checked(object sender, RoutedEventArgs e)
