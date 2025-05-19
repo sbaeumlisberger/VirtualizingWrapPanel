@@ -112,6 +112,8 @@ namespace WpfToolkit.Controls
 
                     _itemContainerGenerator = base.ItemContainerGenerator.GetItemContainerGeneratorForPanel(this);
 
+                    _itemContainerGenerator.ItemsChanged += ItemContainerGenerator_ItemsChanged;
+
                 }
                 return _itemContainerGenerator;
             }
@@ -133,11 +135,26 @@ namespace WpfToolkit.Controls
 
         private Visibility previousVerticalScrollBarVisibility = Visibility.Collapsed;
         private Visibility previousHorizontalScrollBarVisibility = Visibility.Collapsed;
+        private bool itemsChanged = false;
+
+        private void ItemContainerGenerator_ItemsChanged(object sender, ItemsChangedEventArgs e)
+        {
+            itemsChanged = true;
+        }
 
         protected bool ShouldIgnoreMeasure()
         {
             /* Sometimes when scrolling the scrollbar gets hidden without any reason. 
-             * To prevent a infinite circle the mesasure call has to be ignored. */
+             * To prevent a infinite circle the measure call has to be ignored. */
+
+            /* If the items have changed, the measure call should never be ignored
+             * to prevent issues in the following arrangement call. See:
+             * https://github.com/sbaeumlisberger/VirtualizingWrapPanel/issues/84 */
+            if (itemsChanged)
+            {
+                itemsChanged = false;
+                return false;
+            }
 
             IScrollInfo scrollInfo = this;
             ScrollViewer? scrollOwner = ScrollOwner;
@@ -172,7 +189,7 @@ namespace WpfToolkit.Controls
             return false;
         }
 
-        protected void VerifyItemsControl() 
+        protected void VerifyItemsControl()
         {
             if (GetIsVirtualizing(ItemsControl) == false)
             {
