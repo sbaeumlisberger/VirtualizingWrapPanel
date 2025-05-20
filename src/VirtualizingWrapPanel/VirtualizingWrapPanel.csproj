@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.2.0</Version>
+        <Version>2.2.1</Version>
         <Authors>sbaeumlisberger</Authors>
         <Copyright>sbaeumlisberger</Copyright>
         <Description>Feature-rich implementation of a VirtualizingWrapPanel for WPF.</Description>
@@ -36,9 +36,7 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         
         <PackageReleaseNotes>
-- #83 Add ItemAlignment property (see https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.VirtualizingWrapPanel.html#WpfToolkit_Controls_VirtualizingWrapPanel_ItemAlignment)
-- #84 Fix an exception that sometimes occurs when a filter is applied, caused by an ignored measurement call
-- Performance optimizations (see commit 0acfcdf7d8fa19270fdee4575bd8d435a8a28763)
+- #85 Fix InvalidOperationException when running on .NET Framework
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>

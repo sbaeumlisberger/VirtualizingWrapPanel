@@ -11,4 +11,4 @@ Feature-rich implementation of a [VirtualizingWrapPanel](https://sbaeumlisberger
 ### Resources
 * [Getting started](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/docs/getting-started.html)
 * [Sample Application](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/tree/master/SamplesApplication.md)
-* [API-Documentation](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.html)
+* [API Documentation](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.html)
