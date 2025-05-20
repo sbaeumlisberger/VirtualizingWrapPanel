@@ -655,7 +655,7 @@ namespace WpfToolkit.Controls
         {
             var itemsToBeRealized = new HashSet<object>(Items.Skip(startItemIndex).Take(endItemIndex - startItemIndex + 1));
 
-            foreach (var (item, container) in ItemContainerManager.RealizedContainers)
+            foreach (var (item, container) in ItemContainerManager.RealizedContainers.ToList())
             {
                 if (container == bringIntoViewContainer)
                 {
