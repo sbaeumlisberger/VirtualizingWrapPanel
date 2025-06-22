@@ -47,7 +47,7 @@ internal class ItemContainerManager
     /// </summary>
     public IReadOnlyCollection<UIElement> CachedContainers => cachedContainers;
 
-    private readonly Dictionary<object, UIElement> realizedContainers = new Dictionary<object, UIElement>();
+    private readonly Dictionary<object, UIElement> realizedContainers = new Dictionary<object, UIElement>(ReferenceEqualityComparer.Instance);
 
     private readonly HashSet<UIElement> cachedContainers = new HashSet<UIElement>();
 

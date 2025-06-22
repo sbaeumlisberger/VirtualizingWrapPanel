@@ -130,7 +130,7 @@ namespace WpfToolkit.Controls
 
         private Size? sizeOfFirstItem;
 
-        private readonly Dictionary<object, Size> itemSizesCache = new Dictionary<object, Size>();
+        private readonly Dictionary<object, Size> itemSizesCache = new Dictionary<object, Size>(ReferenceEqualityComparer.Instance);
         private Size? averageItemSizeCache;
 
         private int startItemIndex = -1;
