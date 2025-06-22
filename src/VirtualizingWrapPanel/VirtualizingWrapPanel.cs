@@ -421,7 +421,7 @@ namespace WpfToolkit.Controls
 
         private Size GetAverageItemSize()
         {
-            if (itemSize != Size.Empty)
+            if (!itemSize.IsEmpty)
             {
                 return itemSize;
             }
@@ -708,7 +708,7 @@ namespace WpfToolkit.Controls
 
         private Size CalculateExtentForSameSizedItems()
         {
-            var itemSize = this.itemSize != Size.Empty ? this.itemSize : sizeOfFirstItem!.Value;
+            var itemSize = !this.itemSize.IsEmpty ? this.itemSize : sizeOfFirstItem!.Value;
             int itemsPerRow = (int)Math.Max(1, Math.Floor(GetWidth(ViewportSize) / GetWidth(itemSize)));
             double extentY = Math.Ceiling(((double)Items.Count) / itemsPerRow) * GetHeight(itemSize);
             return CreateSize(knownExtendX, extentY);
