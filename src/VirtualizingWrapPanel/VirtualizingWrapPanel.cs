@@ -666,7 +666,7 @@ namespace WpfToolkit.Controls
 
         private void VirtualizeItems()
         {
-            var itemsToBeRealized = new HashSet<object>(Items.Skip(startItemIndex).Take(endItemIndex - startItemIndex + 1));
+            var itemsToBeRealized = Utils.HashSetOfRange(Items, startItemIndex, endItemIndex);
 
             foreach (var (item, container) in ItemContainerManager.RealizedContainers.ToList())
             {
