@@ -144,6 +144,13 @@ namespace WpfToolkit.Controls
         private int bringIntoViewItemIndex = -1;
         private FrameworkElement? bringIntoViewContainer;
 
+        #region variables used to cache dependency properties that are read many times for better performance
+        private Orientation orientation = Orientation.Horizontal;
+        private Size itemSize = Size.Empty;
+        private bool allowDifferentSizedItems = false;
+        private IItemSizeProvider? itemSizeProvider;
+        #endregion
+
         public void ClearItemSizeCache()
         {
             itemSizesCache.Clear();
@@ -152,6 +159,12 @@ namespace WpfToolkit.Controls
 
         protected override Size MeasureOverride(Size availableSize)
         {
+            // cache dependency properties that are read many times for better performance
+            orientation = Orientation;
+            itemSize = ItemSize;
+            allowDifferentSizedItems = AllowDifferentSizedItems;
+            itemSizeProvider = ItemSizeProvider;
+
             VerifyItemsControl();
 
             if (ShouldIgnoreMeasure())
@@ -352,7 +365,7 @@ namespace WpfToolkit.Controls
             {
                 var margin = itemsPresenter.Margin;
 
-                if (Orientation == Orientation.Horizontal)
+                if (orientation == Orientation.Horizontal)
                 {
                     viewportWidth = Math.Max(0, viewportWidth - (margin.Left + margin.Right));
                 }
@@ -362,7 +375,7 @@ namespace WpfToolkit.Controls
                 }
             }
 
-            if (Orientation == Orientation.Horizontal)
+            if (orientation == Orientation.Horizontal)
             {
                 viewportY = Math.Max(0, viewportY - groupItem.HeaderDesiredSizes.PixelSize.Height);
                 double visibleHeaderHeight = Math.Max(0, groupItem.HeaderDesiredSizes.PixelSize.Height - Math.Max(0, groupItem.Constraints.Viewport.Location.Y));
@@ -408,11 +421,11 @@ namespace WpfToolkit.Controls
 
         private Size GetAverageItemSize()
         {
-            if (ItemSize != Size.Empty)
+            if (itemSize != Size.Empty)
             {
-                return ItemSize;
+                return itemSize;
             }
-            else if (!AllowDifferentSizedItems)
+            else if (!allowDifferentSizedItems)
             {
                 return sizeOfFirstItem ?? FallbackItemSize;
             }
@@ -540,15 +553,15 @@ namespace WpfToolkit.Controls
         {
             // If possible, find the end index to enable containers to be virtualized and reused when scrolling upwards.
 
-            if (!AllowDifferentSizedItems && (sizeOfFirstItem != null || ItemSize != Size.Empty))
+            if (!allowDifferentSizedItems && (sizeOfFirstItem != null || itemSize != Size.Empty))
             {
-                double itemWidth = GetWidth(sizeOfFirstItem ?? ItemSize);
-                double itemHeight = GetHeight(sizeOfFirstItem ?? ItemSize);
+                double itemWidth = GetWidth(sizeOfFirstItem ?? itemSize);
+                double itemHeight = GetHeight(sizeOfFirstItem ?? itemSize);
                 double endOffsetY = DetermineEndOffsetY();
                 int itemsPerRow = (int)Math.Floor(GetWidth(ViewportSize) / itemWidth);
                 int rows = (int)Math.Ceiling(endOffsetY / itemHeight);
 
-                endItemIndex = (itemsPerRow * rows) - 1;
+                endItemIndex = Math.Min((itemsPerRow * rows) - 1, Items.Count - 1);
 
                 if (cacheLengthUnit == VirtualizationCacheLengthUnit.Item)
                 {
@@ -600,7 +613,7 @@ namespace WpfToolkit.Controls
 
                 var containerSize = DetermineContainerSize(item, container, upfrontKnownItemSize);
 
-                if (AllowDifferentSizedItems == false && sizeOfFirstItem is null)
+                if (allowDifferentSizedItems == false && sizeOfFirstItem is null)
                 {
                     sizeOfFirstItem = containerSize;
                 }
@@ -619,7 +632,7 @@ namespace WpfToolkit.Controls
                 if (endItemIndexFound == false)
                 {
                     if (y >= endOffsetY
-                        || (AllowDifferentSizedItems == false
+                        || (allowDifferentSizedItems == false
                             && x + GetWidth(sizeOfFirstItem!.Value) > GetWidth(ViewportSize)
                             && y + rowHeight >= endOffsetY))
                     {
@@ -643,7 +656,7 @@ namespace WpfToolkit.Controls
         {
             Size containerSize = upfrontKnownItemSize ?? container.DesiredSize;
 
-            if (AllowDifferentSizedItems)
+            if (allowDifferentSizedItems)
             {
                 itemSizesCache[item] = containerSize;
             }
@@ -677,7 +690,7 @@ namespace WpfToolkit.Controls
             {
                 extent = new Size(0, 0);
             }
-            else if (!AllowDifferentSizedItems)
+            else if (!allowDifferentSizedItems)
             {
                 extent = CalculateExtentForSameSizedItems();
             }
@@ -695,7 +708,7 @@ namespace WpfToolkit.Controls
 
         private Size CalculateExtentForSameSizedItems()
         {
-            var itemSize = ItemSize != Size.Empty ? ItemSize : sizeOfFirstItem!.Value;
+            var itemSize = this.itemSize != Size.Empty ? this.itemSize : sizeOfFirstItem!.Value;
             int itemsPerRow = (int)Math.Max(1, Math.Floor(GetWidth(ViewportSize) / GetWidth(itemSize)));
             double extentY = Math.Ceiling(((double)Items.Count) / itemsPerRow) * GetHeight(itemSize);
             return CreateSize(knownExtendX, extentY);
@@ -731,7 +744,7 @@ namespace WpfToolkit.Controls
 
             if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo)
             {
-                if (Orientation == Orientation.Horizontal)
+                if (orientation == Orientation.Horizontal)
                 {
                     if (!double.IsPositiveInfinity(ViewportSize.Width))
                     {
@@ -784,17 +797,17 @@ namespace WpfToolkit.Controls
 
         private Size? GetUpfrontKnownItemSize(object item)
         {
-            if (ItemSize != Size.Empty)
+            if (!itemSize.IsEmpty)
             {
-                return ItemSize;
+                return itemSize;
             }
-            if (!AllowDifferentSizedItems && sizeOfFirstItem != null)
+            if (!allowDifferentSizedItems && sizeOfFirstItem != null)
             {
                 return sizeOfFirstItem;
             }
-            if (ItemSizeProvider != null)
+            if (itemSizeProvider != null)
             {
-                return ItemSizeProvider.GetSizeForItem(item);
+                return itemSizeProvider.GetSizeForItem(item);
             }
             return null;
         }
@@ -819,7 +832,7 @@ namespace WpfToolkit.Controls
             double summedUpChildWidth;
             double extraWidth = 0;
 
-            if (AllowDifferentSizedItems)
+            if (allowDifferentSizedItems)
             {
                 summedUpChildWidth = childSizes.Sum(GetWidth);
 
@@ -838,7 +851,7 @@ namespace WpfToolkit.Controls
                 if (StretchItems)
                 {
                     var firstChild = (FrameworkElement)children[0];
-                    double maxWidth = Orientation == Orientation.Horizontal ? firstChild.MaxWidth : firstChild.MaxHeight;
+                    double maxWidth = orientation == Orientation.Horizontal ? firstChild.MaxWidth : firstChild.MaxHeight;
                     double stretchedChildWidth = Math.Min(rowWidth / itemsPerRow, maxWidth);
                     stretchedChildWidth = Math.Max(stretchedChildWidth, childWidth); // ItemSize might be greater than MaxWidth/MaxHeight
                     extraWidth = stretchedChildWidth - childWidth;
@@ -893,11 +906,11 @@ namespace WpfToolkit.Controls
             {
                 if (child is FrameworkElement fe)
                 {
-                    if (Orientation == Orientation.Horizontal && double.IsNaN(fe.Height))
+                    if (orientation == Orientation.Horizontal && double.IsNaN(fe.Height))
                     {
                         return Math.Min(lineSizeCrossAxis, fe.MaxHeight);
                     }
-                    if (Orientation == Orientation.Vertical && double.IsNaN(fe.Width))
+                    if (orientation == Orientation.Vertical && double.IsNaN(fe.Width))
                     {
                         return Math.Min(lineSizeCrossAxis, fe.MaxWidth);
                     }
@@ -911,7 +924,7 @@ namespace WpfToolkit.Controls
         {
             int childCount;
 
-            if (AllowDifferentSizedItems)
+            if (allowDifferentSizedItems)
             {
                 childCount = children.Count;
             }
@@ -1025,13 +1038,13 @@ namespace WpfToolkit.Controls
 
         #region orientation aware helper methods
 
-        private double GetX(Point point) => Orientation == Orientation.Horizontal ? point.X : point.Y;
-        private double GetY(Point point) => Orientation == Orientation.Horizontal ? point.Y : point.X;
-        private double GetWidth(Size size) => Orientation == Orientation.Horizontal ? size.Width : size.Height;
-        private double GetHeight(Size size) => Orientation == Orientation.Horizontal ? size.Height : size.Width;
-        private Point CreatePoint(double x, double y) => Orientation == Orientation.Horizontal ? new Point(x, y) : new Point(y, x);
-        private Size CreateSize(double width, double height) => Orientation == Orientation.Horizontal ? new Size(width, height) : new Size(height, width);
-        private Rect CreateOrientedRect(double x, double y, double width, double height) => Orientation == Orientation.Horizontal ? new Rect(x, y, width, height) : new Rect(y, x, height, width);
+        private double GetX(Point point) => orientation == Orientation.Horizontal ? point.X : point.Y;
+        private double GetY(Point point) => orientation == Orientation.Horizontal ? point.Y : point.X;
+        private double GetWidth(Size size) => orientation == Orientation.Horizontal ? size.Width : size.Height;
+        private double GetHeight(Size size) => orientation == Orientation.Horizontal ? size.Height : size.Width;
+        private Point CreatePoint(double x, double y) => orientation == Orientation.Horizontal ? new Point(x, y) : new Point(y, x);
+        private Size CreateSize(double width, double height) => orientation == Orientation.Horizontal ? new Size(width, height) : new Size(height, width);
+        private Rect CreateOrientedRect(double x, double y, double width, double height) => orientation == Orientation.Horizontal ? new Rect(x, y, width, height) : new Rect(y, x, height, width);
 
         #endregion
     }
