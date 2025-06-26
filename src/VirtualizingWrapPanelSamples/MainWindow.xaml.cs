@@ -14,13 +14,11 @@ namespace VirtualizingWrapPanelSamples
     {
         internal readonly MainWindowModel model = new MainWindowModel();
 
-        private ItemsControl? previousItemsControl;
+        private ItemsControl? currentItemsControl;
 
         public MainWindow()
         {
             DataContext = model;
-
-            model.CollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TestItem.Group)));
 
             InitializeComponent();
 
@@ -59,7 +57,7 @@ namespace VirtualizingWrapPanelSamples
 
         private void InsertButton_Click(object sender, RoutedEventArgs args)
         {
-            model.InsertItemAtRandomPosition();
+            model.AddItem();
         }
 
         private void FillButton_Click(object sender, RoutedEventArgs args)
@@ -84,21 +82,21 @@ namespace VirtualizingWrapPanelSamples
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if(args.OriginalSource != sender)
+            if (args.OriginalSource != sender)
             {
                 return;
             }
 
             var itemsControl = FindItemsControl();
 
-            if (itemsControl != previousItemsControl)
+            if (itemsControl != currentItemsControl)
             {
-                if (previousItemsControl != null)
+                if (currentItemsControl != null)
                 {
-                    previousItemsControl.ItemsSource = null;
+                    currentItemsControl.ItemsSource = null;
                 }
                 itemsControl.ItemsSource = model.CollectionView;
-                previousItemsControl = itemsControl;
+                currentItemsControl = itemsControl;
 
                 if (model.IsGrouping)
                 {

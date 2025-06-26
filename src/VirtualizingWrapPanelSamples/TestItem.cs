@@ -15,11 +15,25 @@ namespace VirtualizingWrapPanelSamples
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public string Group { get; }
+        public int Group { get; }
 
         public int Number { get; }
 
-        public Color Background { get; }
+        public Color Background
+        {
+            get
+            {
+                if (background == default)
+                {
+                    byte[] randomBytes = new byte[3];
+                    Random.NextBytes(randomBytes);
+                    background = Color.FromRgb(randomBytes[0], randomBytes[1], randomBytes[2]);
+                }
+                return background;
+            }
+        }
+
+        public Size Size { get; }
 
         public Size SizeLazy
         {
@@ -40,25 +54,22 @@ namespace VirtualizingWrapPanelSamples
 
         public DateTime CurrentDateTime => DateTime.Now;
 
-        public Size Size { get; }
-
-        private static Random random = new Random();
+        private static readonly Random Random = new Random();
 
         private Size sizeLazy = Size.Empty;
 
-        public TestItem(string group, int number)
+        private Color background = default;
+
+        public TestItem(int group, int number)
         {
             Group = group;
             Number = number;
-            byte[] randomBytes = new byte[3];
-            random.NextBytes(randomBytes);
-            Background = Color.FromRgb(randomBytes[0], randomBytes[1], randomBytes[2]);
-            var width = random.Next(MinWidth, MaxWidth);
-            var height = random.Next(MinHeight, MaxHeight);
+            var width = Random.Next(MinWidth, MaxWidth);
+            var height = Random.Next(MinHeight, MaxHeight);
             Size = new Size(width, height);
         }
 
-        public void Reset() 
+        public void Reset()
         {
             sizeLazy = Size.Empty;
         }

@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
+using MaterialDesignThemes.Wpf;
 using WpfToolkit.Controls;
 
 namespace VirtualizingWrapPanelSamples
@@ -17,6 +18,7 @@ namespace VirtualizingWrapPanelSamples
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public ObservableCollection<TestItem> Items { get; } = new ObservableCollection<TestItem>();
+        public ICollectionView CollectionView { get; }
 
         public int RenderedItemsCount { get => renderedItemsCount; set => SetField(ref renderedItemsCount, value); }
 
@@ -90,33 +92,33 @@ namespace VirtualizingWrapPanelSamples
 
         private readonly DispatcherTimer memoryUsageRefreshTimer;
 
-        public ICollectionView CollectionView { get; }
-
         public MainWindowModel()
         {
-            AddItems();
             memoryUsageRefreshTimer = new DispatcherTimer()
             {
                 Interval = TimeSpan.FromSeconds(1)
             };
             memoryUsageRefreshTimer.Tick += (s, a) => RefreshMemoryUsage();
             PropertyChanged += MainWindowModel_PropertyChanged;
-
             CollectionView = CollectionViewSource.GetDefaultView(Items);
+            AddItems(100_000);
         }
 
-        public void InsertItemAtRandomPosition()
+        public void AddItem()
         {
-            int number = Items.Any() ? Items.Select(item => item.Number).Max() + 1 : 1;
-            Items.Add(new TestItem("Group " + random.Next(50), number));
+            int i = Items.Any() ? Items.Select(item => item.Number).Max() : 0;
+            int number = i + 1;
+            Items.Add(new TestItem((i % 100) + 1, number + 1));
         }
 
-        public void AddItems()
+        public void AddItems(int count = 10_000)
         {
-            int newCount = Items.Count + 5000;
+            int number = Items.Any() ? (Items.Select(item => item.Number).Max() + 1) : 1;
+            int newCount = Items.Count + count;
             for (int i = Items.Count; i < newCount; i++)
             {
-                Items.Add(new TestItem("Group " + i / 100, i + 1));
+                Items.Add(new TestItem((i % 100) + 1, number));
+                number++;
             }
         }
 
@@ -142,10 +144,10 @@ namespace VirtualizingWrapPanelSamples
         public void RandomizeItems()
         {
             Items.Clear();
-            int count = random.Next(500, 5000);
+            int count = random.Next(500, 10000);
             for (int i = 0; i < count; i++)
             {
-                Items.Add(new TestItem("Group " + i / 100, i + 1));
+                Items.Add(new TestItem(i % 100, i + 1));
             }
         }
 
@@ -175,6 +177,21 @@ namespace VirtualizingWrapPanelSamples
                 case nameof(Orientation):
                     OrientationGroupPanel = Orientation == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal;
                     break;
+                case nameof(IsGrouping):
+                    UpdateCollectionViewGrouping();
+                    break;
+            }
+        }
+
+        private void UpdateCollectionViewGrouping()
+        {
+            if (IsGrouping)
+            {
+                CollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TestItem.Group)));
+            }
+            else
+            {
+                CollectionView.GroupDescriptions.Clear();
             }
         }
 

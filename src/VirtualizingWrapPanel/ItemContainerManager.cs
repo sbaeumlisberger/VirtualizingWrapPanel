@@ -149,32 +149,9 @@ internal class ItemContainerManager
             realizedContainers.Clear();
             cachedContainers.Clear();
             // children collection is cleared automatically
-
-            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));
         }
-        else if (e.Action == NotifyCollectionChangedAction.Remove
-            || e.Action == NotifyCollectionChangedAction.Replace)
-        {
-            foreach (var (item, container) in realizedContainers.Where(entry => !Items.Contains(entry.Key)).ToList())
-            {
-                realizedContainers.Remove(item);
-
-                if (IsRecycling)
-                {
-                    cachedContainers.Add(container);
-                }
-                else
-                {
-                    removeInternalChild(container);
-                }
-            }
-
-            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));
-        }
-        else
-        {
-            ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));
-        }
+            
+        ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));        
     }
 
     private static void InvalidateMeasureRecursively(UIElement element)

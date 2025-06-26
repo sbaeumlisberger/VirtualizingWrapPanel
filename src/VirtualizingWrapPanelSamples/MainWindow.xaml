@@ -107,7 +107,7 @@
                         HorizontalAlignment="Stretch" 
                         FontWeight="Bold" 
                         FontSize="14"
-                        Text="{Binding Name}" />
+                        Text="{Binding Name, StringFormat=Group {0}}" />
                 </DataTemplate>
             </GroupStyle.HeaderTemplate>
             <GroupStyle.Panel>
@@ -287,11 +287,11 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Margin="0" Content="Add item at random position" Click="InsertButton_Click" />
-            <Button Grid.Column="1" Margin="8,0,0,0" Content="Add 5000 items" Click="FillButton_Click" />
+            <Button Grid.Column="0" Margin="0" Content="Add item" Click="InsertButton_Click" />
+            <Button Grid.Column="1" Margin="8,0,0,0" Content="Add 10000 items" Click="FillButton_Click" />
             <Button Grid.Column="2" Margin="8,0,0,0" Content="Remove random item" Click="RemoveButton_Click" />
             <Button Grid.Column="3" Margin="8,0,0,0" Content="Remove all items" Click="ClearButton_Click" />
-            <Button Grid.Column="4" Margin="8,0,0,0" Content="Random" Click="Random_Click" />
+            <Button Grid.Column="4" Margin="8,0,0,0" Content="Randomize" Click="Random_Click" />
         </Grid>
 
         <TabControl 
@@ -360,6 +360,7 @@
                                     ScrollLineDeltaItem="{Binding DataContext.ScrollLineDeltaItem, Mode=OneWay, ElementName=window}"
                                     MouseWheelDeltaItem="{Binding DataContext.MouseWheelDeltaItem, Mode=OneWay, ElementName=window}"
                                     StretchItems="{Binding DataContext.StretchItems, Mode=OneWay, ElementName=window}"
+                                    ItemSize="{Binding DataContext.ItemSize, Mode=OneWay, ElementName=window}"
                                     IsGridLayoutEnabled="{Binding DataContext.IsGridLayoutEnabled, Mode=OneWay, ElementName=window}"
                                     AllowDifferentSizedItems="True"
                                     ItemAlignment="{Binding DataContext.ItemAlignment, Mode=OneWay, ElementName=window}"/>
@@ -456,7 +457,7 @@
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
                                 <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
-                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
                             </ResourceDictionary.MergedDictionaries>
                         </ResourceDictionary>
                     </DockPanel.Resources>

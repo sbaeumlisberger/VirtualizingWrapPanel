@@ -23,7 +23,7 @@ public class AllowDifferentSizedItemsTest
         Assert_ItemsRealized(vwp);
     }
 
-    [UIFact]
+    [WpfFact]
     public void IncreaseWidth_() // Issue #48
     {
         var items = new[]
@@ -78,7 +78,7 @@ public class AllowDifferentSizedItemsTest
         Assert.Equal(420, vwp.ExtentHeight);
     }
 
-    [UIFact]
+    [WpfFact]
     public void ScrollToEndWithSmallSteps()
     {
         double extend = CalculateExtend(items, panelSize.Width);
@@ -94,7 +94,7 @@ public class AllowDifferentSizedItemsTest
         Assert.Equal(extend, vwp.ExtentHeight);
     }
 
-    [UIFact]
+    [WpfFact]
     public void ScrollHugeStep_AfterScrolledToEnd()
     {
         double extend = CalculateExtend(items, panelSize.Width);
@@ -105,14 +105,17 @@ public class AllowDifferentSizedItemsTest
             vwp.UpdateLayout();
         }
 
+        Assert_ItemsRealized(vwp);
+        Assert.Equal(extend, vwp.ExtentHeight);
+
         vwp.SetVerticalOffset(maxOffset / 2);
         vwp.UpdateLayout();
 
         Assert_ItemsRealized(vwp);
-        Assert.Equal(extend, vwp.ExtentHeight);
+        Assert.True(vwp.ExtentHeight > extend * 0.9); // Extend is estimated, but should be close to the real extend
     }
 
-    [UIFact] // TODO: fails sometimes
+    [WpfFact]
     public void ScrollHugeStep()
     {
         vwp.SetVerticalOffset((vwp.ExtentHeight - panelSize.Height) / 2);
@@ -123,7 +126,7 @@ public class AllowDifferentSizedItemsTest
         Assert.True(vwp.ExtentHeight >= vwp.VerticalOffset + panelSize.Height);
     }
 
-    [UIFact] // TODO: fails sometimes
+    [WpfFact]
     public void ScrollHugeStep_Recycling()
     {
         VirtualizingPanel.SetVirtualizationMode(vwp.ItemsControl, VirtualizationMode.Recycling);
@@ -137,7 +140,7 @@ public class AllowDifferentSizedItemsTest
         Assert.True(vwp.ExtentHeight >= vwp.VerticalOffset + panelSize.Height);
     }
 
-    [UIFact]
+    [WpfFact]
     public void Resize()
     {
         double oldExtend = vwp.ExtentHeight;
@@ -151,7 +154,7 @@ public class AllowDifferentSizedItemsTest
         Assert.True(vwp.ExtentHeight < oldExtend);
     }
 
-    [UIFact] // TODO: fails sometimes
+    [WpfFact]
     public void ScrollHugeStep_UsingItemSizeProvider()
     {
         vwp.ItemSizeProvider = new TestItemSizeProvider();
@@ -166,7 +169,7 @@ public class AllowDifferentSizedItemsTest
         Assert.True(vwp.ExtentHeight >= maxOffset / 2 + panelSize.Height);
     }
 
-    [UIFact]
+    [WpfFact]
     public void ExtendShouldAdjustWhenCollectionChanged()
     {
         double extend = CalculateExtend(items, panelSize.Width);
@@ -187,7 +190,7 @@ public class AllowDifferentSizedItemsTest
         TestUtil.AssertItemRealized(vwp, "Item 2");
     }
 
-    [UIFact]
+    [WpfFact]
     public void ExtendShouldAdjustWhenCollectionChangedWithItemSizeProvider()
     {
         vwp.ItemSizeProvider = new TestItemSizeProvider();
@@ -200,8 +203,8 @@ public class AllowDifferentSizedItemsTest
         vwp.ItemsControl.ItemsSource = newItems;
         vwp.ItemsControl.UpdateLayout();
 
-        double exptectedExtend = CalculateExtend(newItems, panelSize.Width);
-        Assert.Equal(exptectedExtend, vwp.ExtentHeight);
+        double expectedExtend = CalculateExtend(newItems, panelSize.Width);
+        Assert.Equal(expectedExtend, vwp.ExtentHeight);
         TestUtil.AssertItemRealized(vwp, "Item 99");
         TestUtil.AssertItemRealized(vwp, "Item 100");
     }
@@ -274,7 +277,9 @@ public class AllowDifferentSizedItemsTest
 
     private static List<TestItem> GenerateItems(int itemCount)
     {
-        return Enumerable.Range(1, itemCount).Select(i => new TestItem("Item " + i, Random.Shared.Next(60, 120), Random.Shared.Next(60, 120))).ToList();
+        return Enumerable.Range(1, itemCount)
+            .Select(i => new TestItem("Item " + i, Random.Shared.Next(60, 120), Random.Shared.Next(60, 120)))
+            .ToList();
     }
 
 }

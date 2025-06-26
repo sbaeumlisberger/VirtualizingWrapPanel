@@ -12,7 +12,7 @@ namespace VirtualizingWrapPanelTest;
 
 public record class TestItem(string Name, int Width, int Height, string? Group = null);
 
-internal class TestUtil
+public class TestUtil
 {
     public const int DefaultItemWidth = 100;
     public const int DefaultItemHeight = 100;
