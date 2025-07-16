@@ -489,7 +489,7 @@
                     </ListView>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="WrapPanel (no virtualization)">
+            <TabItem Header="WrapPanel (no virtualization)" Visibility="Collapsed">
                 <DockPanel Margin="4,0,4,2">
                     <TextBlock DockPanel.Dock="Top"
                                Text="For comparison this is a ListView using a standard WrapPanel as ItemsPanel." />
