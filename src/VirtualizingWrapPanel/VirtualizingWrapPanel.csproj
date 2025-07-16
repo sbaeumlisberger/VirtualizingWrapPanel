@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.3.0-beta</Version>
+        <Version>2.3.0</Version>
         <Authors>sbaeumlisberger</Authors>
         <Copyright>sbaeumlisberger</Copyright>
         <Description>Feature-rich implementation of a VirtualizingWrapPanel for WPF.</Description>
