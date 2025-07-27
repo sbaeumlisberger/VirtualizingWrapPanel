@@ -163,7 +163,7 @@ namespace WpfToolkit.Controls
         protected override Size MeasureOverride(Size availableSize)
         {
             CacheDependencyProperties();
-       
+
             VerifyItemsControl();
 
             if (ShouldIgnoreMeasure())
@@ -342,7 +342,7 @@ namespace WpfToolkit.Controls
 
         private void AllowDifferentSizedItems_Changed()
         {
-            if (!AllowDifferentSizedItems) 
+            if (!AllowDifferentSizedItems)
             {
                 itemSizesCache.Clear();
             }
@@ -444,7 +444,7 @@ namespace WpfToolkit.Controls
             }
             else
             {
-                if(averageItemSizeCache.IsEmpty)
+                if (averageItemSizeCache.IsEmpty)
                 {
                     averageItemSizeCache = CalculateAverageItemSize();
                 }
@@ -454,10 +454,10 @@ namespace WpfToolkit.Controls
 
         private Point FindItemOffset(int itemIndex)
         {
-            if (!allowDifferentSizedItems && (!sizeOfFirstItem.IsEmpty || !itemSize.IsEmpty))
+            if (!allowDifferentSizedItems && (!itemSize.IsEmpty || !sizeOfFirstItem.IsEmpty))
             {
-                Size uniformItemSize = !sizeOfFirstItem.IsEmpty ? sizeOfFirstItem : itemSize;
-                int itemsPerRow = (int)Math.Floor(GetWidth(ViewportSize) / GetWidth(uniformItemSize));
+                Size uniformItemSize = !itemSize.IsEmpty ? itemSize : sizeOfFirstItem;
+                var itemsPerRow = CalculateItemsPerRow(uniformItemSize);
                 int rowIndex = itemIndex / itemsPerRow;
                 int itemIndexInRow = itemIndex % itemsPerRow;
                 double x = itemIndexInRow * GetWidth(uniformItemSize);
@@ -529,10 +529,10 @@ namespace WpfToolkit.Controls
                 return;
             }
 
-            if (!allowDifferentSizedItems && (!sizeOfFirstItem.IsEmpty || !itemSize.IsEmpty))
+            if (!allowDifferentSizedItems && (!itemSize.IsEmpty || !sizeOfFirstItem.IsEmpty))
             {
-                Size uniformItemSize = !sizeOfFirstItem.IsEmpty ? sizeOfFirstItem : itemSize;
-                int itemsPerRow = (int)Math.Floor(GetWidth(ViewportSize) / GetWidth(uniformItemSize));
+                Size uniformItemSize = !itemSize.IsEmpty ? itemSize : sizeOfFirstItem;
+                int itemsPerRow = CalculateItemsPerRow(uniformItemSize);
                 int offsetInRows = (int)Math.Floor(startOffsetY / GetHeight(uniformItemSize));
                 startItemIndex = Math.Min(offsetInRows * itemsPerRow, Items.Count - 1);
 
@@ -601,18 +601,17 @@ namespace WpfToolkit.Controls
             }
         }
 
+        /// <summary>
+        /// If possible, find the end index to enable containers to be virtualized and reused when scrolling upwards.
+        /// </summary>
         private void FindEndIndexIfPossible()
         {
-            // If possible, find the end index to enable containers to be virtualized and reused when scrolling upwards.
-
-            if (!allowDifferentSizedItems && (!sizeOfFirstItem.IsEmpty || !itemSize.IsEmpty))
+            if (!allowDifferentSizedItems && (!itemSize.IsEmpty || !sizeOfFirstItem.IsEmpty))
             {
-                Size uniformItemSize = !sizeOfFirstItem.IsEmpty ? sizeOfFirstItem : itemSize;
-                double itemWidth = GetWidth(uniformItemSize);
-                double itemHeight = GetHeight(uniformItemSize);
+                Size uniformItemSize = !itemSize.IsEmpty ? itemSize : sizeOfFirstItem;
                 double endOffsetY = DetermineEndOffsetY();
-                int itemsPerRow = (int)Math.Floor(GetWidth(ViewportSize) / itemWidth);
-                int rows = (int)Math.Ceiling(endOffsetY / itemHeight);
+                int itemsPerRow = CalculateItemsPerRow(uniformItemSize);
+                int rows = (int)Math.Ceiling(endOffsetY / GetHeight(uniformItemSize));
 
                 endItemIndex = Math.Min((itemsPerRow * rows) - 1, Items.Count - 1);
 
@@ -747,7 +746,7 @@ namespace WpfToolkit.Controls
             }
             else if (!allowDifferentSizedItems)
             {
-                extent = CalculateExtentForSameSizedItems();
+                extent = CalculateExtentForUniformSizedItems();
             }
             else
             {
@@ -761,11 +760,11 @@ namespace WpfToolkit.Controls
             }
         }
 
-        private Size CalculateExtentForSameSizedItems()
+        private Size CalculateExtentForUniformSizedItems()
         {
-            var itemSize = !this.itemSize.IsEmpty ? this.itemSize : sizeOfFirstItem;
-            int itemsPerRow = (int)Math.Max(1, Math.Floor(GetWidth(ViewportSize) / GetWidth(itemSize)));
-            double extentY = Math.Ceiling(((double)Items.Count) / itemsPerRow) * GetHeight(itemSize);
+            var uniformItemSize = !itemSize.IsEmpty ? itemSize : sizeOfFirstItem;
+            int itemsPerRow = CalculateItemsPerRow(uniformItemSize);
+            double extentY = Math.Ceiling(((double)Items.Count) / itemsPerRow) * GetHeight(uniformItemSize);
             return CreateSize(knownExtendX, extentY);
         }
 
@@ -884,7 +883,7 @@ namespace WpfToolkit.Controls
             else
             {
                 double childWidth = GetWidth(childSizes[0]);
-                int itemsPerRow = IsGridLayoutEnabled ? (int)Math.Max(Math.Floor(rowWidth / childWidth), 1) : children.Count;
+                int itemsPerRow = IsGridLayoutEnabled ? Math.Max(1, (int)Math.Floor(rowWidth / childWidth)) : children.Count;
 
                 if (StretchItems)
                 {
@@ -1006,6 +1005,11 @@ namespace WpfToolkit.Controls
                     Math.Round(itemSizesCache.Values.Average(size => size.Height)));
             }
             return FallbackItemSize;
+        }
+
+        private int CalculateItemsPerRow(Size uniformItemSize)
+        {
+            return Math.Max(1, (int)Math.Floor(GetWidth(ViewportSize) / GetWidth(uniformItemSize)));
         }
 
         private void CacheDependencyProperties()
