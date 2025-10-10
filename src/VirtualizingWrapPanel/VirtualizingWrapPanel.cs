@@ -538,16 +538,12 @@ namespace WpfToolkit.Controls
 
                 if (cacheLengthUnit == VirtualizationCacheLengthUnit.Item)
                 {
-                    startItemIndex = Math.Max(startItemIndex - (int)cacheLength.CacheBeforeViewport, 0);
-                    var itemOffset = FindItemOffset(startItemIndex);
-                    startItemOffsetX = GetX(itemOffset);
-                    startItemOffsetY = GetY(itemOffset);
+                    startItemIndex = Math.Max(startItemIndex - (int)cacheLength.CacheBeforeViewport, 0);                
                 }
-                else
-                {
-                    startItemOffsetX = 0;
-                    startItemOffsetY = offsetInRows * GetHeight(uniformItemSize);
-                }
+
+                var itemOffset = FindItemOffset(startItemIndex);
+                startItemOffsetX = GetX(itemOffset);
+                startItemOffsetY = GetY(itemOffset);
             }
             else
             {

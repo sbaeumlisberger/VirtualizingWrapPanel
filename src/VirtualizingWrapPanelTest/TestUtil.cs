@@ -14,6 +14,8 @@ public record class TestItem(string Name, int Width, int Height, string? Group =
 
 public class TestUtil
 {
+    public static readonly bool Debug = false;
+
     public const int DefaultItemWidth = 100;
     public const int DefaultItemHeight = 100;
 
@@ -70,7 +72,7 @@ public class TestUtil
         itemsControl.Height = height;
         itemsControl.BorderThickness = new Thickness(0);
         itemsControl.Padding = new Thickness(0);
-        itemsControl.Background = new SolidColorBrush(Colors.Red);
+        itemsControl.Background = new SolidColorBrush(Colors.LightGray);
 
         itemsControl.ItemContainerStyle = new Style()
         {
@@ -84,13 +86,18 @@ public class TestUtil
 
         var window = new Window
         {
-            Width = 0,
-            Height = 0,
-            WindowStyle = WindowStyle.None,
-            ShowInTaskbar = false,
-            ShowActivated = false,
             Content = itemsControl
         };
+
+        if (!Debug)
+        {
+            window.Width = 0;
+            window.Height = 0;
+            window.WindowStyle = WindowStyle.None;
+            window.ShowInTaskbar = false;
+            window.ShowActivated = false;
+        }
+
         window.Show();
     }
 
@@ -167,13 +174,28 @@ public class TestUtil
             child => child is FrameworkElement fe && fe.DataContext is TestItem testItem && testItem.Name == itemName);
     }
 
+    public static List<FrameworkElement> FindItemContainers(VirtualizingPanel virtualizingPanel)
+    {
+        return GetVisualChilds<ListBoxItem>(virtualizingPanel).Cast<FrameworkElement>().ToList();
+    }
+
     private static DataTemplate CreateDefaultItemTemplate()
     {
         return CreateDateTemplate("""
             <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"> 
-                <Border Width="{Binding Width}" Height="{Binding Height}" Background="Blue">
-                    <TextBlock Text="{Binding Name}"/>
-                </Border>
+                <Grid Width="{Binding Width}" Height="{Binding Height}">
+                    <Border Background="Red" Opacity="0.5" BorderBrush="Blue" BorderThickness="1"/>
+                    <TextBlock VerticalAlignment="Bottom" Text="{Binding Name}"/>
+                </Grid>
+            </DataTemplate>
+            """);
+    }
+
+    public static DataTemplate CreateDefaultGroupHeaderTemplate(int headerHeight = 20) 
+    {
+        return CreateDateTemplate($"""
+            <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"> 
+                <Border Background="Green" Height="{headerHeight}"/>
             </DataTemplate>
             """);
     }

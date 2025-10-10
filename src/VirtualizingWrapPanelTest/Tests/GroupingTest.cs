@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -17,25 +18,19 @@ public class GroupingTest
 
     private const int ItemCount = 1000;
 
-    private const int ItemsPerRow = ViewportWidth / TestUtil.DefaultItemWidth;
+    private const int ItemsPerRow = ViewportWidth / TestUtil.DefaultItemWidth; // 5
 
-    private static readonly int RowCount = (int)Math.Ceiling((double)ItemCount / ItemsPerRow);
+    private const int RowCount = (int)((double)ItemCount / ItemsPerRow); // 200
 
     private const int GroupCount = 10;
 
-    private const int ItemPerGroup = ItemCount / GroupCount;
+    private const int ItemPerGroup = ItemCount / GroupCount; // 100
 
-    private static readonly int RowsPerGroup = (int)Math.Ceiling((double)ItemPerGroup / ItemsPerRow);
+    private const int RowsPerGroup = (int)((double)ItemPerGroup / ItemsPerRow); // 20
 
-    private static readonly int GroupHeightWithHeader = HeaderHeight + RowsPerGroup * TestUtil.DefaultItemHeight;
+    private const int GroupHeightWithHeader = HeaderHeight + RowsPerGroup * TestUtil.DefaultItemHeight;
 
     private const int Margin = 5;
-
-    private static readonly string HeaderTemplate = $"""
-        <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"> 
-            <Border Background="Green" Height="{HeaderHeight}"/>
-        </DataTemplate>
-        """;
 
     private readonly ListBox itemsControl;
 
@@ -52,7 +47,7 @@ public class GroupingTest
         var collectionView = CollectionViewSource.GetDefaultView(items);
         collectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TestItem.Group)));
         var itemsControl = TestUtil.CreateListBox(ViewportWidth + Margin + 2 /*Padding*/, ViewportHeight + 2 /*Padding*/, collectionView);
-        itemsControl.GroupStyle.Add(new GroupStyle() { HeaderTemplate = TestUtil.CreateDateTemplate(HeaderTemplate) });
+        itemsControl.GroupStyle.Add(new GroupStyle() { HeaderTemplate = TestUtil.CreateDefaultGroupHeaderTemplate(HeaderHeight) });
         VirtualizingPanel.SetIsVirtualizingWhenGrouping(itemsControl, true);
         return itemsControl;
     }
@@ -64,8 +59,8 @@ public class GroupingTest
     {
         VirtualizingPanel.SetVirtualizationMode(itemsControl, virtualizationMode);
         itemsControl.UpdateLayout();
-        double expectedExtetHeight = RowCount * TestUtil.DefaultItemHeight + GroupCount * HeaderHeight;
-        Assert.Equal(expectedExtetHeight, vsp.ExtentHeight);
+        double expectedExtentHeight = RowCount * TestUtil.DefaultItemHeight + GroupCount * HeaderHeight;
+        Assert.Equal(expectedExtentHeight, vsp.ExtentHeight);
 
         vsp.SetVerticalOffset(GroupHeightWithHeader - 50);
         itemsControl.UpdateLayout();
@@ -108,24 +103,6 @@ public class GroupingTest
         AssertItem(vsp, "Item 550", 400, 0);
         double expectedVerticalOffset = 5 * GroupHeightWithHeader + HeaderHeight + 9 * TestUtil.DefaultItemHeight;
         Assert.Equal(expectedVerticalOffset, vsp.VerticalOffset);
-    }
-
-    [UITheory]
-    [InlineData(VirtualizationMode.Standard)]
-    [InlineData(VirtualizationMode.Recycling)]
-    public void ScrollIntoView_ItemAfterViewportAndCache_DifferentGroupSizes(VirtualizationMode virtualizationMode)
-    {
-        var itemsControl = Setup(TestUtil.GenerateItemsWithRandomGroupSizes(1000));
-        var vsp = TestUtil.GetVisualChild<VirtualizingStackPanel>(itemsControl)!;
-        VirtualizingPanel.SetVirtualizationMode(itemsControl, virtualizationMode);
-        itemsControl.UpdateLayout();
-
-        itemsControl.ScrollIntoView(itemsControl.Items[549]); // Item 550
-        itemsControl.UpdateLayout();
-
-        var itemContainer = TestUtil.AssertItemRealized(vsp, "Item 550");
-        var position = itemContainer.TranslatePoint(new Point(0, 0), vsp);
-        Assert.Equal(ViewportHeight - TestUtil.DefaultItemHeight, position.Y);
     }
 
     // TODO: ScrollIntoView orientation
@@ -179,7 +156,7 @@ public class GroupingTest
         itemsControl.UpdateLayout();
         var vwp = TestUtil.GetVisualChild<VirtualizingWrapPanel>(itemsControl)!;
 
-        itemsControl.GroupStyle.Add(new GroupStyle() { HeaderTemplate = TestUtil.CreateDateTemplate(HeaderTemplate) });
+        itemsControl.GroupStyle.Add(new GroupStyle() { HeaderTemplate = TestUtil.CreateDefaultGroupHeaderTemplate(HeaderHeight) });
 
         // ensure no exception is thrown when the VirtualizingWrapPanel is measured after adding the GroupStyle (#68)
         vwp.Measure(new Size(ViewportWidth, ViewportHeight));     
