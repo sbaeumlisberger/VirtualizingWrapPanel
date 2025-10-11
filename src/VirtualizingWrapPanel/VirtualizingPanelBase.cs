@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -67,28 +66,7 @@ namespace WpfToolkit.Controls
         /// <summary>
         /// The ItemsControl (e.g. ListView) or if the ItemsControl is grouping a GroupItem.
         /// </summary>
-        protected DependencyObject ItemsOwner
-        {
-            get
-            {
-                if (_itemsOwner is null)
-                {
-                    /* Use reflection to access internal method because the public 
-                     * GetItemsOwner method does always return the itmes control instead 
-                     * of the real items owner for example the group item when grouping */
-                    MethodInfo getItemsOwnerInternalMethod = typeof(ItemsControl).GetMethod(
-                        "GetItemsOwnerInternal",
-                        BindingFlags.Static | BindingFlags.NonPublic,
-                        null,
-                        new Type[] { typeof(DependencyObject) },
-                        null
-                    )!;
-                    _itemsOwner = (DependencyObject)getItemsOwnerInternalMethod.Invoke(null, new object[] { this })!;
-                }
-                return _itemsOwner;
-            }
-        }
-        private DependencyObject? _itemsOwner;
+        protected DependencyObject ItemsOwner => TemplatedParent is ItemsPresenter itemsPresenter ? itemsPresenter.TemplatedParent : TemplatedParent;
 
         protected ReadOnlyCollection<object> Items => ItemContainerGenerator.Items;
 
