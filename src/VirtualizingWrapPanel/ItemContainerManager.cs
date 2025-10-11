@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace WpfToolkit.Controls;
@@ -79,7 +79,16 @@ internal class ItemContainerManager
 
         if (realizedContainers.TryGetValue(item, out var existingContainer))
         {
-            return existingContainer;
+            // When grouping, containers can become disconnected and unusable (see #89)
+            if (existingContainer is FrameworkElement fe && fe.DataContext == BindingOperations.DisconnectedSource)
+            {
+                realizedContainers.Remove(item);
+                removeInternalChild(existingContainer);
+            }
+            else
+            {
+                return existingContainer;
+            }
         }
 
         var generatorPosition = recyclingItemContainerGenerator.GeneratorPositionFromIndex(itemIndex);
@@ -111,7 +120,7 @@ internal class ItemContainerManager
 
         var generatorPosition = GeneratorPositionFromContainer(container);
 
-        // Index is - 1 when the item is already virtualized (can happen when grouping)
+        // Index is -1 when the item is already virtualized (can happen when grouping)
         if (generatorPosition.Index != -1)
         {
             if (IsRecycling)
@@ -150,8 +159,8 @@ internal class ItemContainerManager
             cachedContainers.Clear();
             // children collection is cleared automatically
         }
-            
-        ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));        
+
+        ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));
     }
 
     private static void InvalidateMeasureRecursively(UIElement element)
