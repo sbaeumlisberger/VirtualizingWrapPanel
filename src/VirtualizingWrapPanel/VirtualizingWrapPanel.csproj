@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.3.1</Version>
+        <Version>2.3.2</Version>
         <Authors>sbaeumlisberger</Authors>
         <Copyright>sbaeumlisberger</Copyright>
         <Description>Feature-rich implementation of a VirtualizingWrapPanel for WPF.</Description>
@@ -36,7 +36,9 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         
         <PackageReleaseNotes>
-- Fix #87 Item width larger than viewport width causes divide by zero error when CacheUnit is "Item"
+- #89 Re-generate disconnected containers when grouping
+- #90 Fix overlapping when grouping
+- Remove usage of reflection
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>

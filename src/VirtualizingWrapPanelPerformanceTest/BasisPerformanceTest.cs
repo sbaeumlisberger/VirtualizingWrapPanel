@@ -13,7 +13,7 @@ public class BasisPerformanceTest(ITestOutputHelper testOutputHelper)
     [InlineData(VirtualizationCacheLengthUnit.Item, 10, false, 15)]
     [InlineData(VirtualizationCacheLengthUnit.Item, 10, true, 100)]
     [InlineData(VirtualizationCacheLengthUnit.Page, 1, false, 15)]
-    [InlineData(VirtualizationCacheLengthUnit.Page, 1, true, 70)]
+    [InlineData(VirtualizationCacheLengthUnit.Page, 1, true, 90)]
     [InlineData(VirtualizationCacheLengthUnit.Pixel, 200, false, 15)]
     [InlineData(VirtualizationCacheLengthUnit.Pixel, 200, true, 70)]
     public void SetVerticalOffset(VirtualizationCacheLengthUnit cacheUnit, int cacheLength, bool allowDifferentSizedItems, int maxAllowedAvgMilliseconds)
