@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Project Path="VirtualizingWrapPanel/VirtualizingWrapPanel.csproj" />
+  <Project Path="VirtualizingWrapPanelPerformanceTest/VirtualizingWrapPanelPerformanceTest.csproj" />
+  <Project Path="VirtualizingWrapPanelSamples/VirtualizingWrapPanelSamples.csproj" />
+  <Project Path="VirtualizingWrapPanelSamplesFW/VirtualizingWrapPanelSamplesFW.csproj" />
+  <Project Path="VirtualizingWrapPanelTest/VirtualizingWrapPanelTest.csproj" />
+</Solution>
