@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net472</TargetFramework>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>14.0</LangVersion>
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -13,9 +13,6 @@
     </Compile>
     <Compile Include="..\VirtualizingWrapPanelSamples\ColorToBrushConverter.cs">
       <Link>ColorToBrushConverter.cs</Link>
-    </Compile>
-    <Compile Include="..\VirtualizingWrapPanelSamples\MainWindow.xaml.cs">
-      <Link>MainWindow.xaml.cs</Link>
     </Compile>
     <Compile Include="..\VirtualizingWrapPanelSamples\MainWindowModel.cs">
       <Link>MainWindowModel.cs</Link>
@@ -34,14 +31,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Page Include="..\VirtualizingWrapPanelSamples\MainWindow.xaml">
-      <Link>MainWindow.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup> 
 
   <ItemGroup>

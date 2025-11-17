@@ -9,13 +9,15 @@
         mc:Ignorable="d"
         x:Name="window"
         Title="VirtualizingWrapPanel Samples"
-        Width="1400"
-        Height="1000">
+        Width="1200"
+        Height="840">
 
     <Window.Resources>
-        <Style TargetType="TextBox" BasedOn="{StaticResource AppTextBoxStyle}"/>
         <local:ColorToBrushConverter x:Key="ColorToBrushConverter" />
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="1"/>
+        </Style>
         <DataTemplate x:Key="ItemTemplate" DataType="local:TestItem">
             <StackPanel
                 MinWidth="100"
@@ -94,8 +96,7 @@
         <Style x:Key="ItemContainerStyle" TargetType="{x:Type ListViewItem}">
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Padding" Value="4"/>
+            <Setter Property="Background" Value="LightGray"/>
         </Style>
         <GroupStyle x:Key="GroupStyle" HidesIfEmpty="True">
             <GroupStyle.HeaderTemplate>
@@ -138,173 +139,170 @@
     </Window.Resources>
 
     <DockPanel Margin="8">
-        <ScrollViewer 
-            DockPanel.Dock="Left"
-            Padding="0,0,16,0"
-            Margin="0,0,4,0"
-            Width="200"
-            VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <StackPanel.Resources>
-                    <Style x:Key="HeaderStyle" TargetType="TextBlock">
-                        <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="Margin" Value="0"/>
-                        <Setter Property="Padding" Value="2,3,0,4"/>
-                    </Style>
-                </StackPanel.Resources>
-
-                <TextBlock Style="{StaticResource HeaderStyle}" Text="Orientation" />
-                <ComboBox
-                    ItemsSource="{Binding AvailableOrientations, Mode=OneTime}"
-                    SelectedItem="{Binding Orientation, Mode=TwoWay}" />
-
-                <TextBlock Margin="0,12,0,0" Style="{StaticResource HeaderStyle}" Text="SpacingMode" />
-                <ComboBox
-                    ItemsSource="{Binding AvailableSpacingModes, Mode=OneTime}"
-                    SelectedItem="{Binding SpacingMode, Mode=TwoWay}" />
-
-                <CheckBox Margin="0,12,0,0" IsChecked="{Binding StretchItems, Mode=TwoWay}" Content="StretchItems"/>
-
-                <CheckBox Margin="0,6,0,0" Checked="GroupingCheckBox_Checked" Unchecked="GroupingCheckBox_Unchecked" Content="Grouping"/>
-
-                <TextBlock Margin="0,10,0,0" Style="{StaticResource HeaderStyle}" Text="ItemSize" />
-                <TextBox Margin="0,2,0,0" Text="{Binding ItemSize, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-
-                <CheckBox Margin="0,12,0,0" IsChecked="{Binding IsGridLayoutEnabled, Mode=TwoWay}" Content="IsGridLayoutEnabled"/>
-
-                <TextBlock Margin="0,10,0,0" Style="{StaticResource HeaderStyle}" Text="CacheUnit" />
-                <ComboBox
-                    ItemsSource="{Binding AvailableCacheUnits, Mode=OneTime}"
-                    SelectedItem="{Binding CacheUnit, Mode=TwoWay}" />
-
-                <TextBlock Margin="0,4,0,0" Style="{StaticResource HeaderStyle}" Text="CacheLength" />
-                <TextBox Text="{Binding CacheLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                <TextBlock Margin="0,12,0,0" Style="{StaticResource HeaderStyle}" Text="VirtualizationMode" />
-                <ComboBox
-                    ItemsSource="{Binding AvailableVirtualizationModes, Mode=OneTime}"
-                    SelectedItem="{Binding VirtualizationMode, Mode=TwoWay}" />
-
-                <TextBlock Margin="0,12,0,0" Style="{StaticResource HeaderStyle}" Text="ScrollUnit" />
-                <ComboBox
-                    ItemsSource="{Binding AvailableScrollUnits, Mode=OneTime}"
-                    SelectedItem="{Binding ScrollUnit, Mode=TwoWay}" />
-
-                <StackPanel Visibility="{Binding IsScrollByPixel, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Margin="0,4,0,0" Style="{StaticResource HeaderStyle}" Text="ScrollLineDelta" />
-                    <TextBox
-                        Text="{Binding ScrollLineDelta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBlock Margin="0,4,0,0" Style="{StaticResource HeaderStyle}" Text="MouseWheelDelta" />
-                    <TextBox
-                        Text="{Binding MouseWheelDelta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
-                <StackPanel Visibility="{Binding IsScrollByItem, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Margin="0,4,0,0" Style="{StaticResource HeaderStyle}" Text="ScrollLineDelta" />
-                    <TextBox
-                        Text="{Binding ScrollLineDeltaItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBlock Margin="0,4,0,0" Style="{StaticResource HeaderStyle}" Text="MouseWheelDelta" />
-                    <TextBox
-                        Text="{Binding MouseWheelDeltaItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
-
-                <TextBlock Margin="0,12,0,0" Style="{StaticResource HeaderStyle}" Text="HorizontalScrollBarVisibility" />
-                <ComboBox
-                    ItemsSource="{Binding AvailableScrollBarVisibilities, Mode=OneTime}"
-                    SelectedItem="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}" />
-                <TextBlock Margin="0,4,0,0" Style="{StaticResource HeaderStyle}" Text="VerticalScrollBarVisibility" />
-                <ComboBox
-                    ItemsSource="{Binding AvailableScrollBarVisibilities, Mode=OneTime}"
-                    SelectedItem="{Binding VerticalScrollBarVisibility, Mode=TwoWay}" />
-
-                <TextBlock Margin="0,12,0,0" Style="{StaticResource HeaderStyle}" Text="Filter (Number >)" />
-                <TextBox x:Name="filterTextBox" TextChanged="FilterTextBox_TextChanged" />
-
-                <TextBlock Margin="0,12,0,0" Style="{StaticResource HeaderStyle}" Text="ScrollIntoView"/>
-                <Grid>
-                    <TextBox
-                        x:Name="scrollIntoViewTextBox"
-                        TextChanged="ScrollIntoViewTextBox_TextChanged"
-                        KeyDown="ScrollIntoViewTextBox_KeyDown"
-                        LostFocus="ScrollIntoViewTextBox_LostFocus"/>
-                    <TextBlock 
-                        x:Name="scrollIntoViewTextBoxPlaceholder"
-                        Margin="14,7,0,0"
-                        Text="Type number and press Enter"
-                        FontSize="12" 
-                        Foreground="Gray"
-                        IsHitTestVisible="False"/>
-                </Grid>
-            </StackPanel>
-        </ScrollViewer>
-
         <Grid Margin="0,0,0,8" DockPanel.Dock="Top">
-            <Grid.Resources>
-                <Style TargetType="TextBlock">
-                    <Setter Property="FontSize" Value="13"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                </Style>
-            </Grid.Resources>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Realized Items: " />
                 <TextBlock Text="{Binding RenderedItemsCount, Mode=OneWay}" />
             </StackPanel>
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                <TextBlock Text="Memory Usage: "/>
-                <TextBlock Text="{Binding MemoryUsageInMB, Mode=OneWay}"/>
-                <TextBlock Text=" MB"/>
+                <TextBlock
+                    Text="Memory Usage: "
+                    VerticalAlignment="Center" />
+                <TextBlock
+                    Text="{Binding MemoryUsageInMB, Mode=OneWay}"
+                    VerticalAlignment="Center" />
+                <TextBlock
+                    Text=" MB"
+                    VerticalAlignment="Center" />
                 <Button
                     Margin="4,0,0,0"
-                    Padding="4"
+                    Padding="2"
+                    VerticalAlignment="Center"
                     FontFamily="Segoe MDL2 Assets"
                     Content="&#xE149;"
-                    FontSize="13"
                     ToolTip="Refresh"
-                    Click="RefreshMemoryUsageButton_Click"
-                    VerticalAlignment="Center" />
+                    Click="RefreshMemoryUsageButton_Click" />
                 <CheckBox
                     Margin="4,0,0,0"
-                    MinHeight="0"
-                    MinWidth="0"
                     ToolTip="Auto Refresh"
                     IsChecked="{Binding IsAutoRefreshMemoryUsageEnabled, Mode=TwoWay}"
                     VerticalAlignment="Center" />
             </StackPanel>
         </Grid>
 
-        <Grid DockPanel.Dock="Bottom" Margin="0,8,0,0" ColumnDefinitions="*,*,*,*,*">
-            <Button Grid.Column="0" Margin="0" HorizontalAlignment="Stretch" Content="Add item" Click="InsertButton_Click" />
-            <Button Grid.Column="1" Margin="8,0,0,0" HorizontalAlignment="Stretch" Content="Add 10000 items" Click="FillButton_Click" />
-            <Button Grid.Column="2" Margin="8,0,0,0" HorizontalAlignment="Stretch" Content="Remove random item" Click="RemoveButton_Click" />
-            <Button Grid.Column="3" Margin="8,0,0,0" HorizontalAlignment="Stretch" Content="Remove all items" Click="ClearButton_Click" />
-            <Button Grid.Column="4" Margin="8,0,0,0" HorizontalAlignment="Stretch" Content="Randomize" Click="Random_Click" />
+        <ScrollViewer 
+            DockPanel.Dock="Left"
+            Padding="0,0,6,0"
+            Margin="0,0,6,0"
+            Width="154"
+            VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock VerticalAlignment="Center" Text="Orientation" />
+                <ComboBox
+                    Margin="0,2,0,0"
+                    ItemsSource="{Binding AvailableOrientations, Mode=OneTime}"
+                    SelectedItem="{Binding Orientation, Mode=TwoWay}" />
+
+                <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="SpacingMode" />
+                <ComboBox
+                    Margin="0,2,0,0"
+                    ItemsSource="{Binding AvailableSpacingModes, Mode=OneTime}"
+                    SelectedItem="{Binding SpacingMode, Mode=TwoWay}" />
+
+                <CheckBox Margin="0,16,0,0" IsChecked="{Binding StretchItems, Mode=TwoWay}" Content="StretchItems"/>
+
+                <CheckBox Margin="0,16,0,0" Checked="GroupingCheckBox_Checked" Unchecked="GroupingCheckBox_Unchecked" Content="Grouping"/>
+
+                <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="ItemSize" />
+                <TextBox Margin="0,2,0,0" Text="{Binding ItemSize, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+
+                <CheckBox Margin="0,16,0,0" IsChecked="{Binding IsGridLayoutEnabled, Mode=TwoWay}" Content="IsGridLayoutEnabled"/>
+
+                <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="CacheUnit" />
+                <ComboBox
+                    Margin="0,2,0,0"
+                    ItemsSource="{Binding AvailableCacheUnits, Mode=OneTime}"
+                    SelectedItem="{Binding CacheUnit, Mode=TwoWay}" />
+
+                <TextBlock Margin="0,4,0,0" VerticalAlignment="Center" Text="CacheLength" />
+                <TextBox 
+                    Margin="0,2,0,0"
+                    Text="{Binding CacheLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="VirtualizationMode" />
+                <ComboBox
+                    Margin="0,2,0,0"
+                    ItemsSource="{Binding AvailableVirtualizationModes, Mode=OneTime}"
+                    SelectedItem="{Binding VirtualizationMode, Mode=TwoWay}" />
+
+                <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="ScrollUnit" />
+                <ComboBox
+                    Margin="0,2,0,0"
+                    ItemsSource="{Binding AvailableScrollUnits, Mode=OneTime}"
+                    SelectedItem="{Binding ScrollUnit, Mode=TwoWay}" />
+
+                <StackPanel Visibility="{Binding IsScrollByPixel, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Margin="0,4,0,0" VerticalAlignment="Center" Text="ScrollLineDelta" />
+                    <TextBox 
+                        Margin="0,2,0,0"
+                        Text="{Binding ScrollLineDelta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Margin="0,4,0,0" VerticalAlignment="Center" Text="MouseWheelDelta" />
+                    <TextBox 
+                        Margin="0,2,0,0"
+                        Text="{Binding MouseWheelDelta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+                <StackPanel Visibility="{Binding IsScrollByItem, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Margin="0,4,0,0" VerticalAlignment="Center" Text="ScrollLineDelta" />
+                    <TextBox 
+                        Margin="0,2,0,0"
+                        Text="{Binding ScrollLineDeltaItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Margin="0,4,0,0" VerticalAlignment="Center" Text="MouseWheelDelta" />
+                    <TextBox 
+                        Margin="0,2,0,0"
+                        Text="{Binding MouseWheelDeltaItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+
+                <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="HorizontalScrollBarVisibility" />
+                <ComboBox
+                    Margin="0,2,0,0"
+                    ItemsSource="{Binding AvailableScrollBarVisibilities, Mode=OneTime}"
+                    SelectedItem="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}" />
+                <TextBlock Margin="0,4,0,0" VerticalAlignment="Center" Text="VerticalScrollBarVisibility" />
+                <ComboBox
+                    Margin="0,2,0,0"
+                    ItemsSource="{Binding AvailableScrollBarVisibilities, Mode=OneTime}"
+                    SelectedItem="{Binding VerticalScrollBarVisibility, Mode=TwoWay}" />
+
+                <TextBlock Margin="0,16,0,0" VerticalAlignment="Center" Text="Filter (Number >)" />
+                <TextBox 
+                    x:Name="filterTextBox" 
+                    Margin="0,2,0,0"
+                    TextChanged="FilterTextBox_TextChanged" />
+
+                <TextBlock Margin="0,16,0,0" Text="ScrollIntoView"/>
+                <Grid>
+                    <TextBox
+                        x:Name="scrollIntoViewTextBox"
+                        Margin="0,0,2,0" 
+                        TextChanged="ScrollIntoViewTextBox_TextChanged"
+                        KeyDown="ScrollIntoViewTextBox_KeyDown"
+                        LostFocus="ScrollIntoViewTextBox_LostFocus"/>
+                    <TextBlock 
+                        x:Name="scrollIntoViewTextBoxPlaceholder"
+                        Margin="4,0,6,0" 
+                        VerticalAlignment="Center" 
+                        Text="Type number and press Enter"
+                        FontSize="10" 
+                        Foreground="Gray"
+                        IsHitTestVisible="False"/>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Grid DockPanel.Dock="Bottom" Margin="0,8,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Margin="0" Content="Add item" Click="InsertButton_Click" />
+            <Button Grid.Column="1" Margin="8,0,0,0" Content="Add 10000 items" Click="FillButton_Click" />
+            <Button Grid.Column="2" Margin="8,0,0,0" Content="Remove random item" Click="RemoveButton_Click" />
+            <Button Grid.Column="3" Margin="8,0,0,0" Content="Remove all items" Click="ClearButton_Click" />
+            <Button Grid.Column="4" Margin="8,0,0,0" Content="Randomize" Click="Random_Click" />
         </Grid>
 
         <TabControl 
             x:Name="tabControl"
             SelectionChanged="TabControl_SelectionChanged"
-            Padding="4,8,4,0">
-            <TabControl.Resources>
-                <Style TargetType="TabItem" BasedOn="{StaticResource DefaultTabItemStyle}">
-                    <Setter Property="Padding" Value="8,0,8,0"/>
-                </Style>
-                <Style x:Key="ItemsControlStyle" TargetType="ItemsControl">
-                    <Setter Property="BorderBrush" Value="Gray"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Margin" Value="0,4,0,0"/>
-                </Style>
-                <Style x:Key="DescriptionAndOptionsBarStyle" TargetType="StackPanel">
-                    <Setter Property="Orientation" Value="Horizontal"/>
-                    <Setter Property="Height" Value="32"/>
-                </Style>
-            </TabControl.Resources>
+            Padding="4,8">
             <TabItem Header="VirtualizingWrapPanel">
-                <DockPanel>
-                    <StackPanel DockPanel.Dock="Top" Style="{StaticResource DescriptionAndOptionsBarStyle}">
-                        <TextBlock VerticalAlignment="Center" Text="A VirtualizingWrapPanel used by a ListView as ItemsPanel." />
-                    </StackPanel>
+                <DockPanel Margin="8,0,8,2">
+                    <TextBlock DockPanel.Dock="Top" Text="A VirtualizingWrapPanel used by a ListView as ItemsPanel." />
                     <ListView
-                        Style="{StaticResource ItemsControlStyle}"
+                        Margin="0,2,0,0"
                         ItemTemplate="{StaticResource ItemTemplate}"
                         VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
@@ -332,8 +330,8 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="AllowDifferentSizedItems">
-                <DockPanel>
-                    <StackPanel DockPanel.Dock="Top" Style="{StaticResource DescriptionAndOptionsBarStyle}">
+                <DockPanel Margin="8,0,8,2">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Text="A VirtualizingWrapPanel with AllowDifferentSizedItems=True used by a ListView as ItemsPanel." />
                         <CheckBox VerticalAlignment="Center" Margin="16,0,0,0" IsChecked="{Binding UseLazyLoadingItems, Mode=TwoWay}" Content="Lazy loading items"/>
                         <CheckBox VerticalAlignment="Center" Margin="16,0,0,0" IsChecked="{Binding UseItemSizeProvider, Mode=TwoWay}" Content="Use ItemSizeProvider"/>
@@ -342,7 +340,7 @@
                     </StackPanel>
                     <ListView
                         x:Name="listViewAllowDifferentSizedItems"
-                        Style="{StaticResource ItemsControlStyle}"
+                        Margin="0,2,0,0"
                         ItemTemplate="{StaticResource RandomSizedItemTemplate}"
                         VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
@@ -372,12 +370,10 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="VirtualizingItemsControl">
-                <DockPanel>
-                    <StackPanel DockPanel.Dock="Top" Style="{StaticResource DescriptionAndOptionsBarStyle}">
-                        <TextBlock VerticalAlignment="Center" Text="A VirtualizingWrapPanel used by a VirtualizingItemsControl." />
-                    </StackPanel>
+                <DockPanel Margin="8,0,8,2">
+                    <TextBlock DockPanel.Dock="Top" Text="A VirtualizingWrapPanel used by a VirtualizingItemsControl." />
                     <wpftk:VirtualizingItemsControl
-                        Style="{StaticResource ItemsControlStyle}"
+                        Margin="0,2,0,0"
                         ItemTemplate="{StaticResource ItemTemplate}"
                         VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
@@ -404,19 +400,14 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="GridView">
-                <DockPanel>
-                    <Grid DockPanel.Dock="Top" Height="32">
-                        <TextBlock 
-                            VerticalAlignment="Center"
-                            Text="The GridView control is a easy to use control displaying a grid of items using a VirtualizingWrapPanel." />
-                        <CheckBox 
-                            HorizontalAlignment="Right" 
-                            IsChecked="{Binding IsWrappingKeyboardNavigationEnabled, Mode=TwoWay}"
-                            Content="Enable wrapping keyboard navigation"/>
+                <DockPanel Margin="8,0,8,2">
+                    <Grid DockPanel.Dock="Top">
+                        <TextBlock Text="The GridView control is a easy to use control displaying a grid of items using a VirtualizingWrapPanel." />
+                        <CheckBox HorizontalAlignment="Right" IsChecked="{Binding IsWrappingKeyboardNavigationEnabled, Mode=TwoWay}">Enable wrapping keyboard navigation</CheckBox>
                     </Grid>
                     <wpftk:GridView
-                        Style="{StaticResource ItemsControlStyle}"
                         IsWrappingKeyboardNavigationEnabled="{Binding IsWrappingKeyboardNavigationEnabled, Mode=OneWay}"
+                        Margin="0,2,0,0"
                         ItemTemplate="{StaticResource ItemTemplate}"
                         VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
@@ -431,14 +422,11 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="GridDetailsView">
-                <DockPanel>
-                    <StackPanel DockPanel.Dock="Top" Style="{StaticResource DescriptionAndOptionsBarStyle}">
-                        <TextBlock
-                            VerticalAlignment="Center" 
-                            Text="The GridDetailsView control is a easy to use control displaying a grid of items with the ability to expand items when clicked." />
-                    </StackPanel>
+                <DockPanel Margin="8,0,8,2">
+                    <TextBlock DockPanel.Dock="Top"
+                               Text="The GridDetailsView control is a easy to use control displaying a grid of items with the ability to expand items when clicked." />
                     <wpftk:GridDetailsView
-                        Style="{StaticResource ItemsControlStyle}"
+                        Margin="0,2,0,0"
                         ItemTemplate="{StaticResource ItemTemplate}"
                         VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
@@ -464,7 +452,7 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="Material Design">
-                <DockPanel>
+                <DockPanel Margin="8,0,8,2">
                     <DockPanel.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -473,13 +461,9 @@
                             </ResourceDictionary.MergedDictionaries>
                         </ResourceDictionary>
                     </DockPanel.Resources>
-                    <StackPanel DockPanel.Dock="Top" Style="{StaticResource DescriptionAndOptionsBarStyle}">
-                        <TextBlock 
-                            VerticalAlignment="Center" 
-                            Text="A VirtualizingWrapPanel used by a MaterialDesign ListView as ItemsPanel." />
-                    </StackPanel>
+                    <TextBlock DockPanel.Dock="Top" Text="A VirtualizingWrapPanel used by a MaterialDesign ListView as ItemsPanel." />
                     <ListView    
-                        Style="{StaticResource ItemsControlStyle}"
+                        Margin="0,2,0,0"
                         ItemTemplate="{StaticResource ItemTemplate}"                                 
                         VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
                         VirtualizingPanel.CacheLength="{Binding CacheLength, Mode=OneWay}"
@@ -506,12 +490,9 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="WrapPanel (no virtualization)" Visibility="Collapsed">
-                <DockPanel>
-                    <StackPanel DockPanel.Dock="Top" Style="{StaticResource DescriptionAndOptionsBarStyle}">
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            Text="For comparison this is a ListView using a standard WrapPanel as ItemsPanel." />
-                    </StackPanel>
+                <DockPanel Margin="4,0,4,2">
+                    <TextBlock DockPanel.Dock="Top"
+                               Text="For comparison this is a ListView using a standard WrapPanel as ItemsPanel." />
                     <ListView
                         Margin="0,2,0,0"
                         ItemTemplate="{StaticResource ItemTemplate}"

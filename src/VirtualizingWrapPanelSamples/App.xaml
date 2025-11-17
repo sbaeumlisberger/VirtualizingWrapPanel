@@ -4,10 +4,21 @@
              xmlns:local="clr-namespace:VirtualizingWrapPanelSamples"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <!-- prevent binding errors (https://stackoverflow.com/a/9286069) -->
-        <Style TargetType="ListViewItem">
-            <Setter Property="HorizontalContentAlignment" Value="Left" />
-            <Setter Property="VerticalContentAlignment" Value="Top" />
-        </Style>
-    </Application.Resources>      
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/PresentationFramework.Fluent;component/Themes/Fluent.xaml" />
+                <ResourceDictionary>
+                    <Style x:Key="AppTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
+                        <Setter Property="Padding" Value="8,5,8,5"/>
+                    </Style>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource AppTextBoxStyle}"/>
+                    <!-- prevent binding errors (https://stackoverflow.com/a/9286069) -->
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                        <Setter Property="VerticalContentAlignment" Value="Top" />
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>
