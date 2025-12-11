@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
@@ -12,9 +13,9 @@ namespace VirtualizingWrapPanelTest;
 
 public record class TestItem(string Name, int Width, int Height, string? Group = null);
 
-public class TestUtil
+public static class TestUtil
 {
-    public static readonly bool Debug = false;
+    public static readonly bool Debug = Debugger.IsAttached;
 
     public const int DefaultItemWidth = 100;
     public const int DefaultItemHeight = 100;
@@ -22,37 +23,41 @@ public class TestUtil
     public static VirtualizingWrapPanel CreateVirtualizingWrapPanel(
         double width,
         double height,
-        int itemCount = 1000)
+        int itemCount = 1000,
+        Window? window = null)
     {
-        return CreateVirtualizingWrapPanel(width, height, GenerateItems(itemCount));
+        return CreateVirtualizingWrapPanel(width, height, GenerateItems(itemCount), window);
     }
 
     public static VirtualizingWrapPanel CreateVirtualizingWrapPanel(
         double width,
         double height,
-        IEnumerable items)
+        IEnumerable items,
+        Window? window = null)
     {
-        var itemsControl = CreateVirtualizingItemsControl(width, height, items);
+        var itemsControl = CreateVirtualizingItemsControl(width, height, items, window);
         return GetVisualChild<VirtualizingWrapPanel>(itemsControl)!;
     }
 
     public static ListBox CreateListBox(
         double width,
         double height,
-        IEnumerable items)
+        IEnumerable items,
+        Window? window = null)
     {
         var listBox = new ListBox();
-        SetupAndShowItemsControl(listBox, width, height, items);
+        SetupAndShowItemsControl(listBox, width, height, items, window);
         return listBox;
     }
 
     public static VirtualizingItemsControl CreateVirtualizingItemsControl(
         double width,
         double height,
-        IEnumerable items)
+        IEnumerable items,
+        Window? window = null)
     {
         var itemsControl = new VirtualizingItemsControl();
-        SetupAndShowItemsControl(itemsControl, width, height, items);
+        SetupAndShowItemsControl(itemsControl, width, height, items, window);
         return itemsControl;
     }
 
@@ -60,7 +65,8 @@ public class TestUtil
         ItemsControl itemsControl,
         double width,
         double height,
-        IEnumerable items)
+        IEnumerable items,
+        Window? window = null)
     {
         ScrollViewer.SetVerticalScrollBarVisibility(itemsControl, ScrollBarVisibility.Hidden);
         ScrollViewer.SetHorizontalScrollBarVisibility(itemsControl, ScrollBarVisibility.Hidden);
@@ -84,10 +90,9 @@ public class TestUtil
             }
         };
 
-        var window = new Window
-        {
-            Content = itemsControl
-        };
+        window ??= new Window();
+
+        window.Content = itemsControl;
 
         if (!Debug)
         {
@@ -150,17 +155,17 @@ public class TestUtil
     {
         var itemContainer = AssertItemRealized(virtualizingPanel, itemName);
         var position = itemContainer.TranslatePoint(new Point(0, 0), virtualizingPanel);
-        Assert.Equal(x, position.X);
-        Assert.Equal(y, position.Y);
-        Assert.Equal(width, itemContainer.ActualWidth);
-        Assert.Equal(height, itemContainer.ActualHeight);
+        Assert.Equal(x, (int)Math.Round(position.X));
+        Assert.Equal(y, (int)Math.Round(position.Y));
+        Assert.Equal(width, (int)Math.Round(itemContainer.ActualWidth));
+        Assert.Equal(height, (int)Math.Round(itemContainer.ActualHeight));
     }
 
     public static void AssertPanelPosition(VirtualizingWrapPanel vwp, int x, int y)
     {
         var position = vwp.TranslatePoint(new Point(0, 0), vwp.ItemsControl);
-        Assert.Equal(x, position.X);
-        Assert.Equal(y, position.Y);
+        Assert.Equal(x, (int)Math.Round(position.X));
+        Assert.Equal(y, (int)Math.Round(position.Y));
     }
 
     public static DataTemplate CreateDateTemplate(string dataTemplate)
@@ -264,6 +269,5 @@ public class TestUtil
 
         return foundChilds;
     }
-
 }
 

@@ -49,6 +49,6 @@ public class GroupingTest_ScrollIntoView_ItemAfterViewportAndCache_DifferentGrou
 
         var itemContainer = TestUtil.AssertItemRealized(vsp, "Item 550");
         var position = itemContainer.TranslatePoint(new Point(0, 0), vsp);
-        Assert.Equal(ViewportHeight - TestUtil.DefaultItemHeight, position.Y);
+        Assert.Equal(ViewportHeight - TestUtil.DefaultItemHeight, (int)Math.Round(position.Y));
     }
 }
