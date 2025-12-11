@@ -76,7 +76,7 @@ namespace WpfToolkit.Controls
         {
             get
             {
-                if (_itemContainerGenerator is null)
+                if (field is null)
                 {
                     // The ItemContainerGenerator is null until InternalChildren is accessed at least one time.
                     _ = InternalChildren;
@@ -88,14 +88,13 @@ namespace WpfToolkit.Controls
                             + $" or the GridView and VirtualizingItemsControl that are part of this package.");
                     }
 
-                    _itemContainerGenerator = base.ItemContainerGenerator.GetItemContainerGeneratorForPanel(this);
+                    field = base.ItemContainerGenerator.GetItemContainerGeneratorForPanel(this);
 
-                    _itemContainerGenerator.ItemsChanged += ItemContainerGenerator_ItemsChanged;
+                    field.ItemsChanged += ItemContainerGenerator_ItemsChanged;
                 }
-                return _itemContainerGenerator;
+                return field;
             }
         }
-        private ItemContainerGenerator? _itemContainerGenerator;
 
         public double ExtentWidth => Extent.Width;
         public double ExtentHeight => Extent.Height;
