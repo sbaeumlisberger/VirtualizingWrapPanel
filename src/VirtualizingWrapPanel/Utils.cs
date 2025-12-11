@@ -2,7 +2,7 @@
 
 namespace WpfToolkit.Controls;
 
-internal class Utils
+internal static class Utils
 {
     /// <summary>
     /// Creates a HashSet from a range of elements in a collection. 
@@ -23,5 +23,4 @@ internal class Utils
         }
         return hashSet;
     }
-
 }
