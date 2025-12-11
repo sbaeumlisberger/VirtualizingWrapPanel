@@ -197,8 +197,8 @@ namespace VirtualizingWrapPanelSamples
 
         private void GroupingCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            model.IsGrouping = true;
             FindItemsControl().GroupStyle.Add((GroupStyle)Resources["GroupStyle"]);
+            model.IsGrouping = true;            
         }
 
         private void GroupingCheckBox_Unchecked(object sender, RoutedEventArgs e)

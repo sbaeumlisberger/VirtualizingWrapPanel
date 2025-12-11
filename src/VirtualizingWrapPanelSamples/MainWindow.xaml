@@ -31,11 +31,13 @@
                     </ContextMenu>
                 </StackPanel.ContextMenu>
                 <TextBlock
+                    Foreground="Black"
                     FontSize="20"     
                     TextAlignment="Center"
                     Text="{Binding Number, Mode=OneWay}"
                     Padding="4" />
                 <TextBlock
+                    Foreground="Black"
                     TextAlignment="Center"
                     Text="{Binding CurrentDateTime, Mode=OneTime, StringFormat='{}{0:HH:mm:ss}'}"
                     Padding="4" />
@@ -55,12 +57,14 @@
                         <MenuItem Header="Remove" Click="RemoveMenuItem_Click"/>
                     </ContextMenu>
                 </StackPanel.ContextMenu>
-                <TextBlock     
+                <TextBlock    
+                    Foreground="Black"
                     FontSize="20"
                     TextAlignment="Center"
                     Text="{Binding Number, Mode=OneWay}"
                     Padding="8" />
                 <TextBlock
+                    Foreground="Black"
                     TextAlignment="Center"
                     Text="{Binding CurrentDateTime, Mode=OneTime, StringFormat='{}{0:HH:mm:ss}'}"
                     Padding="8" />
@@ -80,12 +84,14 @@
                         <MenuItem Header="Remove" Click="RemoveMenuItem_Click"/>
                     </ContextMenu>
                 </StackPanel.ContextMenu>
-                <TextBlock     
+                <TextBlock 
+                    Foreground="Black"
                     FontSize="20"
                     TextAlignment="Center"
                     Text="{Binding Number, Mode=OneWay}"
                     Padding="8" />
                 <TextBlock
+                    Foreground="Black"
                     TextAlignment="Center"
                     Text="{Binding CurrentDateTime, Mode=OneTime, StringFormat='{}{0:HH:mm:ss}'}"
                     Padding="8" />
@@ -101,6 +107,7 @@
             <GroupStyle.HeaderTemplate>
                 <DataTemplate>
                     <TextBlock
+                        Foreground="Black"
                         Background="LightGray"
                         Padding="8"
                         HorizontalAlignment="Stretch" 

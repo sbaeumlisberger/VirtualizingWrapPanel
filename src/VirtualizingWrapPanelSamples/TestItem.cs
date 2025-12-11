@@ -74,7 +74,7 @@ namespace VirtualizingWrapPanelSamples
             sizeLazy = Size.Empty;
         }
 
-        override public string ToString()
+        public override string ToString()
         {
             return $"TestItem({Number})";
         }

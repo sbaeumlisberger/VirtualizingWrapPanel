@@ -106,9 +106,8 @@ namespace VirtualizingWrapPanelSamples
 
         public void AddItem()
         {
-            int i = Items.Any() ? Items.Select(item => item.Number).Max() : 0;
-            int number = i + 1;
-            Items.Add(new TestItem((i % 100) + 1, number + 1));
+            int number = Items.Any() ? (Items.Select(item => item.Number).Max() + 1) : 1;
+            Items.Add(new TestItem((number - 1) % 100 + 1, number));
         }
 
         public void AddItems(int count = 10_000)
@@ -117,7 +116,7 @@ namespace VirtualizingWrapPanelSamples
             int newCount = Items.Count + count;
             for (int i = Items.Count; i < newCount; i++)
             {
-                Items.Add(new TestItem((i % 100) + 1, number));
+                Items.Add(new TestItem((number - 1) % 100 + 1, number));
                 number++;
             }
         }
@@ -145,9 +144,9 @@ namespace VirtualizingWrapPanelSamples
         {
             Items.Clear();
             int count = random.Next(500, 10000);
-            for (int i = 0; i < count; i++)
+            for (int number = 1; number <= count; number++)
             {
-                Items.Add(new TestItem(i % 100, i + 1));
+                Items.Add(new TestItem((number - 1) % 100 + 1, number));
             }
         }
 
