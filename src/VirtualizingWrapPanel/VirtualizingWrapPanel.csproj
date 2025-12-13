@@ -27,7 +27,7 @@
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/sbaeumlisberger/VirtualizingWrapPanel</RepositoryUrl>
 
-        <PackageProjectUrl>https://github.com/sbaeumlisberger/VirtualizingWrapPanel</PackageProjectUrl>
+        <PackageProjectUrl>https://sbaeumlisberger.github.io/VirtualizingWrapPanel/docs/getting-started.html</PackageProjectUrl>
 
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
 

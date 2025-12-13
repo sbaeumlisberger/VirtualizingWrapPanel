@@ -184,4 +184,4 @@ The `VirtualizingItemsControl` is an extension of the standard `ItemsControl` to
 
 ### More Information / Help
 
-To get more information checkout the [Issues page](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/issues) and feel free to open a new issue.
+To get more information checkout the [API Reference](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.html). If you need help or want to report an problem, please visit the [Issues page](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/issues).
