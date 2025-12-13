@@ -784,7 +784,10 @@ namespace WpfToolkit.Controls
 
                 Size upfrontKnownItemSize = GetUpfrontKnownItemSizeOrEmpty(item);
 
-                container.Measure(!upfrontKnownItemSize.IsEmpty ? upfrontKnownItemSize : InfiniteSize);
+                if (!container.IsMeasureValid)
+                {
+                    container.Measure(!upfrontKnownItemSize.IsEmpty ? upfrontKnownItemSize : InfiniteSize);
+                }
 
                 Size containerSize = !upfrontKnownItemSize.IsEmpty ? upfrontKnownItemSize : container.DesiredSize;
                 itemSizesCache[item] = containerSize;

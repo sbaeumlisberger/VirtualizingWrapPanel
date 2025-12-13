@@ -103,10 +103,6 @@ internal class ItemContainerManager
             {
                 addInternalChild(container);
             }
-            else
-            {
-                InvalidateMeasureRecursively(container);
-            }
 
             recyclingItemContainerGenerator.PrepareItemContainer(container);
 
@@ -161,18 +157,5 @@ internal class ItemContainerManager
         }
 
         ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));
-    }
-
-    private static void InvalidateMeasureRecursively(UIElement element)
-    {
-        element.InvalidateMeasure();
-
-        for (int i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
-        {
-            if (VisualTreeHelper.GetChild(element, i) is UIElement child)
-            {
-                InvalidateMeasureRecursively(child);
-            }
-        }
     }
 }
