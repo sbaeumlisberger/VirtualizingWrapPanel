@@ -17,7 +17,7 @@
         <local:ColorToBrushConverter x:Key="ColorToBrushConverter" />
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <DataTemplate x:Key="ItemTemplate" DataType="local:TestItem">
-            <StackPanel
+            <Grid
                 MinWidth="100"
                 MinHeight="100"
                 Background="{Binding Background, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"
@@ -25,77 +25,83 @@
                 VerticalAlignment="Stretch"
                 Loaded="Item_Loaded"
                 Unloaded="Item_Unloaded">
-                <StackPanel.ContextMenu>
+                <Grid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Remove" Click="RemoveMenuItem_Click"/>
                     </ContextMenu>
-                </StackPanel.ContextMenu>
-                <TextBlock
-                    Foreground="Black"
-                    FontSize="20"     
-                    TextAlignment="Center"
-                    Text="{Binding Number, Mode=OneWay}"
-                    Padding="4" />
-                <TextBlock
-                    Foreground="Black"
-                    TextAlignment="Center"
-                    Text="{Binding CurrentDateTime, Mode=OneTime, StringFormat='{}{0:HH:mm:ss}'}"
-                    Padding="4" />
-            </StackPanel>
+                </Grid.ContextMenu>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock
+                        Foreground="Black"
+                        FontSize="20"     
+                        TextAlignment="Center"
+                        Text="{Binding Number, Mode=OneWay}"
+                        Padding="4" />
+                    <TextBlock
+                        Foreground="Black"
+                        TextAlignment="Center"
+                        Text="{Binding CurrentDateTime, Mode=OneTime, StringFormat='{}{0:HH:mm:ss}'}"
+                        Padding="4" />
+                </StackPanel>
+            </Grid>
         </DataTemplate>
         <DataTemplate x:Key="RandomSizedItemTemplateLazy" DataType="local:TestItem">
-            <StackPanel
-                Width="{Binding SizeLazy.Width, Mode=OneWay}"
-                Height="{Binding SizeLazy.Height, Mode=OneWay}"
+            <Grid
+                MinWidth="{Binding SizeLazy.Width, Mode=OneWay}"
+                MinHeight="{Binding SizeLazy.Height, Mode=OneWay}"
                 Background="{Binding Background, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 Loaded="Item_Loaded"
                 Unloaded="Item_Unloaded">
-                <StackPanel.ContextMenu>
+                <Grid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Remove" Click="RemoveMenuItem_Click"/>
                     </ContextMenu>
-                </StackPanel.ContextMenu>
-                <TextBlock    
-                    Foreground="Black"
-                    FontSize="20"
-                    TextAlignment="Center"
-                    Text="{Binding Number, Mode=OneWay}"
-                    Padding="8" />
-                <TextBlock
-                    Foreground="Black"
-                    TextAlignment="Center"
-                    Text="{Binding CurrentDateTime, Mode=OneTime, StringFormat='{}{0:HH:mm:ss}'}"
-                    Padding="8" />
-            </StackPanel>
+                </Grid.ContextMenu>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock    
+                        Foreground="Black"
+                        FontSize="20"
+                        TextAlignment="Center"
+                        Text="{Binding Number, Mode=OneWay}"
+                        Padding="4" />
+                    <TextBlock
+                        Foreground="Black"
+                        TextAlignment="Center"
+                        Text="{Binding CurrentDateTime, Mode=OneTime, StringFormat='{}{0:HH:mm:ss}'}"
+                        Padding="4" />
+                </StackPanel>
+            </Grid>
         </DataTemplate>
         <DataTemplate x:Key="RandomSizedItemTemplate" DataType="local:TestItem">
-            <StackPanel
-                Width="{Binding Size.Width, Mode=OneWay}"
-                Height="{Binding Size.Height, Mode=OneWay}"
+            <Grid
+                MinWidth="{Binding Size.Width, Mode=OneWay}"
+                MinHeight="{Binding Size.Height, Mode=OneWay}"
                 Background="{Binding Background, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 Loaded="Item_Loaded"
                 Unloaded="Item_Unloaded">
-                <StackPanel.ContextMenu>
+                <Grid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Remove" Click="RemoveMenuItem_Click"/>
                     </ContextMenu>
-                </StackPanel.ContextMenu>
-                <TextBlock 
-                    Foreground="Black"
-                    FontSize="20"
-                    TextAlignment="Center"
-                    Text="{Binding Number, Mode=OneWay}"
-                    Padding="8" />
-                <TextBlock
-                    Foreground="Black"
-                    TextAlignment="Center"
-                    Text="{Binding CurrentDateTime, Mode=OneTime, StringFormat='{}{0:HH:mm:ss}'}"
-                    Padding="8" />
-            </StackPanel>
+                </Grid.ContextMenu>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock 
+                        Foreground="Black"
+                        FontSize="20"
+                        TextAlignment="Center"
+                        Text="{Binding Number, Mode=OneWay}"
+                        Padding="4" />
+                    <TextBlock
+                        Foreground="Black"
+                        TextAlignment="Center"
+                        Text="{Binding CurrentDateTime, Mode=OneTime, StringFormat='{}{0:HH:mm:ss}'}"
+                        Padding="4" />
+                </StackPanel>
+            </Grid>
         </DataTemplate>
         <Style x:Key="ItemContainerStyle" TargetType="{x:Type ListViewItem}">
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
