@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.3.2</Version>
+        <Version>2.4.0-beta</Version>
         <Authors>sbaeumlisberger</Authors>
         <Copyright>sbaeumlisberger</Copyright>
         <Description>Feature-rich implementation of a VirtualizingWrapPanel for WPF.</Description>
@@ -36,9 +36,9 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         
         <PackageReleaseNotes>
-- #89 Re-generate disconnected containers when grouping
-- #90 Fix overlapping when grouping
-- Remove usage of reflection
+- Added .NET 10 as new primary target framework
+- Improved maintainability through code refactoring
+- Minor bugfixes and performance enhancements 
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>
