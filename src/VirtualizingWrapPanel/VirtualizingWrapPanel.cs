@@ -148,6 +148,7 @@ namespace WpfToolkit.Controls
                 {
                     _itemContainerManager = new ItemContainerManager(
                         ItemContainerGenerator,
+                        InternalChildren.Contains,
                         AddInternalChild,
                         child => RemoveInternalChildRange(InternalChildren.IndexOf(child), 1));
                     _itemContainerManager.ItemsChanged += ItemContainerManager_ItemsChanged;
@@ -239,6 +240,8 @@ namespace WpfToolkit.Controls
                 RealizeAndVirtualizeItems();
             }
 
+            DisconnectRecycledContainers();
+
             return CalculateDesiredSize(availableSize);
         }
 
@@ -247,11 +250,6 @@ namespace WpfToolkit.Controls
             ViewportSize = finalSize;
 
             ArrangeBringIntoViewContainer();
-
-            foreach (var cachedContainer in ItemContainerManager.CachedContainers)
-            {
-                cachedContainer.Arrange(new Rect(0, 0, 0, 0));
-            }
 
             if (startItemIndex == -1)
             {
@@ -325,10 +323,8 @@ namespace WpfToolkit.Controls
 
         protected override void OnClearChildren()
         {
-            if (InternalChildren.Count == 0)
-            {
-                ItemContainerManager.OnClearChildren();
-            }
+            RemoveInternalChildRange(0, InternalChildren.Count);
+            ItemContainerManager.OnClearChildren();            
             base.OnClearChildren();
         }
 
@@ -871,6 +867,25 @@ namespace WpfToolkit.Controls
             double averageExtendPerItem = knownExtendCrossAxis / (endItemIndex + 1);
             double estimatedExtendCrossAxis = knownExtendCrossAxis + itemsUntilEndCount * averageExtendPerItem;
             return CreateSize(knownExtendMainAxis, estimatedExtendCrossAxis);
+        }
+
+        /// <summary>
+        /// Disconnects recycled containers that were not reused from the visual tree 
+        /// so that they do not interfere with things like Arrange, keyboard navigation, etc.
+        /// </summary>
+        private void DisconnectRecycledContainers()
+        {
+            var children = InternalChildren;
+
+            for (int i = children.Count - 1; i >= 0; i--)
+            {
+                var child = (FrameworkElement)children[i];
+
+                if (!ItemContainerManager.RealizedContainers.ContainsKey(child.DataContext))
+                {
+                    RemoveInternalChildRange(i, 1);
+                }
+            }
         }
 
         private Size CalculateDesiredSize(Size availableSize)
