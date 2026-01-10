@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.4.0-beta</Version>
+        <Version>2.4.0</Version>
         <Authors>sbaeumlisberger</Authors>
         <Copyright>sbaeumlisberger</Copyright>
         <Description>Feature-rich implementation of a VirtualizingWrapPanel for WPF.</Description>
@@ -38,7 +38,8 @@
         <PackageReleaseNotes>
 - Added .NET 10 as new primary target framework
 - Improved maintainability through code refactoring
-- Minor bugfixes and performance enhancements 
+- Fix #92 Memory leak when grouping and using VirtualizationMode="Recycling"
+- Fix #93 When moving from the top-left item using the up or left keys, incorrect results may occur
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>
