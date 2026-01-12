@@ -550,7 +550,7 @@ namespace WpfToolkit.Controls
 
             for (int itemIndex = startItemIndex; itemIndex <= endItemIndex; itemIndex++)
             {
-                if (itemIndex == startItemIndex)
+                if (itemIndex == 0)
                 {
                     sizeOfFirstItem = Size.Empty;
                 }
@@ -568,7 +568,7 @@ namespace WpfToolkit.Controls
                     container.Measure(!itemSize.IsEmpty ? itemSize : (!sizeOfFirstItem.IsEmpty ? sizeOfFirstItem : InfiniteSize));
                 }
 
-                if (itemIndex == startItemIndex)
+                if (itemIndex == 0)
                 {
                     sizeOfFirstItem = container.DesiredSize;
                 }
