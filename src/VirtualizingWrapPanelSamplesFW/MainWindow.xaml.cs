@@ -29,6 +29,9 @@ namespace VirtualizingWrapPanelSamples
         {
             switch (e.PropertyName)
             {
+                case nameof(model.CollectionView):
+                    FindItemsControl()?.ItemsSource = model.CollectionView;
+                    break;
                 case nameof(model.UseLazyLoadingItems):
                     string itemTemplateKey = model.UseLazyLoadingItems ? "RandomSizedItemTemplateLazy" : "RandomSizedItemTemplate";
                     listViewAllowDifferentSizedItems.ItemTemplate = (DataTemplate)Resources[itemTemplateKey];
@@ -60,24 +63,10 @@ namespace VirtualizingWrapPanelSamples
             model.AddItem();
         }
 
-        private void FillButton_Click(object sender, RoutedEventArgs args)
-        {
-            model.AddItems();
-        }
-
-        private void RemoveButton_Click(object sender, RoutedEventArgs args)
-        {
-            model.RemoveRandomItem();
-        }
 
         private void ClearButton_Click(object sender, RoutedEventArgs args)
         {
             model.RemoveAllItems();
-        }
-
-        private void Random_Click(object sender, RoutedEventArgs args)
-        {
-            model.RandomizeItems();
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs args)

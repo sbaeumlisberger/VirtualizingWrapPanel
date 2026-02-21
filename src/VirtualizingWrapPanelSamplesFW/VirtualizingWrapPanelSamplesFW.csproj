@@ -17,6 +17,7 @@
     <Compile Include="..\VirtualizingWrapPanelSamples\MainWindowModel.cs">
       <Link>MainWindowModel.cs</Link>
     </Compile>
+    <Compile Include="..\VirtualizingWrapPanelSamples\SimpleCommand.cs" Link="SimpleCommand.cs" />
     <Compile Include="..\VirtualizingWrapPanelSamples\TestItem.cs">
       <Link>TestItem.cs</Link>
     </Compile>

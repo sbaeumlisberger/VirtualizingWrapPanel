@@ -7,8 +7,8 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Threading;
-using MaterialDesignThemes.Wpf;
 using WpfToolkit.Controls;
 
 namespace VirtualizingWrapPanelSamples
@@ -17,13 +17,13 @@ namespace VirtualizingWrapPanelSamples
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public ObservableCollection<TestItem> Items { get; } = new ObservableCollection<TestItem>();
-        public ICollectionView CollectionView { get; }
+        public ObservableCollection<TestItem> Items { get; private set => SetProperty(ref field, value); } = new ObservableCollection<TestItem>();
+        public ICollectionView CollectionView { get; private set => SetProperty(ref field, value); }
 
-        public int RenderedItemsCount { get => renderedItemsCount; set => SetField(ref renderedItemsCount, value); }
+        public int RenderedItemsCount { get; set => SetProperty(ref field, value); } = 0;
 
-        public long MemoryUsageInMB { get => memoryUsageInMB; private set => SetField(ref memoryUsageInMB, value); }
-        public bool IsAutoRefreshMemoryUsageEnabled { get => isAutoRefreshMemoryUsageEnabled; set => SetField(ref isAutoRefreshMemoryUsageEnabled, value); }
+        public long MemoryUsageInMB { get; private set => SetProperty(ref field, value); } = 0;
+        public bool IsAutoRefreshMemoryUsageEnabled { get; set => SetProperty(ref field, value); } = false;
 
         public VirtualizationCacheLengthUnit[] AvailableCacheUnits { get; } = (VirtualizationCacheLengthUnit[])Enum.GetValues(typeof(VirtualizationCacheLengthUnit));
         public VirtualizationMode[] AvailableVirtualizationModes { get; } = (VirtualizationMode[])Enum.GetValues(typeof(VirtualizationMode));
@@ -33,71 +33,39 @@ namespace VirtualizingWrapPanelSamples
         public ScrollUnit[] AvailableScrollUnits { get; } = (ScrollUnit[])Enum.GetValues(typeof(ScrollUnit));
         public ScrollBarVisibility[] AvailableScrollBarVisibilities { get; } = (ScrollBarVisibility[])Enum.GetValues(typeof(ScrollBarVisibility));
 
-        public Orientation Orientation { get => orientation; set => SetField(ref orientation, value); }
-        public Orientation OrientationGroupPanel { get => orientationGroupPanel; set => SetField(ref orientationGroupPanel, value); }
-        public VirtualizationCacheLengthUnit CacheUnit { get => cacheUnit; set => SetField(ref cacheUnit, value); }
-        public VirtualizationCacheLength CacheLength { get => cacheLength; set => SetField(ref cacheLength, value); }
-        public VirtualizationMode VirtualizationMode { get => virtualizationMode; set => SetField(ref virtualizationMode, value); }
-        public SpacingMode SpacingMode { get => spacingMode; set => SetField(ref spacingMode, value); }
-        public bool StretchItems { get => stretchItems; set => SetField(ref stretchItems, value); }
-        public ScrollUnit ScrollUnit { get => scrollUnit; set => SetField(ref scrollUnit, value); }
+        public Orientation Orientation { get; set => SetProperty(ref field, value); } = Orientation.Horizontal;
+        public Orientation OrientationGroupPanel { get; set => SetProperty(ref field, value); } = Orientation.Vertical;
+        public VirtualizationCacheLengthUnit CacheUnit { get; set => SetProperty(ref field, value); } = VirtualizationCacheLengthUnit.Page;
+        public VirtualizationCacheLength CacheLength { get; set => SetProperty(ref field, value); } = new VirtualizationCacheLength(1);
+        public VirtualizationMode VirtualizationMode { get; set => SetProperty(ref field, value); } = VirtualizationMode.Recycling;
+        public SpacingMode SpacingMode { get; set => SetProperty(ref field, value); } = SpacingMode.Uniform;
+        public bool StretchItems { get; set => SetProperty(ref field, value); } = false;
+        public ScrollUnit ScrollUnit { get; set => SetProperty(ref field, value); } = ScrollUnit.Pixel;
         public bool IsScrollByPixel => ScrollUnit == ScrollUnit.Pixel;
         public bool IsScrollByItem => ScrollUnit == ScrollUnit.Item;
-        public double ScrollLineDelta { get => scrollLineDelta; set => SetField(ref scrollLineDelta, value); }
-        public double MouseWheelDelta { get => mouseWheelDelta; set => SetField(ref mouseWheelDelta, value); }
-        public int ScrollLineDeltaItem { get => scrollLineDeltaItem; set => SetField(ref scrollLineDeltaItem, value); }
-        public int MouseWheelDeltaItem { get => mouseWheelDeltaItem; set => SetField(ref mouseWheelDeltaItem, value); }
-        public ScrollBarVisibility HorizontalScrollBarVisibility { get => horizontalScrollBarVisibility; set => SetField(ref horizontalScrollBarVisibility, value); }
-        public ScrollBarVisibility VerticalScrollBarVisibility { get => verticalScrollBarVisibility; set => SetField(ref verticalScrollBarVisibility, value); }
-        public Size ItemSize { get => itemSize; set => SetField(ref itemSize, value); }
-        public bool IsGrouping { get => isGrouping; set => SetField(ref isGrouping, value); }
-        public bool IsGridLayoutEnabled { get => isGridLayoutEnabled; set => SetField(ref isGridLayoutEnabled, value); }
-        public bool UseLazyLoadingItems { get => useLazyLoadingItems; set => SetField(ref useLazyLoadingItems, value); }
-        public bool UseItemSizeProvider { get => useItemSizeProvider; set => SetField(ref useItemSizeProvider, value); }
-        public ItemAlignment ItemAlignment { get => itemAlignment; set => SetField(ref itemAlignment, value); }
+        public double ScrollLineDelta { get; set => SetProperty(ref field, value); } = 16.0;
+        public double MouseWheelDelta { get; set => SetProperty(ref field, value); } = 48.0;
+        public int ScrollLineDeltaItem { get; set => SetProperty(ref field, value); } = 1;
+        public int MouseWheelDeltaItem { get; set => SetProperty(ref field, value); } = 3;
+        public ScrollBarVisibility HorizontalScrollBarVisibility { get; set => SetProperty(ref field, value); } = ScrollBarVisibility.Auto;
+        public ScrollBarVisibility VerticalScrollBarVisibility { get; set => SetProperty(ref field, value); } = ScrollBarVisibility.Auto;
+        public Size ItemSize { get; set => SetProperty(ref field, value); } = Size.Empty;
+        public bool IsGrouping { get; set => SetProperty(ref field, value); } = false;
+        public bool IsGridLayoutEnabled { get; set => SetProperty(ref field, value); } = true;
+        public bool UseLazyLoadingItems { get; set => SetProperty(ref field, value); } = false;
+        public bool UseItemSizeProvider { get; set => SetProperty(ref field, value); } = false;
+        public ItemAlignment ItemAlignment { get; set => SetProperty(ref field, value); } = ItemAlignment.Start;
 
-        public bool IsWrappingKeyboardNavigationEnabled { get => isWrappingKeyboardNavigationEnabled; set => SetField(ref isWrappingKeyboardNavigationEnabled, value); }
+        public bool IsWrappingKeyboardNavigationEnabled { get; set => SetProperty(ref field, value); } = false;
 
         public IItemSizeProvider ItemSizeProvider { get; } = new TestItemSizeProvider();
 
-        private int renderedItemsCount = 0;
+        public ICommand AddItemCommand => field ??= new SimpleCommand(parameter => AddItems(int.Parse((string)parameter!)));
 
-        private long memoryUsageInMB = 0;
-        private bool isAutoRefreshMemoryUsageEnabled = false;
-
-        private VirtualizationCacheLengthUnit cacheUnit = VirtualizationCacheLengthUnit.Page;
-        private VirtualizationCacheLength cacheLength = new VirtualizationCacheLength(1);
-        private VirtualizationMode virtualizationMode = VirtualizationMode.Recycling;
-        private Orientation orientation = Orientation.Horizontal;
-        private Orientation orientationGroupPanel = Orientation.Vertical;
-        private SpacingMode spacingMode = SpacingMode.Uniform;
-        private bool stretchItems = false;
-        private ScrollUnit scrollUnit = ScrollUnit.Pixel;
-        private double scrollLineDelta = 16.0;
-        private double mouseWheelDelta = 48.0;
-        private int scrollLineDeltaItem = 1;
-        private int mouseWheelDeltaItem = 3;
-        private ScrollBarVisibility horizontalScrollBarVisibility = ScrollBarVisibility.Auto;
-        private ScrollBarVisibility verticalScrollBarVisibility = ScrollBarVisibility.Auto;
-        private Size itemSize = Size.Empty;
-        private bool isGrouping = false;
-        private bool isGridLayoutEnabled = true;
-        private bool useLazyLoadingItems = false;
-        private bool useItemSizeProvider = false;
-        private ItemAlignment itemAlignment = ItemAlignment.Start;
-
-        private bool isWrappingKeyboardNavigationEnabled = false;
-
-        private readonly Random random = new Random();
-
-        private readonly DispatcherTimer memoryUsageRefreshTimer;
+        private readonly DispatcherTimer memoryUsageRefreshTimer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1) };
 
         public MainWindowModel()
         {
-            memoryUsageRefreshTimer = new DispatcherTimer()
-            {
-                Interval = TimeSpan.FromSeconds(1)
-            };
             memoryUsageRefreshTimer.Tick += (s, a) => RefreshMemoryUsage();
             PropertyChanged += MainWindowModel_PropertyChanged;
             CollectionView = CollectionViewSource.GetDefaultView(Items);
@@ -110,8 +78,13 @@ namespace VirtualizingWrapPanelSamples
             Items.Add(new TestItem((number - 1) % 100 + 1, number));
         }
 
-        public void AddItems(int count = 10_000)
+        public void AddItems(int count)
         {
+            if (Items.Count == 0)
+            {
+                Items = new ObservableCollection<TestItem>();
+            }
+
             int number = Items.Any() ? (Items.Select(item => item.Number).Max() + 1) : 1;
             int newCount = Items.Count + count;
             for (int i = Items.Count; i < newCount; i++)
@@ -119,15 +92,8 @@ namespace VirtualizingWrapPanelSamples
                 Items.Add(new TestItem((number - 1) % 100 + 1, number));
                 number++;
             }
-        }
 
-        public void RemoveRandomItem()
-        {
-            if (Items.Any())
-            {
-                int index = random.Next(Items.Count);
-                Items.RemoveAt(index);
-            }
+            CollectionView = CollectionViewSource.GetDefaultView(Items);
         }
 
         public void RemoveItem(TestItem item)
@@ -138,16 +104,6 @@ namespace VirtualizingWrapPanelSamples
         public void RemoveAllItems()
         {
             Items.Clear();
-        }
-
-        public void RandomizeItems()
-        {
-            Items.Clear();
-            int count = random.Next(500, 10000);
-            for (int number = 1; number <= count; number++)
-            {
-                Items.Add(new TestItem((number - 1) % 100 + 1, number));
-            }
         }
 
         public void RefreshMemoryUsage()
@@ -222,7 +178,7 @@ namespace VirtualizingWrapPanelSamples
             }
         }
 
-        private bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+        private bool SetProperty<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
         {
             if (Equals(value, field))
             {

@@ -4,79 +4,81 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
-namespace VirtualizingWrapPanelSamples
+namespace VirtualizingWrapPanelSamples;
+
+public class TestItem : INotifyPropertyChanged
 {
-    public class TestItem : INotifyPropertyChanged
+    private static readonly int MinWidth = 100;
+    private static readonly int MaxWidth = 200;
+    private static readonly int MinHeight = 80;
+    private static readonly int MaxHeight = 160;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    public int Group { get; }
+
+    public int Number { get; }
+
+    public Color Background
     {
-        private static readonly int MinWidth = 100;
-        private static readonly int MaxWidth = 200;
-        private static readonly int MinHeight = 80;
-        private static readonly int MaxHeight = 160;
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        public int Group { get; }
-
-        public int Number { get; }
-
-        public Color Background
+        get
         {
-            get
+            if (background == default)
             {
-                if (background == default)
-                {
-                    byte[] randomBytes = new byte[3];
-                    Random.NextBytes(randomBytes);
-                    background = Color.FromRgb(randomBytes[0], randomBytes[1], randomBytes[2]);
-                }
-                return background;
+                byte[] randomBytes = new byte[3];
+                Random.NextBytes(randomBytes);
+                background = Color.FromRgb(randomBytes[0], randomBytes[1], randomBytes[2]);
             }
+            return background;
         }
+    }
 
-        public Size Size { get; }
+    public Size Size { get; }
 
-        public Size SizeLazy
+    public Size SizeLazy
+    {
+        get
         {
-            get
+            if (sizeLazy == Size.Empty)
             {
-                if (sizeLazy == Size.Empty)
+                Task.Delay(1000).ContinueWith((_) =>
                 {
-                    Task.Delay(1000).ContinueWith((_) =>
-                    {
-                        sizeLazy = Size;
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SizeLazy)));
-                    });
-                    return new Size(MinWidth, MinHeight);
-                }
-                return sizeLazy;
+                    sizeLazy = Size;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SizeLazy)));
+                });
+                return new Size(MinWidth, MinHeight);
             }
+            return sizeLazy;
         }
+    }
 
-        public DateTime CurrentDateTime => DateTime.Now;
+    public Size ItemSize { get; }
 
-        private static readonly Random Random = new Random();
+    public DateTime CurrentDateTime => DateTime.Now;
 
-        private Size sizeLazy = Size.Empty;
+    private static readonly Random Random = new Random();
 
-        private Color background = default;
+    private Size sizeLazy = Size.Empty;
 
-        public TestItem(int group, int number)
-        {
-            Group = group;
-            Number = number;
-            var width = Random.Next(MinWidth, MaxWidth);
-            var height = Random.Next(MinHeight, MaxHeight);
-            Size = new Size(width, height);
-        }
+    private Color background = default;
 
-        public void Reset()
-        {
-            sizeLazy = Size.Empty;
-        }
+    public TestItem(int group, int number)
+    {
+        Group = group;
+        Number = number;
+        var width = Random.Next(MinWidth, MaxWidth);
+        var height = Random.Next(MinHeight, MaxHeight);
+        Size = new Size(width, height);
+        ItemSize = new Size(width + 10, height + 10);
+    }
 
-        public override string ToString()
-        {
-            return $"TestItem({Number})";
-        }
+    public void Reset()
+    {
+        sizeLazy = Size.Empty;
+    }
+
+    public override string ToString()
+    {
+        return $"TestItem({Number})";
     }
 }

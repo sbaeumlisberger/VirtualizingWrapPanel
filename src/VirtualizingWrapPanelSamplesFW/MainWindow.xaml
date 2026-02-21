@@ -280,18 +280,22 @@
         </ScrollViewer>
 
         <Grid DockPanel.Dock="Bottom" Margin="0,8,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Margin="0" Content="Add item" Click="InsertButton_Click" />
-            <Button Grid.Column="1" Margin="8,0,0,0" Content="Add 10000 items" Click="FillButton_Click" />
-            <Button Grid.Column="2" Margin="8,0,0,0" Content="Remove random item" Click="RemoveButton_Click" />
-            <Button Grid.Column="3" Margin="8,0,0,0" Content="Remove all items" Click="ClearButton_Click" />
-            <Button Grid.Column="4" Margin="8,0,0,0" Content="Randomize" Click="Random_Click" />
+            <StackPanel Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="8,0,0,0"/>
+                        <Setter Property="Padding" Value="8,2,8,2"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock VerticalAlignment="Center" Text="Add items:"/>
+                <Button VerticalAlignment="Stretch" Content="1" Command="{Binding AddItemCommand, Mode=OneTime}" CommandParameter="1" />
+                <Button Content="10" Command="{Binding AddItemCommand, Mode=OneTime}" CommandParameter="10" />
+                <Button Content="100" Command="{Binding AddItemCommand, Mode=OneTime}" CommandParameter="100" />
+                <Button Content="1k" Command="{Binding AddItemCommand, Mode=OneTime}" CommandParameter="1000" />
+                <Button Content="10k" Command="{Binding AddItemCommand, Mode=OneTime}" CommandParameter="10000" />
+                <Button Content="100k" Command="{Binding AddItemCommand, Mode=OneTime}" CommandParameter="100000" />
+            </StackPanel>
+            <Button HorizontalAlignment="Right" Padding="8,2,8,2" Content="Remove all items" Click="ClearButton_Click" />
         </Grid>
 
         <TabControl 

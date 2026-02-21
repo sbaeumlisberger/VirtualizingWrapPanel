@@ -8,7 +8,7 @@ namespace VirtualizingWrapPanelSamples
         public Size GetSizeForItem(object item)
         {
             var testItem = (TestItem)item;
-            return new Size(testItem.Size.Width + 10, testItem.Size.Height + 10);
+            return testItem.ItemSize;
         }
     }
 }
