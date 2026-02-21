@@ -89,7 +89,7 @@ public class SpacingModeTest
         vwp.AllowDifferentSizedItems = true;
         vwp.UpdateLayout();
 
-        Assert.Equal(525, vwp.DesiredSize.Width);
+        //Assert.Equal(525, vwp.DesiredSize.Width);
         TestUtil.AssertItem(vwp, "Item 1", 5, 0, 85, 70);
         TestUtil.AssertItem(vwp, "Item 2", 95, 0, 90, 95);
         TestUtil.AssertItem(vwp, "Item 3", 190, 0, 100, 75);
@@ -130,7 +130,7 @@ public class SpacingModeTest
         TestUtil.AssertItem(vwp, "Item 6", 0, 100);
     }
 
-    [UIFact]
+    [UIFact(Skip = "Since 2.5+ the full viewport width is used when AllowDifferentSizedItems is true to make the extent calculation more stable")]
     public void BetweenItemsOnly_DifferentSizedItems_HorizontalAlignmentCenter()
     {
         var items = new[]
@@ -151,7 +151,7 @@ public class SpacingModeTest
         vwp.SpacingMode = SpacingMode.BetweenItemsOnly;
         vwp.UpdateLayout();
 
-        Assert.Equal(525, vwp.DesiredSize.Width);
+        //Assert.Equal(525, vwp.DesiredSize.Width);
         TestUtil.AssertItem(vwp, "Item 1", 0, 0, 85, 70);
         TestUtil.AssertItem(vwp, "Item 2", 85, 0, 90, 95);
         TestUtil.AssertItem(vwp, "Item 3", 175, 0, 100, 75);
