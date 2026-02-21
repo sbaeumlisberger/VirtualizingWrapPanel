@@ -8,22 +8,12 @@ using System.Windows.Controls.Primitives;
 
 namespace WpfToolkit.Controls;
 
-internal class ItemContainerManagerItemsChangedEventArgs
-{
-    public NotifyCollectionChangedAction Action { get; }
-
-    public ItemContainerManagerItemsChangedEventArgs(NotifyCollectionChangedAction action)
-    {
-        Action = action;
-    }
-}
-
 internal class ItemContainerManager
 {
     /// <summary>
     /// Occurs when the <see cref="Items"/> collection changes.
     /// </summary>
-    public event EventHandler<ItemContainerManagerItemsChangedEventArgs>? ItemsChanged;
+    public event EventHandler<ItemsChangedEventArgs>? ItemsChanged;
 
     /// <summary>
     /// Indicates whether containers are recycled or not.
@@ -129,6 +119,11 @@ internal class ItemContainerManager
         return recyclingItemContainerGenerator.GeneratorPositionFromIndex(itemIndex);
     }
 
+    public int IndexFromGeneratorPosition(GeneratorPosition generatorPosition)
+    {
+        return recyclingItemContainerGenerator.IndexFromGeneratorPosition(generatorPosition);
+    }
+
     private void ItemContainerGenerator_ItemsChanged(object sender, ItemsChangedEventArgs e)
     {
         if (e.Action == NotifyCollectionChangedAction.Reset)
@@ -137,6 +132,6 @@ internal class ItemContainerManager
             // children collection is cleared automatically
         }
 
-        ItemsChanged?.Invoke(this, new ItemContainerManagerItemsChangedEventArgs(e.Action));
+        ItemsChanged?.Invoke(this, e);
     }
 }

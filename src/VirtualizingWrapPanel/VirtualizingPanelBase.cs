@@ -12,10 +12,15 @@ namespace WpfToolkit.Controls
     /// </summary>
     public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     {
-        public static readonly DependencyProperty ScrollLineDeltaProperty = DependencyProperty.Register(nameof(ScrollLineDelta), typeof(double), typeof(VirtualizingPanelBase), new FrameworkPropertyMetadata(16.0));
-        public static readonly DependencyProperty MouseWheelDeltaProperty = DependencyProperty.Register(nameof(MouseWheelDelta), typeof(double), typeof(VirtualizingPanelBase), new FrameworkPropertyMetadata(48.0));
-        public static readonly DependencyProperty ScrollLineDeltaItemProperty = DependencyProperty.Register(nameof(ScrollLineDeltaItem), typeof(int), typeof(VirtualizingPanelBase), new FrameworkPropertyMetadata(1));
-        public static readonly DependencyProperty MouseWheelDeltaItemProperty = DependencyProperty.Register(nameof(MouseWheelDeltaItem), typeof(int), typeof(VirtualizingPanelBase), new FrameworkPropertyMetadata(3));
+        public const double DefaultScrollLineDeltaPixel = 16.0;
+        public const double DefaultMouseWheelDeltaPixel = 48.0;
+        public const int DefaultScrollLineDeltaItem = 1;
+        public const int DefaultMouseWheelDeltaItem = 3;
+
+        public static readonly DependencyProperty ScrollLineDeltaProperty = DependencyProperty.Register(nameof(ScrollLineDelta), typeof(double), typeof(VirtualizingPanelBase), new FrameworkPropertyMetadata(DefaultScrollLineDeltaPixel));
+        public static readonly DependencyProperty MouseWheelDeltaProperty = DependencyProperty.Register(nameof(MouseWheelDelta), typeof(double), typeof(VirtualizingPanelBase), new FrameworkPropertyMetadata(DefaultMouseWheelDeltaPixel));
+        public static readonly DependencyProperty ScrollLineDeltaItemProperty = DependencyProperty.Register(nameof(ScrollLineDeltaItem), typeof(int), typeof(VirtualizingPanelBase), new FrameworkPropertyMetadata(DefaultScrollLineDeltaItem));
+        public static readonly DependencyProperty MouseWheelDeltaItemProperty = DependencyProperty.Register(nameof(MouseWheelDeltaItem), typeof(int), typeof(VirtualizingPanelBase), new FrameworkPropertyMetadata(DefaultMouseWheelDeltaItem));
 
         public ScrollViewer? ScrollOwner { get; set; }
 
@@ -89,8 +94,6 @@ namespace WpfToolkit.Controls
                     }
 
                     field = base.ItemContainerGenerator.GetItemContainerGeneratorForPanel(this);
-
-                    field.ItemsChanged += ItemContainerGenerator_ItemsChanged;
                 }
                 return field;
             }
@@ -109,60 +112,9 @@ namespace WpfToolkit.Controls
         protected Size ViewportSize { get; set; } = new Size(0, 0);
         protected Point ScrollOffset { get; set; } = new Point(0, 0);
 
-        private Visibility previousVerticalScrollBarVisibility = Visibility.Collapsed;
-        private Visibility previousHorizontalScrollBarVisibility = Visibility.Collapsed;
-        private bool itemsChanged = false;
-
-        private void ItemContainerGenerator_ItemsChanged(object sender, ItemsChangedEventArgs e)
+        protected void InvalidateScrollInfo()
         {
-            itemsChanged = true;
-        }
-
-        protected bool ShouldIgnoreMeasure()
-        {
-            /* Sometimes when scrolling the scrollbar gets hidden without any reason. 
-             * To prevent a infinite circle the measure call has to be ignored. */
-
-            /* If the items have changed, the measure call should never be ignored
-             * to prevent issues in the following arrangement call. See:
-             * https://github.com/sbaeumlisberger/VirtualizingWrapPanel/issues/84 */
-            if (itemsChanged)
-            {
-                itemsChanged = false;
-                return false;
-            }
-
-            IScrollInfo scrollInfo = this;
-            ScrollViewer? scrollOwner = ScrollOwner;
-
-            if (ItemsOwner is GroupItem groupItem
-                && VisualTreeHelper.GetParent(groupItem) is IScrollInfo parentScrollInfo
-                && parentScrollInfo.ScrollOwner is { } parentScrollOwner)
-            {
-                scrollInfo = parentScrollInfo;
-                scrollOwner = parentScrollOwner;
-            }
-
-            if (scrollOwner != null)
-            {
-                bool verticalScrollBarGotHidden = scrollOwner.VerticalScrollBarVisibility == ScrollBarVisibility.Auto
-                    && scrollOwner.ComputedVerticalScrollBarVisibility != Visibility.Visible
-                    && scrollOwner.ComputedVerticalScrollBarVisibility != previousVerticalScrollBarVisibility;
-
-                bool horizontalScrollBarGotHidden = scrollOwner.HorizontalScrollBarVisibility == ScrollBarVisibility.Auto
-                   && scrollOwner.ComputedHorizontalScrollBarVisibility != Visibility.Visible
-                   && scrollOwner.ComputedHorizontalScrollBarVisibility != previousHorizontalScrollBarVisibility;
-
-                previousVerticalScrollBarVisibility = scrollOwner.ComputedVerticalScrollBarVisibility;
-                previousHorizontalScrollBarVisibility = scrollOwner.ComputedHorizontalScrollBarVisibility;
-
-                if ((verticalScrollBarGotHidden && scrollInfo.ExtentHeight > scrollInfo.ViewportHeight)
-                    || (horizontalScrollBarGotHidden && scrollInfo.ExtentWidth > scrollInfo.ViewportWidth))
-                {
-                    return true;
-                }
-            }
-            return false;
+            ScrollOwner?.InvalidateScrollInfo();
         }
 
         protected void VerifyItemsControl()
@@ -245,7 +197,7 @@ namespace WpfToolkit.Controls
             if (offset != ScrollOffset.Y)
             {
                 ScrollOffset = new Point(ScrollOffset.X, offset);
-                ScrollOwner?.InvalidateScrollInfo();
+                InvalidateScrollInfo();
                 InvalidateMeasure();
             }
         }
@@ -263,7 +215,7 @@ namespace WpfToolkit.Controls
             if (offset != ScrollOffset.X)
             {
                 ScrollOffset = new Point(offset, ScrollOffset.Y);
-                ScrollOwner?.InvalidateScrollInfo();
+                InvalidateScrollInfo();
                 InvalidateMeasure();
             }
         }

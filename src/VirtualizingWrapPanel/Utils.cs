@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualBasic;
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Windows;
 
 namespace WpfToolkit.Controls;
 
@@ -22,5 +26,17 @@ internal static class Utils
             }
         }
         return hashSet;
+    }
+
+    public static List<T> NewUninitializedList<T>(int count)
+    {
+#if NET8_0_OR_GREATER
+        var list = new List<T>(count);
+        CollectionsMarshal.SetCount(list, count);
+        return list;
+#else
+        var list = new List<T>(new T[count]);
+        return list;
+#endif
     }
 }

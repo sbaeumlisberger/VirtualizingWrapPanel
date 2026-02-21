@@ -130,11 +130,6 @@ namespace WpfToolkit.Controls
         {
             UpdateChildSize(availableSize);
 
-            if (ShouldIgnoreMeasure())
-            {
-                return availableSize;
-            }
-
             var groupItem = ItemsOwner as IHierarchicalVirtualizationAndScrollInfo;
 
             Size extent;
