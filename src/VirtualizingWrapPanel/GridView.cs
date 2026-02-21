@@ -139,6 +139,7 @@ namespace WpfToolkit.Controls
 
             if (targetIndex >= 0 && targetIndex < gridView.Items.Count)
             {
+                gridView.ScrollIntoView(gridView.Items[targetIndex]);
                 ((UIElement)gridView.ItemContainerGenerator.ContainerFromIndex(targetIndex)).Focus();
             }
 
