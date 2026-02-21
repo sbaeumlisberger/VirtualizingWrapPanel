@@ -205,6 +205,8 @@ namespace WpfToolkit.Controls
         private int bringIntoViewItemIndex = -1;
         private FrameworkElement? bringIntoViewContainer;
 
+        private UIElement? keptRealizedFocusedContainer;
+
         #region cache for frequently read dependency properties
         private Orientation orientation = Orientation.Horizontal;
         private Size itemSize = Size.Empty;
@@ -263,6 +265,7 @@ namespace WpfToolkit.Controls
             ViewportSize = finalSize;
 
             ArrangeBringIntoViewContainer();
+            ArrangeKeptRealizedFocusedContainer();
 
             if (startItemIndex == -1)
             {
@@ -490,6 +493,27 @@ namespace WpfToolkit.Controls
                 var upfrontKnownItemSize = GetUpfrontKnownItemSizeOrEmpty(Items[bringIntoViewItemIndex]);
                 var size = !upfrontKnownItemSize.IsEmpty ? upfrontKnownItemSize : bringIntoViewContainer.DesiredSize;
                 bringIntoViewContainer.Arrange(new Rect(offset, size));
+            }
+        }
+                
+        private void ArrangeKeptRealizedFocusedContainer() 
+        {
+            if (keptRealizedFocusedContainer is not null)
+            {
+                int index = ItemContainerGenerator.IndexFromContainer(keptRealizedFocusedContainer);
+
+                if (index < startItemIndex)
+                {
+                    keptRealizedFocusedContainer.Arrange(new Rect(
+                        new Point(-keptRealizedFocusedContainer.DesiredSize.Width, -keptRealizedFocusedContainer.DesiredSize.Height), 
+                        keptRealizedFocusedContainer.DesiredSize));
+                }
+                else
+                {
+                    keptRealizedFocusedContainer.Arrange(new Rect(
+                        new Point(ViewportWidth, ViewportHeight), 
+                        keptRealizedFocusedContainer.DesiredSize));
+                }
             }
         }
 
@@ -832,12 +856,20 @@ namespace WpfToolkit.Controls
 
         private void VirtualizeItems()
         {
+            keptRealizedFocusedContainer = null;
+
             var itemsToBeRealized = Utils.HashSetOfRange(Items, startItemIndex, endItemIndex);
 
             foreach (var (item, container) in ItemContainerManager.RealizedContainers.ToList())
             {
                 if (container == bringIntoViewContainer)
                 {
+                    continue;
+                }
+
+                if (container.IsKeyboardFocusWithin) 
+                {
+                    keptRealizedFocusedContainer = container;
                     continue;
                 }
 
