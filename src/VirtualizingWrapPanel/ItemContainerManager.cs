@@ -130,11 +130,6 @@ internal class ItemContainerManager
         return (UIElement)itemContainerGenerator.ContainerFromIndex(itemIndex);
     }
 
-    public object ItemFromContainer(DependencyObject container)
-    {
-        return itemContainerGenerator.ItemFromContainer(container);
-    }
-
     public int IndexFromContainer(DependencyObject container)
     {
         return itemContainerGenerator.IndexFromContainer(container);

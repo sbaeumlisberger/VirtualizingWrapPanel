@@ -3,11 +3,10 @@ using System.Collections.Generic;
 
 namespace WpfToolkit.Controls;
 
-internal static class PolyfillExtensions
-{
-
 #if NETFRAMEWORK
 
+internal static class PolyfillExtensions
+{
     public static void Deconstruct<TKey, TValue>(
         this KeyValuePair<TKey, TValue> target,
         out TKey key,
@@ -32,6 +31,6 @@ internal static class PolyfillExtensions
             return value;
         }
     }
-#endif
-
 }
+
+#endif
