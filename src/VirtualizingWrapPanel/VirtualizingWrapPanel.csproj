@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.4.1</Version>
+        <Version>2.5.0</Version>
         <Authors>sbaeumlisberger</Authors>
         <Copyright>sbaeumlisberger</Copyright>
         <Description>Feature-rich implementation of a VirtualizingWrapPanel for WPF.</Description>
@@ -36,7 +36,10 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         
         <PackageReleaseNotes>
-- Fix #94 VirtualizingWrapPanel 2.4.0 crops items
+- Fix #95 KeyNotFoundException when ItemsSource is bound to a collection of T when T is a value type
+- Fix #96 Keyboard navigation from off-screen items is unstable
+- Avoid ignoring measure calls when using auto scrollbars
+- Performance improvements
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>
