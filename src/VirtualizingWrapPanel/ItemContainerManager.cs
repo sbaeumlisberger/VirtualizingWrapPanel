@@ -28,9 +28,9 @@ internal class ItemContainerManager
     /// <summary>
     /// Dictionary that contains the realised containers. The keys are the items, the values are the containers.
     /// </summary>
-    public IReadOnlyDictionary<object, UIElement> RealizedContainers => realizedContainers;
+    public ReadOnlyCollection<UIElement> RealizedContainers { get; }
 
-    private readonly Dictionary<object, UIElement> realizedContainers = new Dictionary<object, UIElement>(ReferenceEqualityComparer.Instance);
+    private readonly List<UIElement> realizedContainers = new List<UIElement>();
 
     private readonly ItemContainerGenerator itemContainerGenerator;
 
@@ -51,6 +51,7 @@ internal class ItemContainerManager
         this.containsInternalChild = containsInternalChild;
         this.addInternalChild = addInternalChild;
         this.removeInternalChild = removeInternalChild;
+        RealizedContainers = realizedContainers.AsReadOnly();
         itemContainerGenerator.ItemsChanged += ItemContainerGenerator_ItemsChanged;
     }
 
@@ -63,17 +64,19 @@ internal class ItemContainerManager
     {
         var item = Items[itemIndex];
 
-        if (realizedContainers.TryGetValue(item, out var existingContainer))
+        var container = (UIElement)itemContainerGenerator.ContainerFromIndex(itemIndex);
+
+        if(container is not null)
         {
-            return existingContainer;
+            return container;
         }
 
         var generatorPosition = recyclingItemContainerGenerator.GeneratorPositionFromIndex(itemIndex);
         using (recyclingItemContainerGenerator.StartAt(generatorPosition, GeneratorDirection.Forward))
         {
-            var container = (UIElement)recyclingItemContainerGenerator.GenerateNext(out bool isNewContainer);
+            container = (UIElement)recyclingItemContainerGenerator.GenerateNext(out bool isNewContainer);
 
-            realizedContainers.Add(item, container);
+            realizedContainers.Add(container);
 
             if (isNewContainer || !containsInternalChild(container))
             {
@@ -86,10 +89,8 @@ internal class ItemContainerManager
         }
     }
 
-    public void Virtualize(object item)
+    public void Virtualize(UIElement container)
     {
-        var container = realizedContainers[item];
-
         var generatorPosition = GeneratorPositionFromContainer(container);
 
         // Index is -1 when the item is already virtualized (can happen when grouping)
@@ -105,7 +106,7 @@ internal class ItemContainerManager
             }
         }
 
-        realizedContainers.Remove(item);
+        realizedContainers.Remove(container);
 
         if (!IsRecycling)
         {
@@ -113,7 +114,7 @@ internal class ItemContainerManager
         }
     }
 
-    private GeneratorPosition GeneratorPositionFromContainer(UIElement container)
+    private GeneratorPosition GeneratorPositionFromContainer(DependencyObject container)
     {
         int itemIndex = itemContainerGenerator.IndexFromContainer(container);
         return recyclingItemContainerGenerator.GeneratorPositionFromIndex(itemIndex);
@@ -122,6 +123,21 @@ internal class ItemContainerManager
     public int IndexFromGeneratorPosition(GeneratorPosition generatorPosition)
     {
         return recyclingItemContainerGenerator.IndexFromGeneratorPosition(generatorPosition);
+    }
+
+    public UIElement ContainerFromIndex(int itemIndex)
+    {
+        return (UIElement)itemContainerGenerator.ContainerFromIndex(itemIndex);
+    }
+
+    public object ItemFromContainer(DependencyObject container)
+    {
+        return itemContainerGenerator.ItemFromContainer(container);
+    }
+
+    public int IndexFromContainer(DependencyObject container)
+    {
+        return itemContainerGenerator.IndexFromContainer(container);
     }
 
     private void ItemContainerGenerator_ItemsChanged(object sender, ItemsChangedEventArgs e)

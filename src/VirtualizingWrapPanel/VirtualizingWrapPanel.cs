@@ -272,11 +272,6 @@ namespace WpfToolkit.Controls
                 return finalSize;
             }
 
-            if (ItemContainerManager.RealizedContainers.Count < endItemIndex - startItemIndex + 1)
-            {
-                throw new InvalidOperationException("The items must be distinct and must not change their hash code.");
-            }
-
             bool hierarchical = ItemsOwner is IHierarchicalVirtualizationAndScrollInfo;
             double offsetMainAxis = startItemOffsetMainAxis + GetPositionOnMainAxis(ScrollOffset);
             double offsetCrossAxis = hierarchical ? startItemOffsetCrossAxis : startItemOffsetCrossAxis - GetPositionOnCrossAxis(ScrollOffset);
@@ -284,13 +279,11 @@ namespace WpfToolkit.Controls
             var rowChilds = new List<UIElement>();
             var childSizes = new List<Size>();
 
-            var items = Items; // local variable for performance
-            for (int i = startItemIndex; i <= endItemIndex; i++)
+            for (int index = startItemIndex; index <= endItemIndex; index++)
             {
-                var item = items[i];
-                var child = ItemContainerManager.RealizedContainers[item];
+                var child = ItemContainerManager.ContainerFromIndex(index);
 
-                Size upfrontKnownItemSize = GetUpfrontKnownItemSizeOrEmpty(item);
+                Size upfrontKnownItemSize = GetUpfrontKnownItemSizeOrEmpty(index);
 
                 Size childSize = !upfrontKnownItemSize.IsEmpty ? upfrontKnownItemSize : child.DesiredSize;
 
@@ -473,7 +466,7 @@ namespace WpfToolkit.Controls
         {
             if (bringIntoViewContainer is not null && !bringIntoViewContainer.IsMeasureValid)
             {
-                var upfrontKnownItemSize = GetUpfrontKnownItemSizeOrEmpty(Items[bringIntoViewItemIndex]);
+                var upfrontKnownItemSize = GetUpfrontKnownItemSizeOrEmpty(bringIntoViewItemIndex);
                 bringIntoViewContainer.Measure(!upfrontKnownItemSize.IsEmpty ? upfrontKnownItemSize : InfiniteSize);
 
                 if (!AllowDifferentSizedItems && sizeOfFirstItem.IsEmpty)
@@ -490,7 +483,7 @@ namespace WpfToolkit.Controls
                 bool hierarchical = ItemsOwner is IHierarchicalVirtualizationAndScrollInfo;
                 var offset = FindItemOffset(bringIntoViewItemIndex);
                 offset = new Point(offset.X - ScrollOffset.X, hierarchical ? offset.Y : offset.Y - ScrollOffset.Y);
-                var upfrontKnownItemSize = GetUpfrontKnownItemSizeOrEmpty(Items[bringIntoViewItemIndex]);
+                var upfrontKnownItemSize = GetUpfrontKnownItemSizeOrEmpty(bringIntoViewItemIndex);
                 var size = !upfrontKnownItemSize.IsEmpty ? upfrontKnownItemSize : bringIntoViewContainer.DesiredSize;
                 bringIntoViewContainer.Arrange(new Rect(offset, size));
             }
@@ -804,8 +797,6 @@ namespace WpfToolkit.Controls
 
             for (int itemIndex = startItemIndex; itemIndex <= newEndItemIndex; itemIndex++)
             {
-                object item = Items[itemIndex];
-
                 var container = ItemContainerManager.Realize(itemIndex);
 
                 if (container == bringIntoViewContainer)
@@ -814,7 +805,7 @@ namespace WpfToolkit.Controls
                     bringIntoViewContainer = null;
                 }
 
-                Size upfrontKnownItemSize = GetUpfrontKnownItemSizeOrEmpty(item);
+                Size upfrontKnownItemSize = GetUpfrontKnownItemSizeOrEmpty(itemIndex);
 
                 if (!container.IsMeasureValid)
                 {
@@ -858,9 +849,7 @@ namespace WpfToolkit.Controls
         {
             keptRealizedFocusedContainer = null;
 
-            var itemsToBeRealized = Utils.HashSetOfRange(Items, startItemIndex, endItemIndex);
-
-            foreach (var (item, container) in ItemContainerManager.RealizedContainers.ToList())
+            foreach (var container in ItemContainerManager.RealizedContainers.ToList())
             {
                 if (container == bringIntoViewContainer)
                 {
@@ -873,9 +862,11 @@ namespace WpfToolkit.Controls
                     continue;
                 }
 
-                if (!itemsToBeRealized.Contains(item))
+                var itemIndex = ItemContainerManager.IndexFromContainer(container);
+
+                if (itemIndex < startItemIndex || itemIndex > endItemIndex)
                 {
-                    ItemContainerManager.Virtualize(item);
+                    ItemContainerManager.Virtualize(container);
                 }
             }
         }
@@ -997,8 +988,7 @@ namespace WpfToolkit.Controls
         private void DisconnectRecycledContainers()
         {
             var children = InternalChildren;
-            var realizedContainers = new HashSet<UIElement>(ItemContainerManager.RealizedContainers.Values);
-
+            var realizedContainers = ItemContainerManager.RealizedContainers;
             for (int i = children.Count - 1; i >= 0; i--)
             {
                 if (!realizedContainers.Contains(children[i]))
@@ -1047,7 +1037,7 @@ namespace WpfToolkit.Controls
             return ScrollOffsetCrossAxis + ViewportSizeCrossAxis + cache;
         }
 
-        private Size GetUpfrontKnownItemSizeOrEmpty(object item)
+        private Size GetUpfrontKnownItemSizeOrEmpty(int itemIndex)
         {
             if (!itemSize.IsEmpty)
             {
@@ -1059,7 +1049,7 @@ namespace WpfToolkit.Controls
             }
             if (itemSizeProvider is not null)
             {
-                return itemSizeProvider.GetSizeForItem(item);
+                return itemSizeProvider.GetSizeForItem(items[itemIndex]);
             }
             return Size.Empty;
         }
