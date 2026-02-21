@@ -11,11 +11,11 @@ public class BasisPerformanceTest(ITestOutputHelper testOutputHelper)
 
     [WpfTheory]
     [InlineData(VirtualizationCacheLengthUnit.Item, 10, false, 15)]
-    [InlineData(VirtualizationCacheLengthUnit.Item, 10, true, 100)]
-    [InlineData(VirtualizationCacheLengthUnit.Page, 1, false, 15)]
-    [InlineData(VirtualizationCacheLengthUnit.Page, 1, true, 90)]
+    [InlineData(VirtualizationCacheLengthUnit.Item, 10, true, 20)]
+    [InlineData(VirtualizationCacheLengthUnit.Page, 1, false, 20)]
+    [InlineData(VirtualizationCacheLengthUnit.Page, 1, true, 30)]
     [InlineData(VirtualizationCacheLengthUnit.Pixel, 200, false, 15)]
-    [InlineData(VirtualizationCacheLengthUnit.Pixel, 200, true, 70)]
+    [InlineData(VirtualizationCacheLengthUnit.Pixel, 200, true, 20)]
     public void SetVerticalOffset(VirtualizationCacheLengthUnit cacheUnit, int cacheLength, bool allowDifferentSizedItems, int maxAllowedAvgMilliseconds)
     {
         VirtualizingWrapPanel vwp = TestUtil.CreateVirtualizingWrapPanel(500, 500, 1_000_000);
