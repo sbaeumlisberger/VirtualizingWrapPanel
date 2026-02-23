@@ -155,12 +155,12 @@
             DockPanel.Dock="Left"
             Padding="0,0,16,0"
             Margin="0,0,4,0"
-            Width="200"
+            Width="256"
             VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <StackPanel.Resources>
                     <Style x:Key="HeaderStyle" TargetType="TextBlock">
-                        <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="FontSize" Value="12"/>
                         <Setter Property="Margin" Value="0"/>
                         <Setter Property="Padding" Value="2,3,0,4"/>
                     </Style>
@@ -204,20 +204,39 @@
                     SelectedItem="{Binding ScrollUnit, Mode=TwoWay}" />
 
                 <StackPanel Visibility="{Binding IsScrollByPixel, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Margin="0,4,0,0" Style="{StaticResource HeaderStyle}" Text="ScrollLineDelta" />
-                    <TextBox
-                        Text="{Binding ScrollLineDelta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBlock Margin="0,4,0,0" Style="{StaticResource HeaderStyle}" Text="MouseWheelDelta" />
-                    <TextBox
-                        Text="{Binding MouseWheelDelta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Grid Margin="0,4,0,0" ColumnDefinitions="*,4,*" RowDefinitions="Auto,Auto">
+                        <TextBlock                            
+                            Style="{StaticResource HeaderStyle}"
+                            Text="ScrollLineDelta" />
+                        <TextBox
+                            Grid.Row="1"
+                            Text="{Binding ScrollLineDelta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock 
+                            Grid.Column="2"
+                            Style="{StaticResource HeaderStyle}"
+                            Text="MouseWheelDelta" />
+                        <TextBox
+                            Grid.Column="2" 
+                            Grid.Row="1"
+                            Text="{Binding MouseWheelDelta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
                 </StackPanel>
                 <StackPanel Visibility="{Binding IsScrollByItem, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Margin="0,4,0,0" Style="{StaticResource HeaderStyle}" Text="ScrollLineDelta" />
-                    <TextBox
-                        Text="{Binding ScrollLineDeltaItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBlock Margin="0,4,0,0" Style="{StaticResource HeaderStyle}" Text="MouseWheelDelta" />
-                    <TextBox
-                        Text="{Binding MouseWheelDeltaItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Grid Margin="0,4,0,0"  ColumnDefinitions="*,4,*" RowDefinitions="Auto,Auto">                                      
+                        <TextBlock
+                            Style="{StaticResource HeaderStyle}"
+                            Text="ScrollLineDelta" />
+                        <TextBox
+                            Grid.Row="1"
+                            Text="{Binding ScrollLineDeltaItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock 
+                            Grid.Column="2"
+                            Style="{StaticResource HeaderStyle}" Text="MouseWheelDelta" />
+                        <TextBox
+                            Grid.Column="2" 
+                            Grid.Row="1"
+                            Text="{Binding MouseWheelDeltaItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
                 </StackPanel>
 
                 <TextBlock Margin="0,12,0,0" Style="{StaticResource HeaderStyle}" Text="HorizontalScrollBarVisibility" />
@@ -228,6 +247,11 @@
                 <ComboBox
                     ItemsSource="{Binding AvailableScrollBarVisibilities, Mode=OneTime}"
                     SelectedItem="{Binding VerticalScrollBarVisibility, Mode=TwoWay}" />
+
+                <CheckBox 
+                    Margin="0,8,0,0"
+                    IsChecked="{Binding AreFluentThemeScrollBarsDisabled, Mode=TwoWay}"
+                    Content="Disable Fluent theme scroll bars"/>
 
                 <TextBlock Margin="0,12,0,0" Style="{StaticResource HeaderStyle}" Text="Filter (Number >)" />
                 <TextBox x:Name="filterTextBox" TextChanged="FilterTextBox_TextChanged" />
@@ -241,9 +265,8 @@
                         LostFocus="ScrollIntoViewTextBox_LostFocus"/>
                     <TextBlock 
                         x:Name="scrollIntoViewTextBoxPlaceholder"
-                        Margin="14,7,0,0"
+                        Margin="11,6,0,0"
                         Text="Type number and press Enter"
-                        FontSize="12" 
                         Foreground="Gray"
                         IsHitTestVisible="False"/>
                 </Grid>
@@ -253,7 +276,7 @@
         <Grid Margin="0,0,0,8" DockPanel.Dock="Top">
             <Grid.Resources>
                 <Style TargetType="TextBlock">
-                    <Setter Property="FontSize" Value="13"/>
+                    <Setter Property="FontSize" Value="12"/>
                     <Setter Property="VerticalAlignment" Value="Center"/>
                 </Style>
             </Grid.Resources>

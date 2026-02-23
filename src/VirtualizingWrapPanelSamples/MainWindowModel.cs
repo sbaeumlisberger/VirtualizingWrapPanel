@@ -52,6 +52,7 @@ namespace VirtualizingWrapPanelSamples
         public Size ItemSize { get; set => SetProperty(ref field, value); } = Size.Empty;
         public bool IsGrouping { get; set => SetProperty(ref field, value); } = false;
         public bool IsGridLayoutEnabled { get; set => SetProperty(ref field, value); } = true;
+        public bool AreFluentThemeScrollBarsDisabled { get; set => SetProperty(ref field, value); } = false;
         public bool UseLazyLoadingItems { get; set => SetProperty(ref field, value); } = false;
         public bool UseItemSizeProvider { get; set => SetProperty(ref field, value); } = false;
         public ItemAlignment ItemAlignment { get; set => SetProperty(ref field, value); } = ItemAlignment.Start;
@@ -133,6 +134,7 @@ namespace VirtualizingWrapPanelSamples
                     OrientationGroupPanel = Orientation == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal;
                     break;
                 case nameof(IsGrouping):
+                case nameof(CollectionView):
                     UpdateCollectionViewGrouping();
                     break;
             }

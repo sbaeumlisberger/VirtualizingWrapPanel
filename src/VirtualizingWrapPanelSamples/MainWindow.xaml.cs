@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -42,6 +43,10 @@ namespace VirtualizingWrapPanelSamples
                     vwp.ItemSizeProvider = model.UseItemSizeProvider ? model.ItemSizeProvider : null;
                     Reload(listViewAllowDifferentSizedItems);
                     break;
+                case nameof(model.AreFluentThemeScrollBarsDisabled):
+                    UpdateScrollBars();
+                    break;
+
             }
         }
 
@@ -56,6 +61,20 @@ namespace VirtualizingWrapPanelSamples
             }
 
             itemsControl.ItemsSource = model.CollectionView;
+        }
+
+        private void UpdateScrollBars()
+        {
+            if (model.AreFluentThemeScrollBarsDisabled)
+            {
+                tabControl.Resources.Add(typeof(ScrollViewer), new Style(typeof(ScrollViewer)));
+                tabControl.Resources.Add(typeof(ScrollBar), new Style(typeof(ScrollBar)));
+            }
+            else
+            {
+                tabControl.Resources.Remove(typeof(ScrollViewer));
+                tabControl.Resources.Remove(typeof(ScrollBar));
+            }
         }
 
         private void InsertButton_Click(object sender, RoutedEventArgs args)
