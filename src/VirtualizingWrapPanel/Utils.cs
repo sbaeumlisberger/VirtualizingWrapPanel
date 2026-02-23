@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace WpfToolkit.Controls;
@@ -35,5 +36,10 @@ internal static class Utils
         var list = new List<T>(new T[count]);
         return list;
 #endif
+    }
+
+    public static bool ApproximatelyEquals(double a, double b, double epsilon = 0.0001)
+    {
+        return Math.Abs(a - b) < epsilon;
     }
 }
