@@ -460,44 +460,6 @@ namespace WpfToolkit.Controls
             }
         }
 
-        private Point FindItemOffset(int itemIndex)
-        {
-            if (!AllowDifferentSizedItems)
-            {
-                Size uniformItemSize = !itemSize.IsEmpty ? itemSize : sizeOfFirstItem;
-                var itemsPerLine = Math.Max((int)Math.Floor(viewportSizeMainAxis / GetSizeOnMainAxis(uniformItemSize)), 1);
-                int lineIndex = itemIndex / itemsPerLine;
-                int itemIndexInLine = itemIndex % itemsPerLine;
-                double offsetMainAxis = itemIndexInLine * GetSizeOnMainAxis(uniformItemSize);
-                double offsetCrossAxis = lineIndex * GetSizeOnCrossAxis(uniformItemSize);
-                return CreatePoint(offsetMainAxis, offsetCrossAxis);
-            }
-            else
-            {
-                double offsetMainAxis = 0, offsetCrossAxis = 0, lineSizeCrossAxis = 0;
-
-                for (int i = 0; i <= itemIndex; i++)
-                {
-                    Size itemSize = GetItemSizeOrFallback(i);
-
-                    if (offsetMainAxis != 0 && offsetMainAxis + GetSizeOnMainAxis(itemSize) > viewportSizeMainAxis)
-                    {
-                        offsetMainAxis = 0;
-                        offsetCrossAxis += lineSizeCrossAxis;
-                        lineSizeCrossAxis = 0;
-                    }
-
-                    if (i != itemIndex)
-                    {
-                        offsetMainAxis += GetSizeOnMainAxis(itemSize);
-                        lineSizeCrossAxis = Math.Max(lineSizeCrossAxis, GetSizeOnCrossAxis(itemSize));
-                    }
-                }
-
-                return CreatePoint(offsetMainAxis, offsetCrossAxis);
-            }
-        }
-
         private void UpdateViewport(Size availableSize)
         {
             double newViewportSizeMainAxis;
@@ -571,33 +533,6 @@ namespace WpfToolkit.Controls
                 cacheLength = GetCacheLength(ItemsOwner);
                 cacheLengthUnit = GetCacheLengthUnit(ItemsOwner);
             }
-        }
-
-
-        private ScrollBarVisibility GetCrossAxisScrollBarVisibility(ScrollViewer scrollViewer)
-        {
-            return orientation == Orientation.Horizontal
-                ? scrollViewer.VerticalScrollBarVisibility
-                : scrollViewer.HorizontalScrollBarVisibility;
-        }
-
-        private Visibility GetComputedCrossAxisScrollBarVisibility(ScrollViewer scrollViewer)
-        {
-            return orientation == Orientation.Horizontal
-                ? scrollViewer.ComputedVerticalScrollBarVisibility
-                : scrollViewer.ComputedHorizontalScrollBarVisibility;
-        }
-
-        private ScrollViewer? GetScrollOwner()
-        {
-            if (ItemsOwner is GroupItem groupItem
-                && VisualTreeHelper.GetParent(groupItem) is IScrollInfo parentScrollInfo
-                && parentScrollInfo.ScrollOwner is { } parentScrollOwner)
-            {
-                return parentScrollOwner;
-            }
-
-            return ScrollOwner;
         }
 
         private void FindStartIndexAndOffset_DifferentSizedItems()
@@ -1362,6 +1297,70 @@ namespace WpfToolkit.Controls
         #endregion
 
         #region helper
+
+        private Point FindItemOffset(int itemIndex)
+        {
+            if (!AllowDifferentSizedItems)
+            {
+                Size uniformItemSize = !itemSize.IsEmpty ? itemSize : sizeOfFirstItem;
+                var itemsPerLine = Math.Max((int)Math.Floor(viewportSizeMainAxis / GetSizeOnMainAxis(uniformItemSize)), 1);
+                int lineIndex = itemIndex / itemsPerLine;
+                int itemIndexInLine = itemIndex % itemsPerLine;
+                double offsetMainAxis = itemIndexInLine * GetSizeOnMainAxis(uniformItemSize);
+                double offsetCrossAxis = lineIndex * GetSizeOnCrossAxis(uniformItemSize);
+                return CreatePoint(offsetMainAxis, offsetCrossAxis);
+            }
+            else
+            {
+                double offsetMainAxis = 0, offsetCrossAxis = 0, lineSizeCrossAxis = 0;
+
+                for (int i = 0; i <= itemIndex; i++)
+                {
+                    Size itemSize = GetItemSizeOrFallback(i);
+
+                    if (offsetMainAxis != 0 && offsetMainAxis + GetSizeOnMainAxis(itemSize) > viewportSizeMainAxis)
+                    {
+                        offsetMainAxis = 0;
+                        offsetCrossAxis += lineSizeCrossAxis;
+                        lineSizeCrossAxis = 0;
+                    }
+
+                    if (i != itemIndex)
+                    {
+                        offsetMainAxis += GetSizeOnMainAxis(itemSize);
+                        lineSizeCrossAxis = Math.Max(lineSizeCrossAxis, GetSizeOnCrossAxis(itemSize));
+                    }
+                }
+
+                return CreatePoint(offsetMainAxis, offsetCrossAxis);
+            }
+        }
+
+        private ScrollBarVisibility GetCrossAxisScrollBarVisibility(ScrollViewer scrollViewer)
+        {
+            return orientation == Orientation.Horizontal
+                ? scrollViewer.VerticalScrollBarVisibility
+                : scrollViewer.HorizontalScrollBarVisibility;
+        }
+
+        private Visibility GetComputedCrossAxisScrollBarVisibility(ScrollViewer scrollViewer)
+        {
+            return orientation == Orientation.Horizontal
+                ? scrollViewer.ComputedVerticalScrollBarVisibility
+                : scrollViewer.ComputedHorizontalScrollBarVisibility;
+        }
+
+        private ScrollViewer? GetScrollOwner()
+        {
+            if (ItemsOwner is GroupItem groupItem
+                && VisualTreeHelper.GetParent(groupItem) is IScrollInfo parentScrollInfo
+                && parentScrollInfo.ScrollOwner is { } parentScrollOwner)
+            {
+                return parentScrollOwner;
+            }
+
+            return ScrollOwner;
+        }
 
         private bool IsInsideViewport(FrameworkElement container)
         {
