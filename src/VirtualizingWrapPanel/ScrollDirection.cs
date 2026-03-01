@@ -1,8 +1,7 @@
-﻿namespace WpfToolkit.Controls
+﻿namespace WpfToolkit.Controls;
+
+public enum ScrollDirection
 {
-    public enum ScrollDirection
-    {
-        Vertical,
-        Horizontal
-    }
+    Vertical,
+    Horizontal
 }

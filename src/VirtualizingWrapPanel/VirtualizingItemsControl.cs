@@ -2,18 +2,18 @@
 using System.Windows.Controls;
 using System.Windows.Markup;
 
-namespace WpfToolkit.Controls
-{
-    /// <summary>
-    /// A ItemsControl supporting virtualization.
-    /// </summary>
-    public class VirtualizingItemsControl : ItemsControl
-    {
-        public VirtualizingItemsControl()
-        {
-            ItemsPanel = new ItemsPanelTemplate(new FrameworkElementFactory(typeof(VirtualizingStackPanel)));
+namespace WpfToolkit.Controls;
 
-            string template = @"
+/// <summary>
+/// A ItemsControl supporting virtualization.
+/// </summary>
+public class VirtualizingItemsControl : ItemsControl
+{
+    public VirtualizingItemsControl()
+    {
+        ItemsPanel = new ItemsPanelTemplate(new FrameworkElementFactory(typeof(VirtualizingStackPanel)));
+
+        string template = @"
             <ControlTemplate xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>
                 <Border
                     BorderThickness='{TemplateBinding Border.BorderThickness}'
@@ -29,17 +29,16 @@ namespace WpfToolkit.Controls
                     </ScrollViewer>
                 </Border>
             </ControlTemplate>";
-            Template = (ControlTemplate)XamlReader.Parse(template);
+        Template = (ControlTemplate)XamlReader.Parse(template);
 
-            ScrollViewer.SetCanContentScroll(this, true);
+        ScrollViewer.SetCanContentScroll(this, true);
 
-            ScrollViewer.SetVerticalScrollBarVisibility(this, ScrollBarVisibility.Auto);
-            ScrollViewer.SetHorizontalScrollBarVisibility(this, ScrollBarVisibility.Auto);
+        ScrollViewer.SetVerticalScrollBarVisibility(this, ScrollBarVisibility.Auto);
+        ScrollViewer.SetHorizontalScrollBarVisibility(this, ScrollBarVisibility.Auto);
 
-            VirtualizingPanel.SetCacheLengthUnit(this, VirtualizationCacheLengthUnit.Page);
-            VirtualizingPanel.SetCacheLength(this, new VirtualizationCacheLength(1));
+        VirtualizingPanel.SetCacheLengthUnit(this, VirtualizationCacheLengthUnit.Page);
+        VirtualizingPanel.SetCacheLength(this, new VirtualizationCacheLength(1));
 
-            VirtualizingPanel.SetIsVirtualizingWhenGrouping(this, true);
-        }
+        VirtualizingPanel.SetIsVirtualizingWhenGrouping(this, true);
     }
 }

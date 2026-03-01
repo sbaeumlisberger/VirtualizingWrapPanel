@@ -1,11 +1,10 @@
 ﻿using System.Windows;
 
-namespace VirtualizingWrapPanelSamplesFW
+namespace VirtualizingWrapPanelSamplesFW;
+
+/// <summary>
+/// Interaction logic for App.xaml
+/// </summary>
+public partial class App : Application
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
-    {
-    }
 }

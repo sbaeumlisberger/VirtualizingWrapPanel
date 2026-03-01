@@ -4,30 +4,29 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
-namespace VirtualizingWrapPanelSamples
+namespace VirtualizingWrapPanelSamples;
+
+public partial class App : Application
 {
-    public partial class App : Application
+    public App()
     {
-        public App()
-        {
-            InitializeComponent();
-            DispatcherUnhandledException += App_DispatcherUnhandledException;
-        }
+        InitializeComponent();
+        DispatcherUnhandledException += App_DispatcherUnhandledException;
+    }
 
-        private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-        {
-            Trace.WriteLine(e.Exception);
+    private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    {
+        Trace.WriteLine(e.Exception);
 
-            if (e.Exception is InvalidOperationException)
-            {
-                e.Handled = true;
-                var mainWindowModel = ((MainWindow)MainWindow).model;
-                mainWindowModel.VirtualizationMode =
-                    mainWindowModel.VirtualizationMode == VirtualizationMode.Standard
-                    ? VirtualizationMode.Recycling
-                    : VirtualizationMode.Standard;
-                MessageBox.Show(e.Exception.Message);
-            }
+        if (e.Exception is InvalidOperationException)
+        {
+            e.Handled = true;
+            var mainWindowModel = ((MainWindow)MainWindow).model;
+            mainWindowModel.VirtualizationMode =
+                mainWindowModel.VirtualizationMode == VirtualizationMode.Standard
+                ? VirtualizationMode.Recycling
+                : VirtualizationMode.Standard;
+            MessageBox.Show(e.Exception.Message);
         }
     }
 }

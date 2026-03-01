@@ -1,14 +1,13 @@
 ﻿using System.Windows;
 using WpfToolkit.Controls;
 
-namespace VirtualizingWrapPanelSamples
+namespace VirtualizingWrapPanelSamples;
+
+internal class TestItemSizeProvider : IItemSizeProvider
 {
-    internal class TestItemSizeProvider : IItemSizeProvider
+    public Size GetSizeForItem(object item)
     {
-        public Size GetSizeForItem(object item)
-        {
-            var testItem = (TestItem)item;
-            return testItem.ItemSize;
-        }
+        var testItem = (TestItem)item;
+        return testItem.ItemSize;
     }
 }
