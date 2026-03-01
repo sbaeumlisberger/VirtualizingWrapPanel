@@ -165,7 +165,7 @@
                         <Setter Property="Padding" Value="2,3,0,4"/>
                     </Style>
                 </StackPanel.Resources>
-
+                
                 <TextBlock Style="{StaticResource HeaderStyle}" Text="Orientation" />
                 <ComboBox
                     ItemsSource="{Binding AvailableOrientations, Mode=OneTime}"
@@ -222,7 +222,7 @@
                     </Grid>
                 </StackPanel>
                 <StackPanel Visibility="{Binding IsScrollByItem, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <Grid Margin="0,4,0,0"  ColumnDefinitions="*,4,*" RowDefinitions="Auto,Auto">                                      
+                    <Grid Margin="0,4,0,0"  ColumnDefinitions="*,4,*" RowDefinitions="Auto,Auto">
                         <TextBlock
                             Style="{StaticResource HeaderStyle}"
                             Text="ScrollLineDelta" />
@@ -413,6 +413,7 @@
                                     ItemSize="{Binding DataContext.ItemSize, Mode=OneWay, ElementName=window}"
                                     IsGridLayoutEnabled="{Binding DataContext.IsGridLayoutEnabled, Mode=OneWay, ElementName=window}"
                                     AllowDifferentSizedItems="True"
+                                    ItemSizeProvider="{Binding DataContext.ItemSizeProvider, Mode=OneWay, ElementName=window}"
                                     ItemAlignment="{Binding DataContext.ItemAlignment, Mode=OneWay, ElementName=window}"/>
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>

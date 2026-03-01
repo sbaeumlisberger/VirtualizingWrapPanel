@@ -55,11 +55,9 @@ namespace VirtualizingWrapPanelSamples
         public bool AreFluentThemeScrollBarsDisabled { get; set => SetProperty(ref field, value); } = false;
         public bool UseLazyLoadingItems { get; set => SetProperty(ref field, value); } = false;
         public bool UseItemSizeProvider { get; set => SetProperty(ref field, value); } = false;
+        public IItemSizeProvider? ItemSizeProvider { get; set => SetProperty(ref field, value); }
         public ItemAlignment ItemAlignment { get; set => SetProperty(ref field, value); } = ItemAlignment.Start;
-
         public bool IsWrappingKeyboardNavigationEnabled { get; set => SetProperty(ref field, value); } = false;
-
-        public IItemSizeProvider ItemSizeProvider { get; } = new TestItemSizeProvider();
 
         public ICommand AddItemCommand => field ??= new SimpleCommand(parameter => AddItems(int.Parse((string)parameter!)));
 
@@ -75,8 +73,8 @@ namespace VirtualizingWrapPanelSamples
 
         public void AddItem()
         {
-            int number = Items.Any() ? (Items.Select(item => item.Number).Max() + 1) : 1;
-            Items.Add(new TestItem((number - 1) % 100 + 1, number));
+            int number = Items.Count > 0 ? (Items.Max(item => item.Number) + 1) : 1;
+            Items.Add(new TestItem((number - 1) / 1000 + 1, number));
         }
 
         public void AddItems(int count)
@@ -86,11 +84,11 @@ namespace VirtualizingWrapPanelSamples
                 Items = new ObservableCollection<TestItem>();
             }
 
-            int number = Items.Any() ? (Items.Select(item => item.Number).Max() + 1) : 1;
+            int number = Items.Count > 0 ? (Items.Max(item => item.Number) + 1) : 1;
             int newCount = Items.Count + count;
-            for (int i = Items.Count; i < newCount; i++)
+            for (int index = Items.Count; index < newCount; index++)
             {
-                Items.Add(new TestItem((number - 1) % 100 + 1, number));
+                Items.Add(new TestItem((number - 1) / 1000 + 1, number));
                 number++;
             }
 
@@ -133,22 +131,12 @@ namespace VirtualizingWrapPanelSamples
                 case nameof(Orientation):
                     OrientationGroupPanel = Orientation == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal;
                     break;
-                case nameof(IsGrouping):
                 case nameof(CollectionView):
-                    UpdateCollectionViewGrouping();
+                    CollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TestItem.Group)));
                     break;
-            }
-        }
-
-        private void UpdateCollectionViewGrouping()
-        {
-            if (IsGrouping)
-            {
-                CollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TestItem.Group)));
-            }
-            else
-            {
-                CollectionView.GroupDescriptions.Clear();
+                case nameof(UseItemSizeProvider):
+                    ItemSizeProvider = UseItemSizeProvider ? new TestItemSizeProvider() : null;
+                    break;
             }
         }
 

@@ -37,11 +37,6 @@ namespace VirtualizingWrapPanelSamples
                     listViewAllowDifferentSizedItems.ItemTemplate = (DataTemplate)Resources[itemTemplateKey];
                     Reload(listViewAllowDifferentSizedItems);
                     break;
-                case nameof(model.UseItemSizeProvider):
-                    var vwp = GetChildOfType<VirtualizingWrapPanel>(listViewAllowDifferentSizedItems)!;
-                    vwp.ItemSizeProvider = model.UseItemSizeProvider ? model.ItemSizeProvider : null;
-                    Reload(listViewAllowDifferentSizedItems);
-                    break;
             }
         }
 

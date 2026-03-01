@@ -38,11 +38,6 @@ namespace VirtualizingWrapPanelSamples
                     listViewAllowDifferentSizedItems.ItemTemplate = (DataTemplate)Resources[itemTemplateKey];
                     Reload(listViewAllowDifferentSizedItems);
                     break;
-                case nameof(model.UseItemSizeProvider):
-                    var vwp = GetChildOfType<VirtualizingWrapPanel>(listViewAllowDifferentSizedItems)!;
-                    vwp.ItemSizeProvider = model.UseItemSizeProvider ? model.ItemSizeProvider : null;
-                    Reload(listViewAllowDifferentSizedItems);
-                    break;
                 case nameof(model.AreFluentThemeScrollBarsDisabled):
                     UpdateScrollBars();
                     break;
@@ -203,15 +198,15 @@ namespace VirtualizingWrapPanelSamples
         }
 
         private void GroupingCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
+        {         
             FindItemsControl().GroupStyle.Add((GroupStyle)Resources["GroupStyle"]);
-            model.IsGrouping = true;            
+            model.IsGrouping = true;
         }
 
         private void GroupingCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            model.IsGrouping = false;
+        {        
             FindItemsControl().GroupStyle.Clear();
+            model.IsGrouping = false;
         }
     }
 }

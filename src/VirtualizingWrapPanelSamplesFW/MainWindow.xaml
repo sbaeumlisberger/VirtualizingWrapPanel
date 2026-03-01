@@ -367,6 +367,7 @@
                                     ItemSize="{Binding DataContext.ItemSize, Mode=OneWay, ElementName=window}"
                                     IsGridLayoutEnabled="{Binding DataContext.IsGridLayoutEnabled, Mode=OneWay, ElementName=window}"
                                     AllowDifferentSizedItems="True"
+                                    ItemSizeProvider="{Binding DataContext.ItemSizeProvider, Mode=OneWay, ElementName=window}"
                                     ItemAlignment="{Binding DataContext.ItemAlignment, Mode=OneWay, ElementName=window}"/>
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
