@@ -194,39 +194,20 @@ namespace WpfToolkit.Controls
 
         private readonly List<FrameworkElement> realizedContainers = [];
 
-        #region cache for frequently read dependency properties
+        // local fields to cache frequently read properties
         private Orientation orientation = Orientation.Horizontal;
         private Size itemSize = Size.Empty;
         private IItemSizeProvider? itemSizeProvider;
         private ReadOnlyCollection<object> items = new ReadOnlyCollection<object>([]);
         private int itemsCount = 0;
         private Size fallbackItemSize = new Size(64, 64);
-        #endregion
 
         public void ClearItemSizeCache()
         {
             itemSizesCache = AllowDifferentSizedItems ? Utils.NewUninitializedList<Size>(Items.Count) : [];
         }
 
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            VerifyItemsControl();
-
-            items = Items;
-            itemsCount = items.Count;
-
-            MeasureBringIntoViewContainer();
-
-            UpdateViewport(availableSize);
-            UpdateCacheProperties();
-            RealizeAndVirtualizeItems();
-            UpdateExtent();
-            EnsureValidScrollOffset();
-
-            Size desiredSize = CalculateDesiredSize(availableSize);
-
-            return desiredSize;
-        }
+        #region event handlers
 
         protected override void OnClearChildren()
         {
@@ -331,6 +312,30 @@ namespace WpfToolkit.Controls
         private void FallbackItemSize_Changed()
         {
             fallbackItemSize = FallbackItemSize;
+        }
+
+        #endregion
+
+        #region measure
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            VerifyItemsControl();
+
+            items = Items;
+            itemsCount = items.Count;
+
+            MeasureBringIntoViewContainer();
+
+            UpdateViewport(availableSize);
+            UpdateCacheProperties();
+            RealizeAndVirtualizeItems();
+            UpdateExtent();
+            EnsureValidScrollOffset();
+
+            Size desiredSize = CalculateDesiredSize(availableSize);
+
+            return desiredSize;
         }
 
         private void MeasureBringIntoViewContainer()
@@ -664,8 +669,6 @@ namespace WpfToolkit.Controls
 
             endItemIndex = newEndItemIndex;
         }
-
-        #region measure
 
         private void VirtualizeItems()
         {
