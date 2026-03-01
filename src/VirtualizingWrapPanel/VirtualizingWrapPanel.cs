@@ -352,119 +352,6 @@ namespace WpfToolkit.Controls
             }
         }
 
-        private void RealizeAndVirtualizeItems()
-        {
-            if (AllowDifferentSizedItems)
-            {
-                RealizeAndVirtualizeItems_DifferentSizedItems();
-            }
-            else
-            {
-                RealizeAndVirtualizeItems_UniformSizedItems();
-            }
-
-            DisconnectRecycledContainers();
-        }
-
-        private void RealizeAndVirtualizeItems_DifferentSizedItems()
-        {
-            if (itemSizesCache.Count != Items.Count) // panel is resued in grouping scenario
-            {
-                itemSizesCache = Utils.NewUninitializedList<Size>(Items.Count);
-            }
-
-            FindStartIndexAndOffset_DifferentSizedItems();
-            VirtualizeItems(); // before new start index
-            RealizeItemsAndFindEndIndex_DifferentSizedItems();
-            VirtualizeItems(); // after new end index
-        }       
-
-        private void RealizeAndVirtualizeItems_UniformSizedItems()
-        {
-            CalculateItemRange_UniformSizedItems();
-            VirtualizeItems();
-            RealizeItems();
-        }
-
-        private void CalculateItemRange_UniformSizedItems()
-        {
-            if (itemsCount == 0)
-            {
-                startItemIndex = -1;
-                endItemIndex = -1;
-                startItemOffsetCrossAxis = 0;
-                startItemOffsetMainAxis = 0;
-                return;
-            }
-
-            Size uniformItemSize = !itemSize.IsEmpty ? itemSize : sizeOfFirstItem;
-
-            if (uniformItemSize.IsEmpty)
-            {
-                var itemContainer = Realize(0);
-                itemContainer.Measure(InfiniteSize);
-                sizeOfFirstItem = itemContainer.DesiredSize;
-                uniformItemSize = sizeOfFirstItem;
-            }
-
-            double itemSizeOnMainAxis = GetSizeOnMainAxis(uniformItemSize);
-            double itemSizeOnCrossAxis = GetSizeOnCrossAxis(uniformItemSize);
-
-            double startPositionOnCrossAxis = CalculateStartOffsetCrossAxis();
-            double endPositonOnCrossAxis = CalculateEndOffsetCrossAxis();
-
-            int itemsPerLine = Math.Max((int)Math.Floor(viewportSizeMainAxis / itemSizeOnMainAxis), 1);
-
-            int startLine = (int)Math.Floor(startPositionOnCrossAxis / itemSizeOnCrossAxis);
-            startItemIndex = startLine * itemsPerLine;
-
-            int lineAfterEnd = (int)Math.Ceiling(endPositonOnCrossAxis / itemSizeOnCrossAxis);
-            endItemIndex = Math.Clamp(lineAfterEnd * itemsPerLine - 1, 0, itemsCount - 1);
-
-            if (cacheLengthUnit == VirtualizationCacheLengthUnit.Item)
-            {
-                startItemIndex = Math.Max(startItemIndex - (int)cacheLength.CacheBeforeViewport, 0);
-                endItemIndex = Math.Min(endItemIndex + (int)cacheLength.CacheAfterViewport, itemsCount - 1);
-            }
-
-            startItemOffsetMainAxis = (startItemIndex % itemsPerLine) * itemSizeOnMainAxis;
-            startItemOffsetCrossAxis = (startItemIndex / itemsPerLine) * itemSizeOnCrossAxis;
-        }
-
-        private void RealizeItems()
-        {
-            if (startItemIndex == -1)
-            {
-                return;
-            }
-
-            for (int itemIndex = startItemIndex; itemIndex <= endItemIndex; itemIndex++)
-            {
-                if (itemIndex == 0)
-                {
-                    sizeOfFirstItem = Size.Empty;
-                }
-
-                var container = Realize(itemIndex);
-
-                if (container == bringIntoViewContainer)
-                {
-                    bringIntoViewItemIndex = -1;
-                    bringIntoViewContainer = null;
-                }
-
-                if (!container.IsMeasureValid)
-                {
-                    container.Measure(!itemSize.IsEmpty ? itemSize : (!sizeOfFirstItem.IsEmpty ? sizeOfFirstItem : InfiniteSize));
-                }
-
-                if (itemIndex == 0)
-                {
-                    sizeOfFirstItem = container.DesiredSize;
-                }
-            }
-        }
-
         private void UpdateViewport(Size availableSize)
         {
             double newViewportSizeMainAxis;
@@ -538,6 +425,33 @@ namespace WpfToolkit.Controls
                 cacheLength = GetCacheLength(ItemsOwner);
                 cacheLengthUnit = GetCacheLengthUnit(ItemsOwner);
             }
+        }
+
+        private void RealizeAndVirtualizeItems()
+        {
+            if (AllowDifferentSizedItems)
+            {
+                RealizeAndVirtualizeItems_DifferentSizedItems();
+            }
+            else
+            {
+                RealizeAndVirtualizeItems_UniformSizedItems();
+            }
+
+            DisconnectRecycledContainers();
+        }
+
+        private void RealizeAndVirtualizeItems_DifferentSizedItems()
+        {
+            if (itemSizesCache.Count != Items.Count) // panel is resued in grouping scenario
+            {
+                itemSizesCache = Utils.NewUninitializedList<Size>(Items.Count);
+            }
+
+            FindStartIndexAndOffset_DifferentSizedItems();
+            VirtualizeItems(); // before new start index
+            RealizeItemsAndFindEndIndex_DifferentSizedItems();
+            VirtualizeItems(); // after new end index
         }
 
         private void FindStartIndexAndOffset_DifferentSizedItems()
@@ -670,6 +584,92 @@ namespace WpfToolkit.Controls
             endItemIndex = newEndItemIndex;
         }
 
+        private void RealizeAndVirtualizeItems_UniformSizedItems()
+        {
+            CalculateItemRange_UniformSizedItems();
+            VirtualizeItems();
+            RealizeItems_UniformSizedItems();
+        }
+
+        private void CalculateItemRange_UniformSizedItems()
+        {
+            if (itemsCount == 0)
+            {
+                startItemIndex = -1;
+                endItemIndex = -1;
+                startItemOffsetCrossAxis = 0;
+                startItemOffsetMainAxis = 0;
+                return;
+            }
+
+            Size uniformItemSize = !itemSize.IsEmpty ? itemSize : sizeOfFirstItem;
+
+            if (uniformItemSize.IsEmpty)
+            {
+                var itemContainer = Realize(0);
+                itemContainer.Measure(InfiniteSize);
+                sizeOfFirstItem = itemContainer.DesiredSize;
+                uniformItemSize = sizeOfFirstItem;
+            }
+
+            double itemSizeOnMainAxis = GetSizeOnMainAxis(uniformItemSize);
+            double itemSizeOnCrossAxis = GetSizeOnCrossAxis(uniformItemSize);
+
+            double startPositionOnCrossAxis = CalculateStartOffsetCrossAxis();
+            double endPositonOnCrossAxis = CalculateEndOffsetCrossAxis();
+
+            int itemsPerLine = Math.Max((int)Math.Floor(viewportSizeMainAxis / itemSizeOnMainAxis), 1);
+
+            int startLine = (int)Math.Floor(startPositionOnCrossAxis / itemSizeOnCrossAxis);
+            startItemIndex = startLine * itemsPerLine;
+
+            int lineAfterEnd = (int)Math.Ceiling(endPositonOnCrossAxis / itemSizeOnCrossAxis);
+            endItemIndex = Math.Clamp(lineAfterEnd * itemsPerLine - 1, 0, itemsCount - 1);
+
+            if (cacheLengthUnit == VirtualizationCacheLengthUnit.Item)
+            {
+                startItemIndex = Math.Max(startItemIndex - (int)cacheLength.CacheBeforeViewport, 0);
+                endItemIndex = Math.Min(endItemIndex + (int)cacheLength.CacheAfterViewport, itemsCount - 1);
+            }
+
+            startItemOffsetMainAxis = (startItemIndex % itemsPerLine) * itemSizeOnMainAxis;
+            startItemOffsetCrossAxis = (startItemIndex / itemsPerLine) * itemSizeOnCrossAxis;
+        }
+
+        private void RealizeItems_UniformSizedItems()
+        {
+            if (startItemIndex == -1)
+            {
+                return;
+            }
+
+            for (int itemIndex = startItemIndex; itemIndex <= endItemIndex; itemIndex++)
+            {
+                if (itemIndex == 0)
+                {
+                    sizeOfFirstItem = Size.Empty;
+                }
+
+                var container = Realize(itemIndex);
+
+                if (container == bringIntoViewContainer)
+                {
+                    bringIntoViewItemIndex = -1;
+                    bringIntoViewContainer = null;
+                }
+
+                if (!container.IsMeasureValid)
+                {
+                    container.Measure(!itemSize.IsEmpty ? itemSize : (!sizeOfFirstItem.IsEmpty ? sizeOfFirstItem : InfiniteSize));
+                }
+
+                if (itemIndex == 0)
+                {
+                    sizeOfFirstItem = container.DesiredSize;
+                }
+            }
+        }
+
         private void VirtualizeItems()
         {
             keptRealizedFocusedContainer = null;
@@ -692,6 +692,22 @@ namespace WpfToolkit.Controls
                 if (itemIndex < startItemIndex || itemIndex > endItemIndex)
                 {
                     Virtualize(container);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Disconnects recycled containers that were not reused from the visual tree 
+        /// so that they do not interfere with Arrange, keyboard navigation, etc.
+        /// </summary>
+        private void DisconnectRecycledContainers()
+        {
+            var children = InternalChildren;
+            for (int i = children.Count - 1; i >= 0; i--)
+            {
+                if (!realizedContainers.Contains(children[i]))
+                {
+                    RemoveInternalChildRange(i, 1);
                 }
             }
         }
@@ -763,19 +779,30 @@ namespace WpfToolkit.Controls
             return CreateSize(extentMainAxis, extentCrossAxis);
         }
 
-        /// <summary>
-        /// Disconnects recycled containers that were not reused from the visual tree 
-        /// so that they do not interfere with Arrange, keyboard navigation, etc.
-        /// </summary>
-        private void DisconnectRecycledContainers()
+        private void EnsureValidScrollOffset()
         {
-            var children = InternalChildren;
-            for (int i = children.Count - 1; i >= 0; i--)
+            if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo)
             {
-                if (!realizedContainers.Contains(children[i]))
-                {
-                    RemoveInternalChildRange(i, 1);
-                }
+                // scroll offset is managed by parent
+                return;
+            }
+
+            if (HorizontalOffset > 0 && HorizontalOffset + ViewportWidth > ExtentWidth)
+            {
+                HorizontalOffset = ExtentWidth - ViewportWidth;
+                scrollOffsetMainAxis = orientation == Orientation.Horizontal ? HorizontalOffset : VerticalOffset;
+                scrollOffsetCrossAxis = orientation == Orientation.Horizontal ? VerticalOffset : HorizontalOffset;
+                RealizeAndVirtualizeItems();
+                InvalidateScrollInfo();
+            }
+
+            if (VerticalOffset > 0 && VerticalOffset + ViewportHeight > ExtentHeight)
+            {
+                VerticalOffset = ExtentHeight - ViewportHeight;
+                scrollOffsetMainAxis = orientation == Orientation.Horizontal ? HorizontalOffset : VerticalOffset;
+                scrollOffsetCrossAxis = orientation == Orientation.Horizontal ? VerticalOffset : HorizontalOffset;
+                RealizeAndVirtualizeItems();
+                InvalidateScrollInfo();
             }
         }
 
@@ -817,33 +844,6 @@ namespace WpfToolkit.Controls
             }
 
             return scrollOffsetCrossAxis + viewportSizeCrossAxis + cache;
-        }
-
-        private void EnsureValidScrollOffset()
-        {
-            if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo)
-            {
-                // scroll offset is managed by parent
-                return;
-            }
-
-            if (HorizontalOffset > 0 && HorizontalOffset + ViewportWidth > ExtentWidth)
-            {
-                HorizontalOffset = ExtentWidth - ViewportWidth;
-                scrollOffsetMainAxis = orientation == Orientation.Horizontal ? HorizontalOffset : VerticalOffset;
-                scrollOffsetCrossAxis = orientation == Orientation.Horizontal ? VerticalOffset : HorizontalOffset;
-                RealizeAndVirtualizeItems();
-                InvalidateScrollInfo();
-            }
-
-            if (VerticalOffset > 0 && VerticalOffset + ViewportHeight > ExtentHeight)
-            {
-                VerticalOffset = ExtentHeight - ViewportHeight;
-                scrollOffsetMainAxis = orientation == Orientation.Horizontal ? HorizontalOffset : VerticalOffset;
-                scrollOffsetCrossAxis = orientation == Orientation.Horizontal ? VerticalOffset : HorizontalOffset;
-                RealizeAndVirtualizeItems();
-                InvalidateScrollInfo();
-            }
         }
 
         private Size GetUpfrontKnownItemSizeOrEmpty(int itemIndex)
