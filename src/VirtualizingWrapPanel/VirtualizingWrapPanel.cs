@@ -787,7 +787,7 @@ namespace WpfToolkit.Controls
                 return;
             }
 
-            if (HorizontalOffset > 0 && HorizontalOffset + ViewportWidth > ExtentWidth)
+            if (ExtentWidth > ViewportWidth && HorizontalOffset + ViewportWidth > ExtentWidth)
             {
                 HorizontalOffset = ExtentWidth - ViewportWidth;
                 scrollOffsetMainAxis = orientation == Orientation.Horizontal ? HorizontalOffset : VerticalOffset;
@@ -796,7 +796,7 @@ namespace WpfToolkit.Controls
                 InvalidateScrollInfo();
             }
 
-            if (VerticalOffset > 0 && VerticalOffset + ViewportHeight > ExtentHeight)
+            if (ExtentHeight > ViewportHeight && VerticalOffset + ViewportHeight > ExtentHeight)
             {
                 VerticalOffset = ExtentHeight - ViewportHeight;
                 scrollOffsetMainAxis = orientation == Orientation.Horizontal ? HorizontalOffset : VerticalOffset;
