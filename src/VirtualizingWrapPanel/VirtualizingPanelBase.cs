@@ -99,18 +99,14 @@ namespace WpfToolkit.Controls
             }
         }
 
-        public double ExtentWidth => Extent.Width;
-        public double ExtentHeight => Extent.Height;
+        public double ExtentWidth { get; protected set; }
+        public double ExtentHeight { get; protected set; }
 
-        public double HorizontalOffset => ScrollOffset.X;
-        public double VerticalOffset => ScrollOffset.Y;
+        public double HorizontalOffset { get; protected set; }
+        public double VerticalOffset { get; protected set; }
 
-        public double ViewportWidth => ViewportSize.Width;
-        public double ViewportHeight => ViewportSize.Height;
-
-        protected Size Extent { get; set; } = new Size(0, 0);
-        protected Size ViewportSize { get; set; } = new Size(0, 0);
-        protected Point ScrollOffset { get; set; } = new Point(0, 0);
+        public double ViewportWidth { get; protected set; }
+        public double ViewportHeight { get; protected set; }
 
         protected void InvalidateScrollInfo()
         {
@@ -186,17 +182,17 @@ namespace WpfToolkit.Controls
 
         public void SetVerticalOffset(double offset)
         {
-            if (offset < 0 || ViewportSize.Height >= Extent.Height)
+            if (offset < 0 || ViewportHeight >= ExtentHeight)
             {
                 offset = 0;
             }
-            else if (offset + ViewportSize.Height >= Extent.Height)
+            else if (offset + ViewportHeight >= ExtentHeight)
             {
-                offset = Extent.Height - ViewportSize.Height;
+                offset = ExtentHeight - ViewportHeight;
             }
-            if (offset != ScrollOffset.Y)
+            if (offset != VerticalOffset)
             {
-                ScrollOffset = new Point(ScrollOffset.X, offset);
+                VerticalOffset = offset;
                 InvalidateScrollInfo();
                 InvalidateMeasure();
             }
@@ -204,17 +200,17 @@ namespace WpfToolkit.Controls
 
         public void SetHorizontalOffset(double offset)
         {
-            if (offset < 0 || ViewportSize.Width >= Extent.Width)
+            if (offset < 0 || ViewportWidth >= ExtentWidth)
             {
                 offset = 0;
             }
-            else if (offset + ViewportSize.Width >= Extent.Width)
+            else if (offset + ViewportWidth >= ExtentWidth)
             {
-                offset = Extent.Width - ViewportSize.Width;
+                offset = ExtentWidth - ViewportWidth;
             }
-            if (offset != ScrollOffset.X)
+            if (offset != HorizontalOffset)
             {
-                ScrollOffset = new Point(offset, ScrollOffset.Y);
+                HorizontalOffset = offset;
                 InvalidateScrollInfo();
                 InvalidateMeasure();
             }
@@ -270,19 +266,19 @@ namespace WpfToolkit.Controls
 
         public virtual void PageUp()
         {
-            ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -ViewportSize.Height : GetPageUpScrollAmount());
+            ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -ViewportHeight : GetPageUpScrollAmount());
         }
         public virtual void PageDown()
         {
-            ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? ViewportSize.Height : GetPageDownScrollAmount());
+            ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? ViewportHeight : GetPageDownScrollAmount());
         }
         public virtual void PageLeft()
         {
-            ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -ViewportSize.Width : GetPageLeftScrollAmount());
+            ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -ViewportWidth : GetPageLeftScrollAmount());
         }
         public virtual void PageRight()
         {
-            ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? ViewportSize.Width : GetPageRightScrollAmount());
+            ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? ViewportWidth : GetPageRightScrollAmount());
         }
 
         protected abstract double GetLineUpScrollAmount();
@@ -302,12 +298,12 @@ namespace WpfToolkit.Controls
 
         private void ScrollVertical(double amount)
         {
-            SetVerticalOffset(ScrollOffset.Y + amount);
+            SetVerticalOffset(VerticalOffset + amount);
         }
 
         private void ScrollHorizontal(double amount)
         {
-            SetHorizontalOffset(ScrollOffset.X + amount);
+            SetHorizontalOffset(HorizontalOffset + amount);
         }
     }
 }
