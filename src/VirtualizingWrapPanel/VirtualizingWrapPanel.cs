@@ -228,74 +228,6 @@ namespace WpfToolkit.Controls
             return desiredSize;
         }
 
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            ArrangeBringIntoViewContainer();
-            ArrangeKeptRealizedFocusedContainer();
-
-            if (startItemIndex == -1)
-            {
-                return finalSize;
-            }
-
-            bool hierarchical = ItemsOwner is IHierarchicalVirtualizationAndScrollInfo;
-            double finalSizeMainAxis = GetSizeOnMainAxis(finalSize);
-            double offsetMainAxis = startItemOffsetMainAxis + scrollOffsetMainAxis;
-            double offsetCrossAxis = hierarchical ? startItemOffsetCrossAxis : startItemOffsetCrossAxis - scrollOffsetCrossAxis;
-            double lineSizeCrossAxis = 0;
-            var lineChilds = new List<UIElement>();
-            var childSizes = new List<Size>();
-
-            for (int index = startItemIndex; index <= endItemIndex; index++)
-            {
-                var child = ContainerFromIndex(index);
-
-                Size upfrontKnownItemSize = GetUpfrontKnownItemSizeOrEmpty(index);
-
-                Size childSize = !upfrontKnownItemSize.IsEmpty ? upfrontKnownItemSize : child.DesiredSize;
-
-                if (lineChilds.Count > 0 && offsetMainAxis + GetSizeOnMainAxis(childSize) > finalSizeMainAxis)
-                {
-                    ArrangeLine(finalSizeMainAxis, lineChilds, childSizes, offsetCrossAxis, hierarchical);
-                    offsetMainAxis = 0;
-                    offsetCrossAxis += lineSizeCrossAxis;
-                    lineSizeCrossAxis = 0;
-                    lineChilds.Clear();
-                    childSizes.Clear();
-                }
-
-                offsetMainAxis += GetSizeOnMainAxis(childSize);
-                lineSizeCrossAxis = Math.Max(lineSizeCrossAxis, GetSizeOnCrossAxis(childSize));
-                lineChilds.Add(child);
-                childSizes.Add(childSize);
-            }
-
-            if (lineChilds.Count > 0)
-            {
-                ArrangeLine(finalSizeMainAxis, lineChilds, childSizes, offsetCrossAxis, hierarchical);
-            }
-
-            return finalSize;
-        }
-
-        protected override void BringIndexIntoView(int index)
-        {
-            if (index < 0 || index >= Items.Count)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), $"The argument {nameof(index)} must be >= 0 and < the count of items.");
-            }
-
-            var container = Realize(index);
-
-            bringIntoViewItemIndex = index;
-            bringIntoViewContainer = container;
-
-            InvalidateMeasure();
-            UpdateLayout();
-
-            container.BringIntoView();
-        }
-
         protected override void OnClearChildren()
         {
             RemoveInternalChildRange(0, InternalChildren.Count);
@@ -415,45 +347,6 @@ namespace WpfToolkit.Controls
             }
         }
 
-        private void ArrangeBringIntoViewContainer()
-        {
-            if (bringIntoViewContainer is not null)
-            {
-                bool hierarchical = ItemsOwner is IHierarchicalVirtualizationAndScrollInfo;
-                var itemOffset = FindItemOffset(bringIntoViewItemIndex);
-                itemOffset = new Point(itemOffset.X - HorizontalOffset, hierarchical ? itemOffset.Y : itemOffset.Y - VerticalOffset);
-                var upfrontKnownItemSize = GetUpfrontKnownItemSizeOrEmpty(bringIntoViewItemIndex);
-                var size = !upfrontKnownItemSize.IsEmpty ? upfrontKnownItemSize : bringIntoViewContainer.DesiredSize;
-                bringIntoViewContainer.Arrange(new Rect(itemOffset, size));
-
-                if (AllowDifferentSizedItems && itemSizeProvider is null)
-                {
-                    bringIntoViewContainer.BringIntoView();
-                }
-            }
-        }
-
-        private void ArrangeKeptRealizedFocusedContainer()
-        {
-            if (keptRealizedFocusedContainer is not null)
-            {
-                int index = ItemContainerGenerator.IndexFromContainer(keptRealizedFocusedContainer);
-
-                if (index < startItemIndex)
-                {
-                    keptRealizedFocusedContainer.Arrange(new Rect(
-                        new Point(-keptRealizedFocusedContainer.DesiredSize.Width, -keptRealizedFocusedContainer.DesiredSize.Height),
-                        keptRealizedFocusedContainer.DesiredSize));
-                }
-                else
-                {
-                    keptRealizedFocusedContainer.Arrange(new Rect(
-                        new Point(ViewportWidth, ViewportHeight),
-                        keptRealizedFocusedContainer.DesiredSize));
-                }
-            }
-        }
-
         private void RealizeAndVirtualizeItems()
         {
             if (AllowDifferentSizedItems)
@@ -564,22 +457,6 @@ namespace WpfToolkit.Controls
                 {
                     sizeOfFirstItem = container.DesiredSize;
                 }
-            }
-        }
-
-        private Size GetItemSizeForScrolling()
-        {
-            if (!itemSize.IsEmpty)
-            {
-                return itemSize;
-            }
-            else if (!AllowDifferentSizedItems)
-            {
-                return !sizeOfFirstItem.IsEmpty ? sizeOfFirstItem : fallbackItemSize;
-            }
-            else
-            {
-                return CalculateAverageItemSize();
             }
         }
 
@@ -1069,6 +946,95 @@ namespace WpfToolkit.Controls
 
         #region arrange
 
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            ArrangeBringIntoViewContainer();
+            ArrangeKeptRealizedFocusedContainer();
+
+            if (startItemIndex == -1)
+            {
+                return finalSize;
+            }
+
+            bool hierarchical = ItemsOwner is IHierarchicalVirtualizationAndScrollInfo;
+            double finalSizeMainAxis = GetSizeOnMainAxis(finalSize);
+            double offsetMainAxis = startItemOffsetMainAxis + scrollOffsetMainAxis;
+            double offsetCrossAxis = hierarchical ? startItemOffsetCrossAxis : startItemOffsetCrossAxis - scrollOffsetCrossAxis;
+            double lineSizeCrossAxis = 0;
+            var lineChilds = new List<UIElement>();
+            var childSizes = new List<Size>();
+
+            for (int index = startItemIndex; index <= endItemIndex; index++)
+            {
+                var child = ContainerFromIndex(index);
+
+                Size upfrontKnownItemSize = GetUpfrontKnownItemSizeOrEmpty(index);
+
+                Size childSize = !upfrontKnownItemSize.IsEmpty ? upfrontKnownItemSize : child.DesiredSize;
+
+                if (lineChilds.Count > 0 && offsetMainAxis + GetSizeOnMainAxis(childSize) > finalSizeMainAxis)
+                {
+                    ArrangeLine(finalSizeMainAxis, lineChilds, childSizes, offsetCrossAxis, hierarchical);
+                    offsetMainAxis = 0;
+                    offsetCrossAxis += lineSizeCrossAxis;
+                    lineSizeCrossAxis = 0;
+                    lineChilds.Clear();
+                    childSizes.Clear();
+                }
+
+                offsetMainAxis += GetSizeOnMainAxis(childSize);
+                lineSizeCrossAxis = Math.Max(lineSizeCrossAxis, GetSizeOnCrossAxis(childSize));
+                lineChilds.Add(child);
+                childSizes.Add(childSize);
+            }
+
+            if (lineChilds.Count > 0)
+            {
+                ArrangeLine(finalSizeMainAxis, lineChilds, childSizes, offsetCrossAxis, hierarchical);
+            }
+
+            return finalSize;
+        }
+
+        private void ArrangeBringIntoViewContainer()
+        {
+            if (bringIntoViewContainer is not null)
+            {
+                bool hierarchical = ItemsOwner is IHierarchicalVirtualizationAndScrollInfo;
+                var itemOffset = FindItemOffset(bringIntoViewItemIndex);
+                itemOffset = new Point(itemOffset.X - HorizontalOffset, hierarchical ? itemOffset.Y : itemOffset.Y - VerticalOffset);
+                var upfrontKnownItemSize = GetUpfrontKnownItemSizeOrEmpty(bringIntoViewItemIndex);
+                var size = !upfrontKnownItemSize.IsEmpty ? upfrontKnownItemSize : bringIntoViewContainer.DesiredSize;
+                bringIntoViewContainer.Arrange(new Rect(itemOffset, size));
+
+                if (AllowDifferentSizedItems && itemSizeProvider is null)
+                {
+                    bringIntoViewContainer.BringIntoView();
+                }
+            }
+        }
+
+        private void ArrangeKeptRealizedFocusedContainer()
+        {
+            if (keptRealizedFocusedContainer is not null)
+            {
+                int index = ItemContainerGenerator.IndexFromContainer(keptRealizedFocusedContainer);
+
+                if (index < startItemIndex)
+                {
+                    keptRealizedFocusedContainer.Arrange(new Rect(
+                        new Point(-keptRealizedFocusedContainer.DesiredSize.Width, -keptRealizedFocusedContainer.DesiredSize.Height),
+                        keptRealizedFocusedContainer.DesiredSize));
+                }
+                else
+                {
+                    keptRealizedFocusedContainer.Arrange(new Rect(
+                        new Point(ViewportWidth, ViewportHeight),
+                        keptRealizedFocusedContainer.DesiredSize));
+                }
+            }
+        }
+
         private void ArrangeLine(double lineSizeMainAxis, List<UIElement> children, List<Size> childSizes, double lineOffsetCrossAxis, bool hierarchical)
         {
             double spaceTakenMainAxis;
@@ -1200,20 +1166,6 @@ namespace WpfToolkit.Controls
             }
         }
 
-        private Size CalculateAverageItemSize()
-        {
-            var itemSizes = itemSizesCache.Where(size => size != default).ToArray();
-
-            if (itemSizes.Length > 0)
-            {
-                return new Size(
-                    Math.Round(itemSizes.Average(size => size.Width)),
-                    Math.Round(itemSizes.Average(size => size.Height)));
-            }
-
-            return fallbackItemSize;
-        }
-
 
         #endregion
 
@@ -1298,6 +1250,24 @@ namespace WpfToolkit.Controls
 
         #region scrolling
 
+        protected override void BringIndexIntoView(int index)
+        {
+            if (index < 0 || index >= Items.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), $"The argument {nameof(index)} must be >= 0 and < the count of items.");
+            }
+
+            var container = Realize(index);
+
+            bringIntoViewItemIndex = index;
+            bringIntoViewContainer = container;
+
+            InvalidateMeasure();
+            UpdateLayout();
+
+            container.BringIntoView();
+        }
+
         protected override double GetLineUpScrollAmount()
         {
             return -Math.Min(GetItemSizeForScrolling().Height * ScrollLineDeltaItem, ViewportHeight);
@@ -1356,6 +1326,37 @@ namespace WpfToolkit.Controls
         protected override double GetPageRightScrollAmount()
         {
             return ViewportWidth;
+        }
+
+
+        private Size GetItemSizeForScrolling()
+        {
+            if (!itemSize.IsEmpty)
+            {
+                return itemSize;
+            }
+            else if (!AllowDifferentSizedItems)
+            {
+                return !sizeOfFirstItem.IsEmpty ? sizeOfFirstItem : fallbackItemSize;
+            }
+            else
+            {
+                return CalculateAverageItemSize();
+            }
+        }
+
+        private Size CalculateAverageItemSize()
+        {
+            var itemSizes = itemSizesCache.Where(size => size != default).ToArray();
+
+            if (itemSizes.Length > 0)
+            {
+                return new Size(
+                    Math.Round(itemSizes.Average(size => size.Width)),
+                    Math.Round(itemSizes.Average(size => size.Height)));
+            }
+
+            return fallbackItemSize;
         }
 
         #endregion
