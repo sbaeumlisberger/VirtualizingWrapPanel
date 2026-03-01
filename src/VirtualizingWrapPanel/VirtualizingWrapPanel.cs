@@ -154,6 +154,10 @@ namespace WpfToolkit.Controls
         /// <returns>always true for <see cref="VirtualizingWrapPanel"/></returns>
         protected override bool CanHierarchicallyScrollAndVirtualizeCore => true;
 
+        protected override bool HasLogicalOrientation => true;
+
+        protected override Orientation LogicalOrientation => Orientation == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal;
+
         private static readonly Size InfiniteSize = new Size(double.PositiveInfinity, double.PositiveInfinity);
 
         private ItemContainerManager ItemContainerManager
