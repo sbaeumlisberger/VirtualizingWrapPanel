@@ -134,6 +134,43 @@ namespace WpfToolkit.Controls
             }
         }
 
+        protected Rect GetViewportFromGroupItem(IHierarchicalVirtualizationAndScrollInfo groupItem)
+        {
+            double viewportX = groupItem.Constraints.Viewport.X;
+            double viewportY = groupItem.Constraints.Viewport.Y;
+            double viewportWidth = Math.Max(groupItem.Constraints.Viewport.Width, 0);
+            double viewportHeight = Math.Max(groupItem.Constraints.Viewport.Height, 0);
+
+            var groupItemStackPanelOrientation = Orientation.Horizontal;
+
+            if (VisualTreeHelper.GetParent(this) is ItemsPresenter itemsPresenter)
+            {
+                var margin = itemsPresenter.Margin;
+                viewportWidth = Math.Max(0, viewportWidth - (margin.Left + margin.Right));
+                viewportHeight = Math.Max(0, viewportHeight - (margin.Top + margin.Bottom));
+
+                if (itemsPresenter.Parent is StackPanel groupItemStackPanel)
+                {
+                    groupItemStackPanelOrientation = groupItemStackPanel.Orientation;
+                }
+            }
+
+            if (groupItemStackPanelOrientation == Orientation.Horizontal)
+            {
+                viewportX = Math.Max(0, viewportX - groupItem.HeaderDesiredSizes.PixelSize.Width);
+                double visibleHeaderWidth = Math.Max(0, groupItem.HeaderDesiredSizes.PixelSize.Width - Math.Max(0, groupItem.Constraints.Viewport.X));
+                viewportWidth = Math.Max(0, viewportWidth - visibleHeaderWidth);
+            }
+            else
+            {
+                viewportY = Math.Max(0, viewportY - groupItem.HeaderDesiredSizes.PixelSize.Height);
+                double visibleHeaderHeight = Math.Max(0, groupItem.HeaderDesiredSizes.PixelSize.Height - Math.Max(0, groupItem.Constraints.Viewport.Y));
+                viewportHeight = Math.Max(0, viewportHeight - visibleHeaderHeight);
+            }
+
+            return new Rect(viewportX, viewportY, viewportWidth, viewportHeight);
+        }
+
         public virtual Rect MakeVisible(Visual visual, Rect rectangle)
         {
             var transformedBounds = visual.TransformToAncestor(this).TransformBounds(rectangle);
