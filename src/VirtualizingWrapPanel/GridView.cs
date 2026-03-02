@@ -9,7 +9,7 @@ namespace WpfToolkit.Controls;
 /// Simple control that displays a gird of items. Depending on the orientation, the items are either stacked horizontally or vertically 
 /// until the items are wrapped to the next row or column. The control is using virtualization to support large amount of items.
 /// </summary>
-public class GridView : ListView
+public class GridView : ListBox
 {
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(nameof(Orientation), typeof(Orientation), typeof(GridView), new FrameworkPropertyMetadata(Orientation.Horizontal));
 
