@@ -340,7 +340,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
 
     private void MeasureBringIntoViewContainer()
     {
-        if (bringIntoViewContainer is not null && !bringIntoViewContainer.IsMeasureValid)
+        if (bringIntoViewContainer is not null)
         {
             var upfrontKnownItemSize = GetUpfrontKnownItemSizeOrEmpty(bringIntoViewItemIndex);
             bringIntoViewContainer.Measure(!upfrontKnownItemSize.IsEmpty ? upfrontKnownItemSize : InfiniteSize);
@@ -546,10 +546,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
 
             Size upfrontKnownItemSize = GetUpfrontKnownItemSizeOrEmpty(itemIndex);
 
-            if (!container.IsMeasureValid)
-            {
-                container.Measure(!upfrontKnownItemSize.IsEmpty ? upfrontKnownItemSize : InfiniteSize);
-            }
+            container.Measure(!upfrontKnownItemSize.IsEmpty ? upfrontKnownItemSize : InfiniteSize);
 
             Size containerSize = !upfrontKnownItemSize.IsEmpty ? upfrontKnownItemSize : container.DesiredSize;
             itemSizesCache[itemIndex] = containerSize;
@@ -658,10 +655,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
                 bringIntoViewContainer = null;
             }
 
-            if (!container.IsMeasureValid)
-            {
-                container.Measure(!itemSize.IsEmpty ? itemSize : (!sizeOfFirstItem.IsEmpty ? sizeOfFirstItem : InfiniteSize));
-            }
+            container.Measure(!itemSize.IsEmpty ? itemSize : (!sizeOfFirstItem.IsEmpty ? sizeOfFirstItem : InfiniteSize));
 
             if (itemIndex == 0)
             {
