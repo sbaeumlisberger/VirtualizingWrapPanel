@@ -952,16 +952,20 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         {
             int index = ItemContainerGenerator.IndexFromContainer(keptRealizedFocusedContainer);
 
+            var itemOffset = FindItemOffset(index);
+
+            double offsetCrossAxis = GetPositionOnCrossAxis(itemOffset) - scrollOffsetCrossAxis;
+
             if (index < startItemIndex)
             {
                 keptRealizedFocusedContainer.Arrange(new Rect(
-                    new Point(-keptRealizedFocusedContainer.DesiredSize.Width, -keptRealizedFocusedContainer.DesiredSize.Height),
+                    CreatePoint(-viewportSizeMainAxis, offsetCrossAxis),
                     keptRealizedFocusedContainer.DesiredSize));
             }
             else
             {
                 keptRealizedFocusedContainer.Arrange(new Rect(
-                    new Point(ViewportWidth, ViewportHeight),
+                    CreatePoint(viewportSizeMainAxis, offsetCrossAxis),
                     keptRealizedFocusedContainer.DesiredSize));
             }
         }
