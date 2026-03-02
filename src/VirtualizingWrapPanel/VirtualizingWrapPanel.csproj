@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.5.0</Version>
+        <Version>2.5.1</Version>
         <Authors>sbaeumlisberger</Authors>
         <Copyright>sbaeumlisberger</Copyright>
         <Description>Feature-rich implementation of a VirtualizingWrapPanel for WPF.</Description>
@@ -36,10 +36,9 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         
         <PackageReleaseNotes>
-- Fix #95 KeyNotFoundException when ItemsSource is bound to a collection of T when T is a value type
-- Fix #96 Keyboard navigation from off-screen items is unstable
-- Avoid ignoring measure calls when using auto scrollbars
-- Performance improvements
+- Fix #98 ContentPresenter inside UserControl has zero ActualHeight after container recycling when content is set asynchronously
+- Fix extent calucation when using Fluent theme or otherwise customized scroll bars
+- Fix grouping in combination with vertical orientation
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>
