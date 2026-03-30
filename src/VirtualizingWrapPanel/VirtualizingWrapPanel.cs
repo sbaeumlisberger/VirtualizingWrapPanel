@@ -592,6 +592,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     {
         if (itemsCount == 0)
         {
+            realizedContainers.Clear();
             startItemIndex = -1;
             endItemIndex = -1;
             startItemOffsetCrossAxis = 0;
