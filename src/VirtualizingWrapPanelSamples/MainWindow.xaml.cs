@@ -179,11 +179,7 @@ public partial class MainWindow : Window
         {
             var itemsControl = FindItemsControl();
 
-            if (itemsControl is ListView listView)
-            {
-                listView?.ScrollIntoView(item);
-            }
-            else if (itemsControl is ListBox listBox)
+            if (itemsControl is ListBox listBox)
             {
                 listBox?.ScrollIntoView(item);
             }
@@ -194,7 +190,7 @@ public partial class MainWindow : Window
     private ItemsControl FindItemsControl()
     {
         var content = (DependencyObject)tabControl.SelectedContent;
-        return content as ItemsControl ?? GetChildOfType<ListView>(content) ?? GetChildOfType<ItemsControl>(content)!;
+        return content as ItemsControl ?? GetChildOfType<ListBox>(content) ?? GetChildOfType<ItemsControl>(content)!;
     }
 
     private void GroupingCheckBox_Checked(object sender, RoutedEventArgs e)

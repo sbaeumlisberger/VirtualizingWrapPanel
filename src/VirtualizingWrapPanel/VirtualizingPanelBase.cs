@@ -64,12 +64,12 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     protected bool IsRecycling => VirtualizationMode == VirtualizationMode.Recycling;
 
     /// <summary>
-    /// The ItemsControl (e.g. ListView).
+    /// The ItemsControl (e.g. ListBox).
     /// </summary>
     public ItemsControl ItemsControl => ItemsControl.GetItemsOwner(this);
 
     /// <summary>
-    /// The ItemsControl (e.g. ListView) or if the ItemsControl is grouping a GroupItem.
+    /// The ItemsControl (e.g. ListBox) or if the ItemsControl is grouping a GroupItem.
     /// </summary>
     protected DependencyObject ItemsOwner => TemplatedParent is ItemsPresenter itemsPresenter ? itemsPresenter.TemplatedParent : TemplatedParent;
 

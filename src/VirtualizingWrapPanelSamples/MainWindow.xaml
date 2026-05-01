@@ -103,7 +103,7 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        <Style x:Key="ItemContainerStyle" TargetType="{x:Type ListViewItem}">
+        <Style x:Key="ItemContainerStyle" TargetType="{x:Type ListBoxItem}">
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Stretch"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -349,9 +349,9 @@
             <TabItem Header="VirtualizingWrapPanel">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Top" Style="{StaticResource DescriptionAndOptionsBarStyle}">
-                        <TextBlock VerticalAlignment="Center" Text="A VirtualizingWrapPanel used by a ListView as ItemsPanel." />
+                        <TextBlock VerticalAlignment="Center" Text="A VirtualizingWrapPanel used by a ListBox as ItemsPanel." />
                     </StackPanel>
-                    <ListView
+                    <ListBox
                         Style="{StaticResource ItemsControlStyle}"
                         ItemTemplate="{StaticResource ItemTemplate}"
                         VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
@@ -362,7 +362,7 @@
                         ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=OneWay}"
                         ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=OneWay}"
                         ItemContainerStyle="{StaticResource ItemContainerStyle}">
-                        <ListView.ItemsPanel>
+                        <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <wpftk:VirtualizingWrapPanel
                                     Orientation="{Binding DataContext.Orientation, Mode=OneWay, ElementName=window}"
@@ -375,20 +375,20 @@
                                     ItemSize="{Binding DataContext.ItemSize, Mode=OneWay, ElementName=window}"
                                     IsGridLayoutEnabled="{Binding DataContext.IsGridLayoutEnabled, Mode=OneWay, ElementName=window}"/>
                             </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                    </ListView>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
                 </DockPanel>
             </TabItem>
             <TabItem Header="AllowDifferentSizedItems">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Top" Style="{StaticResource DescriptionAndOptionsBarStyle}">
-                        <TextBlock VerticalAlignment="Center" Text="A VirtualizingWrapPanel with AllowDifferentSizedItems=True used by a ListView as ItemsPanel." />
+                        <TextBlock VerticalAlignment="Center" Text="A VirtualizingWrapPanel with AllowDifferentSizedItems=True used by a ListBox as ItemsPanel." />
                         <CheckBox VerticalAlignment="Center" Margin="16,0,0,0" IsChecked="{Binding UseLazyLoadingItems, Mode=TwoWay}" Content="Lazy loading items"/>
                         <CheckBox VerticalAlignment="Center" Margin="16,0,0,0" IsChecked="{Binding UseItemSizeProvider, Mode=TwoWay}" Content="Use ItemSizeProvider"/>
                         <TextBlock VerticalAlignment="Center" Margin="16,0,0,0" Text="ItemAlignment"/>
                         <ComboBox Margin="4,0,0,0" ItemsSource="{Binding AvailableItemAlignments, Mode=OneTime}" SelectedItem="{Binding ItemAlignment, Mode=TwoWay}"/>
                     </StackPanel>
-                    <ListView
+                    <ListBox
                         x:Name="listViewAllowDifferentSizedItems"
                         Style="{StaticResource ItemsControlStyle}"
                         ItemTemplate="{StaticResource RandomSizedItemTemplate}"
@@ -400,7 +400,7 @@
                         ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=OneWay}"
                         ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=OneWay}"
                         ItemContainerStyle="{StaticResource ItemContainerStyle}">
-                        <ListView.ItemsPanel>
+                        <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <wpftk:VirtualizingWrapPanel
                                     Orientation="{Binding DataContext.Orientation, Mode=OneWay, ElementName=window}"
@@ -416,8 +416,8 @@
                                     ItemSizeProvider="{Binding DataContext.ItemSizeProvider, Mode=OneWay, ElementName=window}"
                                     ItemAlignment="{Binding DataContext.ItemAlignment, Mode=OneWay, ElementName=window}"/>
                             </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                    </ListView>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
                 </DockPanel>
             </TabItem>
             <TabItem Header="VirtualizingItemsControl">
@@ -525,9 +525,9 @@
                     <StackPanel DockPanel.Dock="Top" Style="{StaticResource DescriptionAndOptionsBarStyle}">
                         <TextBlock 
                             VerticalAlignment="Center" 
-                            Text="A VirtualizingWrapPanel used by a MaterialDesign ListView as ItemsPanel." />
+                            Text="A VirtualizingWrapPanel used by a MaterialDesign ListBox as ItemsPanel." />
                     </StackPanel>
-                    <ListView    
+                    <ListBox    
                         Style="{StaticResource ItemsControlStyle}"
                         ItemTemplate="{StaticResource ItemTemplate}"                                 
                         VirtualizingPanel.CacheLengthUnit="{Binding CacheUnit, Mode=OneWay}"
@@ -538,7 +538,7 @@
                         ScrollViewer.CanContentScroll="True"
                         ScrollViewer.HorizontalScrollBarVisibility="{Binding HorizontalScrollBarVisibility, Mode=TwoWay}"
                         ScrollViewer.VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility, Mode=TwoWay}">
-                        <ListView.ItemsPanel>
+                        <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <wpftk:VirtualizingWrapPanel
                                     Orientation="{Binding DataContext.Orientation, Mode=OneWay, ElementName=window}"
@@ -550,8 +550,8 @@
                                     MouseWheelDeltaItem="{Binding DataContext.MouseWheelDeltaItem, Mode=OneWay, ElementName=window}"                                                                    
                                     IsGridLayoutEnabled="{Binding DataContext.IsGridLayoutEnabled, Mode=OneWay, ElementName=window}"/>
                             </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                    </ListView>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
                 </DockPanel>
             </TabItem>
             <TabItem Header="WrapPanel (no virtualization)" Visibility="Collapsed">
@@ -559,18 +559,18 @@
                     <StackPanel DockPanel.Dock="Top" Style="{StaticResource DescriptionAndOptionsBarStyle}">
                         <TextBlock
                             VerticalAlignment="Center"
-                            Text="For comparison this is a ListView using a standard WrapPanel as ItemsPanel." />
+                            Text="For comparison this is a ListBox using a standard WrapPanel as ItemsPanel." />
                     </StackPanel>
-                    <ListView
+                    <ListBox
                         Margin="0,2,0,0"
                         ItemTemplate="{StaticResource ItemTemplate}"
                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <ListView.ItemsPanel>
+                        <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel/>
                             </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                    </ListView>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
                 </DockPanel>
             </TabItem>
         </TabControl>
