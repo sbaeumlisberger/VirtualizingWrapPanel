@@ -112,7 +112,7 @@ public static class TestUtil
             .Select(i => new TestItem("Item " + i, DefaultItemWidth, DefaultItemHeight, "Group " + ((i - 1) / groupSize + 1))));
     }
 
-    public static ObservableCollection<TestItem> GenerateItemsWithRandomGroupSizes(int itemCount, int minGroupSize = 50, int maxGroupSize = 150)
+    public static ObservableCollection<TestItem> GenerateItemsWithRandomGroupSizes(int itemCount = 1000, int minGroupSize = 50, int maxGroupSize = 150)
     {
         int currentGroupNumber = 1;
         int groupSize = Random.Shared.Next(minGroupSize, maxGroupSize + 1);
@@ -190,13 +190,13 @@ public static class TestUtil
             <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"> 
                 <Grid Width="{Binding Width}" Height="{Binding Height}">
                     <Border Background="Red" Opacity="0.5" BorderBrush="Blue" BorderThickness="1"/>
-                    <TextBlock VerticalAlignment="Bottom" Text="{Binding Name}"/>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Name}"/>
                 </Grid>
             </DataTemplate>
             """);
     }
 
-    public static DataTemplate CreateDefaultGroupHeaderTemplate(int headerHeight = 20) 
+    public static DataTemplate CreateDefaultGroupHeaderTemplate(int headerHeight = 20)
     {
         return CreateDateTemplate($"""
             <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"> 
@@ -268,6 +268,41 @@ public static class TestUtil
         }
 
         return foundChilds;
+    }
+
+
+    /// <summary>
+    /// Asserts that the container bounds of the specified items are correct.
+    /// </summary>
+    internal static void AssertContainerBounds(TestController testController, List<TestItem> items)
+    {
+        foreach (var item in items)
+        {
+            var expectedContainerBounds = GetExpectedContainerBounds(testController, item);
+            var actualContainerBounds = testController.GetContainerBounds(item);
+            Assert.Equal(expectedContainerBounds, actualContainerBounds);
+        }
+    }
+
+    /// <summary>
+    /// Gets the expected bounds of the container of the specified item relative to the viewport.
+    /// </summary>
+    internal static Rect GetExpectedContainerBounds(TestController testController, TestItem item)
+    {
+        int itemIndex = testController.Items.IndexOf(item);
+        int row = itemIndex / testController.ItemsPerRow;
+        int column = itemIndex % testController.ItemsPerRow;
+        double x = column * testController.FirstChildWidth;
+        double y = row * testController.FirstChildHeight - testController.VerticalOffset;
+        return new Rect(x, y, testController.FirstChildWidth, testController.FirstChildHeight);
+    }
+
+    internal static Size GetExpectedExtent(TestController testController)
+    {
+        double extentWidth = Math.Min(testController.ItemsPerRow, testController.Items.Count) * testController.FirstChildWidth;
+        double extentHeight = Math.Ceiling(testController.Items.Count / (double)testController.ItemsPerRow) * testController.FirstChildHeight;
+        return new Size(extentWidth, extentHeight);
+           
     }
 }
 

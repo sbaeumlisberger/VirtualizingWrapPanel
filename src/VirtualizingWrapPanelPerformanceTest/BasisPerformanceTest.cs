@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows.Controls;
 using WpfToolkit.Controls;
-using Xunit.Abstractions;
 
 namespace VirtualizingWrapPanelTest.PerformanceTests;
 
