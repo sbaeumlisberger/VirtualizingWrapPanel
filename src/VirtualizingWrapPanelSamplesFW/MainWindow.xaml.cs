@@ -182,12 +182,10 @@ public partial class MainWindow : Window
     private void GroupingCheckBox_Checked(object sender, RoutedEventArgs e)
     {
         model.IsGrouping = true;
-        FindItemsControl().GroupStyle.Add((GroupStyle)Resources["GroupStyle"]);
     }
 
     private void GroupingCheckBox_Unchecked(object sender, RoutedEventArgs e)
     {
         model.IsGrouping = false;
-        FindItemsControl().GroupStyle.Clear();
     }
 }

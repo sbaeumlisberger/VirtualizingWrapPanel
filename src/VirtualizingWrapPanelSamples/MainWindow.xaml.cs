@@ -41,7 +41,9 @@ public partial class MainWindow : Window
             case nameof(model.AreFluentThemeScrollBarsDisabled):
                 UpdateScrollBars();
                 break;
-
+            case nameof(model.IsGrouping):
+                UpdateGroupStyle();
+                break;
         }
     }
 
@@ -69,6 +71,20 @@ public partial class MainWindow : Window
         {
             tabControl.Resources.Remove(typeof(ScrollViewer));
             tabControl.Resources.Remove(typeof(ScrollBar));
+        }
+    }
+
+    private void UpdateGroupStyle() 
+    {
+        var itemsControl = FindItemsControl();
+
+        if (model.IsGrouping)
+        {
+            itemsControl.GroupStyle.Add((GroupStyle)Resources["GroupStyle"]);
+        }
+        else
+        {
+            itemsControl.GroupStyle.Clear();
         }
     }
 
@@ -100,14 +116,7 @@ public partial class MainWindow : Window
             itemsControl.ItemsSource = model.CollectionView;
             currentItemsControl = itemsControl;
 
-            if (model.IsGrouping)
-            {
-                itemsControl.GroupStyle.Add((GroupStyle)Resources["GroupStyle"]);
-            }
-            else
-            {
-                itemsControl.GroupStyle.Clear();
-            }
+            UpdateGroupStyle();
         }
     }
 
@@ -191,17 +200,5 @@ public partial class MainWindow : Window
     {
         var content = (DependencyObject)tabControl.SelectedContent;
         return content as ItemsControl ?? GetChildOfType<ListBox>(content) ?? GetChildOfType<ItemsControl>(content)!;
-    }
-
-    private void GroupingCheckBox_Checked(object sender, RoutedEventArgs e)
-    {         
-        FindItemsControl().GroupStyle.Add((GroupStyle)Resources["GroupStyle"]);
-        model.IsGrouping = true;
-    }
-
-    private void GroupingCheckBox_Unchecked(object sender, RoutedEventArgs e)
-    {        
-        FindItemsControl().GroupStyle.Clear();
-        model.IsGrouping = false;
     }
 }

@@ -178,7 +178,7 @@
 
                 <CheckBox Margin="0,12,0,0" IsChecked="{Binding StretchItems, Mode=TwoWay}" Content="StretchItems"/>
 
-                <CheckBox Margin="0,6,0,0" Checked="GroupingCheckBox_Checked" Unchecked="GroupingCheckBox_Unchecked" Content="Grouping"/>
+                <CheckBox Margin="0,6,0,0" IsChecked="{Binding IsGrouping, Mode=TwoWay}" Content="Grouping"/>
 
                 <TextBlock Margin="0,10,0,0" Style="{StaticResource HeaderStyle}" Text="ItemSize" />
                 <TextBox Margin="0,2,0,0" Text="{Binding ItemSize, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
