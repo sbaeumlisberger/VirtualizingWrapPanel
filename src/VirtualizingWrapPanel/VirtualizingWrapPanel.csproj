@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.5.1</Version>
+        <Version>2.5.2</Version>
         <Authors>sbaeumlisberger</Authors>
         <Copyright>sbaeumlisberger</Copyright>
         <Description>Feature-rich implementation of a VirtualizingWrapPanel for WPF.</Description>
@@ -36,9 +36,8 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         
         <PackageReleaseNotes>
-- Fix #98 ContentPresenter inside UserControl has zero ActualHeight after container recycling when content is set asynchronously
-- Fix extent calucation when using Fluent theme or otherwise customized scroll bars
-- Fix grouping in combination with vertical orientation
+- Fix rare issue that the panel is not switched when a group style is applied
+- Fix that container of removed item is not removed when keyboard focused
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>
