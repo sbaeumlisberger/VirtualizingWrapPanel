@@ -374,7 +374,7 @@ public class BasisTest
                 </Grid>
             </DataTemplate>
             """;
-        vwp.ItemsControl.ItemTemplate = TestUtil.CreateDateTemplate(itemTemplate);
+        vwp.ItemsControl.ItemTemplate = TestUtil.CreateDataTemplate(itemTemplate);
         vwp.ItemSize = new Size(100, 100);
         vwp.UpdateLayout();
 

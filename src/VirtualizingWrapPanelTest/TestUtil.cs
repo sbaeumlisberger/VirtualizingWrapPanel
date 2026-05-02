@@ -168,7 +168,7 @@ public static class TestUtil
         Assert.Equal(y, (int)Math.Round(position.Y));
     }
 
-    public static DataTemplate CreateDateTemplate(string dataTemplate)
+    public static DataTemplate CreateDataTemplate(string dataTemplate)
     {
         return (DataTemplate)XamlReader.Load(XmlReader.Create(new StringReader(dataTemplate)));
     }
@@ -186,7 +186,7 @@ public static class TestUtil
 
     private static DataTemplate CreateDefaultItemTemplate()
     {
-        return CreateDateTemplate("""
+        return CreateDataTemplate("""
             <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"> 
                 <Grid Width="{Binding Width}" Height="{Binding Height}">
                     <Border Background="Red" Opacity="0.5" BorderBrush="Blue" BorderThickness="1"/>
@@ -198,7 +198,7 @@ public static class TestUtil
 
     public static DataTemplate CreateDefaultGroupHeaderTemplate(int headerHeight = 20)
     {
-        return CreateDateTemplate($"""
+        return CreateDataTemplate($"""
             <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"> 
                 <Border Background="Green" Height="{headerHeight}"/>
             </DataTemplate>

@@ -457,7 +457,7 @@ internal class TestController
 
     private static DataTemplate CreateDefaulTestItemTemplate()
     {
-        return TestUtil.CreateDateTemplate("""
+        return TestUtil.CreateDataTemplate("""
             <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"> 
                 <Grid Width="{Binding Width}" Height="{Binding Height}">
                     <Border Background="Red" Opacity="0.5" BorderBrush="Blue" BorderThickness="1"/>
