@@ -1100,12 +1100,11 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         }
     }
 
-
     #endregion
 
     #region container management
 
-    public FrameworkElement Realize(int itemIndex)
+    private FrameworkElement Realize(int itemIndex)
     {
         var container = ContainerFromItemIndex(itemIndex);
 
@@ -1114,7 +1113,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
             return container;
         }
 
-        var generatorPosition = RecyclingItemContainerGenerator.GeneratorPositionFromIndex(itemIndex);
+        var generatorPosition = GeneratorPositionFromItemIndex(itemIndex);
         using (RecyclingItemContainerGenerator.StartAt(generatorPosition, GeneratorDirection.Forward))
         {
             container = (FrameworkElement)RecyclingItemContainerGenerator.GenerateNext(out bool isNewContainer);
@@ -1130,7 +1129,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         }
     }
 
-    public void Virtualize(int itemIndex, int childIndex)
+    private void Virtualize(int itemIndex, int childIndex)
     {
         var generatorPosition = GeneratorPositionFromItemIndex(itemIndex);
 
@@ -1151,31 +1150,6 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         {
             RemoveInternalChildRange(childIndex, 1);
         }
-    }
-
-    private GeneratorPosition GeneratorPositionFromItemIndex(int itemIndex)
-    {
-        return RecyclingItemContainerGenerator.GeneratorPositionFromIndex(itemIndex);
-    }
-
-    public int ItemIndexFromGeneratorPosition(GeneratorPosition generatorPosition)
-    {
-        return RecyclingItemContainerGenerator.IndexFromGeneratorPosition(generatorPosition);
-    }
-
-    public FrameworkElement ContainerFromItemIndex(int itemIndex)
-    {
-        return (FrameworkElement)ItemContainerGenerator.ContainerFromIndex(itemIndex);
-    }
-
-    public int ItemIndexFromContainer(DependencyObject container)
-    {
-        return ItemContainerGenerator.IndexFromContainer(container);
-    }
-
-    public object ItemFromContainer(DependencyObject container)
-    {
-        return ItemContainerGenerator.ItemFromContainer(container);
     }
 
     #endregion

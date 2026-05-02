@@ -171,6 +171,31 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
         return new Rect(viewportX, viewportY, viewportWidth, viewportHeight);
     }
 
+    protected GeneratorPosition GeneratorPositionFromItemIndex(int itemIndex)
+    {
+        return RecyclingItemContainerGenerator.GeneratorPositionFromIndex(itemIndex);
+    }
+
+    protected int ItemIndexFromGeneratorPosition(GeneratorPosition generatorPosition)
+    {
+        return RecyclingItemContainerGenerator.IndexFromGeneratorPosition(generatorPosition);
+    }
+
+    protected FrameworkElement ContainerFromItemIndex(int itemIndex)
+    {
+        return (FrameworkElement)ItemContainerGenerator.ContainerFromIndex(itemIndex);
+    }
+
+    protected int ItemIndexFromContainer(DependencyObject container)
+    {
+        return ItemContainerGenerator.IndexFromContainer(container);
+    }
+
+    protected object ItemFromContainer(DependencyObject container)
+    {
+        return ItemContainerGenerator.ItemFromContainer(container);
+    }
+
     public virtual Rect MakeVisible(Visual visual, Rect rectangle)
     {
         var transformedBounds = visual.TransformToAncestor(this).TransformBounds(rectangle);
