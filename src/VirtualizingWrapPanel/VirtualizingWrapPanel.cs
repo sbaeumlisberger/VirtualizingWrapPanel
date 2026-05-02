@@ -214,6 +214,12 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
 
     protected override void OnItemsChanged(object sender, ItemsChangedEventArgs e)
     {
+        if (e.Action == NotifyCollectionChangedAction.Reset)
+        {
+            // Ensure that the ItemPresenter uses the correct panel
+            ((ItemsPresenter)TemplatedParent).InvalidateMeasure();
+        }
+
         if (bringIntoViewItemIndex >= Items.Count)
         {
             bringIntoViewItemIndex = -1;
