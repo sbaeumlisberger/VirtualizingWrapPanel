@@ -192,8 +192,6 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     private Visibility previousCrossAxisScrollBarVisibiliy = Visibility.Collapsed;
     private double crossAxisScrollBarSizeOnMainAxis = 0;
 
-    private readonly List<FrameworkElement> realizedContainers = [];
-
     // local fields to cache frequently read properties
     private Orientation orientation = Orientation.Horizontal;
     private Size itemSize = Size.Empty;
@@ -212,16 +210,10 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     protected override void OnClearChildren()
     {
         RemoveInternalChildRange(0, InternalChildren.Count);
-        realizedContainers.Clear();
     }
 
     protected override void OnItemsChanged(object sender, ItemsChangedEventArgs e)
     {
-        if (e.Action == NotifyCollectionChangedAction.Reset)
-        {
-            realizedContainers.Clear();
-        }
-
         if (bringIntoViewItemIndex >= Items.Count)
         {
             bringIntoViewItemIndex = -1;
@@ -239,20 +231,20 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         switch (e.Action)
         {
             case NotifyCollectionChangedAction.Remove:
-                int removeIndex = IndexFromGeneratorPosition(e.Position);
+                int removeIndex = ItemIndexFromGeneratorPosition(e.Position);
                 itemSizesCache.RemoveAt(removeIndex);
                 break;
             case NotifyCollectionChangedAction.Replace:
-                int replaceIndex = IndexFromGeneratorPosition(e.Position);
+                int replaceIndex = ItemIndexFromGeneratorPosition(e.Position);
                 itemSizesCache[replaceIndex] = default;
                 break;
             case NotifyCollectionChangedAction.Add:
-                int addIndex = IndexFromGeneratorPosition(e.Position);
+                int addIndex = ItemIndexFromGeneratorPosition(e.Position);
                 itemSizesCache.Insert(addIndex, default);
                 break;
             case NotifyCollectionChangedAction.Move:
-                int oldIndex = IndexFromGeneratorPosition(e.OldPosition);
-                int newIndex = IndexFromGeneratorPosition(e.Position);
+                int oldIndex = ItemIndexFromGeneratorPosition(e.OldPosition);
+                int newIndex = ItemIndexFromGeneratorPosition(e.Position);
                 var itemSize = itemSizesCache[oldIndex];
                 itemSizesCache.RemoveAt(oldIndex);
                 itemSizesCache.Insert(newIndex, itemSize);
@@ -668,8 +660,11 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     {
         keptRealizedFocusedContainer = null;
 
-        foreach (var container in realizedContainers.ToList())
+        var children = InternalChildren;
+        for (int childIndex = children.Count - 1; childIndex >= 0; childIndex--)
         {
+            var container = children[childIndex];
+
             if (container == bringIntoViewContainer)
             {
                 continue;
@@ -681,11 +676,11 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
                 continue;
             }
 
-            var itemIndex = IndexFromContainer(container);
+            var itemIndex = ItemIndexFromContainer(container);
 
             if (itemIndex < startItemIndex || itemIndex > endItemIndex)
             {
-                Virtualize(container);
+                Virtualize(itemIndex, childIndex);
             }
         }
     }
@@ -697,11 +692,11 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     private void DisconnectRecycledContainers()
     {
         var children = InternalChildren;
-        for (int i = children.Count - 1; i >= 0; i--)
+        for (int childIndex = children.Count - 1; childIndex >= 0; childIndex--)
         {
-            if (!realizedContainers.Contains(children[i]))
+            if (ItemFromContainer(children[childIndex]) == DependencyProperty.UnsetValue)
             {
-                RemoveInternalChildRange(i, 1);
+                RemoveInternalChildRange(childIndex, 1);
             }
         }
     }
@@ -893,12 +888,12 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         double offsetMainAxis = startItemOffsetMainAxis + scrollOffsetMainAxis;
         double offsetCrossAxis = hierarchical ? startItemOffsetCrossAxis : startItemOffsetCrossAxis - scrollOffsetCrossAxis;
         double lineSizeCrossAxis = 0;
-        var lineChilds = new List<UIElement>();
+        var lineChilds = new List<FrameworkElement>();
         var childSizes = new List<Size>();
 
         for (int index = startItemIndex; index <= endItemIndex; index++)
         {
-            var child = ContainerFromIndex(index);
+            var child = ContainerFromItemIndex(index);
 
             Size upfrontKnownItemSize = GetUpfrontKnownItemSizeOrEmpty(index);
 
@@ -950,7 +945,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     {
         if (keptRealizedFocusedContainer is not null)
         {
-            int index = ItemContainerGenerator.IndexFromContainer(keptRealizedFocusedContainer);
+            int index = ItemIndexFromContainer(keptRealizedFocusedContainer);
 
             var itemOffset = FindItemOffset(index);
 
@@ -971,7 +966,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         }
     }
 
-    private void ArrangeLine(double lineSizeMainAxis, List<UIElement> children, List<Size> childSizes, double lineOffsetCrossAxis, bool hierarchical)
+    private void ArrangeLine(double lineSizeMainAxis, List<FrameworkElement> children, List<Size> childSizes, double lineOffsetCrossAxis, bool hierarchical)
     {
         double spaceTakenMainAxis;
         double stretchAmount = 0;
@@ -994,7 +989,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
 
             if (StretchItems)
             {
-                var firstChild = (FrameworkElement)children[0];
+                var firstChild = children[0];
                 double childMaxSizeMainAxis = orientation == Orientation.Horizontal ? firstChild.MaxWidth : firstChild.MaxHeight;
                 double stretchedChildSizeMainAxis = Math.Max(childSizeMainAxis, Math.Min(lineSizeMainAxis / itemsPerRow, childMaxSizeMainAxis));
                 stretchAmount = stretchedChildSizeMainAxis - childSizeMainAxis;
@@ -1030,7 +1025,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         }
     }
 
-    private double GetArrangePositionCrossAxis(UIElement child, double childArrangeCrossAxisSize, double linePositionCrossAxis, double lineSizeCrossAxis)
+    private double GetArrangePositionCrossAxis(FrameworkElement child, double childArrangeCrossAxisSize, double linePositionCrossAxis, double lineSizeCrossAxis)
     {
         if (ItemAlignment == ItemAlignment.End)
         {
@@ -1043,27 +1038,24 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         return linePositionCrossAxis;
     }
 
-    private double GetsArrangeSizeCrossAxis(UIElement child, Size childSize, double lineSizeCrossAxis)
+    private double GetsArrangeSizeCrossAxis(FrameworkElement child, Size childSize, double lineSizeCrossAxis)
     {
         if (ItemAlignment == ItemAlignment.Stretch)
         {
-            if (child is FrameworkElement fe)
+            if (orientation == Orientation.Horizontal && double.IsNaN(child.Height))
             {
-                if (orientation == Orientation.Horizontal && double.IsNaN(fe.Height))
-                {
-                    return Math.Min(lineSizeCrossAxis, fe.MaxHeight);
-                }
-                if (orientation == Orientation.Vertical && double.IsNaN(fe.Width))
-                {
-                    return Math.Min(lineSizeCrossAxis, fe.MaxWidth);
-                }
+                return Math.Min(lineSizeCrossAxis, child.MaxHeight);
+            }
+            if (orientation == Orientation.Vertical && double.IsNaN(child.Width))
+            {
+                return Math.Min(lineSizeCrossAxis, child.MaxWidth);
             }
             return lineSizeCrossAxis;
         }
         return GetSizeOnCrossAxis(childSize);
     }
 
-    private void CalculateSpacing(double availableSpace, List<UIElement> children, double spaceTakenByChilds, out double innerSpacing, out double outerSpacing)
+    private void CalculateSpacing(double availableSpace, List<FrameworkElement> children, double spaceTakenByChilds, out double innerSpacing, out double outerSpacing)
     {
         int childCount;
 
@@ -1109,9 +1101,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
 
     public FrameworkElement Realize(int itemIndex)
     {
-        var item = Items[itemIndex];
-
-        var container = (FrameworkElement)ItemContainerGenerator.ContainerFromIndex(itemIndex);
+        var container = ContainerFromItemIndex(itemIndex);
 
         if (container is not null)
         {
@@ -1122,8 +1112,6 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         using (RecyclingItemContainerGenerator.StartAt(generatorPosition, GeneratorDirection.Forward))
         {
             container = (FrameworkElement)RecyclingItemContainerGenerator.GenerateNext(out bool isNewContainer);
-
-            realizedContainers.Add(container);
 
             if (isNewContainer || !InternalChildren.Contains(container))
             {
@@ -1136,11 +1124,11 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         }
     }
 
-    public void Virtualize(FrameworkElement container)
+    public void Virtualize(int itemIndex, int childIndex)
     {
-        var generatorPosition = GeneratorPositionFromContainer(container);
+        var generatorPosition = GeneratorPositionFromItemIndex(itemIndex);
 
-        // Index is -1 when the item is already virtualized (can happen when grouping)
+        // The index is -1 when the item is already virtualized
         if (generatorPosition.Index != -1)
         {
             if (IsRecycling)
@@ -1153,33 +1141,35 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
             }
         }
 
-        realizedContainers.Remove(container);
-
         if (!IsRecycling)
         {
-            RemoveInternalChildRange(InternalChildren.IndexOf(container), 1);
+            RemoveInternalChildRange(childIndex, 1);
         }
     }
 
-    private GeneratorPosition GeneratorPositionFromContainer(FrameworkElement container)
+    private GeneratorPosition GeneratorPositionFromItemIndex(int itemIndex)
     {
-        int itemIndex = ItemContainerGenerator.IndexFromContainer(container);
         return RecyclingItemContainerGenerator.GeneratorPositionFromIndex(itemIndex);
     }
 
-    public int IndexFromGeneratorPosition(GeneratorPosition generatorPosition)
+    public int ItemIndexFromGeneratorPosition(GeneratorPosition generatorPosition)
     {
         return RecyclingItemContainerGenerator.IndexFromGeneratorPosition(generatorPosition);
     }
 
-    public FrameworkElement ContainerFromIndex(int itemIndex)
+    public FrameworkElement ContainerFromItemIndex(int itemIndex)
     {
         return (FrameworkElement)ItemContainerGenerator.ContainerFromIndex(itemIndex);
     }
 
-    public int IndexFromContainer(FrameworkElement container)
+    public int ItemIndexFromContainer(DependencyObject container)
     {
         return ItemContainerGenerator.IndexFromContainer(container);
+    }
+
+    public object ItemFromContainer(DependencyObject container)
+    {
+        return ItemContainerGenerator.ItemFromContainer(container);
     }
 
     #endregion
