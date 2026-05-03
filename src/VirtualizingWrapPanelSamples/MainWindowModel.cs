@@ -15,6 +15,8 @@ namespace VirtualizingWrapPanelSamples;
 
 class MainWindowModel : INotifyPropertyChanged
 {
+    private static readonly int GroupsSize = 100;
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public ObservableCollection<TestItem> Items { get; private set => SetProperty(ref field, value); } = new ObservableCollection<TestItem>();
@@ -74,7 +76,7 @@ class MainWindowModel : INotifyPropertyChanged
     public void AddItem()
     {
         int number = Items.Count > 0 ? (Items.Max(item => item.Number) + 1) : 1;
-        Items.Add(new TestItem((number - 1) / 1000 + 1, number));
+        Items.Add(new TestItem((number - 1) / GroupsSize + 1, number));
     }
 
     public void AddItems(int count)
@@ -88,7 +90,7 @@ class MainWindowModel : INotifyPropertyChanged
         int newCount = Items.Count + count;
         for (int index = Items.Count; index < newCount; index++)
         {
-            Items.Add(new TestItem((number - 1) / 1000 + 1, number));
+            Items.Add(new TestItem((number - 1) / GroupsSize + 1, number));
             number++;
         }
 
