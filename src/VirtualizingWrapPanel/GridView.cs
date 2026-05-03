@@ -101,22 +101,26 @@ public class GridView : ListBox
 
     private void GridView_PreviewKeyDown(object sender, KeyEventArgs e)
     {
-        if (!IsWrappingKeyboardNavigationEnabled) return;
+        if (!IsWrappingKeyboardNavigationEnabled)
+        { 
+            return; 
+        }
 
         var gridView = (GridView)sender;
 
-        var currentItem = gridView.ItemContainerGenerator.ItemFromContainer((DependencyObject)Keyboard.FocusedElement);
+        var currentContainer = (DependencyObject)Keyboard.FocusedElement;
+        var currentItemIndex = gridView.ItemContainerGenerator.IndexFromContainer(currentContainer);
 
-        int targetIndex;
+        int targetItemIndex;
         if (Orientation == Orientation.Horizontal)
         {
             switch (e.Key)
             {
                 case Key.Left:
-                    targetIndex = gridView.Items.IndexOf(currentItem) - 1;
+                    targetItemIndex = currentItemIndex - 1;
                     break;
                 case Key.Right:
-                    targetIndex = gridView.Items.IndexOf(currentItem) + 1;
+                    targetItemIndex = currentItemIndex + 1;
                     break;
                 default:
                     return;
@@ -127,20 +131,21 @@ public class GridView : ListBox
             switch (e.Key)
             {
                 case Key.Up:
-                    targetIndex = gridView.Items.IndexOf(currentItem) - 1;
+                    targetItemIndex = currentItemIndex - 1;
                     break;
                 case Key.Down:
-                    targetIndex = gridView.Items.IndexOf(currentItem) + 1;
+                    targetItemIndex = currentItemIndex + 1;
                     break;
                 default:
                     return;
             }
         }
 
-        if (targetIndex >= 0 && targetIndex < gridView.Items.Count)
+        if (targetItemIndex >= 0 && targetItemIndex < gridView.Items.Count)
         {
-            gridView.ScrollIntoView(gridView.Items[targetIndex]);
-            ((UIElement)gridView.ItemContainerGenerator.ContainerFromIndex(targetIndex)).Focus();
+            gridView.ScrollIntoView(gridView.Items[targetItemIndex]);
+            var targetContainer = gridView.ItemContainerGenerator.ContainerFromIndex(targetItemIndex);
+            Keyboard.Focus((IInputElement)targetContainer);
         }
 
         e.Handled = true;
