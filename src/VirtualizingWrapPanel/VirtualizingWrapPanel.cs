@@ -1123,9 +1123,46 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
                 AddInternalChild(container);
             }
 
+            EnsureFirstItemIsFirstChild(itemIndex, container);
+            EnsureLastItemIsLastChild(itemIndex, container);
+
             RecyclingItemContainerGenerator.PrepareItemContainer(container);
 
             return container;
+        }
+    }
+
+    /// <summary>
+    /// Ensures that the container for the first item is the first child of the panel.
+    /// This is necessary for proper keyboard navigation when the "Home" key is pressed.
+    /// </summary>
+    private void EnsureFirstItemIsFirstChild(int itemIndex, FrameworkElement container)
+    {
+        if (itemIndex == 0)
+        {
+            int childIndex = InternalChildren.IndexOf(container);
+            if (childIndex != 0)
+            {
+                RemoveInternalChildRange(childIndex, 1);
+                InsertInternalChild(0, container);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Ensures that the container for the last item is the last child of the panel.
+    /// This is necessary for proper keyboard navigation when the "End" key is pressed.
+    /// </summary>
+    private void EnsureLastItemIsLastChild(int itemIndex, FrameworkElement container)
+    {
+        if (itemIndex == items.Count - 1)
+        {
+            int childIndex = InternalChildren.IndexOf(container);
+            if (childIndex != InternalChildren.Count - 1)
+            {
+                RemoveInternalChildRange(childIndex, 1);
+                AddInternalChild(container);
+            }
         }
     }
 

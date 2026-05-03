@@ -38,6 +38,7 @@
         <PackageReleaseNotes>
 - Fix rare issue that the panel is not switched when a group style is applied
 - Fix that container of removed item is not removed when keyboard focused
+- Fix home and end key not always focusing the first/last item
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>
