@@ -29,7 +29,9 @@ internal class TestController
         {
             new Setter(Control.MarginProperty, new Thickness(0)),
             new Setter(Control.PaddingProperty, new Thickness(0)),
-            new Setter(Control.BorderThicknessProperty, new Thickness(0))
+            new Setter(Control.BorderThicknessProperty, new Thickness(0)),
+            new Setter(Control.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch),
+            new Setter(Control.VerticalContentAlignmentProperty, VerticalAlignment.Stretch)
         }
     };
 
@@ -52,7 +54,7 @@ internal class TestController
 
     public Size DesiredSize => VirtualizingWrapPanel.DesiredSize;
 
-    public UIElementCollection Children => VirtualizingWrapPanel.Children;
+    public List<FrameworkElement> Children => VirtualizingWrapPanel.Children.Cast<FrameworkElement>().ToList();
 
     public TestItem? FocusedItem => (TestItem?)((FrameworkElement)Keyboard.FocusedElement)?.DataContext;
 
@@ -84,7 +86,7 @@ internal class TestController
     }
 
     public static TestController CreateListBoxWithVirtualizingWrapPanel(
-        ObservableCollection<TestItem> items,
+        IList<TestItem> items,
         double width = DefaultItemsControlWidth,
         double height = DefaultItemsControlHeight)
     {
@@ -261,6 +263,23 @@ internal class TestController
     public async Task SetVirtualizationModeAsync(VirtualizationMode virtualizationMode)
     {
         VirtualizingPanel.SetVirtualizationMode(itemsControl, virtualizationMode);
+        await UpdateLayoutAsync();
+    }
+
+    public async Task SetItemSizeAsync(Size itemSize)
+    {
+        VirtualizingWrapPanel.ItemSize = itemSize;
+        await UpdateLayoutAsync();
+    }
+    public async Task SetItemTemplateAsync(string itemTemplate)
+    {
+        itemsControl.ItemTemplate = TestUtil.CreateDataTemplate(itemTemplate);
+        await UpdateLayoutAsync();
+    }
+
+    public async Task SetItemTemplateAsync(DataTemplate itemTemplate)
+    {
+        itemsControl.ItemTemplate = itemTemplate;
         await UpdateLayoutAsync();
     }
 
@@ -459,7 +478,7 @@ internal class TestController
     {
         return TestUtil.CreateDataTemplate("""
             <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"> 
-                <Grid Width="{Binding Width}" Height="{Binding Height}">
+                <Grid MinWidth="{Binding Width}" MinHeight="{Binding Height}">
                     <Border Background="Red" Opacity="0.5" BorderBrush="Blue" BorderThickness="1"/>
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Name}"/>
                 </Grid>

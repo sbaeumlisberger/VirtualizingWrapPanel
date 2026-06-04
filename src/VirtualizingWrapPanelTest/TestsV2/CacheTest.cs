@@ -22,6 +22,7 @@ public class CacheTest
 
     [WpfTheory]
     [InlineData(0, 60)]
+    [InlineData(100, 65)]
     [InlineData(1000, 100)]
     [InlineData(1050, 105)] // row partial visible
     public async Task CacheUnitPage(double offset, int expectedChildCount)
@@ -34,13 +35,14 @@ public class CacheTest
     }
 
     [WpfTheory]
-    [InlineData(0, 22)]
-    [InlineData(500, 24)]
-    [InlineData(550, 29)] // row partial visible
+    [InlineData(0, 30)]
+    [InlineData(100, 35)]
+    [InlineData(500, 40)]
+    [InlineData(550, 45)] // row partial visible
     public async Task CacheUnitItem(double offset, int expectedChildCount)
     {
         // VirtualizationCacheLengthUnit.Item is the default
-        await vwp.SetCacheLengthAsync(new VirtualizationCacheLength(2));
+        await vwp.SetCacheLengthAsync(new VirtualizationCacheLength(10));
         await vwp.SetVerticalOffsetAsync(offset);
 
         Assert.Equal(expectedChildCount, vwp.Children.Count);

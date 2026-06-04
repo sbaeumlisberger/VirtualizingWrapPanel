@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using WpfToolkit.Controls;
 using Xunit;
 
@@ -289,6 +288,40 @@ public class ScrollingTest
 
         Assert.Equal(new Rect(0, 0, 100, 100), visibleRect);
         Assert.Equal(100, testController.VerticalOffset);
+    }
+
+    [WpfTheory]
+    [InlineData(VirtualizationMode.Standard)]
+    [InlineData(VirtualizationMode.Recycling)]
+    public async Task MakeVisible_PartiallyVisibleAtStartOfViewportAndGreaterThanViewport(VirtualizationMode virtualizationMode)
+    {
+        await testController.SetVirtualizationModeAsync(virtualizationMode);
+        var itemSize = new Size(100, testController.ViewportHeight + 100 /*500*/);
+        await testController.SetItemSizeAsync(itemSize);
+        await testController.SetVerticalOffsetAsync(250);
+
+        var targetContainer = testController.Children[0];
+        var visibleRect = await testController.MakeVisibleAsync(targetContainer, new Rect(0, 0, itemSize.Width, itemSize.Height));
+
+        Assert.Equal(new Rect(0, 0, itemSize.Width, testController.ViewportHeight), visibleRect);
+        Assert.Equal(0, testController.VerticalOffset);
+    }
+
+    [WpfTheory]
+    [InlineData(VirtualizationMode.Standard)]
+    [InlineData(VirtualizationMode.Recycling)]
+    public async Task MakeVisible_PartiallyVisibleAtEndOfViewportAndGreaterThanViewport(VirtualizationMode virtualizationMode)
+    {
+        await testController.SetVirtualizationModeAsync(virtualizationMode);
+        var itemSize = new Size(100, testController.ViewportHeight + 100 /*500*/);
+        await testController.SetItemSizeAsync(itemSize);
+        await testController.SetVerticalOffsetAsync(250);
+
+        var targetContainer = testController.Children[5];
+        var visibleRect = await testController.MakeVisibleAsync(targetContainer, new Rect(0, 0, itemSize.Width, itemSize.Height));
+
+        Assert.Equal(new Rect(0, 0, itemSize.Width, testController.ViewportHeight), visibleRect);
+        Assert.Equal(500, testController.VerticalOffset);
     }
 
     //[WpfTheory]

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using Xunit;
 
@@ -93,5 +90,17 @@ public class InitialStateTest
         Assert.Equal(0, testController.ExtentWidth);
         Assert.Equal(0, testController.ExtentHeight);
         Assert.Empty(testController.GetItemsInViewport());
+    }
+
+    [WpfFact]
+    public async Task ItemsNotDistinct()
+    {
+        var items = Enumerable.Repeat(new TestItem("TestItem", 100, 100), 100).ToList();
+
+        var tc = TestController.CreateListBoxWithVirtualizingWrapPanel(items);
+        await tc.UpdateLayoutAsync();
+
+        await Task.Delay(1000);
+        Assert.Equal(20 + 1, tc.Children.Count);
     }
 }

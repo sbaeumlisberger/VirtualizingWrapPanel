@@ -200,46 +200,34 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     {
         var transformedBounds = visual.TransformToAncestor(this).TransformBounds(rectangle);
 
-        double offsetX = 0;
-        double offsetY = 0;
+        double newHorizontalOffset = HorizontalOffset;
+        double newVerticalOffset = VerticalOffset;
 
-        double visibleX = 0;
-        double visibleY = 0;
         double visibleWidth = Math.Min(rectangle.Width, ViewportWidth);
         double visibleHeight = Math.Min(rectangle.Height, ViewportHeight);
 
         if (transformedBounds.Left < 0)
         {
-            offsetX = transformedBounds.Left;
+            newHorizontalOffset += transformedBounds.Left;
         }
         else if (transformedBounds.Right > ViewportWidth)
         {
-            offsetX = Math.Min(transformedBounds.Right - ViewportWidth, transformedBounds.Left);
-
-            if (rectangle.Width > ViewportWidth)
-            {
-                visibleX = rectangle.Width - ViewportWidth;
-            }
+            newHorizontalOffset += Math.Min(transformedBounds.Right - ViewportWidth, transformedBounds.Left);
         }
 
         if (transformedBounds.Top < 0)
         {
-            offsetY = transformedBounds.Top;
+            newVerticalOffset += transformedBounds.Top;
         }
         else if (transformedBounds.Bottom > ViewportHeight)
         {
-            offsetY = Math.Min(transformedBounds.Bottom - ViewportHeight, transformedBounds.Top);
-
-            if (rectangle.Height > ViewportHeight)
-            {
-                visibleY = rectangle.Height - ViewportHeight;
-            }
+            newVerticalOffset += Math.Min(transformedBounds.Bottom - ViewportHeight, transformedBounds.Top);
         }
 
-        SetHorizontalOffset(HorizontalOffset + offsetX);
-        SetVerticalOffset(VerticalOffset + offsetY);
+        SetHorizontalOffset(newHorizontalOffset);
+        SetVerticalOffset(newVerticalOffset);
 
-        return new Rect(visibleX, visibleY, visibleWidth, visibleHeight);
+        return new Rect(0, 0, visibleWidth, visibleHeight);
     }
 
     public void SetVerticalOffset(double offset)
