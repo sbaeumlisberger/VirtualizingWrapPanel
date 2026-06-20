@@ -28,6 +28,8 @@
                 <Grid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Remove" Click="RemoveMenuItem_Click"/>
+                        <MenuItem Header="Move Up" Click="MoveUpMenuItem_Click"/>
+                        <MenuItem Header="Move Down" Click="MoveDownMenuItem_Click"/>
                     </ContextMenu>
                 </Grid.ContextMenu>
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -57,6 +59,8 @@
                 <Grid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Remove" Click="RemoveMenuItem_Click"/>
+                        <MenuItem Header="Move Up" Click="MoveUpMenuItem_Click"/>
+                        <MenuItem Header="Move Down" Click="MoveDownMenuItem_Click"/>
                     </ContextMenu>
                 </Grid.ContextMenu>
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -86,6 +90,8 @@
                 <Grid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Remove" Click="RemoveMenuItem_Click"/>
+                        <MenuItem Header="Move Up" Click="MoveUpMenuItem_Click"/>
+                        <MenuItem Header="Move Down" Click="MoveDownMenuItem_Click"/>
                     </ContextMenu>
                 </Grid.ContextMenu>
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">

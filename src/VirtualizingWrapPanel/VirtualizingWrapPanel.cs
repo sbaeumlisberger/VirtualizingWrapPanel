@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace WpfToolkit.Controls;
@@ -155,6 +156,9 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
 
     protected override Orientation LogicalOrientation => Orientation == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal;
 
+    // for testing purposes
+    internal IReadOnlyList<Size> ItemSizesCache => itemSizesCache;
+
     private static readonly Size InfiniteSize = new Size(double.PositiveInfinity, double.PositiveInfinity);
 
     private double scrollOffsetMainAxis;
@@ -192,6 +196,8 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     private Visibility previousCrossAxisScrollBarVisibiliy = Visibility.Collapsed;
     private double crossAxisScrollBarSizeOnMainAxis = 0;
 
+    private INotifyCollectionChanged? items_NotifyCollectionChanged;
+
     // local fields to cache frequently read properties
     private Orientation orientation = Orientation.Horizontal;
     private Size itemSize = Size.Empty;
@@ -218,6 +224,19 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         {
             // Ensure that the ItemPresenter uses the correct panel
             ((ItemsPresenter)TemplatedParent).InvalidateMeasure();
+
+            RegisterItemsCollectionChangedEventHandler();
+
+            if (AllowDifferentSizedItems)
+            {
+                itemSizesCache = Utils.NewUninitializedList<Size>(Items.Count);
+
+                if (ItemSizeProvider is null)
+                {
+                    SetHorizontalOffset(0);
+                    SetVerticalOffset(0);
+                }
+            }
         }
 
         if (bringIntoViewItemIndex >= Items.Count)
@@ -225,48 +244,58 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
             bringIntoViewItemIndex = -1;
             bringIntoViewContainer = null;
         }
+    }
 
+    private void RegisterItemsCollectionChangedEventHandler()
+    {
+        items_NotifyCollectionChanged?.CollectionChanged -= Items_CollectionChanged!;
+
+        if (ItemsOwner is GroupItem groupItem && groupItem.Content is CollectionViewGroup collectionView)
+        {
+            items_NotifyCollectionChanged = collectionView.Items;
+        }
+        else
+        {
+            items_NotifyCollectionChanged = ItemsControl.Items;
+        }
+
+        items_NotifyCollectionChanged.CollectionChanged += Items_CollectionChanged!;
+    }
+
+    private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
         if (AllowDifferentSizedItems)
         {
             UpdateItemSizesCache(e);
         }
     }
 
-    private void UpdateItemSizesCache(ItemsChangedEventArgs e)
+    private void UpdateItemSizesCache(NotifyCollectionChangedEventArgs e)
     {
         switch (e.Action)
         {
             case NotifyCollectionChangedAction.Remove:
-                int removeIndex = ItemIndexFromGeneratorPosition(e.Position);
+                int removeIndex = e.OldStartingIndex;
                 itemSizesCache.RemoveAt(removeIndex);
                 break;
             case NotifyCollectionChangedAction.Replace:
-                int replaceIndex = ItemIndexFromGeneratorPosition(e.Position);
+                int replaceIndex = e.OldStartingIndex;
                 itemSizesCache[replaceIndex] = default;
                 break;
             case NotifyCollectionChangedAction.Add:
-                int addIndex = ItemIndexFromGeneratorPosition(e.Position);
+                int addIndex = e.NewStartingIndex;
                 itemSizesCache.Insert(addIndex, default);
                 break;
             case NotifyCollectionChangedAction.Move:
-                int oldIndex = ItemIndexFromGeneratorPosition(e.OldPosition);
-                int newIndex = ItemIndexFromGeneratorPosition(e.Position);
+                int oldIndex = e.OldStartingIndex;
+                int newIndex = e.NewStartingIndex;
                 var itemSize = itemSizesCache[oldIndex];
                 itemSizesCache.RemoveAt(oldIndex);
                 itemSizesCache.Insert(newIndex, itemSize);
                 break;
-            case NotifyCollectionChangedAction.Reset:
-                itemSizesCache = Utils.NewUninitializedList<Size>(Items.Count);
-                if (ItemSizeProvider is null)
-                {
-                    SetHorizontalOffset(0);
-                    SetVerticalOffset(0);
-                }
-                break;
-            default:
-                throw new NotSupportedException("The action " + e.Action + " is not supported.");
         }
     }
+
 
     private void Orientation_Changed()
     {
@@ -322,6 +351,11 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
 
         items = Items;
         itemsCount = items.Count;
+
+        if (items_NotifyCollectionChanged is null)
+        {
+            RegisterItemsCollectionChangedEventHandler();
+        }
 
         MeasureBringIntoViewContainer();
 

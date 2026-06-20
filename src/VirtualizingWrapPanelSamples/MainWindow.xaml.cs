@@ -4,10 +4,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using WpfToolkit.Controls;
 
 namespace VirtualizingWrapPanelSamples;
 
@@ -74,7 +72,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void UpdateGroupStyle() 
+    private void UpdateGroupStyle()
     {
         var itemsControl = FindItemsControl();
 
@@ -161,6 +159,18 @@ public partial class MainWindow : Window
     private void RemoveMenuItem_Click(object sender, RoutedEventArgs e)
     {
         model.RemoveItem((TestItem)((FrameworkElement)sender).DataContext);
+    }
+
+    private void MoveUpMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        var item = (TestItem)((FrameworkElement)sender).DataContext;
+        model.MoveItemUp(item);
+    }
+
+    private void MoveDownMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        var item = (TestItem)((FrameworkElement)sender).DataContext;
+        model.MoveItemDown(item);
     }
 
     private void ScrollIntoViewTextBox_TextChanged(object sender, TextChangedEventArgs e)

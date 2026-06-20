@@ -102,6 +102,16 @@ class MainWindowModel : INotifyPropertyChanged
         Items.Remove(item);
     }
 
+    public void MoveItemUp(TestItem item)
+    {
+        Items.Move(Items.IndexOf(item), Math.Max(0, Items.IndexOf(item) - 1));
+    }
+
+    public void MoveItemDown(TestItem item)
+    {
+        Items.Move(Items.IndexOf(item), Math.Min(Items.Count - 1, Items.IndexOf(item) + 1));
+    }
+
     public void RemoveAllItems()
     {
         Items.Clear();

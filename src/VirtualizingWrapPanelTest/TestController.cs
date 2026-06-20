@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -61,12 +62,17 @@ internal class TestController
     public int ItemsPerRow => (int)Math.Floor(ViewportWidth / (double)FirstChildWidth);
     public int ItemsPerPage => ItemsPerRow * (int)Math.Floor(ViewportHeight / (double)FirstChildHeight);
 
+    public IReadOnlyList<Size> ItemSizesCache => VirtualizingWrapPanel.ItemSizesCache;
+
     private IScrollInfo ScrollInfo => (IScrollInfo)TestUtil.GetVisualChild<VirtualizingPanel>(itemsControl)!;
     private VirtualizingPanel VirtualizingPanel => TestUtil.GetVisualChild<VirtualizingPanel>(itemsControl)!;
     private VirtualizingWrapPanel VirtualizingWrapPanel => TestUtil.GetVisualChild<VirtualizingWrapPanel>(itemsControl)!;
 
     private readonly Window window = new Window();
+
     private readonly ItemsControl itemsControl;
+
+    private readonly ICollectionView collectionView;
 
     private readonly TestViewModel viewModel = new TestViewModel();
 
@@ -74,6 +80,7 @@ internal class TestController
     {
         this.itemsControl = itemsControl;
         Items = items;
+        collectionView = CollectionViewSource.GetDefaultView(Items);
         ItemsControlWidth = width;
         ItemsControlHeight = height;
         SetupAndShowItemsControl();
@@ -293,6 +300,8 @@ internal class TestController
     {
         if (grouping)
         {
+            collectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TestItem.Group)));
+
             var panelFactory = new FrameworkElementFactory(typeof(VirtualizingStackPanel));
             panelFactory.SetBinding(VirtualizingStackPanel.OrientationProperty, new Binding
             {
@@ -300,6 +309,7 @@ internal class TestController
                 Path = new PropertyPath(nameof(viewModel.OrientationParent)),
                 Mode = BindingMode.OneWay
             });
+
             itemsControl.GroupStyle.Add(new GroupStyle()
             {
                 HeaderTemplate = TestUtil.CreateDefaultGroupHeaderTemplate(DefaultGroupHeaderHeight),
@@ -308,6 +318,7 @@ internal class TestController
         }
         else
         {
+            collectionView.GroupDescriptions.Clear();
             itemsControl.GroupStyle.Clear();
         }
 
@@ -436,9 +447,6 @@ internal class TestController
             Path = new PropertyPath(nameof(viewModel.Orientation)),
             Mode = BindingMode.OneWay
         });
-
-        var collectionView = CollectionViewSource.GetDefaultView(Items);
-        collectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TestItem.Group)));
 
         itemsControl.ItemsPanel = new ItemsPanelTemplate(itemsPanelFactory);
         itemsControl.ItemsSource = collectionView;

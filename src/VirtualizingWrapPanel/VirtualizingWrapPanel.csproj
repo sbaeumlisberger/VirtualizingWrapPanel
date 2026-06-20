@@ -36,9 +36,10 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         
         <PackageReleaseNotes>
-- Fix rare issue that the panel is not switched when a group style is applied
-- Fix that container of removed item is not removed when keyboard focused
-- Fix home and end key not always focusing the first/last item
+- Fix #103 ArgumentOutOfRangeException when removing the last item and AllowDifferentSizedItems=true
+- Fix a rare issue that the panel is not switched when a group style is applied
+- Fix that the container of a removed item gets not removed when it has keyboard focus
+- Fix home and end key not reliably focusing the first/last item
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>
