@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <title>VirtualizingWrapPanel</title>
-        <Version>2.5.2</Version>
+        <Version>2.5.3</Version>
         <Authors>sbaeumlisberger</Authors>
         <Copyright>sbaeumlisberger</Copyright>
         <Description>Feature-rich implementation of a VirtualizingWrapPanel for WPF.</Description>
@@ -36,10 +36,7 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         
         <PackageReleaseNotes>
-- Fix #103 ArgumentOutOfRangeException when removing the last item and AllowDifferentSizedItems=true
-- Fix a rare issue that the panel is not switched when a group style is applied
-- Fix that the container of a removed item gets not removed when it has keyboard focus
-- Fix home and end key not reliably focusing the first/last item
+- Fix #104 Blank space when using specific group item templates and no caching
         </PackageReleaseNotes>
 
         <RootNamespace>WpfToolkit.Controls</RootNamespace>
