@@ -13,3 +13,5 @@ Feature-rich implementation of a [VirtualizingWrapPanel](https://sbaeumlisberger
 * [Getting started](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/docs/getting-started.html)
 * [Sample Application](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/tree/master/SamplesApplication.md)
 * [API Documentation](https://sbaeumlisberger.github.io/VirtualizingWrapPanel/api/WpfToolkit.Controls.html)
+
+To to support the future development of the project you can become a [sponsor](https://github.com/sponsors/sbaeumlisberger) or make a donation via [PayPal](https://www.paypal.com/paypalme/sbaeumlisberger).
