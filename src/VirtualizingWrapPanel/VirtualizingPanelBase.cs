@@ -136,12 +136,12 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
 
     protected Rect GetViewportFromGroupItem(IHierarchicalVirtualizationAndScrollInfo groupItem)
     {
-        double viewportX = groupItem.Constraints.Viewport.X;
-        double viewportY = groupItem.Constraints.Viewport.Y;
+        double viewportX = Math.Max(0, groupItem.Constraints.Viewport.X);
+        double viewportY = Math.Max(0, groupItem.Constraints.Viewport.Y);
         double viewportWidth = Math.Max(groupItem.Constraints.Viewport.Width, 0);
         double viewportHeight = Math.Max(groupItem.Constraints.Viewport.Height, 0);
 
-        var groupItemStackPanelOrientation = Orientation.Horizontal;
+        Orientation? groupItemStackPanelOrientation = null;
 
         if (VisualTreeHelper.GetParent(this) is ItemsPresenter itemsPresenter)
         {
@@ -149,7 +149,8 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
             viewportWidth = Math.Max(0, viewportWidth - (margin.Left + margin.Right));
             viewportHeight = Math.Max(0, viewportHeight - (margin.Top + margin.Bottom));
 
-            if (itemsPresenter.Parent is StackPanel groupItemStackPanel)
+            if (itemsPresenter.Parent is StackPanel groupItemStackPanel
+                && groupItemStackPanel.Children[0] is FrameworkElement { Name: "PART_Header" })
             {
                 groupItemStackPanelOrientation = groupItemStackPanel.Orientation;
             }
@@ -161,7 +162,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
             double visibleHeaderWidth = Math.Max(0, groupItem.HeaderDesiredSizes.PixelSize.Width - Math.Max(0, groupItem.Constraints.Viewport.X));
             viewportWidth = Math.Max(0, viewportWidth - visibleHeaderWidth);
         }
-        else
+        else if (groupItemStackPanelOrientation == Orientation.Vertical)
         {
             viewportY = Math.Max(0, viewportY - groupItem.HeaderDesiredSizes.PixelSize.Height);
             double visibleHeaderHeight = Math.Max(0, groupItem.HeaderDesiredSizes.PixelSize.Height - Math.Max(0, groupItem.Constraints.Viewport.Y));
