@@ -3,10 +3,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using WpfToolkit.Controls;
 
 namespace VirtualizingWrapPanelSamples;
 
@@ -52,12 +50,6 @@ public partial class MainWindow : Window
 
         itemsControl.ItemsSource = model.CollectionView;
     }
-
-    private void InsertButton_Click(object sender, RoutedEventArgs args)
-    {
-        model.AddItem();
-    }
-
 
     private void ClearButton_Click(object sender, RoutedEventArgs args)
     {

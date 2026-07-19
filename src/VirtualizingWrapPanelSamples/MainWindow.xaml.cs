@@ -86,11 +86,6 @@ public partial class MainWindow : Window
         }
     }
 
-    private void InsertButton_Click(object sender, RoutedEventArgs args)
-    {
-        model.AddItem();
-    }
-
     private void ClearButton_Click(object sender, RoutedEventArgs args)
     {
         model.RemoveAllItems();

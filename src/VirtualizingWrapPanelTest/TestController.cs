@@ -12,7 +12,7 @@ using WpfToolkit.Controls;
 
 namespace VirtualizingWrapPanelTest;
 
-internal class TestController
+public class TestController
 {
     public const int DefaultItemsControlWidth = 500;
     public const int DefaultItemsControlHeight = 400;

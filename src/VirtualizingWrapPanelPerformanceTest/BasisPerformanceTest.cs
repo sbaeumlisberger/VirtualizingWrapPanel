@@ -25,10 +25,10 @@ public class BasisPerformanceTest(ITestOutputHelper testOutputHelper)
         vwp.UpdateLayout();
 
         int maxVerticaOffset = CalculateMaxVerticalOffset(vwp);
-        
+
         int iterations = 50;
 
-        Stopwatch sw = Stopwatch.StartNew();  
+        Stopwatch sw = Stopwatch.StartNew();
 
         for (int i = 0; i < iterations; i++)
         {
@@ -78,6 +78,35 @@ public class BasisPerformanceTest(ITestOutputHelper testOutputHelper)
         testOutputHelper.WriteLine($"Average time was {avgTime}ms");
 
         Assert.True(avgTime <= maxAllowedAvgMilliseconds, $"Average time was {avgTime}ms, but should be less than or equal to {maxAllowedAvgMilliseconds}ms.");
+    }
+
+    [WpfTheory]
+    [InlineData(false, 300)]
+    [InlineData(true, 300)]
+    public async Task AddOneHoundredThousandItems(bool allowDifferentSizedItems, int maxAllowedAvgMilliseconds)
+    {
+        var tc = TestController.CreateListBoxWithVirtualizingWrapPanel(TestController.GenerateItems(1_00_000));
+        await tc.SetAllowDifferentSizedItemsAsync(allowDifferentSizedItems);
+
+        Stopwatch sw = Stopwatch.StartNew();
+
+        int iterations = 5;
+
+        for (int i = 0; i < iterations; i++)
+        {
+            foreach (var item in TestController.GenerateItems(1_00_000))
+            {
+                tc.Items.Add(item);
+            }
+            await tc.UpdateLayoutAsync();
+        }
+
+        double avgTime = Math.Round(sw.Elapsed.TotalMilliseconds / iterations);
+
+        testOutputHelper.WriteLine($"Average time was {avgTime}ms");
+
+        Assert.True(avgTime <= maxAllowedAvgMilliseconds, $"Average time was {avgTime}ms, but should be less than or equal to {maxAllowedAvgMilliseconds}ms.");
+
     }
 
     private static int CalculateMaxVerticalOffset(VirtualizingWrapPanel vwp)

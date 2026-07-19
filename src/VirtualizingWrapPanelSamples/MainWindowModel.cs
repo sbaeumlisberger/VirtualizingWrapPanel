@@ -73,18 +73,17 @@ class MainWindowModel : INotifyPropertyChanged
         AddItems(100_000);
     }
 
-    public void AddItem()
-    {
-        int number = Items.Count > 0 ? (Items.Max(item => item.Number) + 1) : 1;
-        Items.Add(new TestItem((number - 1) / GroupsSize + 1, number));
-    }
-
     public void AddItems(int count)
     {
-        if (Items.Count == 0)
+        if (IsGrouping)
         {
-            Items = new ObservableCollection<TestItem>();
+            // Adding items is extremly slow when group descriptions are set 
+            CollectionView.GroupDescriptions.Clear();
         }
+
+        // Adding items is extremly slow when filter is set
+        var filter = CollectionView.Filter;
+        CollectionView.Filter = null;
 
         int number = Items.Count > 0 ? (Items.Max(item => item.Number) + 1) : 1;
         int newCount = Items.Count + count;
@@ -94,7 +93,9 @@ class MainWindowModel : INotifyPropertyChanged
             number++;
         }
 
-        CollectionView = CollectionViewSource.GetDefaultView(Items);
+        UpdateGroupDescriptions(); // Restore group descriptions
+
+        CollectionView.Filter = filter;
     }
 
     public void RemoveItem(TestItem item)
@@ -143,11 +144,11 @@ class MainWindowModel : INotifyPropertyChanged
             case nameof(Orientation):
                 OrientationGroupPanel = Orientation == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal;
                 break;
-            case nameof(CollectionView):
-                CollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TestItem.Group)));
-                break;
             case nameof(UseItemSizeProvider):
                 ItemSizeProvider = UseItemSizeProvider ? new TestItemSizeProvider() : null;
+                break;
+            case nameof(IsGrouping):
+                UpdateGroupDescriptions();
                 break;
         }
     }
@@ -177,6 +178,18 @@ class MainWindowModel : INotifyPropertyChanged
         else
         {
             memoryUsageRefreshTimer.Stop();
+        }
+    }
+
+    private void UpdateGroupDescriptions()
+    {
+        if (IsGrouping)
+        {
+            CollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TestItem.Group)));
+        }
+        else
+        {
+            CollectionView.GroupDescriptions.Clear();
         }
     }
 
