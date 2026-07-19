@@ -36,7 +36,7 @@ public class TestController
         }
     };
 
-    public IList<TestItem> Items { get; }
+    public IList<TestItem> Items { get; private set; }
 
     public double ItemsControlWidth { get; }
     public double ItemsControlHeight { get; }
@@ -72,9 +72,9 @@ public class TestController
 
     private readonly ItemsControl itemsControl;
 
-    private readonly ICollectionView collectionView;
-
     private readonly TestViewModel viewModel = new TestViewModel();
+
+    private ICollectionView collectionView;
 
     private TestController(ItemsControl itemsControl, IList<TestItem> items, double width, double height)
     {
@@ -128,6 +128,14 @@ public class TestController
     {
         return new ObservableCollection<TestItem>(Enumerable.Range(1, itemCount)
             .Select(i => new TestItem("Item " + i, Random.Shared.Next(101) + 50, Random.Shared.Next(101) + 50, "Group " + ((i - 1) / groupSize + 1))));
+    }
+
+    public async Task SetItemsSourceAsync(IList<TestItem> items)
+    {
+        Items = items;
+        collectionView = CollectionViewSource.GetDefaultView(Items);
+        itemsControl.ItemsSource = collectionView;
+        await UpdateLayoutAsync();
     }
 
     public async Task ScrollLineDownAsync()

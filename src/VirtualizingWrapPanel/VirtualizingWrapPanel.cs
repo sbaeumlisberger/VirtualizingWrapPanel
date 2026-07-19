@@ -816,18 +816,18 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
             return;
         }
 
-        if (ExtentWidth > ViewportWidth && HorizontalOffset + ViewportWidth > ExtentWidth)
+        if (HorizontalOffset != 0 && HorizontalOffset + ViewportWidth > ExtentWidth)
         {
-            HorizontalOffset = ExtentWidth - ViewportWidth;
+            HorizontalOffset = Math.Max(0, ExtentWidth - ViewportWidth);
             scrollOffsetMainAxis = orientation == Orientation.Horizontal ? HorizontalOffset : VerticalOffset;
             scrollOffsetCrossAxis = orientation == Orientation.Horizontal ? VerticalOffset : HorizontalOffset;
             RealizeAndVirtualizeItems();
             InvalidateScrollInfo();
         }
 
-        if (ExtentHeight > ViewportHeight && VerticalOffset + ViewportHeight > ExtentHeight)
+        if (VerticalOffset != 0 && VerticalOffset + ViewportHeight > ExtentHeight)
         {
-            VerticalOffset = ExtentHeight - ViewportHeight;
+            VerticalOffset = Math.Max(0, ExtentHeight - ViewportHeight);
             scrollOffsetMainAxis = orientation == Orientation.Horizontal ? HorizontalOffset : VerticalOffset;
             scrollOffsetCrossAxis = orientation == Orientation.Horizontal ? VerticalOffset : HorizontalOffset;
             RealizeAndVirtualizeItems();

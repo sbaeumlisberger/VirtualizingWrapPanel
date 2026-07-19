@@ -189,6 +189,38 @@ public class CollectionChangedTest
         Assert.Equal(0, tc.ExtentHeight);
     }
 
+    [WpfTheory]
+    [InlineData(VirtualizationMode.Standard)]
+    [InlineData(VirtualizationMode.Recycling)]
+    public async Task SetItemsSourceThatNoLongerFillsTheViewport(VirtualizationMode virtualizationMode)
+    {
+        var tc = TestController.CreateListBoxWithVirtualizingWrapPanel();
+        await tc.SetVirtualizationModeAsync(virtualizationMode);
+        await tc.ScrollToEndAsync();
+        Assert.Equal(199600, tc.VerticalOffset);
+
+        var newItems = TestController.GenerateItems(10);
+        await tc.SetItemsSourceAsync(newItems);
+
+        Assert.Equal(0, tc.VerticalOffset);
+    }
+
+    [WpfTheory]
+    [InlineData(VirtualizationMode.Standard)]
+    [InlineData(VirtualizationMode.Recycling)]
+    public async Task RemoveItemsSoThatTheViewportIsNoLongerFilled(VirtualizationMode virtualizationMode)
+    {
+        var tc = TestController.CreateListBoxWithVirtualizingWrapPanel();
+        await tc.SetVirtualizationModeAsync(virtualizationMode);
+        await tc.ScrollToEndAsync();
+        Assert.Equal(199600, tc.VerticalOffset);
+
+        tc.Items.Skip(10).ToList().ForEach(item => tc.Items.Remove(item));
+        await tc.UpdateLayoutAsync();
+
+        Assert.Equal(0, tc.VerticalOffset);
+    }
+
     // TODO: test items changes: add, replace, remove mutiple items
 
     // TODO: scroll offset adjust when scrolled down and filter applied
